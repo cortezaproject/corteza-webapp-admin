@@ -1,8 +1,16 @@
 import Vue from 'vue'
-import App from './App.vue'
+import Index from './views/Index.vue'
 
-Vue.config.productionTip = false
+import './global'
+import './plugins'
+import './main.scss'
 
+import router from './router'
+import store from './store'
+
+// implement a Vue with store and router
 new Vue({
-  render: h => h(App),
+  router,
+  store,
+  render: h => h(Index),
 }).$mount('#app')
