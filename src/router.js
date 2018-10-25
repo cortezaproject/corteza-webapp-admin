@@ -5,7 +5,6 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 function protect (to, from, next) {
-  console.log('protect=' + store.getters['auth/isAuthenticated'])
   next(store.getters['auth/isAuthenticated'] ? true : '/auth/signin')
 }
 
