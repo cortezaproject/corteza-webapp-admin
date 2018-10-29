@@ -8,6 +8,12 @@ function protect (to, from, next) {
   next(store.getters['auth/isAuthenticated'] ? true : '/auth/signin')
 }
 
+function view (name, resolve) {
+  return function (resolve) {
+    return require([`./views/${name}.vue`], resolve)
+  }
+}
+
 export default new Router({
   mode: 'history',
   routes: [
@@ -38,9 +44,3 @@ export default new Router({
     },
   ],
 })
-
-function view (name, resolve) {
-  return function (resolve) {
-    return require([`./views/${name}.vue`], resolve)
-  }
-}
