@@ -1,0 +1,18 @@
+[
+  {
+    "title": "SATOSA",
+    "link": "/admin/satosa"
+  },
+  {
+    "title": "OpenLDAP",
+    "link": "/admin/openldap"
+  },
+  {
+    "title": "Users",
+    "link": "/admin/users"
+  },
+  {
+    "title": "Teams",
+    "link": "/admin/teams"
+  }
+]

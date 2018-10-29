@@ -20,7 +20,9 @@ serve:
 build:
 	docker run -it --env-file .env.local --net=host -v ${PWD}:/app -w /app crusttech/front-dev yarn build
 
-test:
+lint:
 	docker run -it --env-file .env.local --net=host -v ${PWD}:/app -w /app crusttech/front-dev yarn lint
+
+test:
 	docker run -it --env-file .env.local --net=host -v ${PWD}:/app -w /app crusttech/front-dev yarn test:unit
 

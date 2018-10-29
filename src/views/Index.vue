@@ -5,6 +5,13 @@
         <div class="side-panel h-100">
           <template v-if="isAuthenticated">
             <p>Hello {{user.name}}</p>
+
+            <ul>
+              <li v-for="(item, idx) in menu" :key="'side-menu-' + idx">
+                <a :href="item.link">{{item.title}}</a>
+              </li>
+            </ul>
+
             <a href="/auth/signout">Sign Out</a>
           </template>
           <template v-else>
@@ -22,9 +29,15 @@
 </template>
 
 <script>
+import menu from '@/api/menu'
 import { mapGetters } from 'vuex'
 
 export default {
+  data () {
+    return {
+      menu: menu,
+    }
+  },
   computed: {
     ...mapGetters('auth', [
       'user',

@@ -1,0 +1,24 @@
+[
+  {
+    "name": "google",
+    "title": "Google",
+    "image": "/assets/images/providers/google.png",
+    "options": [
+      {
+        "name": "enabled",
+        "title": "Enable provider",
+        "kind": "boolean"
+      },
+      {
+        "name": "key_public",
+        "title": "Secret ID",
+        "kind": "string"
+      },
+      {
+        "name": "key_secret",
+        "title": "Secret Key",
+        "kind": "string"
+      }
+    ]
+  }
+]

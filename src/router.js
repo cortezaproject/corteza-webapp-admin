@@ -15,8 +15,10 @@ export default new Router({
       path: '/admin/',
       name: 'root',
       beforeEnter: protect,
-      component: view('Users/Index'),
+      component: view('IndexNested'),
       children: [
+        { path: 'satosa', name: 'satosa', component: view('SATOSA/Index') },
+        { path: 'satosa/:name', component: view('SATOSA/Provider') },
         { path: 'users', name: 'users', component: view('Users/Index') },
         { path: 'teams', name: 'teams', component: view('Teams/Index') },
       ],
