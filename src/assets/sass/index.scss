@@ -1,0 +1,305 @@
+/* Import bootstrap styles from npm package */
+@import './_0.declare-light';
+@import '~bootstrap/scss/bootstrap-reboot.scss';
+@import '~bootstrap/scss/bootstrap-grid.scss';
+
+@import '~bootstrap/scss/_forms.scss';
+@import '~bootstrap/scss/_buttons.scss';
+@import '~bootstrap/scss/_button-group.scss';
+@import '~bootstrap/scss/_tables.scss';
+
+@import '~bootstrap/scss/utilities/_sizing.scss';
+
+html, body {
+	height: 100%;
+	background: $mainbgcolor;
+}
+html body {
+	color: $defaulttextcolor;
+	font-size: $defaultbodysize;
+}
+a,
+a:hover {
+	color:$defaultlinkcolor;
+}
+.side-panel {
+  background: #ccc;
+  box-shadow: 5px 0 10px rgba(0,0,0,0.15);
+}
+.side-panel,
+.main-view {
+  padding: 1em;
+  border-right: 1px solid #ccc;
+}
+.close-block {
+	text-align: center;
+}
+.small-open-button{
+  border:1px solid $appgrey;
+	border-radius: 18px;
+	margin:0 auto 2px;
+	padding:0;
+	position: relative;
+	background:none;
+	color:$appgrey;
+	font-size:14px;
+	height:14px;
+	width:14px;
+	line-height: 14px;
+}
+.small-open-button:after{
+  display: inline-block;
+	content: "\002b"; /* This will render the '+' */
+}
+.small-open-button:hover {
+	background: $hoverbgcolor;
+}
+.big-close-button{
+  border:1px solid $appgrey;
+	border-radius: 20px;
+	margin:0 auto 4px;
+	position: relative;
+	background:none;
+	color:$defaultlinkcolor;
+	font-size:28px;
+	line-height: 28px;
+}
+.big-close-button:after{
+  display: inline-block;
+	content: "\00d7"; /* This will render the 'X' */
+}
+.big-close-button:hover {
+	background: $hoverbgcolor;
+}
+.header-title {
+  color:$defaulttextcolor;
+}
+.header-subtitle {
+	font-size:12px;
+	text-transform: uppercase;
+  color:$defaulttextcolor;
+}
+.admin-table-header {
+	padding:0 0 18px;
+}
+.header-row {
+	line-height: 32px;
+}
+.header-link {
+  color:$appred;
+}
+.header-link:hover {
+  color:$appred;
+}
+.header-row-search {
+	min-width:200px;
+}
+.header-row-role {
+	min-width:200px;
+}
+.header-role-text {
+	padding:0 5px 0 0;
+}
+.custom-select {
+	border: none;
+	color: $defaultlinkcolor;
+	-webkit-appearance: none;
+  -moz-appearance: none;
+	appearance: none;
+	padding:0 25px 0 0;
+  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAC4jAAAuIwF4pT92AAAAB3RJTUUH4gofCxMTPJag7AAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAB4SURBVDjL7ZLBCQMhFERnbSBl2EJK0wr+drY1DHOwDw9/c1FwDRESctwHIjLj+wcFbv5PKeX5TRbGg6RUaz0kpbn4KbsI3P3RdhuLkpK729jpbPMkkgYgAUAIIXdhi/cYY14KZsnA2+UlJI3k2Zb99CJNYvffXPMCq/9Nwd9GaXAAAAAASUVORK5CYII=') $mainbgcolor no-repeat 98.5% !important; 
+  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAC4jAAAuIwF4pT92AAAAB3RJTUUH4gofCxMTPJag7AAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAB4SURBVDjL7ZLBCQMhFERnbSBl2EJK0wr+drY1DHOwDw9/c1FwDRESctwHIjLj+wcFbv5PKeX5TRbGg6RUaz0kpbn4KbsI3P3RdhuLkpK729jpbPMkkgYgAUAIIXdhi/cYY14KZsnA2+UlJI3k2Zb99CJNYvffXPMCq/9Nwd9GaXAAAAAASUVORK5CYII=') $mainbgcolor no-repeat calc(100% - 10px) !important;
+}
+.search-input {
+	background: $searchbackgroundcolor;
+	border:none;
+	padding:5px 0 5px 5px;
+	margin:0;
+	color:$searchforegroundcolor;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+	line-height: 22px;
+}
+.search-button {
+	background: $searchbackgroundcolor;
+	border:none;
+	padding:5px 5px 5px 2px;
+	margin:0;
+	color:$searchforegroundcolor;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+	line-height: 22px;
+}
+.admin-table {
+	width: 100%;
+}
+.admin-table tbody td{
+	border-bottom: 1px solid $defaultlinecolor;
+	padding: 17px 0 10px;
+}
+.admin-table tbody tr:first-child td{
+	border-top: 1px solid $defaultfirstlinecolor;
+}
+.table-avatar {
+	padding:5px 5px 1px 1px;
+	vertical-align: top;
+	text-align: center;
+	width: 50px;
+}
+.table-avatar img {
+	border-radius: 50%;
+}
+.table-details {
+	vertical-align: top;
+	padding: 5px;
+}
+.table-column-short {
+	width: 30%;
+}
+.table-details a{
+	font-weight: bold;
+	display: inline-block;
+}
+.table-details-icon {
+	margin:0 0 0 6px;
+	vertical-align: top;
+}
+//Blue by default
+.table-detail-label {
+	padding:2px 3px 0px 3px;
+	border-radius: 4px;
+	margin:0 0 0 6px;
+	text-transform: uppercase;
+	font-size: 0.8em;
+	color:$appwhite;
+	background:$appblue;
+	display: inline-block;
+}
+.table-detail-label.yellow {
+	background:$appyellow;
+}
+.table-detail-label.red {
+	background:$appred;
+}
+.table-detail-label.green {
+	background:$appgreen;
+}
+.table-detail-label.lime {
+	background:$applime;
+}
+.table-detail-label.grey {
+	background:$appgrey;
+	color:$black;
+}
+.table-detail-label.cream {
+	background:$appcream;
+	color:$black;
+}
+.table-detail-label.white {
+	background:$appwhite;
+	color:$black;
+}
+.table-channels {
+	vertical-align: top;
+	padding:0 0 0 4px;
+}
+.table-channels ul li {
+	display: inline;
+}
+.table-channels .btn {
+	border:1px solid $appgrey;
+	border-radius: 20px;
+	margin: 0 6px 6px 0;
+}
+.table-channels .btn {
+	border:1px solid $appgrey;
+	border-radius: 20px;
+	margin: 0 6px 6px 0;
+	position: relative;
+}
+.table-channels .btn:hover {
+	background: $hoverbgcolor;
+}
+.channel-name-circle {
+	color: $defaultlinkcolor;
+	font-size: 16px;
+	margin: -3px 5px -3px -4px;
+	display: block;
+	float: left;
+}
+.table-add-channel {
+	font-size: 17px;
+  padding-top: 0;
+  padding-bottom: 0;
+  font-weight: bold;
+}
+.list-links ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+.list-links ul li {
+	margin:2px 0;
+}
+.list-links ul li a {
+	font-weight: bold;
+	display: inline-block;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	width: 100%;
+	padding:4px;
+}
+.list-links ul li a.selected {
+	background:$tabcurrentbgcolor;
+	color:$tabitemtxtcolor;
+	border-radius: 4px;
+}
+.btn-grant,
+.btn-unset,
+.btn-deny{
+  border:1px solid $defaulttextcolor;
+	position: relative;
+	background:none;
+	color:$defaultlinkcolor;
+	font-size:20px;
+	line-height: 20px;
+	border-radius: 4px;
+	font-weight: bold;
+}
+.btn-grant{
+	font-size: 16px;
+	color:$appgreen;
+}
+.btn-unset {
+	color:$defaultlinkcolor;
+}
+.btn-deny{
+	color:$appred;
+}
+.btn-grant:after{
+  display: inline-block;
+	content: "\2713"; /* This will render the 'v' */
+}
+.btn-unset:after{
+	display: inline-block;
+	content: "\0337"; /* This will render the '/' */
+	left: 6px;
+	position: relative;
+	margin:0 5px;
+}
+.btn-deny:after{
+  display: inline-block;
+	content: "\00d7"; /* This will render the 'X' */
+}
+.btn-unset.btn-selected {
+	background:$defaultbuttonbkg;
+	color:$white;
+}
+.btn-grant.btn-selected {
+	background:$appgreen;
+	color:$white;
+}
+.btn-deny.btn-selected {
+	background:$appred;
+	color:$white;
+}

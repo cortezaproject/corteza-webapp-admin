@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="container h-100">
+  <div id="app" class="main_area container h-100">
     <div class="row h-100">
       <div class="col-4">
         <div class="side-panel h-100">
@@ -46,15 +46,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-.side-panel {
-  background: #ccc;
-  box-shadow: 5px 0 10px rgba(0,0,0,0.15);
-}
-.side-panel,
-.main-view {
-  padding: 1em;
-  border-right: 1px solid #ccc;
-}
-</style>
