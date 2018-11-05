@@ -31,7 +31,7 @@ export default new Router({
     },
     {
       path: '/auth',
-      component: view('Auth/Index'),
+      component: view('IndexNested'),
       redirect: '/auth/signin',
       children: [
         { path: 'signin', name: 'signin', component: view('Auth/SignIn') },
