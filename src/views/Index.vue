@@ -4,7 +4,7 @@
       <div class="col-4">
         <div class="side-panel h-100">
           <template v-if="isAuthenticated">
-            <p>Hello {{user.name}}</p>
+            <p>Hello {{currentUser.name}}</p>
 
             <ul>
               <li v-for="(item, idx) in menu" :key="'side-menu-' + idx">
@@ -30,19 +30,14 @@
 
 <script>
 import menu from '@/api/menu'
-import { mapGetters } from 'vuex'
+import auth from '@/mixins/auth'
 
 export default {
+  mixins: [auth],
   data () {
     return {
       menu: menu,
     }
-  },
-  computed: {
-    ...mapGetters('auth', [
-      'user',
-      'isAuthenticated',
-    ]),
   },
 }
 </script>

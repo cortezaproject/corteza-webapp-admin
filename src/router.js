@@ -1,12 +1,7 @@
-import store from '@/store'
 import Vue from 'vue'
 import Router from 'vue-router'
 
 Vue.use(Router)
-
-function protect (to, from, next) {
-  next(store.getters['auth/isAuthenticated'] ? true : '/auth/signin')
-}
 
 function view (name, resolve) {
   return function (resolve) {
@@ -20,8 +15,7 @@ export default new Router({
     {
       path: '/admin/',
       name: 'root',
-      beforeEnter: protect,
-      component: view('IndexNested'),
+      component: view('IndexNestedProtected'),
       children: [
         { path: 'satosa', name: 'satosa', component: view('SATOSA/Index') },
         { path: 'satosa/:name', component: view('SATOSA/Provider') },
