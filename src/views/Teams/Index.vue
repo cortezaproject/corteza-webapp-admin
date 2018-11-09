@@ -168,22 +168,22 @@
       </div>
     </div>
 
-  <!-- HERE SOME OTHER BITS -->
+    <!-- HERE SOME OTHER BITS -->
 
-  <hr>
-  <h1>Permissions</h1>
+    <hr>
+    <h1>Permissions</h1>
 
     <div class="row">
       <div class="col-sm-10">
         <div class="row admin-table-header">
           <div class="col-sm-4">
             <div class="header-row">
-               <h2 class="float-left header-subtitle">
-                 Roles / Members
-               </h2>
-               <div class="float-right">
-               <button class="btn small-open-button" onclick="alert('close');"></button>
-               </div>
+              <h2 class="float-left header-subtitle">
+                Roles / Members
+              </h2>
+              <div class="float-right">
+                <button class="btn small-open-button" onclick="alert('close');"></button>
+              </div>
             </div>
             <div class="list-links">
               <ul>
