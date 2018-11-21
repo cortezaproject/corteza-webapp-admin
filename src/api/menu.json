@@ -12,7 +12,7 @@
     "link": "/admin/users"
   },
   {
-    "title": "Teams",
-    "link": "/admin/teams"
+    "title": "Permissions",
+    "link": "/admin/permissions"
   }
 ]

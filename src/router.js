@@ -20,7 +20,7 @@ export default new Router({
         { path: 'satosa', name: 'satosa', component: view('SATOSA/Index') },
         { path: 'satosa/:name', component: view('SATOSA/Provider') },
         { path: 'users', name: 'users', component: view('Users/Index') },
-        { path: 'teams', name: 'teams', component: view('Teams/Index') },
+        { path: 'permissions', name: 'permissions', component: view('Permissions/Index') },
       ],
     },
     {
