@@ -6,18 +6,16 @@
         <div class="row admin-table-header">
           <div class="col-sm-4">
             <div class="header-row">
-              7 Members – <a href="#" class="header-link">Prune</a>
+              {{users.length}} Members – <a href="#" class="header-link">Prune</a>
             </div>
           </div>
           <div class="col-sm-8">
             <div class="header-row">
               <div class="float-right header-row-search">
-                <form onsubmit="alert('search action');return false;">
-                  <input class="search-input" type="text" placeholder="Search"/>
-                  <button class="search-button" type="submit">
-                    <img src="../../assets/images/search.png" alt="Search" title="Search" />
-                  </button>
-                </form>
+                <input class="search-input" type="text" v-model="search" placeholder="Search" @keyup.enter="fetchUsers "/>
+                <button class="search-button" v-on:click="fetchUsers">
+                  <img src="../../assets/images/search.png" alt="Search" title="Search" />
+                </button>
               </div>
               <div class="float-right header-row-role">
                 <div class="float-right">
@@ -39,119 +37,20 @@
         </div>
         <table class="table admin-table table-hover">
           <tbody>
-            <tr>
+            <tr v-for="(user, uidx) in users" :key="'users-' + uidx">
               <td class="table-avatar">
                 <img src="../../assets/images/no_image.png" />
               </td>
               <td class="table-details table-column-short">
-                <a href="#">HeadRoom</a>
+                <a href="#">{{user.name}}</a>
+                <span v-if="('kind' in user && user.kind === 'bot')" class="table-detail-label">bot</span>
                 <br>
-                @Headroom#1234
+                <p v-if="user.handle">@{{user.handle}}</p>
               </td>
               <td class="table-channels">
                 <ul>
-                  <li>
-                    <a class="btn" href="#"><span class="channel-name-circle">⬤</span> @monotek</a>
-                  </li>
-                  <li>
-                    <a href="#" class="table-add-channel btn" onclick="alert('add channel');return false;">+</a>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-            <tr>
-              <td class="table-avatar">
-                <img src="../../assets/images/no_image.png" />
-              </td>
-              <td class="table-details table-column-short">
-                <a href="#">Bot</a>
-                <span class="table-detail-label">bot</span>
-                <br>
-                @bot#1234
-              </td>
-              <td class="table-channels">
-                <ul>
-                  <li>
-                    <a class="btn" href="#"><span class="channel-name-circle">⬤</span> @monotek</a>
-                  </li>
-                  <li>
-                    <a class="btn" href="#"><span class="channel-name-circle">⬤</span> @test</a>
-                  </li>
-                  <li>
-                    <a class="btn" href="#"><span class="channel-name-circle">⬤</span> @test-test</a>
-                  </li>
-                  <li>
-                    <a class="btn" href="#"><span class="channel-name-circle">⬤</span> @test-test-test</a>
-                  </li>
-                  <li>
-                    <a class="btn" href="#"><span class="channel-name-circle">⬤</span> @test-test-test-test</a>
-                  </li>
-                  <li>
-                    <a class="btn" href="#"><span class="channel-name-circle">⬤</span> @test-test-test-test-test</a>
-                  </li>
-                  <li>
-                    <a class="btn" href="#"><span class="channel-name-circle">⬤</span> @test-test-test-test-test-test</a>
-                  </li>
-                  <li>
-                    <a href="#" class="table-add-channel btn" onclick="alert('add channel');return false;">+</a>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-            <tr>
-              <td class="table-avatar">
-                <img src="../../assets/images/no_image.png" />
-              </td>
-              <td class="table-details table-column-short">
-                <a href="#">titpetric</a>
-                <img class="table-details-icon" src="../../assets/images/icon-crown.png" />
-                <br>
-                @titpetric#1303
-              </td>
-              <td class="table-channels">
-                <ul>
-                  <li>
-                    <a class="btn" href="#"><span class="channel-name-circle">⬤</span> @monotek</a>
-                  </li>
-                  <li>
-                    <a class="btn" href="#"><span class="channel-name-circle">⬤</span> @errorhub</a>
-                  </li>
-                  <li>
-                    <a href="#" class="table-add-channel btn" onclick="alert('add channel');return false;">+</a>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-            <tr>
-              <td class="table-avatar">
-                <img src="../../assets/images/no_image.png" />
-              </td>
-              <td class="table-details table-column-short">
-                <a href="#">I'm a bot with multiple icons and a very very very very long name!</a>
-                <img class="table-details-icon" src="../../assets/images/icon-crown.png" />
-                <img class="table-details-icon" src="../../assets/images/icon-crown.png" />
-                <img class="table-details-icon" src="../../assets/images/icon-crown.png" />
-                <img class="table-details-icon" src="../../assets/images/icon-crown.png" />
-                <img class="table-details-icon" src="../../assets/images/icon-crown.png" />
-                <img class="table-details-icon" src="../../assets/images/icon-crown.png" />
-                <span class="table-detail-label">test</span>
-                <span class="table-detail-label yellow">one</span>
-                <span class="table-detail-label red">another</span>
-                <span class="table-detail-label green">and another</span>
-                <span class="table-detail-label lime">test </span>
-                <span class="table-detail-label grey">and one with a long name</span>
-                <span class="table-detail-label cream">cream coloured one</span>
-                <span class="table-detail-label white">and a white one</span>
-                <br>
-                @botbotbot#1234
-              </td>
-              <td class="table-channels">
-                <ul>
-                  <li>
-                    <a class="btn" href="#"><span class="channel-name-circle">⬤</span> @monotek</a>
-                  </li>
-                  <li>
-                    <a href="#" class="table-add-channel btn" onclick="alert('add channel');return false;">+</a>
+                  <li v-for="(team, tidx) in user.teams" :key="'user-team-' + tidx">
+                    <a class="btn" href="#"><span class="channel-name-circle">⬤</span>@{{team.name}}</a>
                   </li>
                 </ul>
               </td>
@@ -169,3 +68,36 @@
     </div>
   </section>
 </template>
+
+<script>
+export default {
+  data () {
+    return {
+      error: '',
+      search: '',
+      users: [],
+      teams: [],
+    }
+  },
+  async created () {
+    this.fetchUsers()
+    this.fetchTeams()
+  },
+  methods: {
+    async fetchUsers () {
+      try {
+        this.users = await this.$system.userList({ query: this.search.toLowerCase() })
+      } catch (err) {
+        this.error = err.message
+      }
+    },
+    async fetchTeams () {
+      try {
+        this.teams = await this.$system.teamList({})
+      } catch (err) {
+        this.error = err.message
+      }
+    },
+  },
+}
+</script>
