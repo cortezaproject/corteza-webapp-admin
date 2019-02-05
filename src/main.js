@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import Index from './views/Index.vue'
 
 import './global'
 import './plugins'
@@ -21,6 +20,6 @@ if (window.CrustConfig === undefined) {
   new Vue({
     router,
     store,
-    render: h => h(Index),
+    template: '<div id="crust-admin" class="crust"><router-view/></div>',
   }).$mount('#app')
 }

@@ -10,28 +10,24 @@ function view (name, resolve) {
 }
 
 export default new Router({
+  base: '/admin',
   mode: 'history',
   routes: [
+    { path: '/auth/signin', name: 'signin', component: view('Auth/SignIn') },
+    { path: '/auth/signout', name: 'signout', component: view('Auth/SignOut') },
+
     {
-      path: '/admin/',
+      path: '/',
       name: 'root',
-      component: view('IndexNestedProtected'),
+      component: view('Index'),
       children: [
         { path: 'satosa', name: 'satosa', component: view('SATOSA/Index') },
-        { path: 'satosa/:name', component: view('SATOSA/Provider') },
+        { path: 'satosa/:name', component: view('SATOSA/Provider'), params: true },
         { path: 'users', name: 'users', component: view('Users/Index') },
         { path: 'permissions', name: 'permissions', component: view('Permissions/Index') },
       ],
     },
-    {
-      path: '/auth',
-      component: view('IndexNested'),
-      redirect: '/auth/signin',
-      children: [
-        { path: 'signin', name: 'signin', component: view('Auth/SignIn') },
-        { path: 'signout', name: 'signout', component: view('Auth/SignOut') },
-      ],
-    },
+
     {
       path: '*',
       redirect: { name: 'root' },
