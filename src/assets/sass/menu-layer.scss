@@ -1,0 +1,36 @@
+@import './_0.declare-light';
+
+ul {
+  list-style:none;
+  padding:0;
+  margin: 0;
+  li {
+    position: relative;
+    display:block;
+    max-width: 100%;
+    line-height:28px;
+    a {
+      color: $black;
+      width: 100%;
+      display: block;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      padding: .35em 0 .35em 15px;
+      text-decoration: none;
+      line-height: 20px;
+      font-weight: 400;
+      border-right: 3px solid transparent;
+      &:hover {
+        background-color:rgba($appgrey,0.15);
+        border-color:rgba($appgrey,0.5);
+    }
+      &.router-link-active,
+      &.selected {
+        border-color: $appblue;
+        background-color:rgba($appblue,0.15);
+        color: $appblue;
+    }
+  }
+}
+}
