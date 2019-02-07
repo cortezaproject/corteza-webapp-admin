@@ -1,7 +1,7 @@
 <template>
   <section id="users">
     <header>
-      <h2 class="header-title">Manage Users ({{users.length}})</h2>
+      <h2 class="header-title">Manage Teams ({{teams.length}})</h2>
     </header>
     <div class="content row">
       <div class="col-sm-12">

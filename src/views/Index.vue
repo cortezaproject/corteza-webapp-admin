@@ -1,29 +1,31 @@
 <template>
-  <div id="app" class="main_area container h-100">
-    <div class="row h-100">
-      <div class="col-4">
-        <div class="side-panel h-100">
-          <template v-if="isAuthenticated">
-            <p>Hello {{currentUser.name}}</p>
-
-            <ul>
-              <li v-for="(item, idx) in menu" :key="'side-menu-' + idx">
-                <a :href="item.link">{{item.title}}</a>
-              </li>
-            </ul>
-
-            <a href="/auth/signout">Sign Out</a>
-          </template>
-          <template v-else>
-            <p>You're not signed in</p>
-          </template>
-        </div>
-      </div>
-      <div class="col-8">
-        <div class="main-view h-100">
-          <router-view class="view"></router-view>
-        </div>
-      </div>
+  <div id="app" class="main-area h-100">
+    <div class="side-panel">
+      <template v-if="isAuthenticated">
+        <ul>
+          <li>
+            <router-link to="/teams">
+              Teams
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/users">
+              Users
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/permissions">
+              Permissions
+            </router-link>
+          </li>
+        </ul>
+      </template>
+      <template v-else>
+        <p>You're not signed in</p>
+      </template>
+    </div>
+    <div class="main-view h-100">
+      <router-view class="view"></router-view>
     </div>
   </div>
 </template>
@@ -41,3 +43,40 @@ export default {
   },
 }
 </script>
+<style scoped lang="scss">
+@import '@/assets/sass/_0.commons.scss';
+@import '@/assets/sass/menu-layer.scss';
+
+.main-area {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.main-view {
+  flex: 1 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  .view {
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+}
+
+.side-panel {
+  background: $appwhite;
+  width: 100%;
+  max-width: 260px;
+  height: 100vh;
+  overflow: hidden;
+  padding-top: $headerHeight;
+  border-right: 2px solid $appcream;
+  ul {
+    padding-top: 50px;
+  }
+}
+
+</style>

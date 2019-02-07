@@ -1,0 +1,31 @@
+.btn-outline-info {
+  color: $appblue;
+  border-color: $appblue;
+  border-radius: 0;
+  &:not(:disabled):not(.disabled).active,
+  &:hover,
+  &:active {
+    background: $appblue;
+    border-color: $appblue;
+  }
+  &:focus,
+  &.focus,
+  &:not(:disabled):not(.disabled):active,
+  &:not(:disabled):not(.disabled):active:focus {
+    outline: none;
+    box-shadow: none;
+    background: $appblue;
+    border-color: $appblue;
+  }
+  &.disabled {
+    color: $appgrey;
+    cursor: not-allowed;
+    &:hover {
+      background: transparent;
+    }
+  }
+}
+
+.btn {
+  border-radius: 0;
+}
