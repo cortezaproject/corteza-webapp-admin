@@ -22,8 +22,21 @@ export default new Router({
       component: view('Index'),
       children: [
         { path: 'satosa', name: 'satosa', component: view('SATOSA/Index') },
-        { path: 'satosa/:name', component: view('SATOSA/Provider'), params: true },
-        { path: 'users', name: 'users', component: view('Users/Index') },
+        { path: 'satosa/:name', component: view('SATOSA/Provider'), props: true },
+        { path: 'teams',
+          name: 'teams',
+          component: view('Teams/Index'),
+          children: [
+            { path: ':teamID', name: 'teams.team', component: view('Teams/Team'), props: true, canReuse: false },
+          ],
+        },
+        { path: 'users',
+          name: 'users',
+          component: view('Users/Index'),
+          children: [
+            { path: ':userID', name: 'users.user', component: view('Users/User'), props: true },
+          ],
+        },
         { path: 'permissions', name: 'permissions', component: view('Permissions/Index') },
       ],
     },

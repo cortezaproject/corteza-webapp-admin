@@ -3,21 +3,9 @@
     <div class="side-panel">
       <template v-if="isAuthenticated">
         <ul>
-          <li>
-            <router-link to="/teams">
-              Teams
-            </router-link>
-          </li>
-          <li>
-            <router-link to="/users">
-              Users
-            </router-link>
-          </li>
-          <li>
-            <router-link to="/permissions">
-              Permissions
-            </router-link>
-          </li>
+          <li><router-link :to="{ name: 'users' }">Users</router-link></li>
+          <li><router-link :to="{ name: 'teams' }">Teams</router-link></li>
+          <li><router-link :to="{ name: 'permissions' }">Permissions</router-link></li>
         </ul>
       </template>
       <template v-else>
@@ -25,7 +13,9 @@
       </template>
     </div>
     <div class="main-view h-100">
-      <router-view class="view"></router-view>
+      <transition name="slide">
+        <router-view class="view"></router-view>
+      </transition>
     </div>
   </div>
 </template>
@@ -77,6 +67,17 @@ export default {
   ul {
     padding-top: 50px;
   }
+}
+
+.slide-enter-active {
+  transition: all .3s ease;
+}
+.slide-leave-active {
+  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-enter, .slide-leave-to
+  /* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(-1000px);
 }
 
 </style>
