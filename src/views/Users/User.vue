@@ -4,67 +4,33 @@
     <h2 class="header-subtitle header-row">
       User Information
     </h2>
-    <div class="row list-settings">
-      { {{ user }} }
-      <div class="col-lg-7">
-        <b-input-group prepend="Username">
-          <b-form-input></b-form-input>
-        </b-input-group>
-      </div>
-      <div class="col-lg-7">
-        <b-input-group prepend="Something with dropdown">
-          <b-form-input></b-form-input>
-          <b-dropdown text="Dropdown" variant="outline-secondary" slot="append">
-            <b-dropdown-item>Action A</b-dropdown-item>
-            <b-dropdown-item>Action B</b-dropdown-item>
-          </b-dropdown>
-        </b-input-group>
-      </div>
-      <div class="col-lg-7">
-        <b-input-group prepend="Something else">
-          <b-form-input></b-form-input>
-        </b-input-group>
-      </div>
-      <div class="col-lg-7">
-        <b-input-group prepend="Something">
-          <b-form-input></b-form-input>
-        </b-input-group>
-      </div>
-      <div class="col-lg-7">
-        <b-form-group label="Radio buttons example">
-          <b-form-radio-group plain>
-            <b-form-radio value="first">First</b-form-radio>
-            <b-form-radio value="second">Second</b-form-radio>
-            <b-form-radio value="third" disabled>Disabled</b-form-radio>
-            <b-form-radio value="fourth">Fourth</b-form-radio>
-          </b-form-radio-group>
-        </b-form-group>
-      </div>
-      <div class="col-lg-7">
-        <b-form-group label="Stacked radio buttons example">
-          <b-form-radio-group plain stacked>
-            <b-form-radio value="first">First</b-form-radio>
-            <b-form-radio value="second">Second</b-form-radio>
-          </b-form-radio-group>
-        </b-form-group>
-      </div>
-      <div class="col-lg-7">
-        <b-form-group label="Inline checkboxes (default)">
-          <b-form-checkbox-group plain>
-            <b-form-checkbox value="first">First</b-form-checkbox>
-            <b-form-checkbox value="second">Second</b-form-checkbox>
-          </b-form-checkbox-group>
-        </b-form-group>
-      </div>
-      <div class="col-lg-7">
-        <b-form-group label="Stacked  checkboxes">
-          <b-form-checkbox-group stacked plain>
-            <b-form-checkbox value="first">Radio</b-form-checkbox>
-            <b-form-checkbox value="second">Second</b-form-checkbox>
-          </b-form-checkbox-group>
-        </b-form-group>
-      </div>
-    </div>
+    <b-form @submit.prevent="onSubmit">
+      <b-form-group label="Handle / username" horizontal>
+        <b-form-input v-model="user.handle" />
+      </b-form-group>
+
+      <b-form-group label="Email" horizontal>
+        <b-form-input v-model="user.email" />
+      </b-form-group>
+
+      <b-form-group label="Name" horizontal>
+        <b-form-input v-model="user.name" />
+      </b-form-group>
+
+      <b-form-group label="Kind/Type" horizontal>
+        <b-form-text>{{ user.kind }}</b-form-text>
+      </b-form-group>
+
+      <b-form-group label="Last update" horizontal>
+        <b-form-text>{{ user.updatedAt }}</b-form-text>
+      </b-form-group>
+
+      <b-form-group label="Created" horizontal>
+        <b-form-text>{{ user.createdAt }}</b-form-text>
+      </b-form-group>
+
+      <b-button type="submit" variant="primary" :disabled="processing">Submit</b-button>
+    </b-form>
   </div>
 </template>
 
@@ -88,7 +54,8 @@ export default {
 
   data () {
     return {
-      user: null,
+      processing: true,
+      user: {},
     }
   },
 
@@ -96,6 +63,14 @@ export default {
     fetchUsers () {
       this.$system.userRead({ userID: this.userID }).then(u => {
         this.user = u
+        this.processing = false
+      })
+    },
+
+    onSubmit () {
+      this.processing = true
+      this.$system.userUpdate(this.user).then(u => {
+        this.processing = false
       })
     },
   },

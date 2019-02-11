@@ -4,67 +4,21 @@
     <h2 class="header-subtitle header-row">
       Team Information
     </h2>
-    <div class="row list-settings">
-      { {{ team }} }
-      <div class="col-lg-7">
-        <b-input-group prepend="Username">
-          <b-form-input></b-form-input>
-        </b-input-group>
-      </div>
-      <div class="col-lg-7">
-        <b-input-group prepend="Something with dropdown">
-          <b-form-input></b-form-input>
-          <b-dropdown text="Dropdown" variant="outline-secondary" slot="append">
-            <b-dropdown-item>Action A</b-dropdown-item>
-            <b-dropdown-item>Action B</b-dropdown-item>
-          </b-dropdown>
-        </b-input-group>
-      </div>
-      <div class="col-lg-7">
-        <b-input-group prepend="Something else">
-          <b-form-input></b-form-input>
-        </b-input-group>
-      </div>
-      <div class="col-lg-7">
-        <b-input-group prepend="Something">
-          <b-form-input></b-form-input>
-        </b-input-group>
-      </div>
-      <div class="col-lg-7">
-        <b-form-group label="Radio buttons example">
-          <b-form-radio-group plain>
-            <b-form-radio value="first">First</b-form-radio>
-            <b-form-radio value="second">Second</b-form-radio>
-            <b-form-radio value="third" disabled>Disabled</b-form-radio>
-            <b-form-radio value="fourth">Fourth</b-form-radio>
-          </b-form-radio-group>
+      <b-form @submit.prevent="onSubmit">
+        <b-form-group label="Name" horizontal>
+          <b-form-input v-model="team.name" />
         </b-form-group>
-      </div>
-      <div class="col-lg-7">
-        <b-form-group label="Stacked radio buttons example">
-          <b-form-radio-group plain stacked>
-            <b-form-radio value="first">First</b-form-radio>
-            <b-form-radio value="second">Second</b-form-radio>
-          </b-form-radio-group>
+
+        <b-form-group label="Last update" horizontal>
+          <b-form-text>{{ team.updatedAt }}</b-form-text>
         </b-form-group>
-      </div>
-      <div class="col-lg-7">
-        <b-form-group label="Inline checkboxes (default)">
-          <b-form-checkbox-group plain>
-            <b-form-checkbox value="first">First</b-form-checkbox>
-            <b-form-checkbox value="second">Second</b-form-checkbox>
-          </b-form-checkbox-group>
+
+        <b-form-group label="Created" horizontal>
+          <b-form-text>{{ team.createdAt }}</b-form-text>
         </b-form-group>
-      </div>
-      <div class="col-lg-7">
-        <b-form-group label="Stacked  checkboxes">
-          <b-form-checkbox-group stacked plain>
-            <b-form-checkbox value="first">Radio</b-form-checkbox>
-            <b-form-checkbox value="second">Second</b-form-checkbox>
-          </b-form-checkbox-group>
-        </b-form-group>
-      </div>
-    </div>
+
+        <b-button type="submit" variant="primary" :disabled="processing">Submit</b-button>
+      </b-form>
   </div>
 </template>
 
@@ -88,14 +42,23 @@ export default {
 
   data () {
     return {
-      team: null,
+      processing: true,
+      team: {},
     }
   },
 
   methods: {
     fetchUsers () {
-      this.$system.teamRead({ teamID: this.teamID }).then(u => {
-        this.team = u
+      this.$system.teamRead({ teamID: this.teamID }).then(t => {
+        this.team = t
+        this.processing = false
+      })
+    },
+
+    onSubmit () {
+      this.processing = true
+      this.$system.teamUpdate(this.team).then(t => {
+        this.processing = false
       })
     },
   },
