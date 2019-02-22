@@ -37,7 +37,12 @@ export default new Router({
             { path: ':userID', name: 'users.user', component: view('Users/User'), props: true },
           ],
         },
-        { path: 'permissions', name: 'permissions', component: view('Permissions/Index') },
+        { path: 'permissions',
+          name: 'permissions',
+          component: view('Permissions/Index'),
+          children: [
+            { path: ':roleID', name: 'permissions.per-role', component: view('Permissions/PerRole'), props: true },
+          ] },
       ],
     },
 

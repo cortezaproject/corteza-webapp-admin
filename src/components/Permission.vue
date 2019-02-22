@@ -1,55 +1,75 @@
 <template>
   <tr>
     <td class="short">
-      <b-form-group>
-        <b-form-radio-group buttons
-                            v-model="selected"
-                            :disabled="!enabled"
-                            button-variant="outline-info"
-                            :options="permissionOptions" />
-        </b-form-group>
+      <permission-value v-model="value"
+                        :current="current"
+                        :enabled="enabled"
+                        v-on="$listeners"></permission-value>
     </td>
-    <td class="table-details">
+    <td class="text">
       <b>{{ title }}</b>
-      <br>
-      {{ subtitle }}
+      <div>{{ description }}</div>
+    </td>
+    <td class="short">
+      <b-button variant="link" @click="selected = current" v-show="isChanged">Reset back to "{{ current }}"</b-button>
     </td>
   </tr>
 </template>
 
 <script>
+import PermissionValue from '@/components/PermissionValue'
+
 export default {
+  components: {
+    PermissionValue,
+  },
+
   props: {
-    title: {
+    resource: {
       type: String,
       required: true,
     },
-    subtitle: {
+
+    operation: {
+      type: String,
+      required: true,
+    },
+
+    title: {
       type: String,
       required: false,
     },
-    enabled: {
-      type: Boolean,
-      default: true,
+
+    description: {
+      type: String,
+      required: false,
     },
+
     default: {
       type: String,
       required: false,
     },
+
+    enabled: {
+      type: Boolean,
+      default: true,
+    },
+
     value: {
       type: String,
       required: false,
     },
+
+    current: {
+      type: String,
+      required: false,
+    },
   },
-  data () {
-    return {
-      selected: 'allow',
-      permissionOptions: [
-        { text: 'Allow', value: 'allow' },
-        { text: 'Inherit', value: 'inherit' },
-        { text: 'Forbid', value: 'forbid' },
-      ],
-    }
+
+  computed: {
+    isChanged () {
+      return this.value !== this.current
+    },
   },
 }
 </script>
@@ -58,12 +78,20 @@ export default {
 @import '@/assets/sass/_0.commons.scss';
 
 td {
-  vertical-align: middle;
-  border-bottom: 1px solid $appcream;
+  vertical-align: top;
   border-top: none;
-}
-.short {
-  width: 170px;
+  height: 40px;
+
+  &.short {
+    width: 170px;
+  }
+
+  &.text {
+    div {
+      font-size: 10px;
+      font-style:italic;
+    }
+  }
 }
 
 </style>
