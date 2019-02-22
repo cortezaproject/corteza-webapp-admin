@@ -23,11 +23,11 @@ export default new Router({
       children: [
         { path: 'satosa', name: 'satosa', component: view('SATOSA/Index') },
         { path: 'satosa/:name', component: view('SATOSA/Provider'), props: true },
-        { path: 'teams',
-          name: 'teams',
-          component: view('Teams/Index'),
+        { path: 'roles',
+          name: 'roles',
+          component: view('Roles/Index'),
           children: [
-            { path: ':teamID', name: 'teams.team', component: view('Teams/Team'), props: true, canReuse: false },
+            { path: ':roleID', name: 'roles.role', component: view('Roles/Role'), props: true, canReuse: false },
           ],
         },
         { path: 'users',

@@ -4,7 +4,7 @@
       <template v-if="isAuthenticated">
         <ul>
           <li><router-link :to="{ name: 'users' }">Users</router-link></li>
-          <li><router-link :to="{ name: 'teams' }">Teams</router-link></li>
+          <li><router-link :to="{ name: 'roles' }">Roles</router-link></li>
           <li><router-link :to="{ name: 'permissions' }">Permissions</router-link></li>
         </ul>
       </template>

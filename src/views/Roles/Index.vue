@@ -1,8 +1,8 @@
 <template>
   <list-with-details :title="title">
     <ul>
-      <li v-for="u in teams" :key="u.ID">
-        <router-link :to="{ name: 'teams.team', params: { teamID: u.teamID } }">{{u.name || u.teamname || u.email}}</router-link>
+      <li v-for="r in roles" :key="r.ID">
+        <router-link :to="{ name: 'roles.role', params: { roleID: r.roleID } }">{{r.name || r.handle || r.roleID || 'Unnamed role' }}</router-link>
       </li>
     </ul>
   </list-with-details>
@@ -15,24 +15,24 @@ export default {
   data () {
     return {
       query: '',
-      teams: [],
+      roles: [],
     }
   },
 
   computed: {
     title () {
-      return `Manage teams (${this.teams.length})`
+      return `Manage roles (${this.roles.length})`
     },
   },
 
   created () {
-    this.fetchTeams()
+    this.fetchRoles()
   },
 
   methods: {
-    fetchTeams () {
-      this.$system.teamList({ query: this.query.toLowerCase() }).then(tt => {
-        this.teams = tt
+    fetchRoles () {
+      this.$system.roleList({ query: this.query.toLowerCase() }).then(rr => {
+        this.roles = rr
       })
     },
   },
@@ -47,7 +47,7 @@ export default {
 @import '@/assets/sass/_0.commons.scss';
 @import '@/assets/sass/menu-layer.scss';
 
-.list-teams {
+.list-roles {
   border-right: 2px solid $appcream;
   h2 {
     padding: 10px 0 0 15px;

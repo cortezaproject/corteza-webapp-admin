@@ -1,5 +1,5 @@
 <template>
-  <section id="teams">
+  <section id="roles">
     <header>
       <h2>Manage Permissions</h2>
     </header>
@@ -8,9 +8,9 @@
       <div class="col-sm-12">
         <div class="row">
           <div class="col-lg-2">
-            <div class="list-teams">
+            <div class="list-roles">
               <h2 class="header-row header-subtitle">
-                List of teams
+                List of roles
               </h2>
               <ul>
                 <li>
@@ -139,12 +139,12 @@ export default {
   data () {
     return {
       error: '',
-      teams: [],
+      roles: [],
     }
   },
   async created () {
     try {
-      this.teams = await this.$system.teamList({ query: '' })
+      this.roles = await this.$system.roleList({ query: '' })
     } catch (err) {
       this.error = err.message
     }
@@ -159,7 +159,7 @@ export default {
   @import '@/assets/sass/_0.commons.scss';
   @import '@/assets/sass/menu-layer.scss';
 
-.list-teams {
+.list-roles {
   border-right: 2px solid $appcream;
   h2 {
     padding: 10px 0 0 15px;

@@ -1,21 +1,12 @@
 <template>
   <div class="settings">
-    <router-link :to="{ name: 'teams' }" class="float-right">close</router-link>
+    <router-link :to="{ name: 'roles' }" class="float-right">close</router-link>
     <h2 class="header-subtitle header-row">
-      Team Information
+      Permissions
     </h2>
       <b-form @submit.prevent="onSubmit">
-        <b-form-group label="Name" horizontal>
-          <b-form-input v-model="team.name" />
-        </b-form-group>
-
-        <b-form-group label="Last update" horizontal>
-          <b-form-text>{{ team.updatedAt }}</b-form-text>
-        </b-form-group>
-
-        <b-form-group label="Created" horizontal>
-          <b-form-text>{{ team.createdAt }}</b-form-text>
-        </b-form-group>
+        <permission title="foo"
+                    subtitle="bar"></permission>
 
         <b-button type="submit" variant="primary" :disabled="processing">Submit</b-button>
       </b-form>
@@ -23,16 +14,17 @@
 </template>
 
 <script>
+import Permission from '../../components/Permission'
 export default {
   props: {
-    teamID: {
+    roleID: {
       type: String,
       required: true,
     },
   },
 
   watch: {
-    teamID: {
+    roleID: {
       immediate: true,
       handler () {
         this.fetchUsers()
@@ -43,24 +35,28 @@ export default {
   data () {
     return {
       processing: true,
-      team: {},
+      role: {},
     }
   },
 
   methods: {
     fetchUsers () {
-      this.$system.teamRead({ teamID: this.teamID }).then(t => {
-        this.team = t
+      this.$system.roleRead({ roleID: this.roleID }).then(t => {
+        this.role = t
         this.processing = false
       })
     },
 
     onSubmit () {
       this.processing = true
-      this.$system.teamUpdate(this.team).then(t => {
+      this.$system.roleUpdate(this.role).then(t => {
         this.processing = false
       })
     },
+  },
+
+  components: {
+    Permission,
   },
 }
 </script>
