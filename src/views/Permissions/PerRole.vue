@@ -1,11 +1,11 @@
 <template>
   <b-form @submit.prevent="onSubmit">
     <div class="header">
+      <router-link :to="{ name: 'roles' }" class="float-right"><b-button-close></b-button-close></router-link>
+      <h2 class="header-subtitle header-row">
+        Role permissions
+      </h2>
       <b-form-group label="Search/filter permissions" horizontal>
-        <router-link :to="{ name: 'roles' }" class="float-right"><b-button-close></b-button-close></router-link>
-        <h2 class="header-subtitle header-row">
-          Role permissions
-        </h2>
         <b-input-group>
           <b-form-input v-model="filter" />
           <b-input-group-append>
@@ -388,6 +388,7 @@ form {
     flex: 1;
     flex-grow: 100;
     overflow-y: scroll;
+    overflow-x: hidden;
     padding-top: 2px;
 
     table {
