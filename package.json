@@ -13,10 +13,10 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "crust-api-client": "crusttech/crust-api-client.js.git#master",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
     "vuetable-2": "^1.7.5",
-    "crust-api-client": "crusttech/crust-api-client.js.git#master",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
