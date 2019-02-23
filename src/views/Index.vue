@@ -1,6 +1,6 @@
 <template>
-  <div id="app" class="main-area h-100">
-    <div class="side-panel">
+  <div id="app" class="app">
+    <div class="panel">
       <template v-if="isAuthenticated">
         <ul>
           <li><router-link :to="{ name: 'users' }">Users</router-link></li>
@@ -12,7 +12,7 @@
         <p>You're not signed in</p>
       </template>
     </div>
-    <div class="main-view h-100">
+    <div class="main">
       <transition name="slide">
         <router-view class="view"></router-view>
       </transition>
@@ -37,47 +37,44 @@ export default {
 @import '@/assets/sass/_0.commons.scss';
 @import '@/assets/sass/menu-layer.scss';
 
-.main-area {
-  height: 100vh;
+.app {
   width: 100vw;
-  display: flex;
-  flex-flow: row nowrap;
-}
-
-.main-view {
-  flex: 1 100%;
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  .view {
-    height: 100%;
-    overflow-x: hidden;
-    overflow-y: scroll;
-  }
-}
-
-.side-panel {
-  background: $appwhite;
-  width: 100%;
-  max-width: 260px;
   height: 100vh;
   overflow: hidden;
-  padding-top: $headerHeight;
-  border-right: 2px solid $appcream;
-  ul {
+
+  display: flex;
+  flex-direction: row;
+
+  .panel {
+    flex: 1;
+    z-index: 1;
+    background: $appwhite;
+    max-width: 200px;
+    padding-top: $headerHeight;
+    border-right: 2px solid $appcream;
     padding-top: 50px;
+  }
+
+  .main {
+    flex: 1;
   }
 }
 
 .slide-enter-active {
   transition: all .3s ease;
+  opacity: 1;
 }
 .slide-leave-active {
-  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  transition: all .2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  opacity: 0;
 }
-.slide-enter, .slide-leave-to
-  /* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: translateX(-1000px);
+
+.slide-enter {
+  transform: translateX(100vw);
+}
+
+.slide-leave-to {
+  transform: translateX(-100vw);
 }
 
 </style>

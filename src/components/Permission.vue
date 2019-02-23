@@ -11,7 +11,9 @@
       <div>{{ description }}</div>
     </td>
     <td class="short">
-      <b-button variant="link" @click="selected = current" v-show="isChanged">Reset back to "{{ current }}"</b-button>
+      <b-button variant="link"
+                @click="$emit('update:value', current)"
+                v-show="isChanged">Reset back to "{{ current }}"</b-button>
     </td>
   </tr>
 </template>

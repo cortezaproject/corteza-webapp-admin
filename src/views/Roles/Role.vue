@@ -1,6 +1,6 @@
 <template>
-  <div class="settings">
-    <router-link :to="{ name: 'roles' }" class="float-right">close</router-link>
+  <div>
+    <router-link :to="{ name: 'roles' }" class="float-right"><b-button-close></b-button-close></router-link>
     <h2 class="header-subtitle header-row">
       Role Information
     </h2>
@@ -68,14 +68,9 @@ export default {
 @import '@/assets/sass/_0.commons.scss';
 @import '@/assets/sass/menu-layer.scss';
 
-.settings {
-  h2 {
-    padding-top: 15px;
-  }
-  .list-settings {
-    max-height: calc(100vh - 110px);
-    overflow: scroll;
-  }
+.list-settings {
+  max-height: calc(100vh - 110px);
+  overflow: scroll;
 }
 
 </style>

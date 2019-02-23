@@ -1,12 +1,11 @@
 <template>
-  <div class="settings">
-    <router-link :to="{ name: 'roles' }" class="float-right">close</router-link>
-    <h2 class="header-subtitle header-row">
-      Role permissions
-    </h2>
-
-    <b-form @submit.prevent="onSubmit">
+  <b-form @submit.prevent="onSubmit">
+    <div class="header">
       <b-form-group label="Search/filter permissions" horizontal>
+        <router-link :to="{ name: 'roles' }" class="float-right"><b-button-close></b-button-close></router-link>
+        <h2 class="header-subtitle header-row">
+          Role permissions
+        </h2>
         <b-input-group>
           <b-form-input v-model="filter" />
           <b-input-group-append>
@@ -17,7 +16,9 @@
       <b-form-group :label="`Set on all filtered (${filtered().length})`" horizontal>
         <permission-value @change="setAllFiltered"></permission-value>
       </b-form-group>
-      <table>
+    </div>
+    <div class="rules">
+      <table cellspacing="0" cellpadding="0" border="0">
         <permission-group title="System service"
                           :permissions="filtered('system')" ></permission-group>
         <permission-group title="Messaging service"
@@ -25,9 +26,11 @@
         <permission-group title="Compose service"
                           :permissions="filtered('compose')" ></permission-group>
       </table>
-      <b-button type="submit" variant="primary" :disabled="!submittable">Submit</b-button>
-    </b-form>
-  </div>
+    </div>
+    <div class="footer">
+      <b-button type="submit" variant="primary" :disabled="!submittable">Save changes</b-button>
+    </div>
+  </b-form>
 </template>
 
 <script>
@@ -268,7 +271,7 @@ export default {
 
     submittable () {
       return this.dirty && !this.processing
-    }
+    },
   },
 
   data () {
@@ -366,11 +369,30 @@ export default {
 @import '@/assets/sass/_0.commons.scss';
 @import '@/assets/sass/menu-layer.scss';
 
-.settings {
-  table {
-    width: 100%;
-    max-height: calc(100vh - 110px);
-    overflow: scroll;
+form {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 50px);
+
+  .header {
+    flex: 1;
+    border-bottom: 2px solid $appcream;
+  }
+
+  .footer {
+    flex: 1;
+    text-align: right;
+  }
+
+  .rules {
+    flex: 1;
+    flex-grow: 100;
+    overflow-y: scroll;
+    padding-top: 2px;
+
+    table {
+      width: 100%;
+    }
   }
 }
 

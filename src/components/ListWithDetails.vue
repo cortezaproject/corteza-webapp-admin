@@ -1,20 +1,18 @@
 <template>
-  <section id="users">
+  <section>
     <header v-if="title">
       <h2 class="header-title">{{ title }}</h2>
     </header>
-    <div class="content row">
-      <div class="col-sm-12">
-        <div class="row">
-          <div class="col-lg-2 list">
-            <slot></slot>
-          </div>
-          <transition name="slide">
-            <router-view class="col-lg-10 details" :key="$route.fullPath"></router-view>
-          </transition>
+    <main>
+      <aside>
+        <div>
+          <slot></slot>
         </div>
-      </div>
-    </div>
+      </aside>
+      <transition name="slide">
+        <router-view class="details" :key="$route.fullPath"></router-view>
+      </transition>
+    </main>
   </section>
 </template>
 <script>
@@ -29,19 +27,57 @@ export default {
 <style scoped lang="scss">
 @import '@/assets/sass/_0.commons.scss';
 
-.details {
-  border-left: 2px solid $appcream;
+section {
+  display: flex;
+  flex-direction: column;
+
+  header {
+    flex: 1;
+  }
+
+  main {
+    flex: 1;
+
+    display: flex;
+    flex-direction: row;
+
+    aside {
+      flex: 1;
+      max-width: 200px;
+      z-index: 1;
+      background: $appwhite;
+      border-right: 2px solid $appcream;
+      padding-top: 40px;
+
+      & > div {
+        height: calc(100vh - 100px);
+        overflow-y: scroll;
+      }
+    }
+
+    .details {
+      flex: 1;
+      padding: 20px;
+    }
+
+    .slide-enter-active {
+      transition: all .3s ease;
+      opacity: 1;
+    }
+    .slide-leave-active {
+      transition: all .2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+      opacity: 0;
+    }
+
+    .slide-enter {
+      transform: translateX(100vw);
+    }
+
+    .slide-leave-to {
+      transform: translateX(-100vw);
+    }
+  }
 }
 
-.slide-enter-active {
-  transition: all .3s ease;
-}
-.slide-leave-active {
-  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-}
-.slide-enter, .slide-leave-to
-  /* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: translateX(1000px);
-}
 
 </style>
