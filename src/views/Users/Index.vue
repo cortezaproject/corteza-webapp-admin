@@ -1,5 +1,9 @@
 <template>
-  <list-with-details :title="title">
+  <list-with-details :title="title"
+                     create-button-label="Add User"
+                     @update="fetchUsers"
+                     @create="$router.push({ name: 'users.user', params: { userID: undefined } })">
+
     <ul>
       <li v-for="u in users" :key="u.ID">
         <router-link :to="{ name: 'users.user', params: { userID: u.userID } }">{{u.name || u.username || u.email}}</router-link>
