@@ -1,7 +1,10 @@
 <template>
   <section>
     <header v-if="title">
-      <h2 class="header-title">{{ title }}</h2>
+      <h2 class="header-title">{{ title }}
+      <b-button class="create"
+                @click.prevent="$emit('create')"
+                v-if="createButtonLabel">{{ createButtonLabel }}</b-button></h2>
     </header>
     <main>
       <aside>
@@ -10,7 +13,7 @@
         </div>
       </aside>
       <transition name="slide">
-        <router-view class="details" :key="$route.fullPath"></router-view>
+        <router-view class="details" :key="$route.fullPath" v-on="$listeners"></router-view>
       </transition>
     </main>
   </section>
@@ -20,6 +23,11 @@ export default {
   props: {
     title: {
       type: String,
+    },
+
+    createButtonLabel: {
+      type: String,
+      required: false,
     },
   },
 }
@@ -33,6 +41,10 @@ section {
 
   header {
     flex: 1;
+
+    button.create {
+      float: right;
+    }
   }
 
   main {
@@ -78,6 +90,5 @@ section {
     }
   }
 }
-
 
 </style>

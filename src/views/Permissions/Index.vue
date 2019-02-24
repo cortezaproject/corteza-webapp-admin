@@ -46,4 +46,3 @@ export default {
 @import '@/assets/sass/_0.commons.scss';
 @import '@/assets/sass/menu-layer.scss';
 </style>
-

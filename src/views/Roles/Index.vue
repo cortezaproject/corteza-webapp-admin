@@ -1,5 +1,8 @@
 <template>
-  <list-with-details :title="title">
+  <list-with-details :title="title"
+                     create-button-label="Add Role"
+                     @update="fetchRoles"
+                     @create="$router.push({ name: 'roles.role', params: { roleID: undefined } })">
     <ul>
       <li v-for="r in roles" :key="r.ID">
         <router-link :to="{ name: 'roles.role', params: { roleID: r.roleID } }">{{r.name || r.handle || r.roleID || 'Unnamed role' }}</router-link>
