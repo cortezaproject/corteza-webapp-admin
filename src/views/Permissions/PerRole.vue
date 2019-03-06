@@ -239,6 +239,11 @@ const t = {
 }
 
 export default {
+  components: {
+    PermissionValue,
+    PermissionGroup,
+  },
+
   props: {
     roleID: {
       type: String,
@@ -246,12 +251,16 @@ export default {
     },
   },
 
-  watch: {
-    roleID: {
-      handler () {
-        this.fetchRules()
-      },
-    },
+  data () {
+    return {
+      processing: true,
+      role: {},
+
+      filter: '',
+
+      rules: [],
+      permissions: [],
+    }
   },
 
   computed: {
@@ -274,16 +283,12 @@ export default {
     },
   },
 
-  data () {
-    return {
-      processing: true,
-      role: {},
-
-      filter: '',
-
-      rules: [],
-      permissions: [],
-    }
+  watch: {
+    roleID: {
+      handler () {
+        this.fetchRules()
+      },
+    },
   },
 
   created () {
@@ -357,11 +362,6 @@ export default {
         return `${res} ${op} ${key}`.toUpperCase()
       }
     },
-  },
-
-  components: {
-    PermissionValue,
-    PermissionGroup,
   },
 }
 </script>

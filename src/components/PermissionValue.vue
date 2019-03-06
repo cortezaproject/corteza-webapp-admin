@@ -27,6 +27,16 @@ export default {
     },
   },
 
+  data () {
+    return {
+      permissionOptions: [
+        { text: 'Allow', value: 'allow' },
+        { text: 'Inherit', value: 'inherit' },
+        { text: 'Deny', value: 'deny' },
+      ],
+    }
+  },
+
   computed: {
     isChanged () {
       return this.selected !== this.current
@@ -49,16 +59,6 @@ export default {
         this.$emit('update:value', sel)
       },
     },
-  },
-
-  data () {
-    return {
-      permissionOptions: [
-        { text: 'Allow', value: 'allow' },
-        { text: 'Inherit', value: 'inherit' },
-        { text: 'Deny', value: 'deny' },
-      ],
-    }
   },
 }
 </script>

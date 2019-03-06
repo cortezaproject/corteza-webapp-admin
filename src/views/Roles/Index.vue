@@ -15,6 +15,10 @@
 import ListWithDetails from '@/components/ListWithDetails'
 
 export default {
+  components: {
+    ListWithDetails,
+  },
+
   data () {
     return {
       query: '',
@@ -38,10 +42,6 @@ export default {
         this.roles = rr
       })
     },
-  },
-
-  components: {
-    ListWithDetails,
   },
 }
 </script>

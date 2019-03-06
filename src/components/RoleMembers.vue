@@ -44,6 +44,13 @@ export default {
     },
   },
 
+  data () {
+    return {
+      filter: '',
+      users: [],
+    }
+  },
+
   computed: {
     members: {
       get () {
@@ -66,13 +73,6 @@ export default {
     filteredMembers () {
       return this.users.filter(this.isMember)
     },
-  },
-
-  data () {
-    return {
-      filter: '',
-      users: [],
-    }
   },
 
   created () {

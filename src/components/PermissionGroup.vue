@@ -15,6 +15,10 @@
 import Permission from '@/components/Permission'
 
 export default {
+  components: {
+    Permission,
+  },
+
   props: {
     permissions: {
       type: Array,
@@ -25,10 +29,6 @@ export default {
       type: String,
       required: true,
     },
-  },
-
-  components: {
-    Permission,
   },
 }
 </script>

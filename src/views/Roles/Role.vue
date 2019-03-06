@@ -45,6 +45,14 @@ export default {
     },
   },
 
+  data () {
+    return {
+      processing: false,
+      role: {},
+      members: [],
+    }
+  },
+
   watch: {
     roleID: {
       immediate: true,
@@ -54,14 +62,6 @@ export default {
         }
       },
     },
-  },
-
-  data () {
-    return {
-      processing: false,
-      role: {},
-      members: [],
-    }
   },
 
   methods: {

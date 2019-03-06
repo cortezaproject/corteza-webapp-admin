@@ -52,6 +52,13 @@ export default {
     },
   },
 
+  data () {
+    return {
+      processing: false,
+      user: {},
+    }
+  },
+
   watch: {
     userID: {
       immediate: true,
@@ -61,13 +68,6 @@ export default {
         }
       },
     },
-  },
-
-  data () {
-    return {
-      processing: false,
-      user: {},
-    }
   },
 
   methods: {
