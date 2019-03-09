@@ -3,6 +3,7 @@
     <div class="panel">
       <template v-if="isAuthenticated">
         <ul>
+          <li><router-link :to="{ name: 'applications' }">Applications</router-link></li>
           <li><router-link :to="{ name: 'users' }">Users</router-link></li>
           <li><router-link :to="{ name: 'roles' }">Roles</router-link></li>
           <li><router-link :to="{ name: 'permissions' }">Permissions</router-link></li>
