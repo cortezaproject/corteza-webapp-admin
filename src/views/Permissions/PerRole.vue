@@ -51,6 +51,10 @@ const t = {
       'role.create': {
         title: 'Create new role',
       },
+
+      'application.create': {
+        title: 'Create new application',
+      },
     },
 
     'system:role': {
@@ -68,6 +72,20 @@ const t = {
 
       'members.manage': {
         title: 'Manage members for any role',
+      },
+    },
+
+    'system:application': {
+      'read': {
+        title: 'Access any application',
+      },
+
+      'update': {
+        title: 'Update any application',
+      },
+
+      'delete': {
+        title: 'Delete any application',
       },
     },
 
