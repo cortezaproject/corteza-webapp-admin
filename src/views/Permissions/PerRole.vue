@@ -319,7 +319,10 @@ export default {
     fetchPermissionsList () {
       this.processing = true
       return this.$system.permissionsList().then((pp) => {
-        this.permissions = pp.map(this.describePermission)
+        this.permissions = pp
+          .map(this.describePermission)
+          .map(this.appendWildcard)
+
         this.processing = false
       })
     },
@@ -371,6 +374,15 @@ export default {
         title: this._(p.resource, p.operation, 'title'),
         description: this._(p.resource, p.operation, 'description'),
       }
+    },
+
+    // Append wildcard to all resources that have more than 1 level
+    appendWildcard (p) {
+      if (p.resource.split(':').length > 1) {
+        p.resource += ':*'
+      }
+
+      return p
     },
 
     _ (res, op, key) {
