@@ -41,7 +41,6 @@ module.exports = {
   chainWebpack: config => {
     config.plugin('copy').tap(options => {
       options[0][0].ignore.push('config*js')
-      options[0][0].ignore.push('applications/*')
       return options
     })
   },
