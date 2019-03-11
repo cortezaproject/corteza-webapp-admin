@@ -283,13 +283,24 @@ export default {
 
   computed: {
     filtered () {
-      const searchable = ({ resource, operation, title, description, value }) => {
-        return `${resource} ${operation} ${title} ${description} ${value}`
+      const filterParts = this.filter.trim().toLocaleLowerCase().split(/\s+/)
+
+      const has = ({ resource, operation, title, description, value }) => {
+        if (!filterParts) {
+          return true
+        }
+
+        const idx = `${resource} ${operation} ${title} ${description} ${value}`.toLocaleLowerCase()
+        for (const fp of filterParts) {
+          if (idx.indexOf(fp) === -1) {
+            return false
+          }
+        }
+
+        return true
       }
 
-      return (prefix) => this.rules.filter(p =>
-        (!prefix || p.resource.substring(0, prefix.length) === prefix) &&
-        (!this.filter || searchable(p).indexOf(this.filter) > -1))
+      return (prefix) => this.rules.filter(p => (!prefix || p.resource.indexOf(prefix) === 0) && (has(p)))
     },
 
     dirty () {
