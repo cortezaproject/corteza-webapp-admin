@@ -16,6 +16,10 @@
 import ListWithDetails from '@/components/ListWithDetails'
 
 export default {
+
+  components: {
+    ListWithDetails,
+  },
   data () {
     return {
       query: '',
@@ -39,10 +43,6 @@ export default {
         this.applications = uu
       })
     },
-  },
-
-  components: {
-    ListWithDetails,
   },
 }
 </script>

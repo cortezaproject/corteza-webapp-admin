@@ -75,6 +75,13 @@ export default {
     },
   },
 
+  data () {
+    return {
+      processing: false,
+      application: {},
+    }
+  },
+
   computed: {
     disableSubmit () {
       return this.processing || this.validConfig
@@ -109,13 +116,6 @@ export default {
         }
       },
     },
-  },
-
-  data () {
-    return {
-      processing: false,
-      application: {},
-    }
   },
 
   methods: {
