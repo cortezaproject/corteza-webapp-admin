@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="app">
+  <div id="app" class="app" v-if="loaded">
     <div class="panel">
       <template v-if="isAuthenticated">
         <ul>
@@ -19,18 +19,34 @@
       </transition>
     </div>
   </div>
+  <div class="loader" v-else>
+    <img :src="logo" />
+    <div class="error" v-if="error">{{ error }}</div>
+  </div>
 </template>
 
 <script>
-import menu from '@/api/menu'
 import auth from '@/mixins/auth'
 
 export default {
   mixins: [auth],
   data () {
     return {
-      menu: menu,
+      logo: require('@/assets/images/crust-logo-with-tagline.png'),
+      loaded: false,
+      error: '',
     }
+  },
+
+  created () {
+    this.$system.permissionsEffective().then(ep => {
+      // Quick & dirty permission check for admin access:
+      if (!(ep.find(p => p.resource === 'system' && p.operation === 'access') || {}).allow) {
+        this.error = 'Not allowed to access Crust Admin'
+      } else {
+        this.loaded = true
+      }
+    })
   },
 }
 </script>
@@ -76,6 +92,38 @@ export default {
 
 .slide-leave-to {
   transform: translateX(-100vw);
+}
+
+@keyframes flickerAnimation {
+  0% { opacity: 0.6; }
+  50% { opacity: 0.1; }
+  100% { opacity: 0.6; }
+}
+
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+
+  img {
+    align-self: center;
+    opacity: 0.7;
+    animation: flickerAnimation 3s infinite;
+  }
+}
+
+.error {
+  color: $appred;
+  font-size: 24px;
+  background-color: $appwhite;
+  width: 100vw;
+  height: 20vh;
+  padding: 60px;
+  position: absolute;
+  top: 40vh;
+  text-align: center;
 }
 
 </style>

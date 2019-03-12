@@ -44,6 +44,10 @@ const t = {
         title: 'Grant permission on system service',
       },
 
+      'access': {
+        title: 'Allow access to administration',
+      },
+
       'organisation.create': {
         title: 'Create new organisation',
       },
@@ -108,8 +112,8 @@ const t = {
       'channel.private.create': {
         title: 'Create private channels',
       },
-      'channel.direct.create': {
-        title: 'Create direct message channels',
+      'channel.group.create': {
+        title: 'Create direct messages and group channels',
       },
     },
 
@@ -135,6 +139,18 @@ const t = {
       'update': {
         title: 'Update any channel',
       },
+      'delete': {
+        title: 'Delete any channel',
+      },
+      'undelete': {
+        title: 'Undelete any channel',
+      },
+      'archive': {
+        title: 'Archive any channel',
+      },
+      'unarchive': {
+        title: 'Unarchive any channel',
+      },
       'members.manage': {
         title: 'Manage members on any channel',
       },
@@ -145,7 +161,13 @@ const t = {
         title: 'Update own messages on any channel',
       },
       'message.update.all': {
-        title: 'Update messages on any channel',
+        title: 'Update any message on any channel',
+      },
+      'message.delete.own': {
+        title: 'Delete own messages on any channel',
+      },
+      'message.delete.all': {
+        title: 'Delete any message on any channel',
       },
       'message.reply': {
         title: 'Reply to messages on any channel',

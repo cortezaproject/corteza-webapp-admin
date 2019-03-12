@@ -21,8 +21,6 @@ export default new Router({
       name: 'root',
       component: view('Index'),
       children: [
-        { path: 'satosa', name: 'satosa', component: view('SATOSA/Index') },
-        { path: 'satosa/:name', component: view('SATOSA/Provider'), props: true },
         { path: 'roles',
           name: 'roles',
           component: view('Roles/Index'),
