@@ -11,7 +11,7 @@
         <b-form-input v-model="role.name" />
       </b-form-group>
 
-      <b-form-group label="Last updavte" horizontal>
+      <b-form-group label="Last update" horizontal>
         <b-form-text>{{ role.updatedAt }}</b-form-text>
       </b-form-group>
 

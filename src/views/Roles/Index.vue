@@ -14,6 +14,10 @@
 <script>
 import ListWithDetails from '@/components/ListWithDetails'
 
+const systemRoles = [
+  '1', // Everyone
+]
+
 export default {
   components: {
     ListWithDetails,
@@ -39,7 +43,7 @@ export default {
   methods: {
     fetchRoles () {
       this.$system.roleList({ query: this.query.toLowerCase() }).then(rr => {
-        this.roles = rr
+        this.roles = rr.filter(r => !systemRoles.includes(r.roleID))
       })
     },
   },
