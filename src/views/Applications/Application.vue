@@ -84,7 +84,7 @@ export default {
 
   computed: {
     disableSubmit () {
-      return this.processing || this.validConfig
+      return this.processing || this.validConfig === false
     },
 
     validConfig () {
