@@ -91,7 +91,6 @@ td {
   &.text {
     div {
       font-size: 10px;
-      font-style:italic;
     }
   }
 }
