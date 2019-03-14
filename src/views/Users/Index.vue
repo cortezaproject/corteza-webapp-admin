@@ -1,8 +1,6 @@
 <template>
   <list-with-details :title="title"
-                     create-button-label="Add User"
-                     @update="fetchUsers"
-                     @create="$router.push({ name: 'users.user', params: { userID: undefined } })">
+                     @update="fetchUsers">
 
     <ul>
       <li v-for="u in users" :key="u.ID">
