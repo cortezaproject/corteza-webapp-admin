@@ -12,8 +12,12 @@
     "pre-commit": "yarn lint"
   },
   "dependencies": {
+    "@panter/vue-i18next": "^0.15.0",
     "axios": "^0.18.0",
     "crust-api-client": "crusttech/crust-api-client.js.git#master",
+    "i18next": "^15.0.7",
+    "i18next-browser-languagedetector": "^3.0.1",
+    "i18next-xhr-backend": "^2.0.1",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
     "vuetable-2": "^1.7.5",
