@@ -3,60 +3,60 @@
     <div class="header">
       <router-link :to="{ name: 'applications' }" class="float-right"><b-button-close></b-button-close></router-link>
       <h2 class="header-subtitle header-row">
-        Application Information
+        {{ $('application.information') }}
       </h2>
     </div>
     <div class="application">
 
-      <b-form-group label="ID" horizontal>
+      <b-form-group :label="$t('application.id.label')" horizontal>
         <b-form-text>{{ application.applicationID }}</b-form-text>
       </b-form-group>
 
-      <b-form-group label="Name" horizontal>
+      <b-form-group :label="$t('application.name.label')" horizontal>
         <b-form-input v-model="application.name" required />
       </b-form-group>
 
       <b-form-group horizontal>
-        <b-form-checkbox plain v-model="application.enabled">Enabled</b-form-checkbox>
+        <b-form-checkbox plain v-model="application.enabled">{{ $('application.enabled') }}</b-form-checkbox>
       </b-form-group>
 
-      <b-form-group label="Unify app selector" horizontal v-if="application.unify" class="unify">
+      <b-form-group :label="$t('application.appSelector.label')" horizontal v-if="application.unify" class="unify">
         <b-form-group>
-          <b-form-checkbox plain v-model="application.unify.listed">Listed</b-form-checkbox>
+          <b-form-checkbox plain v-model="application.unify.listed">{{ $('application.listed') }}</b-form-checkbox>
         </b-form-group>
 
-        <b-form-group label="Name" horizontal description="As an alternative to application name">
+        <b-form-group :label="$t('application.name.label')" horizontal :description="$t('application.name.description')">
           <b-form-input v-model="application.unify.name" />
         </b-form-group>
 
-        <b-form-group label="Icon" description="Icon used in Unify tab" horizontal>
+        <b-form-group :label="$t('application.icon.label')" :description="$t('application.icon.description')" horizontal>
           <b-form-input v-model="application.unify.icon" />
         </b-form-group>
 
-        <b-form-group label="Logo" description="Logo used in Unify application selector" horizontal>
+        <b-form-group :label="$t('application.logo.label')" :description="$t('application.logo.description')" horizontal>
           <b-form-input v-model="application.unify.logo" />
         </b-form-group>
 
-        <b-form-group label="URL" description="Application URL" horizontal>
+        <b-form-group :label="$t('application.url.label')" :description="$t('application.url.description')" horizontal>
           <b-form-input v-model="application.unify.url" />
         </b-form-group>
 
-        <b-form-group label="Configuration" description="Application configuration (JSON)">
+        <b-form-group :label="$t('application.config.label')" :description="$t('application.config.description')">
           <b-form-textarea rows="10" v-model="application.unify.config" :state="configState"></b-form-textarea>
         </b-form-group>
       </b-form-group>
 
-      <b-form-group label="Last update" horizontal>
+      <b-form-group :label="$t('application.lastUpdate.label')" horizontal>
         <b-form-text>{{ application.updatedAt }}</b-form-text>
       </b-form-group>
 
-      <b-form-group label="Created" horizontal>
+      <b-form-group :label="$t('application.created.label')" horizontal>
         <b-form-text>{{ application.createdAt }}</b-form-text>
       </b-form-group>
     </div>
     <div class="footer">
-      <confirmation-toggle @confirmed="onDelete">Delete application</confirmation-toggle>
-      <b-button type="submit" variant="primary" :disabled="!disableSubmit">Submit</b-button>
+      <confirmation-toggle @confirmed="onDelete">{{ $t('application.delete') }}</confirmation-toggle>
+      <b-button type="submit" variant="primary" :disabled="!disableSubmit">{{ $t('general.label.submit') }}</b-button>
     </div>
   </b-form>
 </template>

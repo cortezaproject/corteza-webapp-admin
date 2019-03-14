@@ -13,7 +13,7 @@
     <td class="short">
       <b-button variant="link"
                 @click="$emit('update:value', current)"
-                v-show="isChanged">Reset back to "{{ current }}"</b-button>
+                v-show="isChanged">{{ $t('permission.resetBack', {current}) }}</b-button>
     </td>
   </tr>
 </template>

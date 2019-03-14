@@ -3,27 +3,27 @@
     <div class="header">
       <router-link :to="{ name: 'roles' }" class="float-right"><b-button-close></b-button-close></router-link>
       <h2 class="header-subtitle header-row">
-        Role Information
+        {{ $t('role.information') }}
       </h2>
     </div>
     <div class="role">
-      <b-form-group label="Name" horizontal>
+      <b-form-group :label="$t('general.label.name')" horizontal>
         <b-form-input v-model="role.name" />
       </b-form-group>
 
-      <b-form-group label="Last update" horizontal>
+      <b-form-group :label="$t('general.label.lastUpdate')" horizontal>
         <b-form-text>{{ role.updatedAt }}</b-form-text>
       </b-form-group>
 
-      <b-form-group label="Created" horizontal>
+      <b-form-group :label="$t('general.label.created')" horizontal>
         <b-form-text>{{ role.createdAt }}</b-form-text>
       </b-form-group>
       <role-members :current-members.sync="members"></role-members>
     </div>
 
     <div class="footer">
-      <confirmation-toggle @confirmed="onDelete">Delete role</confirmation-toggle>
-      <b-button type="submit" variant="primary" :disabled="processing">Submit</b-button>
+      <confirmation-toggle @confirmed="onDelete">{{ $t('role.delete') }}</confirmation-toggle>
+      <b-button type="submit" variant="primary" :disabled="processing">{{ $t('general.label.submit') }}</b-button>
     </div>
   </b-form>
 </template>
