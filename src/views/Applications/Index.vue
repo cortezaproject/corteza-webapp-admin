@@ -1,6 +1,6 @@
 <template>
   <list-with-details :title="title"
-                     create-button-label="Add Application"
+                     :create-button-label="$t('application.add')"
                      @update="fetchApplications"
                      @create="$router.push({ name: 'applications.application', params: { applicationID: undefined } })">
 
@@ -29,7 +29,7 @@ export default {
 
   computed: {
     title () {
-      return `Manage applications (${this.applications.length})`
+      return `${this.$t('navigation.manageApps')} (${this.applications.length})`
     },
   },
 

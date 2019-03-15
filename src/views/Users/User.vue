@@ -3,37 +3,37 @@
     <div class="header">
       <router-link :to="{ name: 'users' }" class="float-right"><b-button-close></b-button-close></router-link>
       <h2 class="header-subtitle header-row">
-        User Information
+        {{ $t('user.information') }}
       </h2>
     </div>
     <div class="user">
-      <b-form-group label="Email" horizontal>
+      <b-form-group :label="$t('user.email')" horizontal>
         <b-form-input v-model="user.email" required type="email" />
       </b-form-group>
 
-      <b-form-group label="Full name" horizontal>
+      <b-form-group :label="$t('user.fullName')" horizontal>
         <b-form-input v-model="user.name" required />
       </b-form-group>
 
-      <b-form-group label="Handle (name, username)" horizontal>
+      <b-form-group :label="$t('user.handle')" horizontal>
         <b-form-input v-model="user.handle" />
       </b-form-group>
 
-      <b-form-group label="Kind/Type" horizontal v-if="false">
+      <b-form-group :label="$t('user.kind')" horizontal v-if="false">
         <b-form-text>{{ user.kind }}</b-form-text>
       </b-form-group>
 
-      <b-form-group label="Last update" horizontal>
+      <b-form-group :label="$t('general.label.lastUpdate')" horizontal>
         <b-form-text>{{ user.updatedAt }}</b-form-text>
       </b-form-group>
 
-      <b-form-group label="Created" horizontal>
+      <b-form-group :label="$t('general.label.created')" horizontal>
         <b-form-text>{{ user.createdAt }}</b-form-text>
       </b-form-group>
     </div>
     <div class="footer">
-      <confirmation-toggle @confirmed="onDelete">Delete user</confirmation-toggle>
-      <b-button type="submit" variant="primary" :disabled="processing">Submit</b-button>
+      <confirmation-toggle @confirmed="onDelete">{{ $t('user.delete') }}</confirmation-toggle>
+      <b-button type="submit" variant="primary" :disabled="processing">{{ $t('user.submit') }}</b-button>
     </div>
   </b-form>
 </template>

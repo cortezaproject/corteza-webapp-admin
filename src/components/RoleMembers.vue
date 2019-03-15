@@ -1,5 +1,5 @@
 <template>
-  <b-form-group :label="`Members (${members.length})`" horizontal>
+  <b-form-group :label="$t('role.members', {count: members.length})" horizontal>
     <table v-if="members && users">
       <tr v-for="u in filteredMembers" :key="u.userID">
         <td>{{ u.name }}</td>
@@ -7,17 +7,17 @@
         <td>{{ u.username }}</td>
         <td>{{ u.email }}</td>
         <td class="action">
-          <b-button @click="removeMember(u)">Remove</b-button>
+          <b-button @click="removeMember(u)">{{ $t('general.label.remove') }}</b-button>
         </td>
       </tr>
     </table>
     <b-input-group>
       <b-input-group-prepend>
-        <b-input-group-text>Search users:</b-input-group-text>
+        <b-input-group-text>{{ $t('general.label.searchUsers') }}</b-input-group-text>
       </b-input-group-prepend>
       <b-form-input v-model.trim="filter"></b-form-input>
       <b-input-group-append>
-        <b-button>Search</b-button>
+        <b-button>{{ $t('general.label.search') }}</b-button>
       </b-input-group-append>
     </b-input-group>
     <table v-if="filter && users">
@@ -27,8 +27,8 @@
         <td>{{ u.username }}</td>
         <td>{{ u.email }}</td>
         <td class="action">
-          <b-button v-if="isMember(u)" @click="removeMember(u)">Remove</b-button>
-          <b-button v-else @click="addMember(u)">Add</b-button>
+          <b-button v-if="isMember(u)" @click="removeMember(u)">{{ $t('general.label.remove') }}</b-button>
+          <b-button v-else @click="addMember(u)">{{ $t('general.label.add') }}</b-button>
         </td>
       </tr>
     </table>

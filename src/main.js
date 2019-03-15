@@ -5,6 +5,7 @@ import './plugins'
 import './main.scss'
 
 import router from './router'
+import i18n from './i18next'
 import store from './store'
 import logger from './logger'
 
@@ -19,6 +20,7 @@ if (window.CrustConfig === undefined) {
 } else {
   new Vue({
     router,
+    i18n,
     store,
     template: '<div id="crust-admin" class="crust"><router-view/></div>',
   }).$mount('#app')

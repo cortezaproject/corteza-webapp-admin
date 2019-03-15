@@ -3,14 +3,14 @@
     <div class="panel">
       <template v-if="isAuthenticated">
         <ul>
-          <li><router-link :to="{ name: 'applications' }">Applications</router-link></li>
-          <li><router-link :to="{ name: 'users' }">Users</router-link></li>
-          <li><router-link :to="{ name: 'roles' }">Roles</router-link></li>
-          <li><router-link :to="{ name: 'permissions' }">Permissions</router-link></li>
+          <li><router-link :to="{ name: 'applications' }">{{ $t('navigation.app') }}</router-link></li>
+          <li><router-link :to="{ name: 'users' }">{{ $t('navigation.user') }}</router-link></li>
+          <li><router-link :to="{ name: 'roles' }">{{ $t('navigation.role') }}</router-link></li>
+          <li><router-link :to="{ name: 'permissions' }">{{ $t('navigation.permission') }}</router-link></li>
         </ul>
       </template>
       <template v-else>
-        <p>You're not signed in</p>
+        <p>{{ $t('auth.notSignedIn') }}</p>
       </template>
     </div>
     <div class="main">
@@ -42,7 +42,7 @@ export default {
     this.$system.permissionsEffective().then(ep => {
       // Quick & dirty permission check for admin access:
       if (!(ep.find(p => p.resource === 'system' && p.operation === 'access') || {}).allow) {
-        this.error = 'Not allowed to access Crust Admin'
+        this.error = this.$t('auth.noAccess')
       } else {
         this.loaded = true
       }
