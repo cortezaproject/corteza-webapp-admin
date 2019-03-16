@@ -19,16 +19,16 @@
     </div>
     <div class="rules">
       <table cellspacing="0" cellpadding="0" border="0">
-        <permission-group :title="$t('privilege.system.service')"
+        <permission-group :title="$t('permission.system.title')"
                           :permissions="filtered('system')" ></permission-group>
-        <permission-group :title="$t('privilege.messaging.service')"
+        <permission-group :title="$t('permission.messaging.title')"
                           :permissions="filtered('messaging')" ></permission-group>
-        <permission-group :title="$t('privilege.compose.service')"
+        <permission-group :title="$t('permission.compose.title')"
                           :permissions="filtered('compose')" ></permission-group>
       </table>
     </div>
     <div class="footer">
-      <b-button type="submit" variant="primary" :disabled="!submittable">{{ $t('permission.clearFilter') }}</b-button>
+      <b-button type="submit" variant="primary" :disabled="!submittable">{{ $t('permission.saveChanges') }}</b-button>
     </div>
   </b-form>
 </template>
@@ -161,7 +161,12 @@ export default {
     },
 
     describePermission (p) {
-      const tString = `privilege.${p.resource}.${p.operation}`.replace(':', '.')
+      let { resource, operation } = p
+      resource = resource.replace(/:/g, '-')
+      operation = operation.replace(/\./g, '-')
+
+      const tString = `permission.${resource}.${operation}`
+      console.log(tString)
       return {
         ...p,
         title: this.$t(`${tString}.title`),
@@ -171,8 +176,8 @@ export default {
 
     // Append wildcard to all resources that have more than 1 level
     appendWildcard (p) {
-      if (p.resource.split(':').length > 1) {
-        p.resource += ':*'
+      if (p.resource.substring(p.resource.length - 1) === ':') {
+        p.resource += '*'
       }
 
       return p
