@@ -166,7 +166,6 @@ export default {
       operation = operation.replace(/\./g, '-')
 
       const tString = `permission.${resource}.${operation}`
-      console.log(tString)
       return {
         ...p,
         title: this.$t(`${tString}.title`),

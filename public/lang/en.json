@@ -76,7 +76,7 @@
         "description": "Default: deny"
       }
     },
-    "system-role-": {
+    "system-role": {
       "read": {
         "title": "Access any role",
         "description": "Default: allow"
@@ -94,7 +94,7 @@
         "description": "Default: allow"
       }
     },
-    "system-application-": {
+    "system-application": {
       "read": {
         "title": "Access any application",
         "description": "Default: allow"
@@ -108,7 +108,7 @@
         "description": "Default: deny"
       }
     },
-    "system-organisation-": {
+    "system-organisation": {
       "access": {
         "title": "Access to all organisations",
         "description": "Default: deny"
@@ -137,7 +137,7 @@
         "description": "Default: allow"
       }
     },
-    "messaging-channel-": {
+    "messaging-channel": {
       "read": {
         "title": "View any channel",
         "description": "Default: allow for public channels or channels you are member of"
@@ -234,7 +234,7 @@
         "description": "Default: deny"
       }
     },
-    "compose-page-": {
+    "compose-page": {
       "read": {
         "title": "Read any page",
         "description": "Default: deny"
@@ -248,7 +248,7 @@
         "description": "Default: deny"
       }
     },
-    "compose-trigger-": {
+    "compose-trigger": {
       "read": {
         "title": "Read any trigger",
         "description": "Default: deny"
@@ -262,7 +262,7 @@
         "description": "Default: deny"
       }
     },
-    "compose-namespace-": {
+    "compose-namespace": {
       "read": {
         "title": "Read-access any namespace",
         "description": "Default: deny"
@@ -292,7 +292,7 @@
         "description": "Default: deny"
       }
     },
-    "compose-module-": {
+    "compose-module": {
       "read": {
         "title": "Read any module",
         "description": "Default: deny"
@@ -322,7 +322,7 @@
         "description": "Default: deny"
       }
     },
-    "compose-chart-": {
+    "compose-chart": {
       "read": {
         "title": "Read any chart",
         "description": "Default: deny"
