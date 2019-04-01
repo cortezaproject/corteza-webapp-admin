@@ -4,7 +4,7 @@
 
     <ul>
       <li v-for="u in users" :key="u.ID">
-        <router-link :to="{ name: 'users.user', params: { userID: u.userID } }">{{u.name || u.username || u.email}}</router-link>
+        <router-link :to="{ name: 'users.user', params: { userID: u.userID } }">{{ u.name || u.username || u.email }}</router-link>
       </li>
     </ul>
   </list-with-details>
@@ -27,7 +27,7 @@ export default {
 
   computed: {
     title () {
-      return `Manage users (${this.users.length})`
+      return this.$t('user.manage', { count: this.users.length })
     },
   },
 

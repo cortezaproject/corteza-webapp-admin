@@ -2,7 +2,7 @@
   <list-with-details :title="title">
     <ul>
       <li v-for="r in roles" :key="r.ID">
-        <router-link :to="{ name: 'permissions.per-role', params: { roleID: r.roleID } }">{{r.name || r.handle || r.roleID || 'Unnamed role' }}</router-link>
+        <router-link :to="{ name: 'permissions.per-role', params: { roleID: r.roleID } }">{{r.name || r.handle || r.roleID || $t('role.unnamed') }}</router-link>
       </li>
     </ul>
   </list-with-details>
@@ -25,7 +25,7 @@ export default {
 
   computed: {
     title () {
-      return `Manage role permissions`
+      return this.$t('role.managePermissions')
     },
   },
 

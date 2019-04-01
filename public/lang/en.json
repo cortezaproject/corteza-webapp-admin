@@ -342,7 +342,8 @@
     "delete": "Delete role",
     "add": "Add Role",
     "members": "Members {{count}}",
-    "unnamed": "Unnamed role"
+    "unnamed": "Unnamed role",
+    "managePermissions": "Manage role permissions"
   },
   "user": {
     "information": "User Information",
@@ -350,7 +351,8 @@
     "email": "Email",
     "fullName": "Full name",
     "handle": "Handle (name, username)",
-    "kind": "Kind/Type"
+    "kind": "Kind/Type",
+    "manage": "Manage users ({{count}})"
   },
   "auth":{
     "notSignedIn": "You're not signed in",
