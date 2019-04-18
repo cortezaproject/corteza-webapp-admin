@@ -1,6 +1,6 @@
 <template>
   <tr>
-    <td class="short">
+    <td class="buttons">
       <permission-value v-model="value"
                         :current="current"
                         :enabled="enabled"
@@ -85,6 +85,10 @@ td {
   height: 40px;
 
   &.short {
+    width: 140px;
+  }
+
+  &.buttons {
     width: 170px;
   }
 

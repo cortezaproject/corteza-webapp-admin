@@ -175,8 +175,8 @@ export default {
 
     // Append wildcard to all resources that have more than 1 level
     appendWildcard (p) {
-      if (p.resource.substring(p.resource.length - 1) === ':') {
-        p.resource += '*'
+      if (p.resource.split(':').length > 1) {
+        p.resource += ':*'
       }
 
       return p
