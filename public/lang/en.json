@@ -4,7 +4,8 @@
     "user": "Users",
     "role": "Roles",
     "permission": "Permissions",
-    "manageApps": "Manage applications"
+    "manageApps": "Manage applications",
+    "auth-settings": "Authentication settings"
   },
   "application": {
     "information": "Application information",
@@ -357,6 +358,25 @@
   "auth":{
     "notSignedIn": "You're not signed in",
     "noAccess": "Not allowed to access Crust Admin"
+  },
+
+  "auth-settings": {
+    "external-providers": {
+      "title": "External providers",
+      "enabled": "Enable external authentication",
+
+      "handle": "Handle",
+      "key": "Client key",
+      "secret": "Secret",
+      "issuer": "OIDC Issuer URL",
+      "provider-enabled": "Enable this external authentication provider",
+
+      "oidc": "OpenID Connect",
+      "gplus": "Google",
+      "facebook": "Facebook",
+      "github": "GitHub",
+      "linkedin": "LinkedIn"
+    }
   },
 
   "general": {

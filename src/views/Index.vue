@@ -3,6 +3,7 @@
     <div class="panel">
       <template v-if="isAuthenticated">
         <ul>
+          <li><router-link :to="{ name: 'auth-settings' }">{{ $t('navigation.auth-settings') }}</router-link></li>
           <li><router-link :to="{ name: 'applications' }">{{ $t('navigation.app') }}</router-link></li>
           <li><router-link :to="{ name: 'users' }">{{ $t('navigation.user') }}</router-link></li>
           <li><router-link :to="{ name: 'roles' }">{{ $t('navigation.role') }}</router-link></li>
