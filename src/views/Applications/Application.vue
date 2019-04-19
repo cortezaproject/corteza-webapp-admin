@@ -3,7 +3,7 @@
     <div class="header">
       <router-link :to="{ name: 'applications' }" class="float-right"><b-button-close></b-button-close></router-link>
       <h2 class="header-subtitle header-row">
-        {{ $('application.information') }}
+        {{ $t('application.information') }}
       </h2>
     </div>
     <div class="application">
@@ -17,12 +17,12 @@
       </b-form-group>
 
       <b-form-group horizontal>
-        <b-form-checkbox plain v-model="application.enabled">{{ $('application.enabled') }}</b-form-checkbox>
+        <b-form-checkbox plain v-model="application.enabled">{{ $t('application.enabled') }}</b-form-checkbox>
       </b-form-group>
 
       <b-form-group :label="$t('application.appSelector.label')" horizontal v-if="application.unify" class="unify">
         <b-form-group>
-          <b-form-checkbox plain v-model="application.unify.listed">{{ $('application.listed') }}</b-form-checkbox>
+          <b-form-checkbox plain v-model="application.unify.listed">{{ $t('application.listed') }}</b-form-checkbox>
         </b-form-group>
 
         <b-form-group :label="$t('application.name.label')" horizontal :description="$t('application.name.description')">
@@ -56,7 +56,7 @@
     </div>
     <div class="footer">
       <confirmation-toggle @confirmed="onDelete">{{ $t('application.delete') }}</confirmation-toggle>
-      <b-button type="submit" variant="primary" :disabled="!disableSubmit">{{ $t('general.label.submit') }}</b-button>
+      <b-button type="submit" variant="primary" :disabled="disableSubmit">{{ $t('general.label.submit') }}</b-button>
     </div>
   </b-form>
 </template>
@@ -84,7 +84,7 @@ export default {
 
   computed: {
     disableSubmit () {
-      return this.processing || this.validConfig === false
+      return this.processing || !this.validConfig
     },
 
     validConfig () {

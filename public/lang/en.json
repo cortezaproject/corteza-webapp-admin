@@ -17,7 +17,7 @@
       "label": "ID"
     },
     "name": {
-      "label": "$t{general.label.name}",
+      "label": "Name",
       "description": "As an alternative to application name"
     },
     "appSelector": {
@@ -40,10 +40,10 @@
       "description": "Application configuration (JSON)"
     },
     "lastUpdate": {
-      "label": "$t{general.label.lastUpdate}"
+      "label": "Last update"
     },
     "created": {
-      "label": "$t{general.label.created}"
+      "label": "Created"
     }
   },
   "permission": {
