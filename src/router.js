@@ -13,8 +13,7 @@ export default new Router({
   base: '/admin',
   mode: 'history',
   routes: [
-    { path: '/auth/signin', name: 'signin', component: view('Auth/SignIn') },
-    { path: '/auth/signout', name: 'signout', component: view('Auth/SignOut') },
+    { path: '/auth', name: 'auth', component: view('Auth') },
 
     {
       path: '/',

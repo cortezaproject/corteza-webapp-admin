@@ -40,13 +40,17 @@ export default {
   },
 
   created () {
-    this.$system.permissionsEffective().then(ep => {
-      // Quick & dirty permission check for admin access:
-      if (!(ep.find(p => p.resource === 'system' && p.operation === 'access') || {}).allow) {
-        this.error = this.$t('auth.noAccess')
-      } else {
-        this.loaded = true
-      }
+    this.checkAuthentication().then(() => {
+      this.$system.permissionsEffective().then(ep => {
+        // Quick & dirty permission check for admin access:
+        if (!(ep.find(p => p.resource === 'system' && p.operation === 'access') || {}).allow) {
+          this.error = this.$t('auth.noAccess')
+        } else {
+          this.loaded = true
+        }
+      })
+    }).catch(() => {
+      window.location = '/auth'
     })
   },
 }

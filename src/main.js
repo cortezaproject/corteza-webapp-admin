@@ -15,7 +15,7 @@ logger.log(
   'background-color: #1397CB; color: white; padding: 3px 10px; border: 1px solid black; font: Courier',
 )
 
-if (window.CrustConfig === undefined) {
+if (window.CrustSystemAPI === undefined) {
   alert('Unexisting or invalid configuration. Make sure there is a public/config.js configuration file.')
 } else {
   new Vue({

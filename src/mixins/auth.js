@@ -1,25 +1,40 @@
-import { mapGetters } from 'vuex'
+const lsAuthJWTKey = 'auth.jwt'
+const lsAuthUserKey = 'auth.user'
 
 export default {
   computed: {
-    ...mapGetters({
-      isAuthenticated: 'auth/isAuthenticated',
-      currentUser: 'auth/user',
-      authLoaded: 'auth/loaded',
-    }),
+    isAuthenticated () {
+      return !!this.getJWT()
+    },
   },
-  beforeCreate () {
-    if (this.authLoaded) {
-      return
-    }
-    this.$system.authCheck().then((check) => {
-      this.$store.commit('auth/setUser', check.user)
-    }).catch((err) => {
-      this.$store.commit('auth/clean')
-      this.$logger.error(err)
-      this.$router.push({ name: 'signin' })
-    }).finally(() => {
-      this.$store.commit('auth/loaded', true)
-    })
+
+  methods: {
+    setJWT (jwt) {
+      localStorage.setItem(lsAuthJWTKey, jwt)
+    },
+
+    getJWT () {
+      return localStorage.getItem(lsAuthJWTKey)
+    },
+
+    getCurrentUser () {
+      return JSON.parse(localStorage.getItem(lsAuthUserKey))
+    },
+
+    setCurrentUser (u) {
+      localStorage.setItem(lsAuthUserKey, JSON.stringify(u))
+    },
+
+    async checkAuthentication (jwt = this.getJWT()) {
+      if (!jwt) {
+        return Promise.reject(new Error('invalid or empty JWT value'))
+      }
+
+      return this.$system.setJWT(jwt).authCheck().then(({ user }) => {
+        this.setJWT(jwt)
+        this.setCurrentUser(user)
+        return Promise.resolve(user)
+      })
+    },
   },
 }
