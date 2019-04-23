@@ -14,6 +14,7 @@
   "dependencies": {
     "@panter/vue-i18next": "^0.15.0",
     "axios": "^0.18.0",
+    "crust-common.vue": "crusttech/crust-common.vue.git#master",
     "crust-api-client": "crusttech/crust-api-client.js.git#master",
     "i18next": "^15.0.7",
     "i18next-browser-languagedetector": "^3.0.1",

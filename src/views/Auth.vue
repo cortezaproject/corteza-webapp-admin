@@ -26,7 +26,7 @@
 
     <span v-if="checkRsp">Response: <code>{{ checkRsp }}</code></span>
 
-    <pre v-if="currentUser">User data: {{ currentUser }}</pre>
+    <pre v-if="$auth.user">User data: {{ $auth.user }}</pre>
 
     <hr />
 
@@ -34,17 +34,11 @@
   </main>
 </template>
 <script>
-import auth from '@/mixins/auth'
-
 export default {
-  mixins: [auth],
-
   data () {
     return {
       checkRsp: '',
       newJWT: '',
-
-      currentUser: null,
     }
   },
 
@@ -60,13 +54,12 @@ export default {
       window.location = '/auth'
     }
 
-    this.newJWT = this.getJWT()
-    this.currentUser = this.getCurrentUser()
+    this.newJWT = this.$auth.JWT
   },
 
   methods: {
     check () {
-      this.checkAuthentication(this.newJWT).then((user) => {
+      this.$auth.check(this.$system, this.newJWT).then((user) => {
         this.currentUser = user
         this.checkRsp = 'Valid JWT.'
       }).catch(({ message }) => {

@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="app" v-if="loaded">
     <div class="panel">
-      <template v-if="isAuthenticated">
+      <template v-if="$auth.is()">
         <ul>
           <li><router-link :to="{ name: 'auth-settings' }">{{ $t('navigation.auth-settings') }}</router-link></li>
           <li><router-link :to="{ name: 'applications' }">{{ $t('navigation.app') }}</router-link></li>
@@ -27,10 +27,7 @@
 </template>
 
 <script>
-import auth from '@/mixins/auth'
-
 export default {
-  mixins: [auth],
   data () {
     return {
       logo: require('@/assets/images/crust-logo-with-tagline.png'),
@@ -40,7 +37,7 @@ export default {
   },
 
   created () {
-    this.checkAuthentication().then(() => {
+    this.$auth.check(this.$system).then(() => {
       this.$system.permissionsEffective().then(ep => {
         // Quick & dirty permission check for admin access:
         if (!(ep.find(p => p.resource === 'system' && p.operation === 'access') || {}).allow) {
