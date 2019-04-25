@@ -165,6 +165,10 @@ export default {
       resource = resource.replace(/:/g, '-')
       operation = operation.replace(/\./g, '-')
 
+      if (resource.slice(-1) === '-') {
+        resource = resource.slice(0, -1)
+      }
+
       const tString = `permission.${resource}.${operation}`
       return {
         ...p,
@@ -176,7 +180,7 @@ export default {
     // Append wildcard to all resources that have more than 1 level
     appendWildcard (p) {
       if (p.resource.split(':').length > 1) {
-        p.resource += ':*'
+        p.resource += '*'
       }
 
       return p
