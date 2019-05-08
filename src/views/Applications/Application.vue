@@ -55,7 +55,7 @@
       </b-form-group>
     </div>
     <div class="footer">
-      <confirmation-toggle @confirmed="onDelete">{{ $t('application.delete') }}</confirmation-toggle>
+      <confirmation-toggle @confirmed="onDelete" v-if="applicationID">{{ $t('application.delete') }}</confirmation-toggle>
       <b-button type="submit" variant="primary" :disabled="disableSubmit">{{ $t('general.label.submit') }}</b-button>
     </div>
   </b-form>
@@ -88,6 +88,10 @@ export default {
     },
 
     validConfig () {
+      if (!this.application.unify) {
+        return true
+      }
+
       try {
         if ((this.application.unify.config || '').trim() !== '') {
           JSON.parse(this.application.unify.config)
