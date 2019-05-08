@@ -10,7 +10,7 @@ function view (name) {
 }
 
 export default new Router({
-  base: '/admin',
+  base: '/admin/',
   mode: 'history',
   routes: [
     { path: '/auth', name: 'auth', component: view('Auth') },
