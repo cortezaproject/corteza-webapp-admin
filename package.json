@@ -14,11 +14,12 @@
   "dependencies": {
     "@panter/vue-i18next": "^0.15.0",
     "axios": "^0.18.0",
-    "crust-api-client": "crusttech/crust-api-client.js.git#master",
+    "crust-api-client.js": "crusttech/crust-api-client.js.git#master",
     "crust-common.vue": "crusttech/crust-common.vue.git#master",
     "i18next": "^15.0.7",
     "i18next-browser-languagedetector": "^3.0.1",
     "i18next-xhr-backend": "^2.0.1",
+    "bootstrap-vue": "^2.0.0-rc.20",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
     "vuetable-2": "^1.7.5",
@@ -31,7 +32,6 @@
     "@vue/cli-service": "^3.0.5",
     "@vue/eslint-config-standard": "^3.0.5",
     "@vue/test-utils": "^1.0.0-beta.25",
-    "bootstrap-vue": "^2.0.0-rc.11",
     "node-sass": "^4.9.4",
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.5.17"
