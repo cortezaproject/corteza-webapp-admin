@@ -5,39 +5,43 @@
       <h2 class="header-subtitle header-row">
         {{ $t('application.information') }}
       </h2>
+
     </div>
     <div class="application">
-
-      <b-form-group :label="$t('application.id.label')" horizontal>
+      <b-form-group :label="$t('application.id.label')" label-cols="3">
         <b-form-text>{{ application.applicationID }}</b-form-text>
       </b-form-group>
 
-      <b-form-group :label="$t('application.name.label')" horizontal>
+      <b-form-group :label="$t('application.name.label')" label-cols="3">
         <b-form-input v-model="application.name" required />
       </b-form-group>
 
-      <b-form-group horizontal>
+      <b-form-group label-cols="3">
         <b-form-checkbox plain v-model="application.enabled">{{ $t('application.enabled') }}</b-form-checkbox>
       </b-form-group>
 
-      <b-form-group :label="$t('application.appSelector.label')" horizontal v-if="application.unify" class="unify">
+      <b-form-group label-cols="3">
+        <permissions-button :resource="'system:application:'+applicationID">{{ $t('application.manage-id-permissions') }}</permissions-button>
+      </b-form-group>
+
+      <b-form-group :label="$t('application.appSelector.label')" label-cols="3" v-if="application.unify" class="unify">
         <b-form-group>
           <b-form-checkbox plain v-model="application.unify.listed">{{ $t('application.listed') }}</b-form-checkbox>
         </b-form-group>
 
-        <b-form-group :label="$t('application.name.label')" horizontal :description="$t('application.name.description')">
+        <b-form-group :label="$t('application.name.label')" label-cols="3" :description="$t('application.name.description')">
           <b-form-input v-model="application.unify.name" />
         </b-form-group>
 
-        <b-form-group :label="$t('application.icon.label')" :description="$t('application.icon.description')" horizontal>
+        <b-form-group :label="$t('application.icon.label')" :description="$t('application.icon.description')" label-cols="3">
           <b-form-input v-model="application.unify.icon" />
         </b-form-group>
 
-        <b-form-group :label="$t('application.logo.label')" :description="$t('application.logo.description')" horizontal>
+        <b-form-group :label="$t('application.logo.label')" :description="$t('application.logo.description')" label-cols="3">
           <b-form-input v-model="application.unify.logo" />
         </b-form-group>
 
-        <b-form-group :label="$t('application.url.label')" :description="$t('application.url.description')" horizontal>
+        <b-form-group :label="$t('application.url.label')" :description="$t('application.url.description')" label-cols="3">
           <b-form-input v-model="application.unify.url" />
         </b-form-group>
 
@@ -46,11 +50,11 @@
         </b-form-group>
       </b-form-group>
 
-      <b-form-group :label="$t('application.lastUpdate.label')" horizontal>
+      <b-form-group :label="$t('application.lastUpdate.label')" label-cols="3">
         <b-form-text>{{ application.updatedAt }}</b-form-text>
       </b-form-group>
 
-      <b-form-group :label="$t('application.created.label')" horizontal>
+      <b-form-group :label="$t('application.created.label')" label-cols="3">
         <b-form-text>{{ application.createdAt }}</b-form-text>
       </b-form-group>
     </div>
@@ -60,9 +64,9 @@
     </div>
   </b-form>
 </template>
-
 <script>
 import ConfirmationToggle from '@/components/ConfirmationToggle'
+
 export default {
   components: {
     ConfirmationToggle,

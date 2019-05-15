@@ -7,15 +7,19 @@
       </h2>
     </div>
     <div class="role">
-      <b-form-group :label="$t('general.label.name')" horizontal>
+      <b-form-group :label="$t('general.label.name')" label-cols="3">
         <b-form-input v-model="role.name" />
       </b-form-group>
 
-      <b-form-group :label="$t('general.label.lastUpdate')" horizontal>
+      <b-form-group label-cols="3">
+        <permissions-button :resource="'system:role:'+roleID">{{ $t('role.manage-id-permissions') }}</permissions-button>
+      </b-form-group>
+
+      <b-form-group :label="$t('general.label.lastUpdate')" label-cols="3">
         <b-form-text>{{ role.updatedAt }}</b-form-text>
       </b-form-group>
 
-      <b-form-group :label="$t('general.label.created')" horizontal>
+      <b-form-group :label="$t('general.label.created')" label-cols="3">
         <b-form-text>{{ role.createdAt }}</b-form-text>
       </b-form-group>
       <role-members :current-members.sync="members"></role-members>

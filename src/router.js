@@ -44,9 +44,6 @@ export default new Router({
         { path: 'permissions',
           name: 'permissions',
           component: view('Permissions/Index'),
-          children: [
-            { path: ':roleID?', name: 'permissions.per-role', component: view('Permissions/PerRole'), props: true },
-          ],
         },
         { path: 'applications',
           name: 'applications',

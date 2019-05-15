@@ -8,7 +8,7 @@
     </div>
 
     <main>
-      <b-form-group horizontal>
+      <b-form-group label-cols="3">
         <b-form-checkbox plain v-model="enabled" :value="true" :unchecked-value="false">
           {{$t('auth-settings.external-providers.enabled')}}
         </b-form-checkbox>

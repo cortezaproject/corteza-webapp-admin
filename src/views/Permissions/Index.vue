@@ -1,19 +1,32 @@
 <template>
-  <list-with-details :title="title">
+  <div>
+    <p>Set base permissions for Crust systems:</p>
     <ul>
-      <li v-for="r in roles" :key="r.ID">
-        <router-link :to="{ name: 'permissions.per-role', params: { roleID: r.roleID } }">{{ r.name || r.handle || r.roleID || $t('role.unnamed') }}</router-link>
+      <li>
+        <permissions-button resource="system"
+                            title="System">System</permissions-button>
+      </li>
+      <li>
+        <permissions-button resource="messaging"
+                            title="Messaging">Messaging</permissions-button>
+      </li>
+      <li>
+        <permissions-button resource="compose"
+                            title="Compose">Compose</permissions-button>
       </li>
     </ul>
-  </list-with-details>
+
+  </div>
 </template>
 
 <script>
 import ListWithDetails from '@/components/ListWithDetails'
+import { PermissionsButton } from 'crust-common.vue/components'
 
 export default {
   components: {
     ListWithDetails,
+    PermissionsButton,
   },
 
   data () {
@@ -29,20 +42,13 @@ export default {
     },
   },
 
-  created () {
-    this.fetchRoles()
-  },
-
-  methods: {
-    fetchRoles () {
-      this.$system.roleList({ query: this.query.toLowerCase() }).then(rr => {
-        this.roles = rr
-      })
-    },
-  },
 }
 </script>
 <style scoped lang="scss">
 @import '@/assets/sass/_0.commons.scss';
 @import '@/assets/sass/menu-layer.scss';
+
+div {
+  margin: 10px;
+}
 </style>

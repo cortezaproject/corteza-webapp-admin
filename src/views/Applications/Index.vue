@@ -1,6 +1,8 @@
 <template>
   <list-with-details :title="title"
                      :create-button-label="$t('application.add')"
+                     permissions-resource-type="system:application:*"
+                     :permissions-button-label="$t('application.manage-wc-permissions')"
                      @update="fetchApplications"
                      @create="$router.push({ name: 'applications.application', params: { applicationID: undefined } })">
 

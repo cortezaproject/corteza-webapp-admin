@@ -18,6 +18,7 @@
       <transition name="slide">
         <router-view class="view"></router-view>
       </transition>
+      <permissions-modal />
     </div>
   </div>
   <div class="loader" v-else>
@@ -27,7 +28,13 @@
 </template>
 
 <script>
+import { PermissionsModal } from 'crust-common.vue/components'
+
 export default {
+  components: {
+    PermissionsModal,
+  },
+
   data () {
     return {
       logo: require('@/assets/images/crust-logo-with-tagline.png'),

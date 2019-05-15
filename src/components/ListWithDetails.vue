@@ -1,10 +1,19 @@
 <template>
   <section>
     <header v-if="title">
-      <h2 class="header-title">{{ title }}
-      <b-button class="create"
-                @click.prevent="$emit('create')"
-                v-if="createButtonLabel">{{ createButtonLabel }}</b-button></h2>
+      <h2 class="header-title">
+        {{ title }}
+
+        <b-button-group class="toolbar">
+          <permissions-button v-if="permissionsResourceType"
+                              :title="permissionsButtonLabel"
+                              :resource="permissionsResourceType">{{ permissionsButtonLabel }}</permissions-button>
+
+          <b-button class="ml-1"
+                    @click.prevent="$emit('create')"
+                    v-if="createButtonLabel">{{ createButtonLabel }}</b-button>
+        </b-button-group>
+      </h2>
     </header>
     <main>
       <aside>
@@ -29,6 +38,14 @@ export default {
       type: String,
       required: false,
     },
+
+    permissionsButtonLabel: {
+      type: String,
+    },
+
+    permissionsResourceType: {
+      type: String,
+    },
   },
 }
 </script>
@@ -42,7 +59,7 @@ section {
   header {
     flex: 1;
 
-    button.create {
+    .toolbar {
       float: right;
     }
   }

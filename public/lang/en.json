@@ -11,6 +11,8 @@
     "information": "Application information",
     "enabled": "Enabled",
     "listed": "Listed",
+    "manage-id-permissions": "Manage permissions for this application",
+    "manage-wc-permissions": "Manage permissions for all applications",
     "add": "Add Application",
     "delete": "Delete application",
     "id": {
@@ -136,6 +138,18 @@
       "channel-group-create": {
         "title": "Create direct messages and group channels",
         "description": "Default: allow"
+      },
+      "webhook-create": {
+        "title": "Create webhooks",
+        "description": "Default: deny"
+      },
+      "webhook-manage-all": {
+        "title": "Manage all webhooks",
+        "description": "Default: deny"
+      },
+      "webhook-manage-own": {
+        "title": "Manage own webhooks",
+        "description": "Default: deny"
       }
     },
     "messaging-channel": {
@@ -344,7 +358,8 @@
     "add": "Add Role",
     "members": "Members {{count}}",
     "unnamed": "Unnamed role",
-    "managePermissions": "Manage role permissions"
+    "manage-id-permissions": "Manage permissions for this role",
+    "manage-wc-permissions": "Manage permissions for all roles"
   },
   "user": {
     "information": "User Information",

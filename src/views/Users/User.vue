@@ -7,15 +7,15 @@
       </h2>
     </div>
     <div class="user">
-      <b-form-group :label="$t('user.email')" horizontal>
+      <b-form-group :label="$t('user.email')" label-cols="3">
         <b-form-input v-model="user.email" required type="email" />
       </b-form-group>
 
-      <b-form-group :label="$t('user.fullName')" horizontal>
+      <b-form-group :label="$t('user.fullName')" label-cols="3">
         <b-form-input v-model="user.name" required />
       </b-form-group>
 
-      <b-form-group :label="$t('user.handle')" horizontal>
+      <b-form-group :label="$t('user.handle')" label-cols="3">
         <b-form-input v-model="user.handle" />
       </b-form-group>
 
@@ -23,11 +23,11 @@
         <b-form-text>{{ user.kind }}</b-form-text>
       </b-form-group>
 
-      <b-form-group :label="$t('general.label.lastUpdate')" horizontal>
+      <b-form-group :label="$t('general.label.lastUpdate')" label-cols="3">
         <b-form-text>{{ user.updatedAt }}</b-form-text>
       </b-form-group>
 
-      <b-form-group :label="$t('general.label.created')" horizontal>
+      <b-form-group :label="$t('general.label.created')" label-cols="3">
         <b-form-text>{{ user.createdAt }}</b-form-text>
       </b-form-group>
     </div>

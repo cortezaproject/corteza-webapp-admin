@@ -1,6 +1,8 @@
 <template>
   <list-with-details :title="title"
                      :create-button-label="$t('role.add')"
+                     permissions-resource-type="system:role:*"
+                     :permissions-button-label="$t('role.manage-wc-permissions')"
                      @update="fetchRoles"
                      @create="$router.push({ name: 'roles.role', params: { roleID: undefined } })">
     <ul>
