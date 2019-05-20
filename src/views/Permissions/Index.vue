@@ -21,12 +21,10 @@
 
 <script>
 import ListWithDetails from '@/components/ListWithDetails'
-import { PermissionsButton } from 'crust-common.vue/components'
 
 export default {
   components: {
     ListWithDetails,
-    PermissionsButton,
   },
 
   data () {

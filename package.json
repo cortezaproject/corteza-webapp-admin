@@ -1,7 +1,10 @@
 {
-  "name": "admin",
-  "version": "0.1.0",
+  "name": "webapp-admin",
+  "description": "Crust Admin WebApp",
   "private": true,
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "author": "Denis Arh <denis.arh@gmail.com>",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --mode production",
@@ -14,12 +17,16 @@
   "dependencies": {
     "@panter/vue-i18next": "^0.15.0",
     "axios": "^0.18.0",
+    "bootstrap-vue": "^2.0.0-rc.20",
     "crust-api-client.js": "crusttech/crust-api-client.js.git#master",
     "crust-common.vue": "crusttech/crust-common.vue.git#master",
     "i18next": "^15.0.7",
     "i18next-browser-languagedetector": "^3.0.1",
     "i18next-xhr-backend": "^2.0.1",
-    "bootstrap-vue": "^2.0.0-rc.20",
+    "stylelint": "^9.10.1",
+    "stylelint-config-standard": "^18.2.0",
+    "stylelint-scss": "^3.5.4",
+    "stylelint-webpack-plugin": "^0.10.5",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
     "vuetable-2": "^1.7.5",
@@ -35,5 +42,41 @@
     "node-sass": "^4.9.4",
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.5.17"
-  }
+  },
+  "stylelint": {
+    "plugins": [
+      "stylelint-scss"
+    ],
+    "extends": "stylelint-config-standard",
+    "rules": {
+      "color-hex-case": null,
+      "color-hex-length": null,
+      "no-empty-source": null,
+      "selector-list-comma-newline-after": null
+    }
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
 }
