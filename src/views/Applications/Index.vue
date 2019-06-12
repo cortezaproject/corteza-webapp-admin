@@ -1,5 +1,5 @@
 <template>
-  <list-with-details :title="title"
+  <list-with-details :title="`${$t('navigation.manageApps')} (${applications.length})`"
                      :create-button-label="$t('application.add')"
                      permissions-resource-type="system:application:*"
                      :permissions-button-label="$t('application.manage-wc-permissions')"
@@ -27,12 +27,6 @@ export default {
       query: '',
       applications: [],
     }
-  },
-
-  computed: {
-    title () {
-      return `${this.$t('navigation.manageApps')} (${this.applications.length})`
-    },
   },
 
   created () {

@@ -353,6 +353,7 @@
     }
   },
   "role": {
+    "managePermissions": "Set base permissions for Crust systems:",
     "information": "Role Information",
     "delete": "Delete role",
     "add": "Add Role",

@@ -56,6 +56,7 @@ export default {
     return {
       processing: false,
       user: {},
+      error: null,
     }
   },
 
@@ -75,15 +76,22 @@ export default {
       this.processing = true
       this.$system.userRead({ userID: this.userID }).then(user => {
         this.user = user
-        this.processing = false
-      })
+      }).catch(this.stdReject)
+        .finally(() => {
+          this.processing = false
+        })
     },
 
     onDelete () {
+      this.processing = true
       this.$system.userDelete({ userID: this.userID })
         .then(this.handler)
         .then(() => {
           this.$router.push({ name: 'users' })
+        })
+        .catch(this.stdReject)
+        .finally(() => {
+          this.processing = false
         })
     },
 
@@ -93,14 +101,26 @@ export default {
       const payload = { ...this.user }
 
       if (this.userID) {
-        this.$system.userUpdate(payload).then(this.handler)
+        this.$system.userUpdate(payload)
+          .then(this.handler)
+          .catch(this.stdReject)
+          .finally(() => {
+            this.processing = false
+          })
       } else {
         this.$system.userCreate(payload)
           .then(this.handler)
           .then(({ userID }) => {
             this.$router.push({ name: 'users.user', params: { userID } })
+          }).catch(this.stdReject)
+          .finally(() => {
+            this.processing = false
           })
       }
+    },
+
+    stdReject ({ message = null } = {}) {
+      this.error = message
     },
 
     handler (user) {

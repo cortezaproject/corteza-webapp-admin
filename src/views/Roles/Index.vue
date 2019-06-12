@@ -29,6 +29,7 @@ export default {
     return {
       query: '',
       roles: [],
+      error: null,
     }
   },
 
@@ -46,6 +47,8 @@ export default {
     fetchRoles () {
       this.$system.roleList({ query: this.query.toLowerCase() }).then(rr => {
         this.roles = rr.filter(r => !systemRoles.includes(r.roleID))
+      }).catch(({ message }) => {
+        this.error = message
       })
     },
   },

@@ -1,5 +1,5 @@
 <template>
-  <list-with-details :title="title">
+  <list-with-details :title="$t('navigation.auth-settings')">
     <ul>
       <li>
         <router-link :to="{ name: 'auth-settings.external-providers' }">{{ $t('auth-settings.external-providers.title') }}</router-link>
@@ -14,12 +14,6 @@ import ListWithDetails from '@/components/ListWithDetails'
 export default {
   components: {
     ListWithDetails,
-  },
-
-  computed: {
-    title () {
-      return `${this.$t('navigation.auth-settings')}`
-    },
   },
 }
 </script>

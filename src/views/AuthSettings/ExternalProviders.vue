@@ -67,6 +67,8 @@ export default {
     return {
       processing: true,
 
+      error: null,
+
       settings: [],
 
       enabled: false,
@@ -126,33 +128,22 @@ export default {
     changes () {
       let c = []
 
-      const process = (name, newValue) => {
-        const oldValue = (this.settings.find(s => s.name === name) || { value: null }).value
-
-        if (oldValue === null && newValue === '') {
-          // Do not be greedy, skip when old value is undefined and
-          // new value is falsy
-          return
-        }
-
-        if (newValue === oldValue) {
-          return
-        }
-
-        // Values changed, record
-        c.push({ name, value: newValue })
-      }
-
       for (let provider in this.standard) {
         for (let k of ['key', 'secret', 'enabled']) {
-          process(`auth.external.providers.${provider}.${k}`, this.standard[provider][k])
+          const ch = this.checkForChange(`auth.external.providers.${provider}.${k}`, this.standard[provider][k], this.settings)
+          if (ch) {
+            c.push(ch)
+          }
         }
       }
 
       for (let provider of this.oidc) {
         const { handle } = provider
         for (let k of ['key', 'secret', 'enabled', 'issuer']) {
-          process(`auth.external.providers.openid-connect.${handle}.${k}`, provider[k])
+          const ch = this.checkForChange(`auth.external.providers.openid-connect.${handle}.${k}`, provider[k], this.settings)
+          if (ch) {
+            c.push(ch)
+          }
         }
       }
 
@@ -172,24 +163,42 @@ export default {
   },
 
   methods: {
+    checkForChange (name, newValue, settings = []) {
+      const oldValue = (settings.find(s => s.name === name) || {}).value
+
+      if (oldValue === undefined && newValue === undefined) {
+        // Do not be greedy, skip when old value is undefined and
+        // new value is falsy
+        return
+      }
+
+      if (newValue === oldValue) {
+        return
+      }
+
+      // Values changed, record
+      return { name, value: newValue }
+    },
+
     onSubmit () {
       // Collect changed variables
       this.processing = true
 
-      this.$system.settingsUpdate({ values: this.changes }).then(r => {
-        console.log(r)
-
-        this.processing = false
-      })
+      this.$system.settingsUpdate({ values: this.changes })
+        .catch(({ message }) => {
+          this.error = message
+        }).finally(() => {
+          this.processing = false
+        })
     },
 
     fetchSettings () {
       this.processing = true
-      return this.$system.settingsList({ prefix }).then((vv) => {
+      return this.$system.settingsList({ prefix }).then((vv = []) => {
         this.settings = vv
 
         for (let provider in this.standard) {
-          this.standard[provider] = this.extractKeys(provider, {
+          this.standard[provider] = this.extractKeys(provider, this.settings, {
             enabled: false,
             secret: '',
             key: '',
@@ -198,7 +207,7 @@ export default {
 
         this.oidc = []
         for (let handle of (this.oidcProviders || ['didmos2'])) {
-          this.oidc.push(this.extractKeys('openid-connect.' + handle, {
+          this.oidc.push(this.extractKeys('openid-connect.' + handle, this.settings, {
             handle,
             enabled: false,
             issuer: '',
@@ -208,17 +217,19 @@ export default {
         }
 
         this.enabled = !!(vv.find(v => v.name === 'auth.external.enabled') || {}).value
-
+      }).catch(({ message }) => {
+        this.error = message
+      }).finally(() => {
         this.processing = false
       })
     },
 
-    extractKeys (provider, base = {}) {
-      let out = Object.assign({}, base)
+    extractKeys (provider, settings = {}, base = {}) {
+      let out = { ...base }
 
       for (let k in base) {
         const name = `auth.external.providers.${provider}.${k}`
-        const v = this.settings.find(v => v.name === name)
+        const v = settings.find(v => v.name === name)
         if (!v) {
           continue
         }
