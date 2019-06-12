@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>Set base permissions for Crust systems:</p>
+    <p>{{ $t('role.managePermissions') }}</p>
     <ul>
       <li>
         <permissions-button resource="system"
@@ -33,13 +33,6 @@ export default {
       roles: [],
     }
   },
-
-  computed: {
-    title () {
-      return this.$t('role.managePermissions')
-    },
-  },
-
 }
 </script>
 <style scoped lang="scss">

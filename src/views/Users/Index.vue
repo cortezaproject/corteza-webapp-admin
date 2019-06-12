@@ -1,5 +1,5 @@
 <template>
-  <list-with-details :title="title"
+  <list-with-details :title="$t('user.manage', { count: users.length })"
                      @update="fetchUsers">
 
     <ul>
@@ -22,13 +22,8 @@ export default {
     return {
       query: '',
       users: [],
+      error: null,
     }
-  },
-
-  computed: {
-    title () {
-      return this.$t('user.manage', { count: this.users.length })
-    },
   },
 
   created () {
@@ -39,6 +34,8 @@ export default {
     fetchUsers () {
       this.$system.userList({ query: this.query.toLowerCase() }).then(uu => {
         this.users = uu
+      }).catch(({ message }) => {
+        this.error = message
       })
     },
   },

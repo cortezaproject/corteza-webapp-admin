@@ -52,6 +52,7 @@ export default {
   data () {
     return {
       processing: false,
+      error: null,
       role: {},
       members: [],
     }
@@ -71,20 +72,28 @@ export default {
   methods: {
     fetchRole () {
       this.processing = true
-      this.$system.roleRead({ roleID: this.roleID }).then(r => {
-        this.role = r
-        return this.$system.roleMemberList(r)
-      }).then((mm) => {
-        this.members = mm
-        this.processing = false
-      })
+      this.$system.roleRead({ roleID: this.roleID })
+        .then(r => {
+          this.role = r
+          return this.$system.roleMemberList(r)
+        })
+        .then((mm) => { this.members = mm })
+        .catch(this.stdReject)
+        .finally(() => {
+          this.processing = false
+        })
     },
 
     onDelete () {
+      this.processing = true
       this.$system.roleDelete({ roleID: this.roleID })
         .then(this.handler)
         .then(() => {
           this.$router.push({ name: 'roles' })
+        })
+        .catch(this.stdReject)
+        .finally(() => {
+          this.processing = false
         })
     },
 
@@ -94,19 +103,30 @@ export default {
       const payload = { ...this.role, members: this.members }
 
       if (this.roleID) {
-        this.$system.roleUpdate(payload).then(this.handler)
+        this.$system.roleUpdate(payload)
+          .then(this.handler)
+          .catch(this.stdReject)
+          .finally(() => {
+            this.processing = false
+          })
       } else {
         this.$system.roleCreate(payload)
           .then(this.handler)
           .then(({ roleID }) => {
             this.$router.push({ name: 'roles.role', params: { roleID } })
           })
+          .catch(this.stdReject)
+          .finally(() => {
+            this.processing = false
+          })
       }
     },
 
-    handler (role) {
-      this.processing = false
+    stdReject ({ message = null } = {}) {
+      this.error = message
+    },
 
+    handler (role) {
       // Inform parent component about role changes
       // @todo solve this with vuex
       this.$emit('update')

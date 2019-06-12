@@ -107,7 +107,7 @@ export default {
     },
 
     configState () {
-      if ((this.application.unify.config || '').trim() === '') {
+      if (((this.application.unify || {}).config || '').trim() === '') {
         return null
       } else {
         return this.validConfig
@@ -170,7 +170,7 @@ export default {
       return Promise.resolve(application)
     },
 
-    prepare (application) {
+    prepare (application = {}) {
       if (!application.unify) {
         application.unify = {
           listed: true,

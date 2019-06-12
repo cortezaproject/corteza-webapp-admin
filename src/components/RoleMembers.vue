@@ -41,12 +41,14 @@ export default {
     currentMembers: {
       type: Array,
       required: true,
+      default: () => [],
     },
   },
 
   data () {
     return {
       filter: '',
+      error: null,
       users: [],
     }
   },
@@ -63,7 +65,7 @@ export default {
     },
 
     filtered () {
-      const match = ({ name, handle, username, email, userID }) => {
+      const match = ({ name = '', handle = '', username = '', email = '', userID = '' }) => {
         return `${name} ${handle} ${username} ${email} ${userID}`.toLocaleLowerCase().indexOf(this.filter.toLocaleLowerCase()) > -1
       }
 
@@ -78,6 +80,8 @@ export default {
   created () {
     this.$system.userList().then(uu => {
       this.users = uu
+    }).catch(({ message }) => {
+      this.error = message
     })
   },
 
@@ -87,13 +91,15 @@ export default {
     },
 
     addMember (u) {
-      this.members.push(typeof u === 'object' ? u.userID : u)
+      this.members = this.members.concat(typeof u === 'object' ? u.userID : u)
     },
 
     removeMember (u) {
       const i = this.members.indexOf(typeof u === 'object' ? u.userID : u)
       if (i > -1) {
-        this.members.splice(i, 1)
+        let m = [...this.members]
+        m.splice(i, 1)
+        this.members = m
       }
     },
   },

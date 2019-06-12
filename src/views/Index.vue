@@ -39,23 +39,29 @@ export default {
     return {
       logo: require('@/assets/images/crust-logo-with-tagline.png'),
       loaded: false,
-      error: '',
+      error: null,
     }
   },
 
   created () {
-    this.$auth.check(this.$system).then(() => {
+    this.$auth.check(this.$system)
+      .then(this.checkPermissions)
+      .catch(() => { window.location = '/auth' })
+  },
+
+  methods: {
+    checkPermissions () {
       this.$system.permissionsEffective().then(ep => {
         // Quick & dirty permission check for admin access:
-        if (!(ep.find(p => p.resource === 'system' && p.operation === 'access') || {}).allow) {
+        if (!(ep.find(p => p.resource === 'system' && p.operation === 'access' && p.allow))) {
           this.error = this.$t('auth.noAccess')
         } else {
           this.loaded = true
         }
+      }).catch(({ message }) => {
+        this.error = message
       })
-    }).catch(() => {
-      window.location = '/auth'
-    })
+    },
   },
 }
 </script>
