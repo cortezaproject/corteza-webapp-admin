@@ -11,7 +11,7 @@ import logger from './logger'
 
 /* eslint-disable no-undef */
 logger.log(
-  `%cCrust CRM, version: ${CRUST_VERSION}, build time: ${CRUST_BUILD_TIME}`,
+  `%cCrust Admin, version: ${CRUST_VERSION}, build time: ${CRUST_BUILD_TIME}`,
   'background-color: #1397CB; color: white; padding: 3px 10px; border: 1px solid black; font: Courier',
 )
 
