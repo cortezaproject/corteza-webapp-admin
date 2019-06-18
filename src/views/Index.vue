@@ -44,7 +44,7 @@ export default {
   },
 
   created () {
-    this.$auth.check(this.$SystemAPIAPI)
+    this.$auth.check(this.$SystemAPI)
       .then(this.checkPermissions)
       .catch(() => { window.location = '/auth' })
   },
