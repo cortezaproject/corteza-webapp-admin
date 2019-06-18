@@ -74,7 +74,7 @@ export default {
   methods: {
     fetchUsers () {
       this.processing = true
-      this.$system.userRead({ userID: this.userID }).then(user => {
+      this.$SystemAPI.userRead({ userID: this.userID }).then(user => {
         this.user = user
       }).catch(this.stdReject)
         .finally(() => {
@@ -84,7 +84,7 @@ export default {
 
     onDelete () {
       this.processing = true
-      this.$system.userDelete({ userID: this.userID })
+      this.$SystemAPI.userDelete({ userID: this.userID })
         .then(this.handler)
         .then(() => {
           this.$router.push({ name: 'users' })
@@ -101,14 +101,14 @@ export default {
       const payload = { ...this.user }
 
       if (this.userID) {
-        this.$system.userUpdate(payload)
+        this.$SystemAPI.userUpdate(payload)
           .then(this.handler)
           .catch(this.stdReject)
           .finally(() => {
             this.processing = false
           })
       } else {
-        this.$system.userCreate(payload)
+        this.$SystemAPI.userCreate(payload)
           .then(this.handler)
           .then(({ userID }) => {
             this.$router.push({ name: 'users.user', params: { userID } })

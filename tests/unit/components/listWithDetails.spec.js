@@ -1,6 +1,6 @@
 import { createLocalVue } from '@vue/test-utils'
 import ListWithDetails from '@/components/ListWithDetails'
-import { mount, stdStubs } from 'crust-common.vue/src/lib/testHelpers'
+import { mount, stdStubs } from 'corteza-webapp-common/src/lib/testHelpers'
 
 let localVue = createLocalVue()
 

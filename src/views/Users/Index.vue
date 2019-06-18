@@ -32,7 +32,7 @@ export default {
 
   methods: {
     fetchUsers () {
-      this.$system.userList({ query: this.query.toLowerCase() }).then(uu => {
+      this.$SystemAPI.userList({ query: this.query.toLowerCase() }).then(uu => {
         this.users = uu
       }).catch(({ message }) => {
         this.error = message

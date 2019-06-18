@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import BootstrapVue from 'bootstrap-vue'
-import { PermissionsButton } from 'crust-common.vue/components'
+import { PermissionsButton } from 'corteza-webapp-common/components'
 
 Vue.config.productionTip = false
 

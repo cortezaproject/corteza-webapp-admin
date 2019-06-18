@@ -1,4 +1,4 @@
-# Crust Unify webapp
+# Messaging WebApp
 
 ## Project setup
 

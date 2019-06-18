@@ -72,10 +72,10 @@ export default {
   methods: {
     fetchRole () {
       this.processing = true
-      this.$system.roleRead({ roleID: this.roleID })
+      this.$SystemAPI.roleRead({ roleID: this.roleID })
         .then(r => {
           this.role = r
-          return this.$system.roleMemberList(r)
+          return this.$SystemAPI.roleMemberList(r)
         })
         .then((mm) => { this.members = mm })
         .catch(this.stdReject)
@@ -86,7 +86,7 @@ export default {
 
     onDelete () {
       this.processing = true
-      this.$system.roleDelete({ roleID: this.roleID })
+      this.$SystemAPI.roleDelete({ roleID: this.roleID })
         .then(this.handler)
         .then(() => {
           this.$router.push({ name: 'roles' })
@@ -103,14 +103,14 @@ export default {
       const payload = { ...this.role, members: this.members }
 
       if (this.roleID) {
-        this.$system.roleUpdate(payload)
+        this.$SystemAPI.roleUpdate(payload)
           .then(this.handler)
           .catch(this.stdReject)
           .finally(() => {
             this.processing = false
           })
       } else {
-        this.$system.roleCreate(payload)
+        this.$SystemAPI.roleCreate(payload)
           .then(this.handler)
           .then(({ roleID }) => {
             this.$router.push({ name: 'roles.role', params: { roleID } })

@@ -184,7 +184,7 @@ export default {
       // Collect changed variables
       this.processing = true
 
-      this.$system.settingsUpdate({ values: this.changes })
+      this.$SystemAPI.settingsUpdate({ values: this.changes })
         .catch(({ message }) => {
           this.error = message
         }).finally(() => {
@@ -194,7 +194,7 @@ export default {
 
     fetchSettings () {
       this.processing = true
-      return this.$system.settingsList({ prefix }).then((vv = []) => {
+      return this.$SystemAPI.settingsList({ prefix }).then((vv = []) => {
         this.settings = vv
 
         for (let provider in this.standard) {

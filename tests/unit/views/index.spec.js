@@ -2,7 +2,7 @@ import { expect, assert } from 'chai'
 import { createLocalVue } from '@vue/test-utils'
 import sinon from 'sinon'
 import Index from '@/views/Index'
-import { mount, writeableWindowLocation } from 'crust-common.vue/src/lib/testHelpers'
+import { mount, writeableWindowLocation } from 'corteza-webapp-common/src/lib/testHelpers'
 
 const localVue = createLocalVue()
 

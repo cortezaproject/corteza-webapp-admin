@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { createLocalVue } from '@vue/test-utils'
 import Application from '@/views/Applications/Application'
-import { mount, stdStubs } from 'crust-common.vue/src/lib/testHelpers'
+import { mount, stdStubs } from 'corteza-webapp-common/src/lib/testHelpers'
 
 const localVue = createLocalVue()
 

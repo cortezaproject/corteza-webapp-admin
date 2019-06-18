@@ -2,7 +2,7 @@ import { expect, assert } from 'chai'
 import { createLocalVue } from '@vue/test-utils'
 import RoleMembers from '@/components/RoleMembers'
 import sinon from 'sinon'
-import { mount, stdStubs } from 'crust-common.vue/src/lib/testHelpers'
+import { mount, stdStubs } from 'corteza-webapp-common/src/lib/testHelpers'
 
 let localVue = createLocalVue()
 

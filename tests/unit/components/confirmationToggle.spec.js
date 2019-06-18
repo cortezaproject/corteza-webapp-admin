@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { createLocalVue } from '@vue/test-utils'
 import ConfirmationToggle from '@/components/ConfirmationToggle'
-import { mount, stdStubs } from 'crust-common.vue/src/lib/testHelpers'
+import { mount, stdStubs } from 'corteza-webapp-common/src/lib/testHelpers'
 
 let localVue = createLocalVue()
 

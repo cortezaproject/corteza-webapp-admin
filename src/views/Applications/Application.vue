@@ -129,14 +129,14 @@ export default {
   methods: {
     fetchApplications () {
       this.processing = true
-      this.$system.applicationRead({ applicationID: this.applicationID }).then(application => {
+      this.$SystemAPI.applicationRead({ applicationID: this.applicationID }).then(application => {
         this.prepare(application)
         this.processing = false
       })
     },
 
     onDelete () {
-      this.$system.applicationDelete({ applicationID: this.applicationID })
+      this.$SystemAPI.applicationDelete({ applicationID: this.applicationID })
         .then(this.handler)
         .then(() => {
           this.$router.push({ name: 'applications' })
@@ -149,9 +149,9 @@ export default {
       const payload = { ...this.application }
 
       if (this.applicationID) {
-        this.$system.applicationUpdate(payload).then(this.handler)
+        this.$SystemAPI.applicationUpdate(payload).then(this.handler)
       } else {
-        this.$system.applicationCreate(payload)
+        this.$SystemAPI.applicationCreate(payload)
           .then(this.handler)
           .then(({ applicationID }) => {
             this.$router.push({ name: 'applications.application', params: { applicationID } })

@@ -35,7 +35,7 @@ export default {
 
   methods: {
     fetchApplications () {
-      this.$system.applicationList({ query: this.query.toLowerCase() }).then(uu => {
+      this.$SystemAPI.applicationList({ query: this.query.toLowerCase() }).then(uu => {
         this.applications = uu
       })
     },

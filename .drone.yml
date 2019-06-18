@@ -3,22 +3,23 @@ name: Build & Pack
 
 steps:
   - name: deps
-    image: crusttech/webapp-builder
+    image: cortezaproject/corteza-webapp-builder
     commands:
       - yarn install
 
   - name: test
-    image: crusttech/webapp-builder
+    image: cortezaproject/corteza-webapp-builder
     commands:
+      - yarn lint
       - yarn test:unit
 
   - name: build
-    image: crusttech/webapp-builder
+    image: cortezaproject/corteza-webapp-builder
     commands:
       - yarn build
 
   - name: pack
-    image: crusttech/webapp-builder
+    image: cortezaproject/corteza-webapp-builder
     volumes:
       - name: webapp-build
         path: /var/build
@@ -33,7 +34,10 @@ steps:
       token:
         from_secret: drone_token
       repositories:
-        - crusttech/webapp@${DRONE_BRANCH}
+        # Dynamically constructs Drone repo name that will be notified
+        #  - namespace (cortezaproject/crusttech),
+        #  - removing suffix (admin) from repo name (corteza-webapp..., crust-webapp...)
+        - "${DRONE_REPO_NAMESPACE}/${DRONE_REPO_NAME%%-admin}@${DRONE_BRANCH}"
 
 trigger:
   branch:

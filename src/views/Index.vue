@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { PermissionsModal } from 'crust-common.vue/components'
+import { PermissionsModal } from 'corteza-webapp-common/components'
 
 export default {
   components: {
@@ -44,14 +44,14 @@ export default {
   },
 
   created () {
-    this.$auth.check(this.$system)
+    this.$auth.check(this.$SystemAPI)
       .then(this.checkPermissions)
       .catch(() => { window.location = '/auth' })
   },
 
   methods: {
     checkPermissions () {
-      this.$system.permissionsEffective().then(ep => {
+      this.$SystemAPI.permissionsEffective().then(ep => {
         // Quick & dirty permission check for admin access:
         if (!(ep.find(p => p.resource === 'system' && p.operation === 'access' && p.allow))) {
           this.error = this.$t('auth.noAccess')
