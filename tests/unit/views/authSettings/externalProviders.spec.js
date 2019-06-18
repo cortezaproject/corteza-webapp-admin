@@ -183,7 +183,7 @@ describe('views/AuthSettings/ExternalProviders.vue', () => {
       let resolve = { message: 'message' }
       it('resolve', (done) => {
         systemResolve = sinon.stub().resolves(resolve)
-        wrapper = mount(ExternalProviders, { ...c, mocks: { ...mocks, $system: { settingsUpdate: systemResolve } } })
+        wrapper = mount(ExternalProviders, { ...c, mocks: { ...mocks, $SystemAPI: { settingsUpdate: systemResolve } } })
 
         wrapper.vm.onSubmit()
         expect(wrapper.vm.processing).to.eq(true)
@@ -197,7 +197,7 @@ describe('views/AuthSettings/ExternalProviders.vue', () => {
 
       it('reject', (done) => {
         systemReject = sinon.stub().rejects(new Error('reject'))
-        wrapper = mount(ExternalProviders, { ...c, mocks: { ...mocks, $system: { settingsUpdate: systemReject } } })
+        wrapper = mount(ExternalProviders, { ...c, mocks: { ...mocks, $SystemAPI: { settingsUpdate: systemReject } } })
 
         wrapper.vm.onSubmit()
         expect(wrapper.vm.processing).to.eq(true)
@@ -215,7 +215,7 @@ describe('views/AuthSettings/ExternalProviders.vue', () => {
       it('resolve', (done) => {
         const resolve = []
         systemResolve = sinon.stub().resolves(resolve)
-        wrapper = mount(ExternalProviders, { ...c, methods: {}, mocks: { ...mocks, $system: { settingsList: systemResolve } } })
+        wrapper = mount(ExternalProviders, { ...c, methods: {}, mocks: { ...mocks, $SystemAPI: { settingsList: systemResolve } } })
 
         expect(wrapper.vm.processing).to.eq(true)
         setTimeout(() => {
@@ -231,7 +231,7 @@ describe('views/AuthSettings/ExternalProviders.vue', () => {
 
       it('reject', (done) => {
         systemReject = sinon.stub().rejects(new Error('reject'))
-        wrapper = mount(ExternalProviders, { ...c, methods: {}, mocks: { ...mocks, $system: { settingsList: systemReject } } })
+        wrapper = mount(ExternalProviders, { ...c, methods: {}, mocks: { ...mocks, $SystemAPI: { settingsList: systemReject } } })
 
         expect(wrapper.vm.processing).to.eq(true)
         setTimeout(() => {

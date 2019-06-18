@@ -60,7 +60,7 @@ describe('views/Index.vue', () => {
     it('resolve', (done) => {
       let ep = []
       systemResolve = sinon.stub().resolves(ep)
-      wrapper = mount(Index, { ...common, mocks: { $auth: { is: isFalse, check: authReject }, $system: { permissionsEffective: systemResolve }, $t: (e) => e } })
+      wrapper = mount(Index, { ...common, mocks: { $auth: { is: isFalse, check: authReject }, $SystemAPI: { permissionsEffective: systemResolve }, $t: (e) => e } })
 
       wrapper.vm.checkPermissions()
       expect(wrapper.vm.error).to.eq(null)
@@ -76,7 +76,7 @@ describe('views/Index.vue', () => {
       let ep = permutations()
 
       systemResolve = sinon.stub().resolves(ep)
-      wrapper = mount(Index, { ...common, mocks: { $auth: { is: isFalse, check: authReject }, $system: { permissionsEffective: systemResolve }, $t: (e) => e } })
+      wrapper = mount(Index, { ...common, mocks: { $auth: { is: isFalse, check: authReject }, $SystemAPI: { permissionsEffective: systemResolve }, $t: (e) => e } })
 
       wrapper.vm.checkPermissions()
 
@@ -93,7 +93,7 @@ describe('views/Index.vue', () => {
       let ep = permutations(true)
 
       systemResolve = sinon.stub().resolves(ep)
-      wrapper = mount(Index, { ...common, mocks: { $auth: { is: isFalse, check: authReject }, $system: { permissionsEffective: systemResolve }, $t: (e) => e } })
+      wrapper = mount(Index, { ...common, mocks: { $auth: { is: isFalse, check: authReject }, $SystemAPI: { permissionsEffective: systemResolve }, $t: (e) => e } })
 
       wrapper.vm.checkPermissions()
 
@@ -107,7 +107,7 @@ describe('views/Index.vue', () => {
     })
 
     it('reject', (done) => {
-      wrapper = mount(Index, { ...common, mocks: { $auth: { is: isFalse, check: authReject }, $system: { permissionsEffective: systemReject } } })
+      wrapper = mount(Index, { ...common, mocks: { $auth: { is: isFalse, check: authReject }, $SystemAPI: { permissionsEffective: systemReject } } })
 
       wrapper.vm.checkPermissions()
 

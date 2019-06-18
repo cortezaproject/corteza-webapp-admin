@@ -26,7 +26,7 @@ describe('views/Users/Index.vue', () => {
       systemReject = sinon.stub().rejects(new Error('reject'))
 
       it('resolve', (done) => {
-        wrapper = mount(Index, { ...common, mocks: { ...mocks, $system: { userList: systemResolve } }, data: () => ({ query: 'QUERY' }) })
+        wrapper = mount(Index, { ...common, mocks: { ...mocks, $SystemAPI: { userList: systemResolve } }, data: () => ({ query: 'QUERY' }) })
 
         expect(wrapper.vm.users).to.have.length(0)
         expect(wrapper.vm.error).to.eq(null)
@@ -39,7 +39,7 @@ describe('views/Users/Index.vue', () => {
       })
 
       it('reject', (done) => {
-        wrapper = mount(Index, { ...common, mocks: { ...mocks, $system: { userList: systemReject } }, data: () => ({ query: 'QUERY' }) })
+        wrapper = mount(Index, { ...common, mocks: { ...mocks, $SystemAPI: { userList: systemReject } }, data: () => ({ query: 'QUERY' }) })
 
         expect(wrapper.vm.users).to.have.length(0)
         expect(wrapper.vm.error).to.eq(null)

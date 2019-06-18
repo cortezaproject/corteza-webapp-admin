@@ -20,7 +20,7 @@ describe('components/RoleMembers.vue', () => {
     it('members', () => {
       let currentMembers = [ 'id1', 'id2' ]
       const systemReject = sinon.stub().rejects(new Error('reject'))
-      wrapper = mount(RoleMembers, { ...common, propsData: { currentMembers }, mocks: { ...mocks, $system: { userList: systemReject } } })
+      wrapper = mount(RoleMembers, { ...common, propsData: { currentMembers }, mocks: { ...mocks, $SystemAPI: { userList: systemReject } } })
 
       expect(wrapper.vm.members).to.have.length(2)
       let ev = getMembersEvt()
@@ -54,7 +54,7 @@ describe('components/RoleMembers.vue', () => {
       let currentMembers = [ 'id1', 'id2' ]
       let users = [ { userID: 'id1' }, 'id2', { userID: 'id3' }, 'id4' ]
       const systemReject = sinon.stub().rejects(new Error('reject'))
-      wrapper = mount(RoleMembers, { ...common, data: () => ({ users }), propsData: { currentMembers }, mocks: { ...mocks, $system: { userList: systemReject } } })
+      wrapper = mount(RoleMembers, { ...common, data: () => ({ users }), propsData: { currentMembers }, mocks: { ...mocks, $SystemAPI: { userList: systemReject } } })
 
       expect(wrapper.vm.filteredMembers).to.deep.eq(users.slice(0, 2))
     })
@@ -65,7 +65,7 @@ describe('components/RoleMembers.vue', () => {
     it('users.fetch.resolve', (done) => {
       let resolve = [ {}, {} ]
       systemResolve = sinon.stub().resolves(resolve)
-      wrapper = mount(RoleMembers, { ...common, mocks: { ...mocks, $system: { userList: systemResolve } } })
+      wrapper = mount(RoleMembers, { ...common, mocks: { ...mocks, $SystemAPI: { userList: systemResolve } } })
 
       expect(wrapper.vm.users).to.have.length(0)
       setTimeout(() => {
@@ -78,7 +78,7 @@ describe('components/RoleMembers.vue', () => {
 
     it('users.fetch.reject', (done) => {
       systemReject = sinon.stub().rejects(new Error('reject'))
-      wrapper = mount(RoleMembers, { ...common, mocks: { ...mocks, $system: { userList: systemReject } } })
+      wrapper = mount(RoleMembers, { ...common, mocks: { ...mocks, $SystemAPI: { userList: systemReject } } })
 
       expect(wrapper.vm.users).to.have.length(0)
       setTimeout(() => {
@@ -93,7 +93,7 @@ describe('components/RoleMembers.vue', () => {
   describe('methods', () => {
     it('isMember', () => {
       const systemReject = sinon.stub().rejects(new Error('reject'))
-      wrapper = mount(RoleMembers, { ...common, mocks: { ...mocks, $system: { userList: systemReject } } })
+      wrapper = mount(RoleMembers, { ...common, mocks: { ...mocks, $SystemAPI: { userList: systemReject } } })
 
       expect(wrapper.vm.isMember()).to.eq(false)
       expect(wrapper.vm.isMember({})).to.eq(false)
@@ -108,7 +108,7 @@ describe('components/RoleMembers.vue', () => {
 
     it('addMember', () => {
       const systemReject = sinon.stub().rejects(new Error('reject'))
-      wrapper = mount(RoleMembers, { ...common, propsData: { currentMembers: [] }, mocks: { ...mocks, $system: { userList: systemReject } } })
+      wrapper = mount(RoleMembers, { ...common, propsData: { currentMembers: [] }, mocks: { ...mocks, $SystemAPI: { userList: systemReject } } })
 
       expect(wrapper.vm.members).to.have.length(0)
 
@@ -128,7 +128,7 @@ describe('components/RoleMembers.vue', () => {
 
     it('removeMember', () => {
       const systemReject = sinon.stub().rejects(new Error('reject'))
-      wrapper = mount(RoleMembers, { ...common, propsData: { currentMembers: [ 'userID1', 'userID2', 'userID3' ] }, mocks: { ...mocks, $system: { userList: systemReject } } })
+      wrapper = mount(RoleMembers, { ...common, propsData: { currentMembers: [ 'userID1', 'userID2', 'userID3' ] }, mocks: { ...mocks, $SystemAPI: { userList: systemReject } } })
 
       expect(wrapper.vm.members).to.have.length(3)
 

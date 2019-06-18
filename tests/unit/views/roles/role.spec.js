@@ -32,7 +32,7 @@ describe('views/Roles/Role.vue', () => {
 
       it('resolve', (done) => {
         systemResolveRole = sinon.stub().resolves(role)
-        wrapper = mount(Role, { ...c, mocks: { ...mocks, $system: { roleRead: systemResolveRole, roleMemberList: systemResolveMembers } } })
+        wrapper = mount(Role, { ...c, mocks: { ...mocks, $SystemAPI: { roleRead: systemResolveRole, roleMemberList: systemResolveMembers } } })
 
         expect(wrapper.vm.processing).to.eq(true)
         setTimeout(() => {
@@ -48,7 +48,7 @@ describe('views/Roles/Role.vue', () => {
 
       it('reject.roleRead', (done) => {
         systemRejectRole = sinon.stub().rejects(new Error('reject'))
-        wrapper = mount(Role, { ...c, mocks: { ...mocks, $system: { roleRead: systemRejectRole, roleMemberList: systemResolveMembers } } })
+        wrapper = mount(Role, { ...c, mocks: { ...mocks, $SystemAPI: { roleRead: systemRejectRole, roleMemberList: systemResolveMembers } } })
 
         expect(wrapper.vm.processing).to.eq(true)
         setTimeout(() => {
@@ -64,7 +64,7 @@ describe('views/Roles/Role.vue', () => {
 
       it('reject.roleMemberList', (done) => {
         systemResolveRole = sinon.stub().resolves(role)
-        wrapper = mount(Role, { ...c, mocks: { ...mocks, $system: { roleRead: systemResolveRole, roleMemberList: systemRejectMembers } } })
+        wrapper = mount(Role, { ...c, mocks: { ...mocks, $SystemAPI: { roleRead: systemResolveRole, roleMemberList: systemRejectMembers } } })
 
         expect(wrapper.vm.processing).to.eq(true)
         setTimeout(() => {
@@ -95,7 +95,7 @@ describe('views/Roles/Role.vue', () => {
       it('resolve', (done) => {
         let resolve = { message: 'message' }
         systemResolve = sinon.stub().resolves(resolve)
-        wrapper = mount(Role, { ...c, mocks: { ...mocks, $system: { roleDelete: systemResolve }, $router: { push } } })
+        wrapper = mount(Role, { ...c, mocks: { ...mocks, $SystemAPI: { roleDelete: systemResolve }, $router: { push } } })
 
         wrapper.vm.onDelete()
         expect(wrapper.vm.processing).to.eq(true)
@@ -111,7 +111,7 @@ describe('views/Roles/Role.vue', () => {
 
       it('reject', (done) => {
         systemReject = sinon.stub().rejects(new Error('reject'))
-        wrapper = mount(Role, { ...c, mocks: { ...mocks, $system: { roleDelete: systemReject } } })
+        wrapper = mount(Role, { ...c, mocks: { ...mocks, $SystemAPI: { roleDelete: systemReject } } })
 
         wrapper.vm.onDelete()
         expect(wrapper.vm.processing).to.eq(true)
@@ -143,7 +143,7 @@ describe('views/Roles/Role.vue', () => {
 
       it('resolve.update', (done) => {
         systemResolve = sinon.stub().resolves(role)
-        wrapper = mount(Role, { ...c, mocks: { ...mocks, $system: { roleUpdate: systemResolve } } })
+        wrapper = mount(Role, { ...c, mocks: { ...mocks, $SystemAPI: { roleUpdate: systemResolve } } })
 
         wrapper.vm.onSubmit()
         expect(wrapper.vm.processing).to.eq(true)
@@ -158,7 +158,7 @@ describe('views/Roles/Role.vue', () => {
 
       it('reject.update', (done) => {
         systemReject = sinon.stub().rejects(new Error('reject'))
-        wrapper = mount(Role, { ...c, mocks: { ...mocks, $system: { roleUpdate: systemReject } } })
+        wrapper = mount(Role, { ...c, mocks: { ...mocks, $SystemAPI: { roleUpdate: systemReject } } })
 
         wrapper.vm.onSubmit()
         expect(wrapper.vm.processing).to.eq(true)
@@ -173,7 +173,7 @@ describe('views/Roles/Role.vue', () => {
 
       it('resolve.create', (done) => {
         systemResolve = sinon.stub().resolves(role)
-        wrapper = mount(Role, { ...c, mocks: { ...mocks, $system: { roleCreate: systemResolve }, $router: { push } }, propsData: {} })
+        wrapper = mount(Role, { ...c, mocks: { ...mocks, $SystemAPI: { roleCreate: systemResolve }, $router: { push } }, propsData: {} })
 
         wrapper.vm.onSubmit()
         expect(wrapper.vm.processing).to.eq(true)
@@ -189,7 +189,7 @@ describe('views/Roles/Role.vue', () => {
 
       it('reject.create', (done) => {
         systemReject = sinon.stub().rejects(new Error('reject'))
-        wrapper = mount(Role, { ...c, mocks: { ...mocks, $system: { roleCreate: systemReject } }, propsData: {} })
+        wrapper = mount(Role, { ...c, mocks: { ...mocks, $SystemAPI: { roleCreate: systemReject } }, propsData: {} })
 
         wrapper.vm.onSubmit()
         expect(wrapper.vm.processing).to.eq(true)

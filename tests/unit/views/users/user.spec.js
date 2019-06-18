@@ -26,7 +26,7 @@ describe('views/Users/User.vue', () => {
 
       it('resolve', (done) => {
         systemResolve = sinon.stub().resolves(user)
-        wrapper = mount(User, { ...c, mocks: { ...mocks, $system: { userRead: systemResolve } } })
+        wrapper = mount(User, { ...c, mocks: { ...mocks, $SystemAPI: { userRead: systemResolve } } })
 
         expect(wrapper.vm.processing).to.eq(true)
         expect(wrapper.vm.user).to.deep.eq({})
@@ -41,7 +41,7 @@ describe('views/Users/User.vue', () => {
 
       it('reject', (done) => {
         systemReject = sinon.stub().rejects(new Error('reject'))
-        wrapper = mount(User, { ...c, mocks: { ...mocks, $system: { userRead: systemReject } } })
+        wrapper = mount(User, { ...c, mocks: { ...mocks, $SystemAPI: { userRead: systemReject } } })
 
         expect(wrapper.vm.processing).to.eq(true)
         expect(wrapper.vm.user).to.deep.eq({})
@@ -60,7 +60,7 @@ describe('views/Users/User.vue', () => {
       let push = sinon.fake()
       let stdReject = sinon.stub().returns(undefined)
       let m = { ...mocks, $router: { push } }
-      let c = { ...common, methods: { handler, stdReject }, mocks: { ...m, $system: { userDelete: systemResolve } } }
+      let c = { ...common, methods: { handler, stdReject }, mocks: { ...m, $SystemAPI: { userDelete: systemResolve } } }
 
       beforeEach(() => {
         handler.resetHistory()
@@ -70,7 +70,7 @@ describe('views/Users/User.vue', () => {
 
       it('resolves', (done) => {
         systemResolve = sinon.stub().resolves(user)
-        wrapper = mount(User, { ...c, mocks: { ...m, $system: { userDelete: systemResolve } } })
+        wrapper = mount(User, { ...c, mocks: { ...m, $SystemAPI: { userDelete: systemResolve } } })
 
         wrapper.vm.onDelete()
         expect(wrapper.vm.processing).to.eq(true)
@@ -85,7 +85,7 @@ describe('views/Users/User.vue', () => {
 
       it('rejects', (done) => {
         systemReject = sinon.stub().rejects(new Error('reject'))
-        wrapper = mount(User, { ...c, mocks: { ...m, $system: { userDelete: systemReject } } })
+        wrapper = mount(User, { ...c, mocks: { ...m, $SystemAPI: { userDelete: systemReject } } })
 
         wrapper.vm.onDelete()
         expect(wrapper.vm.processing).to.eq(true)
@@ -114,7 +114,7 @@ describe('views/Users/User.vue', () => {
 
       it('resolve.update', (done) => {
         systemResolveUpdate = sinon.stub().resolves(user)
-        wrapper = mount(User, { ...c, mocks: { ...mocks, $system: { userUpdate: systemResolveUpdate } } })
+        wrapper = mount(User, { ...c, mocks: { ...mocks, $SystemAPI: { userUpdate: systemResolveUpdate } } })
 
         wrapper.vm.onSubmit()
         expect(wrapper.vm.processing).to.eq(true)
@@ -130,7 +130,7 @@ describe('views/Users/User.vue', () => {
 
       it('reject.update', (done) => {
         systemRejectUpdate = sinon.stub().rejects(new Error('reject'))
-        wrapper = mount(User, { ...c, mocks: { ...mocks, $system: { userUpdate: systemRejectUpdate } } })
+        wrapper = mount(User, { ...c, mocks: { ...mocks, $SystemAPI: { userUpdate: systemRejectUpdate } } })
 
         wrapper.vm.onSubmit()
         expect(wrapper.vm.processing).to.eq(true)
@@ -146,7 +146,7 @@ describe('views/Users/User.vue', () => {
 
       it('resolve.create', (done) => {
         systemResolveCreate = sinon.stub().resolves(user)
-        wrapper = mount(User, { ...c, propsData: {}, mocks: { ...mocks, $system: { userCreate: systemResolveCreate }, $router: { push } } })
+        wrapper = mount(User, { ...c, propsData: {}, mocks: { ...mocks, $SystemAPI: { userCreate: systemResolveCreate }, $router: { push } } })
 
         wrapper.vm.onSubmit()
         expect(wrapper.vm.processing).to.eq(true)
@@ -162,7 +162,7 @@ describe('views/Users/User.vue', () => {
       })
       it('reject.create', (done) => {
         systemRejectCreate = sinon.stub().rejects(new Error('reject'))
-        wrapper = mount(User, { ...c, propsData: {}, mocks: { ...mocks, $system: { userCreate: systemRejectCreate } } })
+        wrapper = mount(User, { ...c, propsData: {}, mocks: { ...mocks, $SystemAPI: { userCreate: systemRejectCreate } } })
 
         wrapper.vm.onSubmit()
         expect(wrapper.vm.processing).to.eq(true)

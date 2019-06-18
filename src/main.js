@@ -7,10 +7,9 @@ import './main.scss'
 import router from './router'
 import i18n from './i18next'
 import store from './store'
-import logger from './logger'
 
 /* eslint-disable no-undef */
-logger.log(
+console.log(
   `%cCrust Admin, version: ${VERSION}, build time: ${BUILD_TIME}`,
   'background-color: #1397CB; color: white; padding: 3px 10px; border: 1px solid black; font: Courier',
 )

@@ -42,7 +42,7 @@ describe('views/Roles/Index.vue', () => {
         let rr = []
         sinon.spy(rr, 'filter')
         systemResolve = sinon.stub().resolves(rr)
-        wrapper = mount(Index, { ...c, mocks: { ...mocks, $system: { roleList: systemResolve } } })
+        wrapper = mount(Index, { ...c, mocks: { ...mocks, $SystemAPI: { roleList: systemResolve } } })
 
         expect(wrapper.vm.roles).to.have.length(0)
         expect(wrapper.vm.error).to.eq(null)
@@ -64,7 +64,7 @@ describe('views/Roles/Index.vue', () => {
         ]
         sinon.spy(rr, 'filter')
         systemResolve = sinon.stub().resolves(rr)
-        wrapper = mount(Index, { ...c, mocks: { ...mocks, $system: { roleList: systemResolve } } })
+        wrapper = mount(Index, { ...c, mocks: { ...mocks, $SystemAPI: { roleList: systemResolve } } })
 
         expect(wrapper.vm.roles).to.have.length(0)
         expect(wrapper.vm.error).to.eq(null)
@@ -80,7 +80,7 @@ describe('views/Roles/Index.vue', () => {
 
       it('reject', (done) => {
         systemReject = sinon.stub().rejects(new Error('reject'))
-        wrapper = mount(Index, { ...c, mocks: { ...mocks, $system: { roleList: systemReject } } })
+        wrapper = mount(Index, { ...c, mocks: { ...mocks, $SystemAPI: { roleList: systemReject } } })
 
         expect(wrapper.vm.roles).to.have.length(0)
         expect(wrapper.vm.error).to.eq(null)
