@@ -66,7 +66,6 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-@import '@/assets/sass/_0.commons.scss';
 @import '@/assets/sass/menu-layer.scss';
 
 .app {
@@ -80,11 +79,10 @@ export default {
   .panel {
     flex: 1;
     z-index: 1;
-    background: $appwhite;
+    background: $white;
     max-width: 200px;
-    padding-top: $headerHeight;
-    border-right: 2px solid $appcream;
-    padding-top: 50px;
+    border-right: 2px solid $light;
+    padding-top: 55px;
   }
 
   .main {
@@ -130,9 +128,9 @@ export default {
 }
 
 .error {
-  color: $appred;
+  color: $danger;
   font-size: 24px;
-  background-color: $appwhite;
+  background-color: $white;
   width: 100vw;
   height: 20vh;
   padding: 60px;

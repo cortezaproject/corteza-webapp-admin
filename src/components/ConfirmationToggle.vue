@@ -51,7 +51,6 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-@import '@/assets/sass/_0.commons.scss';
 @import "@/assets/sass/btns.scss";
 
 .btn {
@@ -59,11 +58,11 @@ export default {
 }
 
 .btn-url {
-  color: $appred;
+  color: $danger;
   text-decoration: none;
 
   &:hover {
-    color: $appred;
+    color: $danger;
 
     .icon-trash {
       font-weight: 900;

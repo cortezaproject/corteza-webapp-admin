@@ -1,5 +1,3 @@
-@import './_0.declare-light';
-
 ul {
   list-style:none;
   padding:0;
@@ -22,14 +20,14 @@ ul {
       font-weight: 400;
       border-right: 3px solid transparent;
       &:hover {
-        background-color:rgba($appgrey,0.15);
-        border-color:rgba($appgrey,0.5);
+        background-color:rgba($secondary,0.15);
+        border-color:rgba($secondary,0.5);
     }
       &.router-link-active,
       &.selected {
-        border-color: $appblue;
-        background-color:rgba($appblue,0.15);
-        color: $appblue;
+        border-color: $primary;
+        background-color:rgba($primary,0.15);
+        color: $primary;
     }
   }
 }

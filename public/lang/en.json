@@ -382,7 +382,7 @@
       "enabled": "Enable external authentication",
 
       "handle": "Handle",
-      "key": "Client key",
+      "client-key": "Client key",
       "secret": "Secret",
       "issuer": "OIDC Issuer URL",
       "provider-enabled": "Enable this external authentication provider",
@@ -407,6 +407,6 @@
       "name": "Name",
       "lastUpdate": "Last update",
       "created": "Created"
-    }  
+    }
   }
 }

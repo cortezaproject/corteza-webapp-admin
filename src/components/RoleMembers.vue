@@ -106,7 +106,6 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-@import '@/assets/sass/_0.commons.scss';
 
 table {
   width: 100%;
@@ -114,7 +113,7 @@ table {
   padding: 0;
 
   tr {
-    border-bottom: 1px solid $appcream;
+    border-bottom: 1px solid $light;
     td.action {
       margin: 0;
       padding: 0;

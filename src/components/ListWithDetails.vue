@@ -50,8 +50,6 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-@import '@/assets/sass/_0.commons.scss';
-
 section {
   display: flex;
   flex-direction: column;
@@ -74,8 +72,8 @@ section {
       flex: 1;
       max-width: 200px;
       z-index: 1;
-      background: $appwhite;
-      border-right: 2px solid $appcream;
+      background: $white;
+      border-right: 2px solid $light;
       padding-top: 40px;
 
       & > div {

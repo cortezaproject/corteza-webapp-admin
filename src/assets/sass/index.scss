@@ -1,5 +1,4 @@
 /* Import bootstrap styles from npm package */
-@import './_0.declare-light';
 @import '~bootstrap/scss/bootstrap.scss';
 @import './btns';
 @import './forms';
@@ -9,9 +8,22 @@ html, body {
   width: 100vw;
   overflow: hidden;
 }
-html body {
-	color: $defaulttextcolor;
-	font-size: $defaultbodysize;
+
+body, html
+{
+  font-size:12px;
+  font-family:$regular;
+  box-sizing:border-box;
+}
+
+body
+{
+  margin:0;
+}
+
+*
+{
+  box-sizing: border-box;
 }
 
 #crust-admin {
@@ -21,20 +33,12 @@ html body {
   display: flex;
 }
 
-a {
-  color: $defaulttextcolor;
-  &:hover {
-    color:$defaultlinkcolor;
-  }
-}
-
 header {
-  height: $headerHeight;
   display: flex;
   justify-content: center;
   flex-direction: column;
   background: $white;
-  border-bottom: 1px solid $appcream;
+  border-bottom: 1px solid $light;
   padding: 1em;
 }
 .content {
@@ -42,17 +46,10 @@ header {
   height: calc(100vh - 60px);
   overflow-y: auto;
 }
-.small-open-button:hover {
-	background: $hoverbgcolor;
-}
 
-.header-title {
-  color:$defaulttextcolor;
-}
 .header-subtitle {
 	font-size:14px;
 	text-transform: uppercase;
-  color:$defaulttextcolor;
 }
 .header-row {
 	line-height: 34px;
@@ -62,30 +59,23 @@ header {
 }
 .custom-select {
 	border: none;
-	color: $defaultlinkcolor;
 	-webkit-appearance: none;
   -moz-appearance: none;
 	appearance: none;
 	padding:0 25px 0 0;
-  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAC4jAAAuIwF4pT92AAAAB3RJTUUH4gofCxMTPJag7AAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAB4SURBVDjL7ZLBCQMhFERnbSBl2EJK0wr+drY1DHOwDw9/c1FwDRESctwHIjLj+wcFbv5PKeX5TRbGg6RUaz0kpbn4KbsI3P3RdhuLkpK729jpbPMkkgYgAUAIIXdhi/cYY14KZsnA2+UlJI3k2Zb99CJNYvffXPMCq/9Nwd9GaXAAAAAASUVORK5CYII=') $mainbgcolor no-repeat 98.5% !important;
-  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAC4jAAAuIwF4pT92AAAAB3RJTUUH4gofCxMTPJag7AAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAB4SURBVDjL7ZLBCQMhFERnbSBl2EJK0wr+drY1DHOwDw9/c1FwDRESctwHIjLj+wcFbv5PKeX5TRbGg6RUaz0kpbn4KbsI3P3RdhuLkpK729jpbPMkkgYgAUAIIXdhi/cYY14KZsnA2+UlJI3k2Zb99CJNYvffXPMCq/9Nwd9GaXAAAAAASUVORK5CYII=') $mainbgcolor no-repeat calc(100% - 10px) !important;
 }
 .search-input {
-	background: $searchbackgroundcolor;
 	border:none;
 	padding:5px 0 5px 5px;
 	margin:0;
-	color:$searchforegroundcolor;
 	border-top-left-radius: 5px;
 	border-bottom-left-radius: 5px;
 	line-height: 22px;
 }
 .search-button {
-	background: $searchbackgroundcolor;
 	border:none;
 	padding:5px 5px 5px 2px;
 	margin:0;
-	color:$searchforegroundcolor;
 	border-top-right-radius: 5px;
 	border-bottom-right-radius: 5px;
 	line-height: 22px;
@@ -102,12 +92,4 @@ header {
 .table-details {
 	vertical-align: top;
 	padding: 5px;
-}
-
-.channel-name-circle {
-	color: $defaultlinkcolor;
-	font-size: 16px;
-	margin: -3px 5px -3px -4px;
-	display: block;
-	float: left;
 }

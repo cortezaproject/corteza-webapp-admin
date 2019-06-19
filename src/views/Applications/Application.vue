@@ -188,8 +188,6 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-@import '@/assets/sass/_0.commons.scss';
-
 form {
   display: flex;
   flex-direction: column;
@@ -218,7 +216,7 @@ form {
     padding-top: 10px;
     border-width: 2px 0 2px 0 ;
     border-style: solid;
-    border-color: $appcream;
+    border-color: $light;
   }
 }
 

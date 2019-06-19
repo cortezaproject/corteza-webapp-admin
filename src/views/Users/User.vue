@@ -137,8 +137,6 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-@import '@/assets/sass/_0.commons.scss';
-
 form {
   display: flex;
   flex-direction: column;

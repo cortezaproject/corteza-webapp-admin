@@ -250,7 +250,6 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-@import '@/assets/sass/_0.commons.scss';
 @import '@/assets/sass/menu-layer.scss';
 
 form {
@@ -260,7 +259,7 @@ form {
 
   .header {
     flex: 1;
-    border-bottom: 2px solid $appcream;
+    border-bottom: 2px solid $light;
   }
 
   .footer {
