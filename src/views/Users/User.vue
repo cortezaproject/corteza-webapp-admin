@@ -1,48 +1,84 @@
 <template>
-  <b-form @submit.prevent="onSubmit">
-    <div class="header">
-      <router-link :to="{ name: 'users' }" class="float-right"><b-button-close></b-button-close></router-link>
+  <div class="user-form">
+    <b-form @submit.prevent="onSubmit">
+      <div class="header">
+        <router-link :to="{ name: 'users' }" class="float-right"><b-button-close></b-button-close></router-link>
+        <h2 class="header-subtitle header-row">
+          {{ $t('user.information') }}
+        </h2>
+      </div>
+      <div class="user">
+        <b-form-group :label="$t('user.email')" label-cols="3">
+          <b-form-input v-model="user.email" required type="email" />
+        </b-form-group>
+
+        <b-form-group :label="$t('user.fullName')" label-cols="3">
+          <b-form-input v-model="user.name" required />
+        </b-form-group>
+
+        <b-form-group :label="$t('user.handle')" label-cols="3">
+          <b-form-input v-model="user.handle" />
+        </b-form-group>
+
+        <b-form-group :label="$t('user.kind')" horizontal v-if="false">
+          <b-form-text>{{ user.kind }}</b-form-text>
+        </b-form-group>
+
+        <b-form-group :label="$t('user.status')" label-cols="3" v-if="userID">
+            <b-form-radio-group buttons
+                        v-model="user.status"
+                        button-variant="outline-info"
+                        :options="statusOptions" />
+        </b-form-group>
+
+        <b-form-group :label="$t('general.label.lastUpdate')" label-cols="3" v-if="userID">
+          <b-form-text>{{ user.updatedAt }}</b-form-text>
+        </b-form-group>
+
+        <b-form-group :label="$t('general.label.created')" label-cols="3" v-if="userID">
+          <b-form-text>{{ user.createdAt }}</b-form-text>
+        </b-form-group>
+        <user-roles v-if="userID" :current-roles.sync="userRoles" class="roles"></user-roles>
+      </div>
+      <div class="footer">
+        <confirmation-toggle v-if="userID" @confirmed="onDelete">{{ $t('user.delete') }}</confirmation-toggle>
+        <b-button type="submit" variant="primary" :disabled="processing" class="ml-3">{{ $t('general.label.submit') }}</b-button>
+      </div>
+    </b-form>
+
+    <b-form v-if="userID" @submit.prevent="onPasswordChange" class="mt-4">
       <h2 class="header-subtitle header-row">
-        {{ $t('user.information') }}
+        {{ $t('user.password.change') }}
       </h2>
-    </div>
-    <div class="user">
-      <b-form-group :label="$t('user.email')" label-cols="3">
-        <b-form-input v-model="user.email" required type="email" />
+      <b-form-group :label="$t('user.password.new')" label-cols="3">
+        <b-form-input v-model="user.pass" required type="password" />
       </b-form-group>
 
-      <b-form-group :label="$t('user.fullName')" label-cols="3">
-        <b-form-input v-model="user.name" required />
+      <b-form-group :label="$t('user.password.confirm')" label-cols="3">
+        <b-form-input v-model="user.confpass" required type="password" />
       </b-form-group>
-
-      <b-form-group :label="$t('user.handle')" label-cols="3">
-        <b-form-input v-model="user.handle" />
-      </b-form-group>
-
-      <b-form-group :label="$t('user.kind')" horizontal v-if="false">
-        <b-form-text>{{ user.kind }}</b-form-text>
-      </b-form-group>
-
-      <b-form-group :label="$t('general.label.lastUpdate')" label-cols="3">
-        <b-form-text>{{ user.updatedAt }}</b-form-text>
-      </b-form-group>
-
-      <b-form-group :label="$t('general.label.created')" label-cols="3">
-        <b-form-text>{{ user.createdAt }}</b-form-text>
-      </b-form-group>
-    </div>
-    <div class="footer">
-      <confirmation-toggle @confirmed="onDelete">{{ $t('user.delete') }}</confirmation-toggle>
-      <b-button type="submit" variant="primary" :disabled="processing">{{ $t('user.submit') }}</b-button>
-    </div>
-  </b-form>
+      <div class="footer">
+        <span class="mr-5" v-if="user.confpass && user.pass !== user.confpass">
+          {{ $t('user.password.missmatch') }}
+        </span>
+        <b-button v-if="userID" type="submit" variant="primary" :disabled="processing || user.pass !== user.confpass" class="ml-10">{{ $t('general.label.submit') }}</b-button>
+      </div>
+    </b-form>
+  </div>
 </template>
 
 <script>
 import ConfirmationToggle from '@/components/ConfirmationToggle'
+import UserRoles from '@/components/UserRoles'
+
+const systemRoles = [
+  '1', // Everyone
+]
+
 export default {
   components: {
     ConfirmationToggle,
+    UserRoles,
   },
 
   props: {
@@ -56,7 +92,12 @@ export default {
     return {
       processing: false,
       user: {},
+      userRoles: [],
       error: null,
+      statusOptions: [
+        { text: this.$t('user.active'), value: false },
+        { text: this.$t('user.suspended'), value: true },
+      ],
     }
   },
 
@@ -65,17 +106,41 @@ export default {
       immediate: true,
       handler () {
         if (this.userID) {
-          this.fetchUsers()
+          this.fetchUser()
+          this.fetchUserRoles()
         }
       },
     },
   },
 
   methods: {
-    fetchUsers () {
+    fetchUser () {
       this.processing = true
       this.$SystemAPI.userRead({ userID: this.userID }).then(user => {
         this.user = user
+      }).catch(this.stdReject)
+        .finally(() => {
+          this.processing = false
+        })
+    },
+
+    fetchUserRoles () {
+      this.processing = true
+      this.userRoles = []
+      this.$SystemAPI.roleList().then(async rr => {
+        let roles = rr.filter(r => systemRoles.indexOf(r.roleID) < 0)
+        // Get user roles
+        roles.map(r => {
+          this.$SystemAPI.roleRead({ roleID: r.roleID }).then(r => {
+            this.$SystemAPI.roleMemberList(r).then(rl => {
+              let status = ''
+              if (rl.indexOf(this.userID) > -1) {
+                status = 'member'
+              }
+              this.userRoles.push({ ...r, status: status })
+            })
+          }).catch(this.stdReject)
+        })
       }).catch(this.stdReject)
         .finally(() => {
           this.processing = false
@@ -102,10 +167,24 @@ export default {
 
       if (this.userID) {
         this.$SystemAPI.userUpdate(payload)
-          .then(this.handler)
           .catch(this.stdReject)
-          .finally(() => {
+          .finally(async () => {
+            for (let role of this.userRoles) {
+              if (['add', 'member-remove'].indexOf(role.status) > -1) {
+                let payload = ''
+                let members = await this.$SystemAPI.roleMemberList(role)
+                if (role.status === 'add') {
+                  members.push(this.userID)
+                  payload = { ...role, members }
+                } else if (role.status === 'member-remove') {
+                  payload = { ...role, members: members.filter(m => m !== this.userID) }
+                }
+                await this.$SystemAPI.roleUpdate(payload)
+              }
+            }
             this.processing = false
+            this.fetchUser()
+            this.fetchUserRoles()
           })
       } else {
         this.$SystemAPI.userCreate(payload)
@@ -117,6 +196,16 @@ export default {
             this.processing = false
           })
       }
+    },
+
+    onPasswordChange () {
+      this.processing = true
+      // TODO
+      this.$SystemAPI.passwordChange(this.user)
+        .catch(this.stdReject)
+        .finally(() => {
+          this.processing = false
+        })
     },
 
     stdReject ({ message = null } = {}) {
@@ -137,28 +226,36 @@ export default {
 }
 </script>
 <style scoped lang="scss">
+
+.user-form {
+  height: 95vh;
+  overflow-y: auto;
+}
+
 form {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 50px);
+  margin-bottom: 10px;
 
   .header {
     flex: 1;
-    height: 150px;
   }
 
   .footer {
     flex: 1;
     text-align: right;
-    height: 150px;
+    margin: 10px 0;
   }
 
   .user {
     flex: 1;
     flex-grow: 100;
-    overflow-y: scroll;
     overflow-x: hidden;
     padding-top: 2px;
+
+    .roles {
+      min-height: 200px;
+    }
   }
 }
 
