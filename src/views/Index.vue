@@ -37,7 +37,7 @@ export default {
 
   data () {
     return {
-      logo: require('@/assets/images/crust-logo-with-tagline.png'),
+      logo: require('@/assets/images/corteza-logo-with-tagline.png'),
       loaded: false,
       error: null,
     }
@@ -124,6 +124,7 @@ export default {
     align-self: center;
     opacity: 0.7;
     animation: flickerAnimation 3s infinite;
+    width: 50%;
   }
 }
 
