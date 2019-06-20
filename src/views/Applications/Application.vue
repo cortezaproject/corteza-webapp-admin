@@ -21,7 +21,7 @@
       </b-form-group>
 
       <b-form-group label-cols="3">
-        <permissions-button :resource="'system:application:'+applicationID">{{ $t('application.manage-id-permissions') }}</permissions-button>
+        <permissions-button :title="application.name" :resource="'system:application:'+applicationID">{{ $t('application.manage-id-permissions') }}</permissions-button>
       </b-form-group>
 
       <b-form-group :label="$t('application.appSelector.label')" label-cols="3" v-if="application.unify" class="unify">

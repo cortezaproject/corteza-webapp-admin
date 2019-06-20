@@ -49,14 +49,20 @@
     }
   },
   "permission": {
-    "role": "Role permissions",
     "clearFilter": "Clear filter",
     "setOnAllFiltered": "Set on all filtered ({{count}})",
     "search": "Search/filter permissions",
     "saveChanges": "Save changes",
     "resetBack": "Reset back to \"{{current}}\"",
-    "setFor": "Set permissions for:",
-
+    "setFor": "Set permissions for {{target}}",
+    "role": {
+      "all": "all roles",
+      "specific": "role \"{{target}}\""
+    },
+    "application": {
+      "all": "all applications",
+      "specific": "application \"{{target}}\""
+    },
     "system": {
       "title": "System service",
       "grant": {
@@ -75,40 +81,86 @@
         "title": "Create new role",
         "description": "Default: deny"
       },
+      "user-create": {
+        "title": "Create new user",
+        "description": "Default: deny"
+      },
       "application-create": {
         "title": "Create new application",
         "description": "Default: deny"
+      },
+      "settings-read": {
+        "title": "Access all settings",
+        "description": "Default: allow"
+      },
+      "setting-manage": {
+        "title": "Manage members for any role",
+        "description": "Default: allow"
       }
     },
     "system-role": {
       "read": {
         "title": "Access any role",
+        "specific": "Access {{target}}",
         "description": "Default: allow"
       },
       "update": {
         "title": "Update any role",
+        "specific": "Update {{target}}",
         "description": "Default: allow"
       },
       "delete": {
         "title": "Delete any role",
+        "specific": "Delete {{target}}",
         "description": "Default: allow"
       },
       "members-manage": {
         "title": "Manage members for any role",
+        "specific": "Manage members for {{target}}",
+        "description": "Default: allow"
+      }
+    },
+    "system-user": {
+      "read": {
+        "title": "Access any user",
+        "specific": "Access {{target}}",
+        "description": "Default: allow"
+      },
+      "update": {
+        "title": "Update any user",
+        "specific": "Update {{target}}",
+        "description": "Default: allow"
+      },
+      "delete": {
+        "title": "Delete any user",
+        "specific": "Delete {{target}}",
+        "description": "Default: allow"
+      },
+      "suspend": {
+        "title": "Suspend any user",
+        "specific": "Suspend {{target}}",
+        "description": "Default: allow"
+      },
+      "unsuspend": {
+        "title": "Unsuspend any user",
+        "specific": "Unsuspend {{target}}",
         "description": "Default: allow"
       }
     },
     "system-application": {
       "read": {
         "title": "Access any application",
+        "specific": "Access {{target}}",
         "description": "Default: allow"
       },
       "update": {
         "title": "Update any application",
+        "specific": "Update {{target}}",
         "description": "Default: deny"
       },
       "delete": {
         "title": "Delete any application",
+        "specific": "Delete {{target}}",
         "description": "Default: deny"
       }
     },
@@ -366,11 +418,22 @@
   "user": {
     "information": "User Information",
     "delete": "Delete user",
+    "add": "Add user",
     "email": "Email",
     "fullName": "Full name",
     "handle": "Handle (name, username)",
+    "status": "User status",
+    "suspended": "Suspended",
+    "active": "Active",
     "kind": "Kind/Type",
-    "manage": "Manage users ({{count}})"
+    "manage": "Manage users ({{count}})",
+    "roles": "Roles {{count}}",
+    "password": {
+      "new": "New password",
+      "change": "Change password",
+      "confirm": "Confirm password",
+      "missmatch": "The passwords must match !"
+    }
   },
   "auth":{
     "notSignedIn": "You're not signed in",
@@ -402,7 +465,8 @@
       "add": "Add",
       "remove": "Remove",
       "search": "Search",
-      "searchUsers": "Search users:",
+      "searchUsers": "Search users",
+      "searchRoles": "Search roles",
       "yes": "Yes",
       "no": "No",
       "name": "Name",

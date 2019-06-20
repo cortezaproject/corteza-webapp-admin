@@ -3,16 +3,13 @@
     <p>{{ $t('role.managePermissions') }}</p>
     <ul>
       <li>
-        <permissions-button resource="system"
-                            title="System">System</permissions-button>
+        <permissions-button resource="system:">System</permissions-button>
       </li>
       <li>
-        <permissions-button resource="messaging"
-                            title="Messaging">Messaging</permissions-button>
+        <permissions-button resource="messaging">Messaging</permissions-button>
       </li>
       <li>
-        <permissions-button resource="compose"
-                            title="Compose">Compose</permissions-button>
+        <permissions-button resource="compose">Compose</permissions-button>
       </li>
     </ul>
 

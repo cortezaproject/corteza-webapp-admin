@@ -12,7 +12,7 @@
       </b-form-group>
 
       <b-form-group label-cols="3">
-        <permissions-button :resource="'system:role:'+roleID">{{ $t('role.manage-id-permissions') }}</permissions-button>
+        <permissions-button :title="role.name" :resource="'system:role:'+roleID" :roleID="roleID">{{ $t('role.manage-id-permissions') }}</permissions-button>
       </b-form-group>
 
       <b-form-group :label="$t('general.label.lastUpdate')" label-cols="3">

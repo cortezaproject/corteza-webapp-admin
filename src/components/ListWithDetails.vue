@@ -6,7 +6,6 @@
 
         <b-button-group class="toolbar">
           <permissions-button v-if="permissionsResourceType"
-                              :title="permissionsButtonLabel"
                               :resource="permissionsResourceType">{{ permissionsButtonLabel }}</permissions-button>
 
           <b-button class="ml-1"
