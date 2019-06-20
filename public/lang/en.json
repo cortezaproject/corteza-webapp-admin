@@ -55,6 +55,7 @@
     "search": "Search/filter permissions",
     "saveChanges": "Save changes",
     "resetBack": "Reset back to \"{{current}}\"",
+    "setFor": "Set permissions for:",
 
     "system": {
       "title": "System service",
