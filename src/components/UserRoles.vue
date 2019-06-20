@@ -1,0 +1,109 @@
+<template>
+  <b-form-group :label="$t('user.roles', { count: roles.filter(r => hasRole(r)).length })" label-cols="3">
+    <table v-if="roles">
+      <tr v-for="r in filteredRoles" :key="r.userID">
+        <td>{{r.name || r.handle || r.roleID || $t('role.unnamed') }}</td>
+        <td class="action">
+          <b-button @click="removeRole(r)">{{ $t('general.label.remove') }}</b-button>
+        </td>
+      </tr>
+    </table>
+    <b-input-group>
+      <b-input-group-prepend>
+        <b-input-group-text>{{ $t('general.label.searchRoles') }}</b-input-group-text>
+      </b-input-group-prepend>
+      <b-form-input v-model.trim="filter"></b-form-input>
+    </b-input-group>
+    <table v-if="filter && roles">
+      <tr v-for="r in filtered" :key="r.roleID">
+        <td>{{r.name || r.handle || r.roleID || $t('role.unnamed') }}</td>
+        <td class="action">
+          <b-button v-if="hasRole(r)" @click="removeRole(r)">{{ $t('general.label.remove') }}</b-button>
+          <b-button v-else @click="addRole(r)">{{ $t('general.label.add') }}</b-button>
+        </td>
+      </tr>
+    </table>
+  </b-form-group>
+</template>
+
+<script>
+export default {
+  props: {
+    currentRoles: {
+      type: Array,
+      required: true,
+      default: () => [],
+    },
+  },
+
+  data () {
+    return {
+      filter: '',
+      error: null,
+    }
+  },
+
+  computed: {
+    roles: {
+      get () {
+        return this.currentRoles
+      },
+
+      set (roles) {
+        this.$emit('update:current-roles', roles)
+      },
+    },
+
+    filtered () {
+      const match = ({ name = '', handle = '', roleID = '' }) => {
+        return `${name} ${handle} ${roleID}`.toLocaleLowerCase().indexOf(this.filter.toLocaleLowerCase()) > -1
+      }
+
+      return this.roles.filter(r => match(r) && !this.hasRole(r))
+    },
+
+    filteredRoles () {
+      return this.roles.filter(this.hasRole)
+    },
+  },
+
+  methods: {
+    hasRole (r) {
+      return r.status && r.status.indexOf('remove') < 0
+    },
+
+    addRole (r) {
+      if (r.status.indexOf('member') > -1) {
+        r.status = 'member-add'
+      } else {
+        r.status = 'add'
+      }
+    },
+
+    removeRole (r) {
+      if (r.status.indexOf('member') > -1) {
+        r.status = 'member-remove'
+      } else {
+        r.status = 'remove'
+      }
+    },
+  },
+}
+</script>
+<style scoped lang="scss">
+table {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+
+  tr {
+    td.action {
+      margin: 0;
+      padding: 0;
+      width: 100px;
+      text-align: right;
+    }
+  }
+}
+
+</style>
