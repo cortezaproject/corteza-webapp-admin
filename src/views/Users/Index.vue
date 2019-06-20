@@ -1,9 +1,12 @@
 <template>
   <list-with-details :title="$t('user.manage', { count: users.length })"
-                     @update="fetchUsers">
+                     :create-button-label="$t('user.add')"
+                     @create="$router.push({ name: 'users.user' })"
+                     @update="fetchUsers"
+                     class="user-list">
 
     <ul class="menu-layer">
-      <li v-for="u in users" :key="u.ID">
+      <li v-for="u in users" :key="u.userID">
         <router-link :to="{ name: 'users.user', params: { userID: u.userID } }">{{ u.name || u.username || u.email }}</router-link>
       </li>
     </ul>
@@ -32,8 +35,8 @@ export default {
 
   methods: {
     fetchUsers () {
-      this.$SystemAPI.userList({ query: this.query.toLowerCase() }).then(({ set }) => {
-        this.users = set
+      this.$SystemAPI.userList({ query: this.query.toLowerCase() }).then(uu => {
+        this.users = uu.sort((a, b) => a.name.localeCompare(b.name))
       }).catch(({ message }) => {
         this.error = message
       })
