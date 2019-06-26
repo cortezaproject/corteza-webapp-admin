@@ -22,7 +22,7 @@ describe('views/Users/Index.vue', () => {
   describe('methods', () => {
     describe('fetchUsers', () => {
       let systemResolve, systemReject
-      systemResolve = sinon.stub().resolves([ 'u1', 'u2', 'u3' ])
+      systemResolve = sinon.stub().resolves({ set: [ 'u1', 'u2', 'u3' ] })
       systemReject = sinon.stub().rejects(new Error('reject'))
 
       it('resolve', (done) => {

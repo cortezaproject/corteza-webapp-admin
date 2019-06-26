@@ -78,8 +78,8 @@ export default {
   },
 
   created () {
-    this.$SystemAPI.userList().then(uu => {
-      this.users = uu
+    this.$SystemAPI.userList().then(({ set }) => {
+      this.users = set
     }).catch(({ message }) => {
       this.error = message
     })

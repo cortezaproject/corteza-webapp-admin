@@ -63,7 +63,7 @@ describe('components/RoleMembers.vue', () => {
   describe('created', () => {
     let systemResolve, systemReject
     it('users.fetch.resolve', (done) => {
-      let resolve = [ {}, {} ]
+      let resolve = { set: [ {}, {} ] }
       systemResolve = sinon.stub().resolves(resolve)
       wrapper = mount(RoleMembers, { ...common, mocks: { ...mocks, $SystemAPI: { userList: systemResolve } } })
 
