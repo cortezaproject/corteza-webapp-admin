@@ -25,10 +25,18 @@
         </b-form-group>
 
         <b-form-group :label="$t('user.status')" label-cols="3" v-if="userID">
-            <b-form-radio-group buttons
-                        v-model="user.status"
-                        button-variant="outline-info"
-                        :options="statusOptions" />
+          <b-form-checkbox
+            id="status"
+            v-if="userID"
+            v-model="userStatus"
+            name="status"
+            value="suspended">
+            {{ $t('user.suspended') }}
+          </b-form-checkbox>
+        </b-form-group>
+
+        <b-form-group :label="$t('general.label.lastUpdate')" label-cols="3" v-if="userID && user.suspendedAt">
+          <b-form-text>{{ user.updatedAt }}</b-form-text>
         </b-form-group>
 
         <b-form-group :label="$t('general.label.lastUpdate')" label-cols="3" v-if="userID">
@@ -51,17 +59,19 @@
         {{ $t('user.password.change') }}
       </h2>
       <b-form-group :label="$t('user.password.new')" label-cols="3">
-        <b-form-input v-model="user.pass" required type="password" />
+        <b-form-input v-model="user.password" required type="password" />
       </b-form-group>
 
       <b-form-group :label="$t('user.password.confirm')" label-cols="3">
-        <b-form-input v-model="user.confpass" required type="password" />
+        <b-form-input v-model="user.confirmPassword" required type="password" />
       </b-form-group>
       <div class="footer">
-        <span class="mr-5" v-if="user.confpass && user.pass !== user.confpass">
+        <span class="mr-5" v-if="user.confirmPassword && user.password !== user.confirmPassword">
           {{ $t('user.password.missmatch') }}
         </span>
-        <b-button v-if="userID" type="submit" variant="primary" :disabled="processing || user.pass !== user.confpass" class="ml-10">{{ $t('general.label.submit') }}</b-button>
+        <b-button v-if="userID" type="submit" variant="primary" :disabled="processing || user.password !== user.confirmPassword" class="ml-10">
+          {{ $t('general.label.submit') }}
+        </b-button>
       </div>
     </b-form>
   </div>
@@ -93,11 +103,8 @@ export default {
       processing: false,
       user: {},
       userRoles: [],
+      userStatus: false,
       error: null,
-      statusOptions: [
-        { text: this.$t('user.active'), value: false },
-        { text: this.$t('user.suspended'), value: true },
-      ],
     }
   },
 
@@ -118,6 +125,7 @@ export default {
       this.processing = true
       this.$SystemAPI.userRead({ userID: this.userID }).then(user => {
         this.user = user
+        this.userStatus = this.user.suspendedAt ? 'suspended' : false
       }).catch(this.stdReject)
         .finally(() => {
           this.processing = false
@@ -166,6 +174,12 @@ export default {
       const payload = { ...this.user }
 
       if (this.userID) {
+        const userID = this.userID
+        if (this.userStatus) {
+          this.$SystemAPI.userSuspend({ userID })
+        } else {
+          this.$SystemAPI.userUnsuspend({ userID })
+        }
         this.$SystemAPI.userUpdate(payload)
           .catch(this.stdReject)
           .finally(async () => {
@@ -174,10 +188,10 @@ export default {
                 let payload = ''
                 let members = await this.$SystemAPI.roleMemberList(role)
                 if (role.status === 'add') {
-                  members.push(this.userID)
+                  members.push(userID)
                   payload = { ...role, members }
                 } else if (role.status === 'member-remove') {
-                  payload = { ...role, members: members.filter(m => m !== this.userID) }
+                  payload = { ...role, members: members.filter(m => m !== userID) }
                 }
                 await this.$SystemAPI.roleUpdate(payload)
               }
@@ -200,8 +214,8 @@ export default {
 
     onPasswordChange () {
       this.processing = true
-      // TODO
-      this.$SystemAPI.passwordChange(this.user)
+      const { userID, password } = this.user
+      this.$SystemAPI.userSetPassword({ userID, password })
         .catch(this.stdReject)
         .finally(() => {
           this.processing = false
