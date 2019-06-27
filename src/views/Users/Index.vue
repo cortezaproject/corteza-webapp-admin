@@ -35,8 +35,8 @@ export default {
 
   methods: {
     fetchUsers () {
-      this.$SystemAPI.userList({ query: this.query.toLowerCase() }).then(uu => {
-        this.users = uu.sort((a, b) => a.name.localeCompare(b.name))
+      this.$SystemAPI.userList({ query: this.query.toLowerCase(), sort: 'name' }).then(({ filter, set }) => {
+        this.users = set
       }).catch(({ message }) => {
         this.error = message
       })
