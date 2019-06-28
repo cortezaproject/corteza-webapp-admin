@@ -67,9 +67,18 @@ export default {
     },
   },
 
+  watch: {
+    currentRoles: {
+      immediate: true,
+      handler () {
+        this.filter = ''
+      },
+    },
+  },
+
   methods: {
     hasRole (r) {
-      return r.status && r.status.indexOf('remove') < 0
+      return r.status && r.status.indexOf('remove') === -1
     },
 
     addRole (r) {
