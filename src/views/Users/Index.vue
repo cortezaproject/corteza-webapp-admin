@@ -1,9 +1,11 @@
 <template>
-  <list-with-details :title="$t('user.manage', { count: users.length })"
+  <list-with-details :title="$t('user.manage', { count: users.length || 0 })"
+                     class="user-list"
                      :create-button-label="$t('user.add')"
-                     @create="$router.push({ name: 'users.user' })"
+                      permissions-resource-type="system:user:*"
+                     :permissions-button-label="$t('user.manage-wc-permissions')"
                      @update="fetchUsers"
-                     class="user-list">
+                     @create="$router.push({ name: 'users.user' })">
 
     <ul class="menu-layer">
       <li v-for="u in users" :key="u.userID">
@@ -35,7 +37,7 @@ export default {
 
   methods: {
     fetchUsers () {
-      this.$SystemAPI.userList({ query: this.query.toLowerCase(), sort: 'name' }).then(({ filter, set }) => {
+      this.$SystemAPI.userList({ query: this.query.toLowerCase(), sort: 'name' }).then(({ set }) => {
         this.users = set
       }).catch(({ message }) => {
         this.error = message

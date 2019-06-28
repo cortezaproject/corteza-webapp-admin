@@ -35,11 +35,15 @@
           </b-form-checkbox>
         </b-form-group>
 
-        <b-form-group :label="$t('general.label.lastUpdate')" label-cols="3" v-if="userID && user.suspendedAt">
-          <b-form-text>{{ user.updatedAt }}</b-form-text>
+        <b-form-group :label="$t('user.suspendedAt')" label-cols="3" v-if="userID && user.suspendedAt">
+          <b-form-text>{{ user.suspendedAt }}</b-form-text>
         </b-form-group>
 
-        <b-form-group :label="$t('general.label.lastUpdate')" label-cols="3" v-if="userID">
+        <b-form-group v-if="userID" label-cols="3">
+          <permissions-button :title="user.name" :resource="'system:user:'+user.userID">{{ $t('user.manage-id-permissions') }}</permissions-button>
+        </b-form-group>
+
+        <b-form-group :label="$t('general.label.lastUpdate')" label-cols="3" v-if="userID && user.updatedAt">
           <b-form-text>{{ user.updatedAt }}</b-form-text>
         </b-form-group>
 
@@ -114,7 +118,6 @@ export default {
       handler () {
         if (this.userID) {
           this.fetchUser()
-          this.fetchUserRoles()
         }
       },
     },
@@ -126,30 +129,30 @@ export default {
       this.$SystemAPI.userRead({ userID: this.userID }).then(user => {
         this.user = user
         this.userStatus = this.user.suspendedAt ? 'suspended' : false
-      }).catch(this.stdReject)
-        .finally(() => {
-          this.processing = false
-        })
+      }).then(this.fetchUserRoles())
+        .catch(this.stdReject)
     },
 
     fetchUserRoles () {
       this.processing = true
       this.userRoles = []
-      this.$SystemAPI.roleList().then(async rr => {
-        let roles = rr.filter(r => systemRoles.indexOf(r.roleID) < 0)
-        // Get user roles
-        roles.map(r => {
-          this.$SystemAPI.roleRead({ roleID: r.roleID }).then(r => {
-            this.$SystemAPI.roleMemberList(r).then(rl => {
-              let status = ''
-              if (rl.indexOf(this.userID) > -1) {
-                status = 'member'
-              }
-              this.userRoles.push({ ...r, status: status })
+      this.$SystemAPI.roleList()
+        .then(rr => rr.filter(r => systemRoles.indexOf(r.roleID) === -1))
+        .then(roles => {
+          // Get user roles
+          roles.forEach(r => {
+            this.$SystemAPI.roleRead({ roleID: r.roleID }).then(r => {
+              this.$SystemAPI.roleMemberList(r).then(rl => {
+                let status = ''
+                if (rl.indexOf(this.userID) > -1) {
+                  status = 'member'
+                }
+                this.userRoles.push({ ...r, status: status })
+              })
             })
-          }).catch(this.stdReject)
+          })
         })
-      }).catch(this.stdReject)
+        .catch(this.stdReject)
         .finally(() => {
           this.processing = false
         })
@@ -168,44 +171,49 @@ export default {
         })
     },
 
-    onSubmit () {
+    async onSubmit () {
       this.processing = true
 
       const payload = { ...this.user }
 
       if (this.userID) {
         const userID = this.userID
+
+        // Suspend/unsuspend user
         if (this.userStatus) {
           this.$SystemAPI.userSuspend({ userID })
+            .catch(this.stdReject)
         } else {
           this.$SystemAPI.userUnsuspend({ userID })
+            .catch(this.stdReject)
         }
+
+        // Update changed roles
+        for (let role of this.userRoles) {
+          if (['add', 'member-remove'].indexOf(role.status) > -1) {
+            let payload = ''
+            let members = await this.$SystemAPI.roleMemberList(role)
+            if (role.status === 'add') {
+              members.push(userID)
+              payload = { ...role, members }
+            } else if (role.status === 'member-remove') {
+              payload = { ...role, members: members.filter(m => m !== userID) }
+            }
+            await this.$SystemAPI.roleUpdate(payload)
+          }
+        }
+
+        // Finally update user
         this.$SystemAPI.userUpdate(payload)
           .catch(this.stdReject)
-          .finally(async () => {
-            for (let role of this.userRoles) {
-              if (['add', 'member-remove'].indexOf(role.status) > -1) {
-                let payload = ''
-                let members = await this.$SystemAPI.roleMemberList(role)
-                if (role.status === 'add') {
-                  members.push(userID)
-                  payload = { ...role, members }
-                } else if (role.status === 'member-remove') {
-                  payload = { ...role, members: members.filter(m => m !== userID) }
-                }
-                await this.$SystemAPI.roleUpdate(payload)
-              }
-            }
-            this.processing = false
-            this.fetchUser()
-            this.fetchUserRoles()
-          })
+          .finally(this.fetchUser())
       } else {
         this.$SystemAPI.userCreate(payload)
           .then(this.handler)
           .then(({ userID }) => {
             this.$router.push({ name: 'users.user', params: { userID } })
-          }).catch(this.stdReject)
+          })
+          .catch(this.stdReject)
           .finally(() => {
             this.processing = false
           })
@@ -218,12 +226,14 @@ export default {
       this.$SystemAPI.userSetPassword({ userID, password })
         .catch(this.stdReject)
         .finally(() => {
+          this.fetchUser()
           this.processing = false
         })
     },
 
     stdReject ({ message = null } = {}) {
       this.error = message
+      // TODO create alerts
     },
 
     handler (user) {
@@ -232,8 +242,9 @@ export default {
       // Inform parent component about user changes
       // @todo solve this with vuex
       this.$emit('update')
-      this.user = user
-
+      if (user) {
+        this.user = user
+      }
       return Promise.resolve(user)
     },
   },
@@ -268,7 +279,7 @@ form {
     padding-top: 2px;
 
     .roles {
-      min-height: 200px;
+      min-height: 130px;
     }
   }
 }

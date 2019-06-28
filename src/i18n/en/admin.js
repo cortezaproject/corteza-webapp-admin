@@ -65,6 +65,10 @@ export default {
       all: 'all roles',
       specific: 'role "{{target}}"',
     },
+    user: {
+      all: 'all users',
+      specific: 'user "{{target}}"',
+    },
     application: {
       all: 'all applications',
       specific: 'application "{{target}}"',
@@ -430,6 +434,7 @@ export default {
     handle: 'Handle (name, username)',
     status: 'User status',
     suspended: 'Suspended',
+    suspendedAt: 'Suspended at',
     active: 'Active',
     kind: 'Kind/Type',
     manage: 'Manage users ({{count}})',
@@ -440,6 +445,8 @@ export default {
       confirm: 'Confirm password',
       missmatch: 'The passwords must match !',
     },
+    'manage-id-permissions': 'Manage permissions for this user',
+    'manage-wc-permissions': 'Manage permissions for all users',
   },
   auth: {
     notSignedIn: 'You\'re not signed in',
