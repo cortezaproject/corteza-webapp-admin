@@ -19,7 +19,7 @@
 
     Manage your JWT here:
     <textarea placeholder="your.jwt.string" rows="5" v-model.trim="newJWT"></textarea>
-    <button @click="check" :disabled="!this.newJWT">Check & store</button> &nbsp;
+    <b-button @click="check" :disabled="!this.newJWT">Check & store</b-button> &nbsp;
 
     <br />
     <br />
