@@ -1,8 +1,8 @@
 <template>
-  <b-form-group :label="$t('user.roles', { count: roles.filter(r => hasRole(r)).length })" label-cols="3">
-    <table v-if="roles">
+  <b-form-group :label="$t('user.roles.count', { count: filteredRoles.length })" label-cols="3">
+    <table v-if="filteredRoles">
       <tr v-for="r in filteredRoles" :key="r.userID">
-        <td>{{r.name || r.handle || r.roleID || $t('role.unnamed') }}</td>
+        <td>{{ r.name || r.handle || r.roleID || $t('role.unnamed') }}</td>
         <td class="action">
           <b-button @click="removeRole(r)">{{ $t('general.label.remove') }}</b-button>
         </td>
@@ -14,12 +14,11 @@
       </b-input-group-prepend>
       <b-form-input v-model.trim="filter"></b-form-input>
     </b-input-group>
-    <table v-if="filter && roles">
+    <table v-if="filter && filtered">
       <tr v-for="r in filtered" :key="r.roleID">
-        <td>{{r.name || r.handle || r.roleID || $t('role.unnamed') }}</td>
+        <td>{{ r.name || r.handle || r.roleID || $t('role.unnamed') }}</td>
         <td class="action">
-          <b-button v-if="hasRole(r)" @click="removeRole(r)">{{ $t('general.label.remove') }}</b-button>
-          <b-button v-else @click="addRole(r)">{{ $t('general.label.add') }}</b-button>
+          <b-button @click="addRole(r)">{{ $t('general.label.add') }}</b-button>
         </td>
       </tr>
     </table>
@@ -78,28 +77,23 @@ export default {
 
   methods: {
     hasRole (r) {
-      return r.status && r.status.indexOf('remove') === -1
+      return r.dirty
     },
 
     addRole (r) {
-      if (r.status.indexOf('member') > -1) {
-        r.status = 'member-add'
-      } else {
-        r.status = 'add'
-      }
+      r.dirty = true
     },
 
     removeRole (r) {
-      if (r.status.indexOf('member') > -1) {
-        r.status = 'member-remove'
-      } else {
-        r.status = 'remove'
-      }
+      r.dirty = false
     },
   },
 }
 </script>
 <style scoped lang="scss">
+.roles {
+  min-height: 100px;
+}
 table {
   width: 100%;
   margin: 0;
@@ -114,5 +108,4 @@ table {
     }
   }
 }
-
 </style>
