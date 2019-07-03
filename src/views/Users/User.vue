@@ -1,6 +1,6 @@
 <template>
   <div class="user-form">
-    <b-form @submit.prevent="onSubmit">
+    <b-form @submit.prevent="onUserSubmit">
       <div class="header">
         <router-link :to="{ name: 'users' }" class="float-right"><b-button-close></b-button-close></router-link>
         <h2 class="header-subtitle header-row">
@@ -24,21 +24,6 @@
           <b-form-text>{{ user.kind }}</b-form-text>
         </b-form-group>
 
-        <b-form-group :label="$t('user.status')" label-cols="3" v-if="userID">
-          <b-form-checkbox
-            id="status"
-            v-if="userID"
-            v-model="userStatus"
-            name="status"
-            value="suspended">
-            {{ $t('user.suspended') }}
-          </b-form-checkbox>
-        </b-form-group>
-
-        <b-form-group :label="$t('user.suspendedAt')" label-cols="3" v-if="userID && user.suspendedAt">
-          <b-form-text>{{ user.suspendedAt }}</b-form-text>
-        </b-form-group>
-
         <b-form-group v-if="userID" label-cols="3">
           <permissions-button :title="user.name" :resource="'system:user:'+user.userID">{{ $t('user.manage-id-permissions') }}</permissions-button>
         </b-form-group>
@@ -50,15 +35,19 @@
         <b-form-group :label="$t('general.label.created')" label-cols="3" v-if="userID">
           <b-form-text>{{ user.createdAt }}</b-form-text>
         </b-form-group>
-        <user-roles v-if="userID" :current-roles.sync="userRoles" class="roles"></user-roles>
+
+        <b-form-group :label="$t('user.suspendedAt')" label-cols="3" v-if="userID && user.suspendedAt">
+          <b-form-text>{{ user.suspendedAt }}</b-form-text>
+        </b-form-group>
       </div>
       <div class="footer">
-        <confirmation-toggle v-if="userID" @confirmed="onDelete">{{ $t('user.delete') }}</confirmation-toggle>
+        <confirmation-toggle v-if="userID" :disabled="processing" @confirmed="onDelete">{{ $t('user.delete') }}</confirmation-toggle>
+        <confirmation-toggle v-if="userID" :disabled="processing" @confirmed="onStatusChange" ctaClass="secondary">{{ statusButtonTitle }}</confirmation-toggle>
         <b-button type="submit" variant="primary" :disabled="processing" class="ml-3">{{ $t('general.label.submit') }}</b-button>
       </div>
     </b-form>
 
-    <b-form v-if="userID" @submit.prevent="onPasswordChange" class="mt-4">
+    <b-form v-if="userID" @submit.prevent="onPasswordSubmit">
       <h2 class="header-subtitle header-row">
         {{ $t('user.password.change') }}
       </h2>
@@ -78,16 +67,26 @@
         </b-button>
       </div>
     </b-form>
+
+    <b-form v-if="userID" @submit.prevent="onRoleSubmit">
+      <h2 class="header-subtitle header-row">
+        {{ $t('user.roles.manage') }}
+      </h2>
+
+      <user-roles v-if="userID" :current-roles.sync="userRoles"/>
+
+      <div class="footer">
+        <b-button v-if="userID" type="submit" variant="primary" :disabled="processing" class="ml-10">
+          {{ $t('general.label.submit') }}
+        </b-button>
+      </div>
+    </b-form>
   </div>
 </template>
 
 <script>
 import ConfirmationToggle from '@/components/ConfirmationToggle'
 import UserRoles from '@/components/UserRoles'
-
-const systemRoles = [
-  '1', // Everyone
-]
 
 export default {
   components: {
@@ -112,12 +111,19 @@ export default {
     }
   },
 
+  computed: {
+    statusButtonTitle () {
+      return this.user.suspendedAt ? this.$t('user.activate') : this.$t('user.suspend')
+    },
+  },
+
   watch: {
     userID: {
       immediate: true,
       handler () {
         if (this.userID) {
           this.fetchUser()
+          this.fetchUserRoles()
         }
       },
     },
@@ -128,34 +134,34 @@ export default {
       this.processing = true
       this.$SystemAPI.userRead({ userID: this.userID }).then(user => {
         this.user = user
-        this.userStatus = this.user.suspendedAt ? 'suspended' : false
-      }).then(this.fetchUserRoles())
+      })
         .catch(this.stdReject)
+        .finally(() => {
+          this.processing = false
+        })
     },
 
     fetchUserRoles () {
       this.processing = true
       this.userRoles = []
-      this.$SystemAPI.roleList()
-        .then(rr => rr.filter(r => systemRoles.indexOf(r.roleID) === -1))
-        .then(roles => {
-          // Get user roles
+      const userID = this.userID
+      this.$SystemAPI.roleList().then(roles => {
+        this.$SystemAPI.userMembershipList({ userID }).then(m => {
+          let userRoles = []
           roles.forEach(r => {
-            this.$SystemAPI.roleRead({ roleID: r.roleID }).then(r => {
-              this.$SystemAPI.roleMemberList(r).then(rl => {
-                let status = ''
-                if (rl.indexOf(this.userID) > -1) {
-                  status = 'member'
-                }
-                this.userRoles.push({ ...r, status: status })
-              })
-            })
+            let { roleID } = r
+            if (roleID !== '1') {
+              let current = false
+              if (m.indexOf(roleID) > -1) {
+                current = true
+              }
+              userRoles.push({ ...r, current: current, dirty: current })
+            }
           })
-        })
-        .catch(this.stdReject)
-        .finally(() => {
+          this.userRoles = userRoles
           this.processing = false
         })
+      })
     },
 
     onDelete () {
@@ -166,47 +172,15 @@ export default {
           this.$router.push({ name: 'users' })
         })
         .catch(this.stdReject)
-        .finally(() => {
-          this.processing = false
-        })
     },
 
-    async onSubmit () {
+    onUserSubmit () {
       this.processing = true
-
       const payload = { ...this.user }
-
       if (this.userID) {
-        const userID = this.userID
-
-        // Suspend/unsuspend user
-        if (this.userStatus) {
-          this.$SystemAPI.userSuspend({ userID })
-            .catch(this.stdReject)
-        } else {
-          this.$SystemAPI.userUnsuspend({ userID })
-            .catch(this.stdReject)
-        }
-
-        // Update changed roles
-        for (let role of this.userRoles) {
-          if (['add', 'member-remove'].indexOf(role.status) > -1) {
-            let payload = ''
-            let members = await this.$SystemAPI.roleMemberList(role)
-            if (role.status === 'add') {
-              members.push(userID)
-              payload = { ...role, members }
-            } else if (role.status === 'member-remove') {
-              payload = { ...role, members: members.filter(m => m !== userID) }
-            }
-            await this.$SystemAPI.roleUpdate(payload)
-          }
-        }
-
-        // Finally update user
         this.$SystemAPI.userUpdate(payload)
+          .then(this.handler)
           .catch(this.stdReject)
-          .finally(this.fetchUser())
       } else {
         this.$SystemAPI.userCreate(payload)
           .then(this.handler)
@@ -220,13 +194,49 @@ export default {
       }
     },
 
-    onPasswordChange () {
+    onRoleSubmit () {
+      this.processing = true
+      const userID = this.userID
+      Promise.all(this.userRoles.map(async role => {
+        let { roleID, current, dirty } = role
+        if (dirty !== current) {
+          if (dirty) {
+            return this.$SystemAPI.userMembershipAdd({ roleID, userID })
+          } else {
+            return this.$SystemAPI.userMembershipRemove({ roleID, userID })
+          }
+        }
+      })).then(() => {
+        this.fetchUserRoles()
+      })
+    },
+
+    onStatusChange () {
+      this.processing = true
+      const userID = this.userID
+      if (this.user.suspendedAt) {
+        this.$SystemAPI.userUnsuspend({ userID })
+          .catch(this.stdReject)
+          .finally(() => {
+            this.fetchUser()
+          })
+      } else {
+        this.$SystemAPI.userSuspend({ userID })
+          .catch(this.stdReject)
+          .finally(() => {
+            this.fetchUser()
+          })
+      }
+    },
+
+    onPasswordSubmit () {
       this.processing = true
       const { userID, password } = this.user
       this.$SystemAPI.userSetPassword({ userID, password })
         .catch(this.stdReject)
         .finally(() => {
-          this.fetchUser()
+          this.user.password = ''
+          this.user.confirmPassword = ''
           this.processing = false
         })
     },
@@ -260,7 +270,7 @@ export default {
 form {
   display: flex;
   flex-direction: column;
-  margin-bottom: 10px;
+  border-bottom: 1px solid #F3F3F5;
 
   .header {
     flex: 1;
@@ -277,10 +287,11 @@ form {
     flex-grow: 100;
     overflow-x: hidden;
     padding-top: 2px;
+  }
 
-    .roles {
-      min-height: 130px;
-    }
+  .status {
+    flex: 1;
+    align-items: center;
   }
 }
 
