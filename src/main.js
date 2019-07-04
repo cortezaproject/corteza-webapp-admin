@@ -14,8 +14,8 @@ console.log(
   'background-color: #1397CB; color: white; padding: 3px 10px; border: 1px solid black; font: Courier',
 )
 
-if (window.SystemAPI === undefined) {
-  alert('Unexisting or invalid configuration. Make sure there is a public/config.js configuration file.')
+if (window.SystemAPI === undefined || window.ComposeAPI === undefined || window.MessagingAPI === undefined) {
+  alert('Missing or invalid System/Compose/Messaging API configuration. Make sure there is a public/config.js configuration file.')
 } else {
   new Vue({
     router,
