@@ -54,7 +54,13 @@
     "search": "Search/filter permissions",
     "saveChanges": "Save changes",
     "resetBack": "Reset back to \"{{current}}\"",
+    "managePermissions": "Set base permissions",
     "setFor": "Set permissions for {{target}}",
+    "base": {
+      "system": "System",
+      "compose": "Compose",
+      "messaging": "Messaging"
+    },
     "role": {
       "all": "all roles",
       "specific": "role \"{{target}}\""
@@ -93,8 +99,8 @@
         "title": "Access all settings",
         "description": "Default: allow"
       },
-      "setting-manage": {
-        "title": "Manage members for any role",
+      "settings-manage": {
+        "title": "Manage all settings",
         "description": "Default: allow"
       }
     },
@@ -406,7 +412,6 @@
     }
   },
   "role": {
-    "managePermissions": "Set base permissions for Crust systems:",
     "information": "Role Information",
     "delete": "Delete role",
     "add": "Add Role",

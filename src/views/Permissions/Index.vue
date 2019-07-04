@@ -1,9 +1,9 @@
 <template>
   <div>
-    <p>{{ $t('role.managePermissions') }}</p>
+    <p>{{ $t('permission.managePermissions') }}</p>
     <ul>
       <li>
-        <permissions-button resource="system:">System</permissions-button>
+        <permissions-button resource="system">System</permissions-button>
       </li>
       <li>
         <permissions-button resource="messaging">Messaging</permissions-button>
