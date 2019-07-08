@@ -31,7 +31,7 @@ describe('views/Users/Index.vue', () => {
         expect(wrapper.vm.users).to.have.length(0)
         expect(wrapper.vm.error).to.eq(null)
         setTimeout(() => {
-          assert(systemResolve.calledOnceWith({ query: 'query' }))
+          assert(systemResolve.calledOnceWith({ query: 'query', sort: 'name' }))
           expect(wrapper.vm.users).to.have.length(3)
           expect(wrapper.vm.error).to.eq(null)
           done()
@@ -44,7 +44,7 @@ describe('views/Users/Index.vue', () => {
         expect(wrapper.vm.users).to.have.length(0)
         expect(wrapper.vm.error).to.eq(null)
         setTimeout(() => {
-          assert(systemReject.calledOnceWith({ query: 'query' }))
+          assert(systemReject.calledOnceWith({ query: 'query', sort: 'name' }))
           expect(wrapper.vm.users).to.have.length(0)
           expect(wrapper.vm.error).to.eq('reject')
           done()

@@ -160,8 +160,8 @@ export default {
           })
           this.userRoles = userRoles
           this.processing = false
-        })
-      })
+        }).catch(this.stdReject)
+      }).catch(this.stdReject)
     },
 
     onDelete () {
@@ -243,6 +243,7 @@ export default {
 
     stdReject ({ message = null } = {}) {
       this.error = message
+      this.processing = false
       // TODO create alerts
     },
 
