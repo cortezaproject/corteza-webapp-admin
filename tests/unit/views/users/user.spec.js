@@ -12,9 +12,11 @@ describe('views/Users/User.vue', () => {
   let wrapper
 
   describe('methods', () => {
-    let systemResolve, systemReject
+    let systemResolve, systemReject, systemResolveUser, systemResolveRoles, systemResolveMembership
     const userID = 'userID'
     const user = { name: 'name', userID }
+    const userMembershipList = ['1', '2', 'userID']
+    const roleList = [{ roleID: '1' }, { roleID: '2' }]
 
     describe('fetchUsers', () => {
       let stdReject = sinon.stub().returns(undefined)
@@ -25,13 +27,17 @@ describe('views/Users/User.vue', () => {
       })
 
       it('resolve', (done) => {
-        systemResolve = sinon.stub().resolves(user)
-        wrapper = mount(User, { ...c, mocks: { ...mocks, $SystemAPI: { userRead: systemResolve } } })
+        systemResolveUser = sinon.stub().resolves(user)
+        systemResolveRoles = sinon.stub().resolves(roleList)
+        systemResolveMembership = sinon.stub().resolves(userMembershipList)
+        wrapper = mount(User, { ...c, mocks: { ...mocks, $SystemAPI: { userRead: systemResolveUser, roleList: systemResolveRoles, userMembershipList: systemResolveMembership } } })
 
         expect(wrapper.vm.processing).to.eq(true)
         expect(wrapper.vm.user).to.deep.eq({})
         setTimeout(() => {
-          assert(systemResolve.calledOnceWith({ userID }))
+          assert(systemResolveUser.calledOnceWith({ userID }))
+          assert(systemResolveRoles.calledOnceWith())
+          assert(systemResolveMembership.calledOnceWith({ userID }))
           expect(wrapper.vm.processing).to.eq(false)
           expect(wrapper.vm.user).to.deep.eq(user)
           assert(stdReject.notCalled)
@@ -41,15 +47,58 @@ describe('views/Users/User.vue', () => {
 
       it('reject', (done) => {
         systemReject = sinon.stub().rejects(new Error('reject'))
-        wrapper = mount(User, { ...c, mocks: { ...mocks, $SystemAPI: { userRead: systemReject } } })
+        wrapper = mount(User, { ...c, mocks: { ...mocks, $SystemAPI: { userRead: systemReject, roleList: systemReject, userMembershipList: systemReject } } })
 
         expect(wrapper.vm.processing).to.eq(true)
         expect(wrapper.vm.user).to.deep.eq({})
         setTimeout(() => {
-          assert(systemReject.calledOnceWith({ userID }))
+          expect(systemReject.callCount).to.eq(2)
           expect(wrapper.vm.processing).to.eq(false)
           expect(wrapper.vm.user).to.deep.eq({})
-          assert(stdReject.calledOnce)
+          assert(stdReject.calledTwice)
+          done()
+        })
+      })
+    })
+
+    describe('fetchUserRoles', () => {
+      let stdReject = sinon.stub().returns(undefined)
+      let c = { ...common, propsData: { userID }, methods: { stdReject } }
+      let userRoles = [{ roleID: '2', current: true, dirty: true }]
+
+      beforeEach(() => {
+        stdReject.resetHistory()
+      })
+
+      it('resolve', (done) => {
+        systemResolveUser = sinon.stub().resolves(user)
+        systemResolveRoles = sinon.stub().resolves(roleList)
+        systemResolveMembership = sinon.stub().resolves(userMembershipList)
+        wrapper = mount(User, { ...c, mocks: { ...mocks, $SystemAPI: { userRead: systemResolveUser, roleList: systemResolveRoles, userMembershipList: systemResolveMembership } } })
+
+        expect(wrapper.vm.processing).to.eq(true)
+        expect(wrapper.vm.userRoles).to.deep.eq([])
+        setTimeout(() => {
+          assert(systemResolveRoles.calledOnceWith())
+          assert(systemResolveMembership.calledOnceWith({ userID }))
+          expect(wrapper.vm.processing).to.eq(false)
+          expect(wrapper.vm.userRoles).to.deep.eq(userRoles)
+          assert(stdReject.notCalled)
+          done()
+        })
+      })
+
+      it('reject', (done) => {
+        systemReject = sinon.stub().rejects(new Error('reject'))
+        wrapper = mount(User, { ...c, mocks: { ...mocks, $SystemAPI: { userRead: systemReject, roleList: systemReject, userMembershipList: systemReject } } })
+
+        expect(wrapper.vm.processing).to.eq(true)
+        expect(wrapper.vm.user).to.deep.eq({})
+        setTimeout(() => {
+          expect(systemReject.callCount).to.eq(2)
+          expect(wrapper.vm.userRoles).to.deep.eq([])
+          assert(stdReject.calledTwice)
+          expect(wrapper.vm.processing).to.eq(false)
           done()
         })
       })
@@ -78,7 +127,6 @@ describe('views/Users/User.vue', () => {
           assert(handler.calledOnceWith(user))
           assert(push.calledOnceWith({ name: 'users' }))
           assert(stdReject.notCalled)
-          expect(wrapper.vm.processing).to.eq(false)
           done()
         })
       })
@@ -93,18 +141,17 @@ describe('views/Users/User.vue', () => {
           assert(handler.notCalled)
           assert(push.notCalled)
           assert(stdReject.calledOnce)
-          expect(wrapper.vm.processing).to.eq(false)
           done()
         })
       })
     })
 
-    describe('onSubmit', () => {
+    describe('onUserSubmit', () => {
       let systemResolveUpdate, systemRejectUpdate, systemResolveCreate, systemRejectCreate
       let handler = sinon.stub().returns(user)
       let stdReject = sinon.stub().returns(undefined)
       let push = sinon.fake()
-      let c = { ...common, propsData: { userID }, data: () => ({ user }), methods: { fetchUsers: () => {}, handler, stdReject } }
+      let c = { ...common, propsData: { userID }, data: () => ({ user }), methods: { fetchUsers: () => {}, fetchUserRoles: () => {}, handler, stdReject } }
 
       beforeEach(() => {
         push.resetHistory()
@@ -114,13 +161,13 @@ describe('views/Users/User.vue', () => {
 
       it('resolve.update', (done) => {
         systemResolveUpdate = sinon.stub().resolves(user)
-        wrapper = mount(User, { ...c, mocks: { ...mocks, $SystemAPI: { userUpdate: systemResolveUpdate } } })
+        wrapper = mount(User, { ...c, mocks: { ...mocks, $SystemAPI: { userUpdate: systemResolveUpdate, userRead: systemResolveUpdate } } })
 
-        wrapper.vm.onSubmit()
+        wrapper.vm.onUserSubmit()
         expect(wrapper.vm.processing).to.eq(true)
         expect(wrapper.vm.error).to.eq(null)
         setTimeout(() => {
-          assert(systemResolveUpdate.calledOnceWith(user))
+          expect(systemResolveUpdate.callCount).to.eq(2)
           assert(handler.calledOnceWith(user))
           assert(stdReject.notCalled)
           expect(wrapper.vm.processing).to.eq(false)
@@ -130,14 +177,14 @@ describe('views/Users/User.vue', () => {
 
       it('reject.update', (done) => {
         systemRejectUpdate = sinon.stub().rejects(new Error('reject'))
-        wrapper = mount(User, { ...c, mocks: { ...mocks, $SystemAPI: { userUpdate: systemRejectUpdate } } })
+        wrapper = mount(User, { ...c, mocks: { ...mocks, $SystemAPI: { userUpdate: systemRejectUpdate, userRead: systemRejectUpdate } } })
 
-        wrapper.vm.onSubmit()
+        wrapper.vm.onUserSubmit()
         expect(wrapper.vm.processing).to.eq(true)
         expect(wrapper.vm.error).to.eq(null)
         setTimeout(() => {
-          assert(systemRejectUpdate.calledOnceWith(user))
-          assert(stdReject.calledOnce)
+          expect(systemResolveUpdate.callCount).to.eq(2)
+          assert(stdReject.calledTwice)
           assert(handler.notCalled)
           expect(wrapper.vm.processing).to.eq(false)
           done()
@@ -148,7 +195,7 @@ describe('views/Users/User.vue', () => {
         systemResolveCreate = sinon.stub().resolves(user)
         wrapper = mount(User, { ...c, propsData: {}, mocks: { ...mocks, $SystemAPI: { userCreate: systemResolveCreate }, $router: { push } } })
 
-        wrapper.vm.onSubmit()
+        wrapper.vm.onUserSubmit()
         expect(wrapper.vm.processing).to.eq(true)
         expect(wrapper.vm.error).to.eq(null)
         setTimeout(() => {
@@ -164,7 +211,7 @@ describe('views/Users/User.vue', () => {
         systemRejectCreate = sinon.stub().rejects(new Error('reject'))
         wrapper = mount(User, { ...c, propsData: {}, mocks: { ...mocks, $SystemAPI: { userCreate: systemRejectCreate } } })
 
-        wrapper.vm.onSubmit()
+        wrapper.vm.onUserSubmit()
         expect(wrapper.vm.processing).to.eq(true)
         expect(wrapper.vm.error).to.eq(null)
         setTimeout(() => {
