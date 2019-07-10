@@ -6,7 +6,7 @@
                      @update="fetchApplications"
                      @create="$router.push({ name: 'applications.application', params: { applicationID: undefined } })">
 
-    <ul>
+    <ul class="menu-layer">
       <li v-for="u in applications" :key="u.ID">
         <router-link :to="{ name: 'applications.application', params: { applicationID: u.applicationID } }">{{u.name || u.applicationname || u.email}}</router-link>
       </li>
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import ListWithDetails from '@/components/ListWithDetails'
+import ListWithDetails from 'corteza-webapp-admin/src/components/ListWithDetails'
 
 export default {
 
@@ -42,7 +42,3 @@ export default {
   },
 }
 </script>
-
-<style scoped lang="scss">
-@import '@/assets/sass/menu-layer.scss';
-</style>

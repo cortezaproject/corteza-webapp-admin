@@ -52,8 +52,8 @@
 </template>
 
 <script>
-import StandardExternal from '@/components/settings/auth/ExternalStd'
-import OidcExternal from '@/components/settings/auth/ExternalOIDC'
+import StandardExternal from 'corteza-webapp-admin/src/components/settings/auth/ExternalStd'
+import OidcExternal from 'corteza-webapp-admin/src/components/settings/auth/ExternalOIDC'
 
 const prefix = `auth.external`
 
@@ -250,8 +250,6 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-@import '@/assets/sass/menu-layer.scss';
-
 form {
   display: flex;
   flex-direction: column;

@@ -33,8 +33,8 @@
 </template>
 
 <script>
-import RoleMembers from '@/components/RoleMembers'
-import ConfirmationToggle from '@/components/ConfirmationToggle'
+import RoleMembers from 'corteza-webapp-admin/src/components/RoleMembers'
+import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
 
 export default {
   components: {

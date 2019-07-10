@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { createLocalVue } from '@vue/test-utils'
-import ExternalOIDC from '@/components/settings/auth/ExternalOIDC'
+import ExternalOIDC from 'corteza-webapp-admin/src/components/settings/auth/ExternalOIDC'
 import { mount, stdStubs } from 'corteza-webapp-common/src/lib/testHelpers'
 
 let localVue = createLocalVue()

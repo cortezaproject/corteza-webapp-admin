@@ -65,7 +65,7 @@
   </b-form>
 </template>
 <script>
-import ConfirmationToggle from '@/components/ConfirmationToggle'
+import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
 
 export default {
   components: {

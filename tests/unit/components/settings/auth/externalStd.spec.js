@@ -1,5 +1,5 @@
 import { createLocalVue } from '@vue/test-utils'
-import ExternalStd from '@/components/settings/auth/ExternalStd'
+import ExternalStd from 'corteza-webapp-admin/src/components/settings/auth/ExternalStd'
 import { mount, stdStubs } from 'corteza-webapp-common/src/lib/testHelpers'
 
 let localVue = createLocalVue()

@@ -1,7 +1,7 @@
 import { expect, assert } from 'chai'
 import { createLocalVue } from '@vue/test-utils'
 import sinon from 'sinon'
-import ExternalProviders from '@/views/AuthSettings/ExternalProviders'
+import ExternalProviders from 'corteza-webapp-admin/src/views/AuthSettings/ExternalProviders'
 import { mount, stdStubs } from 'corteza-webapp-common/src/lib/testHelpers'
 
 const localVue = createLocalVue()

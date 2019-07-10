@@ -9,7 +9,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --mode production",
     "lint": "vue-cli-service lint",
-    "test:unit": "vue-cli-service test:unit"
+    "test:unit": "vue-cli-service test:unit",
+    "cdeps": "yarn upgrade corteza-webapp-common"
   },
   "gitHooks": {
     "pre-commit": "yarn lint"
@@ -22,25 +23,26 @@
     "i18next": "^15.0.7",
     "i18next-browser-languagedetector": "^3.0.1",
     "i18next-xhr-backend": "^2.0.1",
+    "resolve-url-loader": "^3.1.0",
     "sinon": "^7.3.2",
     "stylelint": "^9.1“0.1",
     "stylelint-config-standard": "^18.2.0",
-    "stylelint-scss": "^3.5.4",
+    "stylelint-scss": "3.9.1",
     "stylelint-webpack-plugin": "^0.10.5",
     "vue": "^2.5.17",
-    "vue-router": "^3.0.1",
+    "vue-router": "3.0.7",
     "vuetable-2": "^1.7.5",
-    "vuex": "^3.0.1"
+    "vuex": "3.1.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.0.5",
-    "@vue/cli-plugin-eslint": "^3.0.5",
-    "@vue/cli-plugin-unit-mocha": "^3.0.5",
-    "@vue/cli-service": "^3.0.5",
+    "@vue/cli-plugin-babel": "3.9.2",
+    "@vue/cli-plugin-eslint": "3.9.2",
+    "@vue/cli-plugin-unit-mocha": "3.9.0",
+    "@vue/cli-service": "3.9.2",
     "@vue/eslint-config-standard": "^3.0.5",
     "@vue/test-utils": "^1.0.0-beta.25",
     "chai": "^4.1.2",
-    "node-sass": "^4.9.4",
+    "node-sass": "4.12.0",
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.5.17"
   },

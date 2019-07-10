@@ -1,0 +1,32 @@
+$logo: '/images/logo.png' !default;
+
+// Paths
+$fonts_dir : './fonts/' !default;
+$icomoon-font-path: $fonts_dir + 'icomoon' !default;
+$icomoon-font-family: "icomoon" !default;
+
+// Typography
+$regular: 'nunito_sansregular' !default;
+$bold: 'nunito_sansbold' !default;
+$semibold: 'nunito_sanssemibold' !default;
+$font-size-base: 0.85rem !default;
+
+$font-family-base:      $regular !default;
+$headings-font-family:  $semibold !default;
+
+// Color system
+$white:         #fff !default;
+$black:         #000 !default;
+$primary:       #568ba2 !default;
+$secondary:     #90A3B1 !default;
+$success:       #719430 !default;
+$warning:       #F5D380 !default;
+$danger:        #E85568 !default;
+$light:         #F3F3F5 !default;
+$dark:          #1e2224 !default;
+
+// Forms
+$input-font-size: $font-size-base !default;
+$input-btn-focus-width:        0 !default;
+$input-focus-box-shadow:       none !default;
+$input-focus-border-color:     $primary !default;

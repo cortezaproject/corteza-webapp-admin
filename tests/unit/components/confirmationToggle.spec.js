@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { createLocalVue } from '@vue/test-utils'
-import ConfirmationToggle from '@/components/ConfirmationToggle'
+import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
 import { mount, stdStubs } from 'corteza-webapp-common/src/lib/testHelpers'
 
 let localVue = createLocalVue()

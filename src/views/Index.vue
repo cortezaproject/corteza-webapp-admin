@@ -2,7 +2,7 @@
   <div id="app" class="app" v-if="loaded">
     <div class="panel">
       <template v-if="$auth.is()">
-        <ul>
+        <ul class="menu-layer">
           <li><router-link :to="{ name: 'auth-settings' }">{{ $t('navigation.auth-settings') }}</router-link></li>
           <li><router-link :to="{ name: 'applications' }">{{ $t('navigation.app') }}</router-link></li>
           <li><router-link :to="{ name: 'users' }">{{ $t('navigation.user') }}</router-link></li>
@@ -22,7 +22,6 @@
     </div>
   </div>
   <div class="loader" v-else>
-    <img :src="logo" />
     <div class="error" v-if="error">{{ error }}</div>
   </div>
 </template>
@@ -37,7 +36,6 @@ export default {
 
   data () {
     return {
-      logo: require('@/assets/images/corteza-logo-with-tagline.png'),
       loaded: false,
       error: null,
     }
@@ -66,8 +64,6 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-@import '@/assets/sass/menu-layer.scss';
-
 .app {
   width: 100vw;
   height: 100vh;
@@ -105,27 +101,6 @@ export default {
 
 .slide-leave-to {
   transform: translateX(-100vw);
-}
-
-@keyframes flickerAnimation {
-  0% { opacity: 0.6; }
-  50% { opacity: 0.1; }
-  100% { opacity: 0.6; }
-}
-
-.loader {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  width: 100vw;
-
-  img {
-    align-self: center;
-    opacity: 0.7;
-    animation: flickerAnimation 3s infinite;
-    width: 50%;
-  }
 }
 
 .error {

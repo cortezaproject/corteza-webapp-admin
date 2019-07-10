@@ -2,7 +2,7 @@
   <list-with-details :title="$t('user.manage', { count: users.length })"
                      @update="fetchUsers">
 
-    <ul>
+    <ul class="menu-layer">
       <li v-for="u in users" :key="u.ID">
         <router-link :to="{ name: 'users.user', params: { userID: u.userID } }">{{ u.name || u.username || u.email }}</router-link>
       </li>
@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import ListWithDetails from '@/components/ListWithDetails'
+import ListWithDetails from 'corteza-webapp-admin/src/components/ListWithDetails'
 
 export default {
   components: {
@@ -41,7 +41,3 @@ export default {
   },
 }
 </script>
-
-<style scoped lang="scss">
-@import '@/assets/sass/menu-layer.scss';
-</style>

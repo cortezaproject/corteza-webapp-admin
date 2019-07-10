@@ -1,6 +1,6 @@
 import { expect, assert } from 'chai'
 import { createLocalVue } from '@vue/test-utils'
-import RoleMembers from '@/components/RoleMembers'
+import RoleMembers from 'corteza-webapp-admin/src/components/RoleMembers'
 import sinon from 'sinon'
 import { mount, stdStubs } from 'corteza-webapp-common/src/lib/testHelpers'
 

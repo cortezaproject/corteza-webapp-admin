@@ -1,7 +1,7 @@
 import { expect, assert } from 'chai'
 import { createLocalVue } from '@vue/test-utils'
 import sinon from 'sinon'
-import Role from '@/views/Roles/Role'
+import Role from 'corteza-webapp-admin/src/views/Roles/Role'
 import { mount, stdStubs } from 'corteza-webapp-common/src/lib/testHelpers'
 
 const localVue = createLocalVue()

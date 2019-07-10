@@ -1,7 +1,7 @@
 <template>
   <div>
     <p>{{ $t('permission.managePermissions') }}</p>
-    <ul>
+    <ul class="menu-layer">
       <li>
         <permissions-button resource="system">System</permissions-button>
       </li>
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import ListWithDetails from '@/components/ListWithDetails'
+import ListWithDetails from 'corteza-webapp-admin/src/components/ListWithDetails'
 
 export default {
   components: {
@@ -33,8 +33,6 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-@import '@/assets/sass/menu-layer.scss';
-
 div {
   margin: 10px;
 }

@@ -5,7 +5,7 @@
                      :permissions-button-label="$t('role.manage-wc-permissions')"
                      @update="fetchRoles"
                      @create="$router.push({ name: 'roles.role', params: { roleID: undefined } })">
-    <ul>
+    <ul class="menu-layer">
       <li v-for="r in roles" :key="r.ID">
         <router-link :to="{ name: 'roles.role', params: { roleID: r.roleID } }">{{r.name || r.handle || r.roleID || $t('role.unnamed') }}</router-link>
       </li>
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import ListWithDetails from '@/components/ListWithDetails'
+import ListWithDetails from 'corteza-webapp-admin/src/components/ListWithDetails'
 
 const systemRoles = [
   '1', // Everyone
@@ -54,7 +54,3 @@ export default {
   },
 }
 </script>
-
-<style scoped lang="scss">
-@import '@/assets/sass/menu-layer.scss';
-</style>
