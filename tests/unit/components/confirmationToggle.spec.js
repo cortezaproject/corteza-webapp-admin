@@ -9,18 +9,6 @@ describe('components/ConfirmationToggle.vue', () => {
   const common = { localVue, stubs: stdStubs, mocks: { $t: (e) => e } }
   let wrapper
 
-  describe('computed', () => {
-    it('btnClass', () => {
-      let local = { disabled: false, ctaClass: 'dft-class' }
-      let expected = 'dft-class'
-      expect(ConfirmationToggle.computed.btnClass.call(local)).to.eq(expected)
-
-      local = { disabled: true, ctaClass: 'dft-class' }
-      expected = 'btn-disabled'
-      expect(ConfirmationToggle.computed.btnClass.call(local)).to.eq(expected)
-    })
-  })
-
   describe('methods', () => {
     it('onPrompt', () => {
       wrapper = mount(ConfirmationToggle, common)
