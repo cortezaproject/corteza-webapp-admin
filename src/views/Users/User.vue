@@ -52,11 +52,17 @@
         {{ $t('user.password.change') }}
       </h2>
       <b-form-group :label="$t('user.password.new')" label-cols="3">
-        <b-form-input v-model="user.password" required type="password" />
+        <b-form-input v-model="user.password"
+                      autocomplete="new-password"
+                      required
+                      type="password" />
       </b-form-group>
 
       <b-form-group :label="$t('user.password.confirm')" label-cols="3">
-        <b-form-input v-model="user.confirmPassword" required type="password" />
+        <b-form-input v-model="user.confirmPassword"
+                      autocomplete="new-password"
+                      required
+                      type="password" />
       </b-form-group>
       <div class="footer">
         <span class="mr-5" v-if="user.confirmPassword && user.password !== user.confirmPassword">
@@ -86,7 +92,7 @@
 
 <script>
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
-import UserRoles from '@/components/UserRoles'
+import UserRoles from 'corteza-webapp-admin/src/components/UserRoles'
 
 export default {
   components: {
