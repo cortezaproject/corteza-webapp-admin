@@ -83,6 +83,7 @@ export default {
     return {
       processing: false,
       application: {},
+      error: null,
     }
   },
 
@@ -120,27 +121,31 @@ export default {
       immediate: true,
       handler () {
         if (this.applicationID) {
-          this.fetchApplications()
+          this.fetchApplication()
         }
       },
     },
   },
 
   methods: {
-    fetchApplications () {
+    fetchApplication () {
       this.processing = true
-      this.$SystemAPI.applicationRead({ applicationID: this.applicationID }).then(application => {
-        this.prepare(application)
-        this.processing = false
-      })
+      this.$SystemAPI.applicationRead({ applicationID: this.applicationID })
+        .then(this.prepare)
+        .catch(this.stdReject)
+        .finally(this.finalize)
     },
 
     onDelete () {
+      this.processing = true
+
       this.$SystemAPI.applicationDelete({ applicationID: this.applicationID })
         .then(this.handler)
         .then(() => {
           this.$router.push({ name: 'applications' })
         })
+        .catch(this.stdReject)
+        .finally(this.finalize)
     },
 
     onSubmit () {
@@ -149,19 +154,22 @@ export default {
       const payload = { ...this.application }
 
       if (this.applicationID) {
-        this.$SystemAPI.applicationUpdate(payload).then(this.handler)
+        this.$SystemAPI.applicationUpdate(payload)
+          .then(this.handler)
+          .catch(this.stdReject)
+          .finally(this.finalize)
       } else {
         this.$SystemAPI.applicationCreate(payload)
           .then(this.handler)
           .then(({ applicationID }) => {
             this.$router.push({ name: 'applications.application', params: { applicationID } })
           })
+          .catch(this.stdReject)
+          .finally(this.finalize)
       }
     },
 
     handler (application) {
-      this.processing = false
-
       // Inform parent component about application changes
       // @todo solve this with vuex
       this.$emit('update')
@@ -183,6 +191,14 @@ export default {
       }
 
       this.application = application
+    },
+
+    stdReject ({ message = null } = {}) {
+      this.error = message
+    },
+
+    finalize () {
+      this.processing = false
     },
   },
 }

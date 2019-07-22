@@ -1,153 +1,85 @@
-import { expect, assert } from 'chai'
-import { createLocalVue } from '@vue/test-utils'
-import RoleMembers from 'corteza-webapp-admin/src/components/RoleMembers'
+/* eslint-disable no-unused-expressions */
+import { expect } from 'chai'
 import sinon from 'sinon'
-import { mount, stdStubs } from 'corteza-webapp-common/src/lib/testHelpers'
-
-let localVue = createLocalVue()
+import RoleMembers from 'corteza-webapp-admin/src/components/RoleMembers'
+import { shallowMount } from 'corteza-webapp-admin/tests/lib/helpers'
+import fp from 'flush-promises'
 
 describe('components/RoleMembers.vue', () => {
-  const mocks = { $t: (e) => e }
-  const common = { localVue, propsData: { currentMembers: [] }, stubs: [ ...stdStubs, 'b-input-group', 'b-input-group-prepend', 'b-input-group-text', 'b-input-group-append' ], mocks }
-  let wrapper
-  const getMembersEvt = () => ((wrapper.emitted()['update:current-members'] || []).pop() || []).pop()
-
-  beforeEach(() => {
+  afterEach(() => {
     sinon.restore()
   })
 
-  describe('computed', () => {
-    it('members', () => {
-      let currentMembers = [ 'id1', 'id2' ]
-      const systemReject = sinon.stub().rejects(new Error('reject'))
-      wrapper = mount(RoleMembers, { ...common, propsData: { currentMembers }, mocks: { ...mocks, $SystemAPI: { userList: systemReject } } })
+  let $SystemAPI, propsData
+  beforeEach(() => {
+    $SystemAPI = {
+      userList: sinon.stub().resolves({ set: [ { userID: 'ID1', name: 'user1' }, { userID: 'ID2', name: 'user2' }, { userID: 'ID3' } ] }),
+    }
+    propsData = {
+      currentMembers: [ 'ID1' ],
+    }
+  })
 
-      expect(wrapper.vm.members).to.have.length(2)
-      let ev = getMembersEvt()
-      expect(ev).to.eq(undefined)
+  const mountRM = (opt) => shallowMount(RoleMembers, {
+    mocks: { $SystemAPI },
+    propsData,
+    ...opt,
+  })
 
-      // Length stays at 2, because it's a computed!
-      wrapper.vm.members = [ 'id3' ]
-      expect(wrapper.vm.members).to.have.length(2)
-      ev = getMembersEvt()
-      expect(ev).to.deep.eq(['id3'])
+  it('provide user objects for members', async () => {
+    const wrap = mountRM()
+
+    await fp()
+    expect(wrap.vm.filteredMembers).to.deep.eq([{ userID: 'ID1', name: 'user1' }])
+  })
+
+  it('filter users over a query', async () => {
+    const wrap = mountRM()
+    wrap.setData({ filter: 'user' })
+
+    await fp()
+    expect(wrap.vm.filtered).to.deep.eq([ { userID: 'ID1', name: 'user1' }, { userID: 'ID2', name: 'user2' } ])
+  })
+
+  describe('add member', () => {
+    beforeEach(() => {
+      sinon.stub(RoleMembers, 'created')
     })
 
-    it('filtered', () => {
-      let local = {
-        users: [
-          { name: 'match' },
-          { handle: 'match' },
-          { username: 'match' },
-          { email: 'match' },
-          { userID: 'match' },
-          { userID: 'miss' },
-        ],
-        filter: 'match',
-      }
+    it('existing', () => {
+      const wrap = mountRM()
 
-      let rtr = RoleMembers.computed.filtered.call(local)
-      expect(rtr).to.deep.eq(local.users.slice(0, -1))
+      wrap.vm.addMember({ userID: 'ID1' })
+      expect(wrap.emitted()['update:current-members']).to.be.undefined
     })
 
-    it('filteredMembers', () => {
-      let currentMembers = [ 'id1', 'id2' ]
-      let users = [ { userID: 'id1' }, 'id2', { userID: 'id3' }, 'id4' ]
-      const systemReject = sinon.stub().rejects(new Error('reject'))
-      wrapper = mount(RoleMembers, { ...common, data: () => ({ users }), propsData: { currentMembers }, mocks: { ...mocks, $SystemAPI: { userList: systemReject } } })
+    it('un existing', () => {
+      const wrap = mountRM()
 
-      expect(wrapper.vm.filteredMembers).to.deep.eq(users.slice(0, 2))
+      let prev = wrap.vm.members.length
+      wrap.vm.addMember({ userID: 'ID4' })
+      expect(wrap.emitted()['update:current-members'].pop().pop().length).to.eq(prev + 1)
     })
   })
 
-  describe('created', () => {
-    let systemResolve, systemReject
-    it('users.fetch.resolve', (done) => {
-      let resolve = { set: [ {}, {} ] }
-      systemResolve = sinon.stub().resolves(resolve)
-      wrapper = mount(RoleMembers, { ...common, mocks: { ...mocks, $SystemAPI: { userList: systemResolve } } })
-
-      expect(wrapper.vm.users).to.have.length(0)
-      setTimeout(() => {
-        expect(wrapper.vm.users).to.have.length(2)
-        expect(wrapper.vm.error).to.eq(null)
-        assert(systemResolve.calledOnce)
-        done()
-      })
+  describe('remove member', () => {
+    beforeEach(() => {
+      sinon.stub(RoleMembers, 'created')
     })
 
-    it('users.fetch.reject', (done) => {
-      systemReject = sinon.stub().rejects(new Error('reject'))
-      wrapper = mount(RoleMembers, { ...common, mocks: { ...mocks, $SystemAPI: { userList: systemReject } } })
+    it('existing', () => {
+      const wrap = mountRM()
 
-      expect(wrapper.vm.users).to.have.length(0)
-      setTimeout(() => {
-        expect(wrapper.vm.users).to.have.length(0)
-        expect(wrapper.vm.error).to.eq('reject')
-        assert(systemReject.calledOnce)
-        done()
-      })
-    })
-  })
-
-  describe('methods', () => {
-    it('isMember', () => {
-      const systemReject = sinon.stub().rejects(new Error('reject'))
-      wrapper = mount(RoleMembers, { ...common, mocks: { ...mocks, $SystemAPI: { userList: systemReject } } })
-
-      expect(wrapper.vm.isMember()).to.eq(false)
-      expect(wrapper.vm.isMember({})).to.eq(false)
-      expect(wrapper.vm.isMember({ userID: 'id1' })).to.eq(false)
-
-      wrapper.setProps({ currentMembers: [ 'id2' ] })
-      expect(wrapper.vm.isMember({ userID: 'id1' })).to.eq(false)
-
-      wrapper.setProps({ currentMembers: [ 'id2', 'id1' ] })
-      expect(wrapper.vm.isMember({ userID: 'id1' })).to.eq(true)
+      let prev = wrap.vm.members.length
+      wrap.vm.removeMember({ userID: 'ID1' })
+      expect(wrap.emitted()['update:current-members'].pop().pop().length).to.eq(prev - 1)
     })
 
-    it('addMember', () => {
-      const systemReject = sinon.stub().rejects(new Error('reject'))
-      wrapper = mount(RoleMembers, { ...common, propsData: { currentMembers: [] }, mocks: { ...mocks, $SystemAPI: { userList: systemReject } } })
+    it('un existing', () => {
+      const wrap = mountRM()
 
-      expect(wrapper.vm.members).to.have.length(0)
-
-      wrapper.vm.addMember({ userID: 'userID1' })
-      expect(wrapper.vm.members).to.have.length(0)
-      let ev = getMembersEvt()
-      expect(ev).to.deep.eq(['userID1'])
-      wrapper.setProps({ currentMembers: ev })
-
-      wrapper.vm.addMember('userID2')
-      expect(wrapper.vm.members).to.have.length(1)
-      ev = getMembersEvt()
-      expect(ev).to.deep.eq(['userID1', 'userID2'])
-      wrapper.setProps({ currentMembers: ev })
-      expect(wrapper.vm.members).to.have.length(2)
-    })
-
-    it('removeMember', () => {
-      const systemReject = sinon.stub().rejects(new Error('reject'))
-      wrapper = mount(RoleMembers, { ...common, propsData: { currentMembers: [ 'userID1', 'userID2', 'userID3' ] }, mocks: { ...mocks, $SystemAPI: { userList: systemReject } } })
-
-      expect(wrapper.vm.members).to.have.length(3)
-
-      wrapper.vm.removeMember({ userID: 'userID1' })
-      expect(wrapper.vm.members).to.have.length(3)
-      let ev = getMembersEvt()
-      expect(ev).to.deep.eq(['userID2', 'userID3'])
-      wrapper.setProps({ currentMembers: ev })
-
-      wrapper.vm.removeMember('userID2')
-      expect(wrapper.vm.members).to.have.length(2)
-      ev = getMembersEvt()
-      expect(ev).to.deep.eq(['userID3'])
-      wrapper.setProps({ currentMembers: ev })
-
-      // No match
-      wrapper.vm.removeMember('userID')
-      expect(wrapper.vm.members).to.have.length(1)
-      expect(getMembersEvt()).to.eq(undefined)
+      wrap.vm.removeMember({ userID: 'ID4' })
+      expect(wrap.emitted()['update:current-members']).to.be.undefined
     })
   })
 })

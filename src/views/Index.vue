@@ -51,7 +51,7 @@ export default {
 
   methods: {
     checkPermissions () {
-      this.$SystemAPI.permissionsEffective().then(ep => {
+      this.$SystemAPI.permissionsEffective().then((ep = []) => {
         // Quick & dirty permission check for admin access:
         if (!(ep.find(p => p.resource === 'system' && p.operation === 'access' && p.allow))) {
           this.error = this.$t('auth.noAccess')

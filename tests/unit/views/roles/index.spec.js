@@ -1,96 +1,87 @@
-import { expect, assert } from 'chai'
-import { createLocalVue } from '@vue/test-utils'
+/* eslint-disable no-unused-expressions */
+import { expect } from 'chai'
 import sinon from 'sinon'
 import Index from 'corteza-webapp-admin/src/views/Roles/Index'
-import { mount, stdStubs } from 'corteza-webapp-common/src/lib/testHelpers'
-
-const localVue = createLocalVue()
+import { stdReject, shallowMount } from 'corteza-webapp-admin/tests/lib/helpers'
+import fp from 'flush-promises'
 
 describe('views/Roles/Index.vue', () => {
-  const mocks = { $t: (e) => e }
-  const common = { localVue, stubs: stdStubs, mocks }
-  let wrapper
-
-  describe('computed', () => {
-    it('title', () => {
-      wrapper = mount(Index, { ...common, methods: { fetchRoles: () => {} } })
-      expect(wrapper.vm.roles).to.have.length(0)
-      expect(wrapper.vm.title.indexOf('0')).to.gt(-1)
-
-      wrapper.setData({ roles: [{}, {}] })
-      expect(wrapper.vm.roles).to.have.length(2)
-      expect(wrapper.vm.title.indexOf('2')).to.gt(-1)
-    })
+  afterEach(() => {
+    sinon.restore()
   })
 
-  describe('created', () => {
-    it('roles.fetch', () => {
+  let $SystemAPI, $router
+  beforeEach(() => {
+    $SystemAPI = {
+      roleList: sinon.stub().resolves(),
+    }
+    $router = {
+      push: sinon.fake(),
+    }
+  })
+
+  const mountIndex = (opt) => shallowMount(Index, {
+    mocks: { $SystemAPI, $router },
+    ...opt,
+  })
+
+  it('generate list\'s title', () => {
+    expect(Index.computed.title.call({ roles: [] })).to.include('(0)')
+    expect(Index.computed.title.call({ roles: [{}] })).to.include('(1)')
+  })
+
+  describe('fetch roles', () => {
+    it('on success - filter and set roles', async () => {
+      sinon.stub(Index, 'created')
+      let rr = [
+        { roleID: '1' }, // removed
+        { roleID: '2' },
+        { roleID: '3' },
+      ]
+      $SystemAPI.roleList = sinon.stub().resolves(rr)
+      const wrap = mountIndex()
+      wrap.vm.fetchRoles()
+
+      await fp()
+      sinon.assert.calledOnce($SystemAPI.roleList)
+      expect(wrap.find('.role').exists()).to.be.true
+      expect(wrap.findAll('.role')).have.length(2)
+    })
+
+    it('on error - set error flag', async () => {
+      sinon.stub(Index, 'created')
+      $SystemAPI.roleList = stdReject()
+      const wrap = mountIndex()
+      wrap.vm.fetchRoles()
+
+      await fp()
+      sinon.assert.calledOnce($SystemAPI.roleList)
+      expect(wrap.find('.role').exists()).to.be.false
+      expect(wrap.vm.error).to.not.be.null
+    })
+
+    it('on init', () => {
       const fetchRoles = sinon.fake()
-      wrapper = mount(Index, { ...common, methods: { fetchRoles } })
+      mountIndex({ methods: { fetchRoles } })
 
-      assert(fetchRoles.calledOnce)
+      sinon.assert.calledOnce(fetchRoles)
+    })
+
+    it('on update', () => {
+      sinon.stub(Index, 'created')
+      const fetchRoles = sinon.fake()
+      const wrap = mountIndex({ methods: { fetchRoles } })
+
+      wrap.vm.onUpdate()
+      sinon.assert.calledOnce(fetchRoles)
     })
   })
 
-  describe('methods', () => {
-    describe('fetchRoles', () => {
-      let systemResolve, systemReject
-      const query = 'QUERY'
-      const c = { ...common, data: () => ({ query }) }
+  it('on create role - redirect', () => {
+    sinon.stub(Index, 'created')
+    const wrap = mountIndex()
 
-      it('resolve', (done) => {
-        let rr = []
-        sinon.spy(rr, 'filter')
-        systemResolve = sinon.stub().resolves(rr)
-        wrapper = mount(Index, { ...c, mocks: { ...mocks, $SystemAPI: { roleList: systemResolve } } })
-
-        expect(wrapper.vm.roles).to.have.length(0)
-        expect(wrapper.vm.error).to.eq(null)
-        setTimeout(() => {
-          assert(systemResolve.calledOnceWith({ query: query.toLowerCase() }))
-          assert(rr.filter.calledOnce)
-          expect(wrapper.vm.roles).to.have.length(0)
-          expect(wrapper.vm.error).to.eq(null)
-          done()
-        })
-      })
-
-      it('resolve.list', (done) => {
-        let rr = [
-          { roleID: '5' },
-          { roleID: '3' },
-          { roleID: '1' }, // removed
-          { roleID: '-1' },
-        ]
-        sinon.spy(rr, 'filter')
-        systemResolve = sinon.stub().resolves(rr)
-        wrapper = mount(Index, { ...c, mocks: { ...mocks, $SystemAPI: { roleList: systemResolve } } })
-
-        expect(wrapper.vm.roles).to.have.length(0)
-        expect(wrapper.vm.error).to.eq(null)
-        setTimeout(() => {
-          assert(systemResolve.calledOnceWith({ query: query.toLowerCase() }))
-          assert(rr.filter.calledOnce)
-          expect(wrapper.vm.roles).to.have.length(3)
-          expect(wrapper.vm.roles).to.not.include({ roleID: '1' })
-          expect(wrapper.vm.error).to.eq(null)
-          done()
-        })
-      })
-
-      it('reject', (done) => {
-        systemReject = sinon.stub().rejects(new Error('reject'))
-        wrapper = mount(Index, { ...c, mocks: { ...mocks, $SystemAPI: { roleList: systemReject } } })
-
-        expect(wrapper.vm.roles).to.have.length(0)
-        expect(wrapper.vm.error).to.eq(null)
-        setTimeout(() => {
-          assert(systemReject.calledOnceWith({ query: query.toLowerCase() }))
-          expect(wrapper.vm.roles).to.have.length(0)
-          expect(wrapper.vm.error).to.eq('reject')
-          done()
-        })
-      })
-    })
+    wrap.vm.onCreate()
+    sinon.assert.calledOnce($router.push)
   })
 })

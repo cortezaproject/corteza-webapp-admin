@@ -4,11 +4,11 @@
                      :create-button-label="$t('user.add')"
                       permissions-resource-type="system:user:*"
                      :permissions-button-label="$t('user.manage-wc-permissions')"
-                     @update="fetchUsers"
-                     @create="$router.push({ name: 'users.user' })">
+                     @update="onUpdate"
+                     @create="onCreate">
 
     <ul class="menu-layer">
-      <li v-for="u in users" :key="u.userID">
+      <li v-for="u in users" :key="u.userID" class="user">
         <router-link :to="{ name: 'users.user', params: { userID: u.userID } }">{{ u.name || u.username || u.email }}</router-link>
       </li>
     </ul>
@@ -36,8 +36,16 @@ export default {
   },
 
   methods: {
+    onUpdate (e) {
+      this.fetchUsers(e)
+    },
+
+    onCreate () {
+      this.$router.push({ name: 'users.user' })
+    },
+
     fetchUsers () {
-      this.$SystemAPI.userList({ query: this.query.toLowerCase(), sort: 'name' }).then(({ set }) => {
+      this.$SystemAPI.userList({ query: this.query.toLowerCase(), sort: 'name' }).then(({ set } = {}) => {
         this.users = set
       }).catch(({ message }) => {
         this.error = message

@@ -1,102 +1,179 @@
+/* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
-import { createLocalVue } from '@vue/test-utils'
+import sinon from 'sinon'
 import Application from 'corteza-webapp-admin/src/views/Applications/Application'
-import { mount, stdStubs } from 'corteza-webapp-common/src/lib/testHelpers'
-
-const localVue = createLocalVue()
+import { stdReject, shallowMount } from 'corteza-webapp-admin/tests/lib/helpers'
+import fp from 'flush-promises'
 
 describe('views/Applications/Application.vue', () => {
-  const mocks = { $t: (e) => e }
-  const common = { localVue, stubs: [ ...stdStubs, 'permissions-button', 'b-form-checkbox', 'b-form-textarea' ], mocks }
-  let wrapper
+  afterEach(() => {
+    sinon.restore()
+  })
 
-  describe('computed', () => {
-    it('disableSubmit', () => {
-      let local = { processing: false, validConfig: false }
-      expect(Application.computed.disableSubmit.call(local)).to.eq(true)
+  let $SystemAPI, propsData, $router
+  beforeEach(() => {
+    $SystemAPI = {
+      applicationRead: sinon.stub().resolves({}),
+      applicationDelete: sinon.stub().resolves({}),
+      applicationUpdate: sinon.stub().resolves({}),
+      applicationCreate: sinon.stub().resolves({}),
+    }
+    propsData = {
+      applicationID: 'applicationID',
+    }
+    $router = { push: sinon.spy() }
+    sinon.stub(Application, 'watch').get(() => ({}))
+  })
 
-      local = { processing: true, validConfig: false }
-      expect(Application.computed.disableSubmit.call(local)).to.eq(true)
+  const mountApplication = (opt) => shallowMount(Application, {
+    mocks: { $SystemAPI, $router },
+    propsData,
+    ...opt,
+  })
 
-      local = { processing: true, validConfig: true }
-      expect(Application.computed.disableSubmit.call(local)).to.eq(true)
+  describe('fetch application', () => {
+    it('on success - update application', async () => {
+      $SystemAPI.applicationRead = sinon.stub().resolves({ applicationID: 'applicationID' })
+      const wrap = mountApplication()
+      wrap.vm.fetchApplication()
 
-      local = { processing: false, validConfig: true }
-      expect(Application.computed.disableSubmit.call(local)).to.eq(false)
+      await fp()
+      sinon.assert.calledOnce($SystemAPI.applicationRead)
+      expect(wrap.vm.application).to.not.deep.eq({})
+      expect(wrap.vm.processing).to.be.false
     })
 
-    describe('validConfig', () => {
-      let local
-      it('unify.missing', () => {
-        local = { application: {} }
-        expect(Application.computed.validConfig.call(local)).to.eq(true)
-      })
+    it('on error - set error flag', async () => {
+      $SystemAPI.applicationRead = stdReject()
+      const wrap = mountApplication()
+      wrap.vm.fetchApplication()
 
-      it('unify.config.missing', () => {
-        local = { application: { unify: {} } }
-        expect(Application.computed.validConfig.call(local)).to.eq(true)
-      })
-
-      it('unify.config.malformed', () => {
-        local = { application: { unify: { config: '{malformed]' } } }
-        expect(Application.computed.validConfig.call(local)).to.eq(false)
-      })
-
-      it('unify.config.valid', () => {
-        local = { application: { unify: { config: '{"valid": true}' } } }
-        expect(Application.computed.validConfig.call(local)).to.eq(true)
-      })
-    })
-
-    it('configState', () => {
-      let local = { application: {} }
-      expect(Application.computed.configState.call(local)).to.eq(null)
-
-      local = { application: { unify: {} } }
-      expect(Application.computed.configState.call(local)).to.eq(null)
-
-      local = { application: { unify: { config: '' } } }
-      expect(Application.computed.configState.call(local)).to.eq(null)
-
-      // undefined, because validConfig is stubbed away
-      local = { application: { unify: { config: '{"valid": true}' } } }
-      expect(Application.computed.configState.call(local)).to.eq(undefined)
+      await fp()
+      sinon.assert.calledOnce($SystemAPI.applicationRead)
+      expect(wrap.vm.error).to.not.eq(null)
+      expect(wrap.vm.processing).to.be.false
     })
   })
 
-  describe('methods', () => {
-    describe('fetchApplications', () => {
-      it('resolve')
-      it('reject')
+  describe('delete application', () => {
+    it('on success - redirect', async () => {
+      const wrap = mountApplication()
+      wrap.vm.onDelete()
+
+      await fp()
+      sinon.assert.calledOnce($SystemAPI.applicationDelete)
+      sinon.assert.calledOnce($router.push)
+      expect(wrap.vm.processing).to.be.false
     })
 
-    describe('onDelete', () => {
-      it('resolve')
-      it('reject')
+    it('on error - set error flag', async () => {
+      $SystemAPI.applicationDelete = stdReject()
+      const wrap = mountApplication()
+      wrap.vm.onDelete()
+
+      await fp()
+      sinon.assert.calledOnce($SystemAPI.applicationDelete)
+      expect(wrap.vm.error).to.not.be.null
+      expect(wrap.vm.processing).to.be.false
+    })
+  })
+
+  describe('check if submittable', () => {
+    it('check all cases', () => {
+      let test = [
+        [false, false, true],
+        [false, true, false],
+        [true, false, true],
+        [true, true, true],
+      ]
+
+      for (const [ processing, validConfig, expected ] of test) {
+        expect(Application.computed.disableSubmit.call({ processing, validConfig })).to.eq(expected)
+      }
+    })
+  })
+
+  describe('update application', () => {
+    it('on success - update application', async () => {
+      $SystemAPI.applicationUpdate = sinon.stub().resolves({ applicationID: 'applicationID' })
+      const wrap = mountApplication()
+      wrap.vm.onSubmit()
+
+      await fp()
+      sinon.assert.calledOnce($SystemAPI.applicationUpdate)
+      expect(wrap.vm.application).to.not.deep.eq({})
+      expect(wrap.vm.processing).to.be.false
     })
 
-    describe('onSubmit', () => {
-      it('resolve.update')
-      it('reject.update')
-      it('resolve.create')
-      it('reject.create')
+    it('on error - set error flag', async () => {
+      $SystemAPI.applicationUpdate = stdReject()
+      const wrap = mountApplication()
+      wrap.vm.onSubmit()
+
+      await fp()
+      sinon.assert.calledOnce($SystemAPI.applicationUpdate)
+      expect(wrap.vm.error).to.not.be.null
+      expect(wrap.vm.processing).to.be.false
+    })
+  })
+
+  describe('create application', () => {
+    it('on success - redirect', async () => {
+      propsData.applicationID = undefined
+      const wrap = mountApplication()
+      wrap.vm.onSubmit()
+
+      await fp()
+      sinon.assert.calledOnce($SystemAPI.applicationCreate)
+      sinon.assert.calledOnce($router.push)
+      expect(wrap.vm.processing).to.be.false
     })
 
-    it('handler')
+    it('on error - set error flag', async () => {
+      propsData.applicationID = undefined
+      $SystemAPI.applicationCreate = stdReject()
+      const wrap = mountApplication()
+      wrap.vm.onSubmit()
 
-    it('prepare', () => {
-      wrapper = mount(Application, { ...common, watch: { applicationID: {} } })
+      await fp()
+      sinon.assert.calledOnce($SystemAPI.applicationCreate)
+      expect(wrap.vm.error).to.not.be.null
+      expect(wrap.vm.processing).to.be.false
+    })
+  })
 
-      const dftUnify = { listed: true, name: undefined, config: '', icon: '', logo: '', url: '' }
+  describe('determine if config is valid', () => {
+    let local
+    it('no unify - valid', () => {
+      local = { application: {} }
+      expect(Application.computed.validConfig.call(local)).to.eq(true)
+    })
 
-      wrapper.vm.prepare()
-      expect(wrapper.vm.application).to.deep.eq({ unify: dftUnify })
+    it('unify & no config - valid', () => {
+      local = { application: { unify: {} } }
+      expect(Application.computed.validConfig.call(local)).to.eq(true)
+    })
 
-      wrapper.vm.prepare({})
-      expect(wrapper.vm.application).to.deep.eq({ unify: dftUnify })
+    it('unify & config malformed - invalid', () => {
+      local = { application: { unify: { config: '{malformed]' } } }
+      expect(Application.computed.validConfig.call(local)).to.eq(false)
+    })
 
-      wrapper.vm.prepare({ unify: {} })
-      expect(wrapper.vm.application).to.deep.eq({ unify: {} })
+    it('unify & config - valid', () => {
+      local = { application: { unify: { config: '{"valid": true}' } } }
+      expect(Application.computed.validConfig.call(local)).to.eq(true)
+    })
+  })
+
+  describe('determine config\'s state', () => {
+    it('config not valid', () => {
+      let local = { application: {} }
+      expect(Application.computed.configState.call(local)).to.be.null
+    })
+
+    it('config valid', () => {
+      let local = { application: { unify: { config: '{"valid": true}' } } }
+      expect(Application.computed.configState.call(local)).to.not.be.null
     })
   })
 })

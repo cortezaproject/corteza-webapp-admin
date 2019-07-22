@@ -3,10 +3,11 @@
                      :create-button-label="$t('role.add')"
                      permissions-resource-type="system:role:*"
                      :permissions-button-label="$t('role.manage-wc-permissions')"
-                     @update="fetchRoles"
-                     @create="$router.push({ name: 'roles.role', params: { roleID: undefined } })">
+                     @update="onUpdate"
+                     @create="onCreate">
+
     <ul class="menu-layer">
-      <li v-for="r in roles" :key="r.ID">
+      <li v-for="r in roles" :key="r.ID" class="role">
         <router-link :to="{ name: 'roles.role', params: { roleID: r.roleID } }">{{r.name || r.handle || r.roleID || $t('role.unnamed') }}</router-link>
       </li>
     </ul>
@@ -44,6 +45,14 @@ export default {
   },
 
   methods: {
+    onUpdate (e) {
+      this.fetchRoles(e)
+    },
+
+    onCreate () {
+      this.$router.push({ name: 'roles.role', params: { roleID: undefined } })
+    },
+
     fetchRoles () {
       this.$SystemAPI.roleList({ query: this.query.toLowerCase() }).then(rr => {
         this.roles = rr.filter(r => !systemRoles.includes(r.roleID))

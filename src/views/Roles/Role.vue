@@ -79,9 +79,7 @@ export default {
         })
         .then((mm) => { this.members = mm })
         .catch(this.stdReject)
-        .finally(() => {
-          this.processing = false
-        })
+        .finally(this.finalize)
     },
 
     onDelete () {
@@ -92,9 +90,7 @@ export default {
           this.$router.push({ name: 'roles' })
         })
         .catch(this.stdReject)
-        .finally(() => {
-          this.processing = false
-        })
+        .finally(this.finalize)
     },
 
     onSubmit () {
@@ -106,9 +102,7 @@ export default {
         this.$SystemAPI.roleUpdate(payload)
           .then(this.handler)
           .catch(this.stdReject)
-          .finally(() => {
-            this.processing = false
-          })
+          .finally(this.finalize)
       } else {
         this.$SystemAPI.roleCreate(payload)
           .then(this.handler)
@@ -116,9 +110,7 @@ export default {
             this.$router.push({ name: 'roles.role', params: { roleID } })
           })
           .catch(this.stdReject)
-          .finally(() => {
-            this.processing = false
-          })
+          .finally(this.finalize)
       }
     },
 
@@ -133,6 +125,10 @@ export default {
       this.role = role
 
       return Promise.resolve(role)
+    },
+
+    finalize () {
+      this.processing = false
     },
   },
 }

@@ -86,16 +86,23 @@ export default {
   },
 
   methods: {
+    memberIndex (u) {
+      return this.members.indexOf(typeof u === 'object' ? u.userID : u)
+    },
+
     isMember (u) {
-      return this.members.indexOf(typeof u === 'object' ? u.userID : u) > -1
+      return this.memberIndex(u) > -1
     },
 
     addMember (u) {
-      this.members = this.members.concat(typeof u === 'object' ? u.userID : u)
+      const i = this.memberIndex(u)
+      if (i < 0) {
+        this.members = this.members.concat(typeof u === 'object' ? u.userID : u)
+      }
     },
 
     removeMember (u) {
-      const i = this.members.indexOf(typeof u === 'object' ? u.userID : u)
+      const i = this.memberIndex(u)
       if (i > -1) {
         let m = [...this.members]
         m.splice(i, 1)

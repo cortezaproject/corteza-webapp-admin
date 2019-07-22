@@ -1,55 +1,74 @@
-import { expect, assert } from 'chai'
-import { createLocalVue } from '@vue/test-utils'
+/* eslint-disable no-unused-expressions */
+import { expect } from 'chai'
 import sinon from 'sinon'
 import Index from 'corteza-webapp-admin/src/views/Users/Index'
-import { mount } from 'corteza-webapp-common/src/lib/testHelpers'
-
-const localVue = createLocalVue()
+import { stdReject, shallowMount } from 'corteza-webapp-admin/tests/lib/helpers'
+import fp from 'flush-promises'
 
 describe('views/Users/Index.vue', () => {
-  const mocks = { $t: (e) => e }
-  const common = { localVue, stubs: ['router-view', 'router-link'], mocks }
-  let wrapper
+  afterEach(() => {
+    sinon.restore()
+  })
 
-  describe('created', () => {
-    it('users.fetch', () => {
-      let fetchUsers = sinon.fake()
-      wrapper = mount(Index, { ...common, methods: { fetchUsers } })
-      assert(fetchUsers.calledOnce)
+  let $SystemAPI, $router
+  beforeEach(() => {
+    $SystemAPI = {
+      userList: sinon.stub().resolves({ set: [{ userID: 'ID1' }, { userID: 'ID2' }] }),
+    }
+    $router = {
+      push: sinon.fake(),
+    }
+  })
+
+  const mountIndex = (opt) => shallowMount(Index, {
+    mocks: { $SystemAPI, $router },
+    ...opt,
+  })
+
+  describe('fetch users', () => {
+    it('on success - set users', async () => {
+      sinon.stub(Index, 'created')
+      const wrap = mountIndex()
+      wrap.vm.fetchUsers()
+
+      await fp()
+      sinon.assert.calledOnce($SystemAPI.userList)
+      expect(wrap.findAll('.user')).to.have.length(2)
+    })
+
+    it('on error - set error flag', async () => {
+      sinon.stub(Index, 'created')
+      $SystemAPI.userList = stdReject()
+      const wrap = mountIndex()
+      wrap.vm.fetchUsers()
+
+      await fp()
+      sinon.assert.calledOnce($SystemAPI.userList)
+      expect(wrap.vm.error).to.not.be.null
+    })
+
+    it('on init', () => {
+      const fetchUsers = sinon.fake()
+      mountIndex({ methods: { fetchUsers } })
+
+      sinon.assert.calledOnce(fetchUsers)
+    })
+
+    it('on update', () => {
+      sinon.stub(Index, 'created')
+      const fetchUsers = sinon.fake()
+      const wrap = mountIndex({ methods: { fetchUsers } })
+
+      wrap.vm.onUpdate()
+      sinon.assert.calledOnce(fetchUsers)
     })
   })
 
-  describe('methods', () => {
-    describe('fetchUsers', () => {
-      let systemResolve, systemReject
-      systemResolve = sinon.stub().resolves({ set: [ 'u1', 'u2', 'u3' ] })
-      systemReject = sinon.stub().rejects(new Error('reject'))
+  it('on create user - redirect', () => {
+    sinon.stub(Index, 'created')
+    const wrap = mountIndex()
 
-      it('resolve', (done) => {
-        wrapper = mount(Index, { ...common, mocks: { ...mocks, $SystemAPI: { userList: systemResolve } }, data: () => ({ query: 'QUERY' }) })
-
-        expect(wrapper.vm.users).to.have.length(0)
-        expect(wrapper.vm.error).to.eq(null)
-        setTimeout(() => {
-          assert(systemResolve.calledOnceWith({ query: 'query', sort: 'name' }))
-          expect(wrapper.vm.users).to.have.length(3)
-          expect(wrapper.vm.error).to.eq(null)
-          done()
-        })
-      })
-
-      it('reject', (done) => {
-        wrapper = mount(Index, { ...common, mocks: { ...mocks, $SystemAPI: { userList: systemReject } }, data: () => ({ query: 'QUERY' }) })
-
-        expect(wrapper.vm.users).to.have.length(0)
-        expect(wrapper.vm.error).to.eq(null)
-        setTimeout(() => {
-          assert(systemReject.calledOnceWith({ query: 'query', sort: 'name' }))
-          expect(wrapper.vm.users).to.have.length(0)
-          expect(wrapper.vm.error).to.eq('reject')
-          done()
-        })
-      })
-    })
+    wrap.vm.onCreate()
+    sinon.assert.calledOnce($router.push)
   })
 })

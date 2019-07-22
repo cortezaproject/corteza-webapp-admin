@@ -1,52 +1,37 @@
+/* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
-import { createLocalVue } from '@vue/test-utils'
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
-import { mount, stdStubs } from 'corteza-webapp-common/src/lib/testHelpers'
-
-let localVue = createLocalVue()
+import { shallowMount } from 'corteza-webapp-admin/tests/lib/helpers'
 
 describe('components/ConfirmationToggle.vue', () => {
-  const common = { localVue, stubs: stdStubs, mocks: { $t: (e) => e } }
-  let wrapper
+  let wrap
+  const mountCT = (opt) => shallowMount(ConfirmationToggle, {
+    ...opt,
+  })
 
-  describe('methods', () => {
-    it('onPrompt', () => {
-      wrapper = mount(ConfirmationToggle, common)
+  beforeEach(() => {
+    wrap = mountCT()
+    wrap.find('.confirmation-prompt').trigger('click')
+  })
 
-      let evt = wrapper.emitted().confirmed
-      expect(evt).to.eq(undefined)
-      expect(wrapper.vm.inConfirmation).to.eq(false)
+  it('prompt confirmation/cancel', () => {
+    expect(wrap.find('.confirmation-confirm').exists()).to.be.true
+    expect(wrap.find('.confirmation-cancel').exists()).to.be.true
+  })
 
-      wrapper.vm.onPrompt()
-      evt = wrapper.emitted().confirmed
-      expect(evt).to.eq(undefined)
-      expect(wrapper.vm.inConfirmation).to.eq(true)
+  it('confirm', () => {
+    wrap.find('.confirmation-confirm').trigger('click')
+    expect(wrap.emitted().confirmed).to.not.be.undefined
+    expect(wrap.find('.confirmation-prompt').exists()).to.be.true
+    expect(wrap.find('.confirmation-confirm').exists()).to.be.false
+    expect(wrap.find('.confirmation-cancel').exists()).to.be.false
+  })
 
-      wrapper.setProps({ noPrompt: true })
-      wrapper.setData({ inConfirmation: false })
-      wrapper.vm.onPrompt()
-      evt = wrapper.emitted().confirmed.pop()
-      expect(evt).to.not.eq(undefined)
-      expect(wrapper.vm.inConfirmation).to.eq(false)
-    })
-
-    it('onConfirmation', () => {
-      wrapper = mount(ConfirmationToggle, common)
-
-      let evt = wrapper.emitted().confirmed
-      expect(evt).to.eq(undefined)
-      expect(wrapper.vm.inConfirmation).to.eq(false)
-
-      wrapper.vm.onConfirmation()
-      evt = wrapper.emitted().confirmed.pop()
-      expect(evt).to.not.eq(undefined)
-      expect(wrapper.vm.inConfirmation).to.eq(false)
-
-      wrapper.setData({ inConfirmation: true })
-      wrapper.vm.onConfirmation()
-      evt = wrapper.emitted().confirmed.pop()
-      expect(evt).to.not.eq(undefined)
-      expect(wrapper.vm.inConfirmation).to.eq(false)
-    })
+  it('cancel', () => {
+    wrap.find('.confirmation-cancel').trigger('click')
+    expect(wrap.emitted().confirmed).to.be.undefined
+    expect(wrap.find('.confirmation-prompt').exists()).to.be.true
+    expect(wrap.find('.confirmation-confirm').exists()).to.be.false
+    expect(wrap.find('.confirmation-cancel').exists()).to.be.false
   })
 })

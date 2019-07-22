@@ -1,45 +1,80 @@
-import { expect, assert } from 'chai'
-import { createLocalVue } from '@vue/test-utils'
+/* eslint-disable no-unused-expressions */
+import { expect } from 'chai'
 import sinon from 'sinon'
 import ExternalProviders from 'corteza-webapp-admin/src/views/AuthSettings/ExternalProviders'
-import { mount, stdStubs } from 'corteza-webapp-common/src/lib/testHelpers'
-
-const localVue = createLocalVue()
+import { stdReject, shallowMount } from 'corteza-webapp-admin/tests/lib/helpers'
+import fp from 'flush-promises'
 
 describe('views/AuthSettings/ExternalProviders.vue', () => {
+  afterEach(() => {
+    sinon.restore()
+  })
+
   const prefix = 'auth.external'
   const stdPrefix = `${prefix}.providers.`
   const oidcPrefix = `${prefix}.providers.openid-connect.`
-  const mocks = { $t: (e) => e }
-  const common = { localVue, stubs: [ ...stdStubs, 'b-form-checkbox' ], mocks }
-  let wrapper
 
-  describe('computed', () => {
-    it('dirty', () => {
-      let local = { changes: [] }
-      expect(ExternalProviders.computed.dirty.call(local)).to.eq(false)
+  let $SystemAPI
+  beforeEach(() => {
+    $SystemAPI = {
+      settingsUpdate: sinon.stub().resolves(),
+      settingsList: sinon.stub().resolves(),
+    }
 
-      local.changes.push({})
-      expect(ExternalProviders.computed.dirty.call(local)).to.eq(true)
+    sinon.stub(ExternalProviders, 'created')
+  })
+
+  const mountEP = (opt) => shallowMount(ExternalProviders, {
+    mocks: { $SystemAPI },
+    ...opt,
+  })
+
+  describe('update auth settings', () => {
+    describe('check if submittable', () => {
+      it('no changes - not submittable', () => {
+        const wrap = mountEP({ computed: { changes: sinon.stub().returns([]) } })
+        wrap.setData({ processing: false })
+        expect(wrap.vm.submittable).to.be.false
+      })
+
+      it('processing - not submittable', () => {
+        const wrap = mountEP()
+        wrap.setData({ processing: true })
+        expect(wrap.vm.submittable).to.be.false
+      })
+
+      it('changes & not processing - submittable', () => {
+        const wrap = mountEP({ computed: { changes: sinon.stub().returns([{}]) } })
+        wrap.setData({ processing: false })
+        expect(wrap.vm.submittable).to.be.true
+      })
     })
 
-    it('submittable', () => {
-      let local = { dirty: false, processing: false }
-      expect(ExternalProviders.computed.submittable.call(local)).to.eq(false)
+    it('on success', async () => {
+      const wrap = mountEP()
+      wrap.vm.onSubmit()
 
-      local.processing = true
-      expect(ExternalProviders.computed.submittable.call(local)).to.eq(false)
-
-      local.dirty = true
-      expect(ExternalProviders.computed.submittable.call(local)).to.eq(false)
-
-      local.processing = false
-      expect(ExternalProviders.computed.submittable.call(local)).to.eq(true)
+      await fp()
+      sinon.assert.calledOnce($SystemAPI.settingsUpdate)
+      expect(wrap.vm.processing).to.be.false
     })
 
-    it('oidcProviders', () => {
+    it('on error - set error flag', async () => {
+      $SystemAPI.settingsUpdate = stdReject()
+      const wrap = mountEP()
+      wrap.vm.onSubmit()
+
+      await fp()
+      sinon.assert.calledOnce($SystemAPI.settingsUpdate)
+      expect(wrap.vm.error).to.not.be.null
+      expect(wrap.vm.processing).to.be.false
+    })
+  })
+
+  describe('fetch settings', () => {
+    it('filter for oidc providers', () => {
       let tests = [
-        // [settings], [oidcProviders]
+        // [settings], [expected]
         [ [], [] ],
         [ [{ name: 'not.valid.name' }], [] ],
         [ [{ name: `${oidcPrefix}valid` }], [`valid`] ],
@@ -53,211 +88,162 @@ describe('views/AuthSettings/ExternalProviders.vue', () => {
       }
     })
 
-    describe('changes', () => {
-      it('standard.change.yes', () => {
-        let local = {
-          oidc: [],
-          standard: { std1: { key: 'nk1', secret: 'ns1', enabled: true } },
-          settings: [ { name: `${stdPrefix}std1.key`, value: 'ok1' }, { name: `${stdPrefix}std1.secret`, value: 'os1' }, { name: `${stdPrefix}std1.enabled`, value: true }, { name: 'auth.external.enabled', value: true } ],
-          checkForChange: ExternalProviders.methods.checkForChange,
-          enabled: true,
-        }
-
-        let changes = ExternalProviders.computed.changes.call(local)
-        expect(changes).to.have.length(2) // key, secret
-        expect(changes).to.deep.eq([{ name: `${stdPrefix}std1.key`, value: 'nk1' }, { name: `${stdPrefix}std1.secret`, value: 'ns1' }])
-      })
-
-      it('standard.change.no', () => {
-        let local = {
-          oidc: [],
-          standard: { std1: { key: 'ok1', secret: 'os1', enabled: true } },
-          settings: [ { name: `${stdPrefix}std1.key`, value: 'ok1' }, { name: `${stdPrefix}std1.secret`, value: 'os1' }, { name: `${stdPrefix}std1.enabled`, value: true }, { name: 'auth.external.enabled', value: true } ],
-          checkForChange: ExternalProviders.methods.checkForChange,
-          enabled: true,
-        }
-
-        let changes = ExternalProviders.computed.changes.call(local)
-        expect(changes).to.have.length(0)
-      })
-
-      it('oidc.change.yes', () => {
-        let local = {
-          standard: {},
-          oidc: [ { handle: 'h1', key: 'nk1', secret: 'os1', enabled: false } ],
-          settings: [ { name: `${oidcPrefix}h1.key`, value: 'ok1' }, { name: `${oidcPrefix}h1.secret`, value: 'os1' }, { name: `${oidcPrefix}h1.issuer`, value: 'oi1' }, { name: 'auth.external.enabled', value: true } ],
-          checkForChange: ExternalProviders.methods.checkForChange,
-          enabled: true,
-        }
-
-        let changes = ExternalProviders.computed.changes.call(local)
-        expect(changes).to.have.length(3) // key, enabled, issuer
-        expect(changes).to.deep.eq([{ name: `${oidcPrefix}h1.key`, value: 'nk1' }, { name: `${oidcPrefix}h1.enabled`, value: false }, { name: `${oidcPrefix}h1.issuer`, value: undefined }])
-      })
-
-      it('oidc.change.no', () => {
-        let local = {
-          standard: {},
-          oidc: [ { handle: 'h1', key: 'ok1', secret: 'os1', enabled: false } ],
-          settings: [ { name: `${oidcPrefix}h1.key`, value: 'ok1' }, { name: `${oidcPrefix}h1.secret`, value: 'os1' }, { name: `${oidcPrefix}h1.enabled`, value: false }, { name: 'auth.external.enabled', value: true } ],
-          checkForChange: ExternalProviders.methods.checkForChange,
-          enabled: true,
-        }
-
-        let changes = ExternalProviders.computed.changes.call(local)
-        expect(changes).to.have.length(0)
-      })
-
-      it('enabled.change.yes', () => {
-        let local = {
-          standard: {},
-          oidc: [],
-          settings: [ { name: 'auth.external.enabled', value: false } ],
-          checkForChange: ExternalProviders.methods.checkForChange,
-          enabled: true,
-        }
-
-        let changes = ExternalProviders.computed.changes.call(local)
-        expect(changes).to.have.length(1)
-        expect(changes).to.deep.eq([{ name: 'auth.external.enabled', value: true }])
-
-        local.enabled = false
-        local.settings[0].value = true
-        changes = ExternalProviders.computed.changes.call(local)
-        expect(changes).to.have.length(1)
-        expect(changes).to.deep.eq([{ name: 'auth.external.enabled', value: false }])
-      })
-
-      it('enabled.change.no', () => {
-        let local = {
-          standard: {},
-          oidc: [],
-          settings: [ { name: 'auth.external.enabled', value: false } ],
-          checkForChange: ExternalProviders.methods.checkForChange,
-          enabled: false,
-        }
-
-        let changes = ExternalProviders.computed.changes.call(local)
-        expect(changes).to.have.length(0)
-
-        local.enabled = true
-        local.settings[0].value = true
-        changes = ExternalProviders.computed.changes.call(local)
-        expect(changes).to.have.length(0)
-      })
-    })
-  })
-
-  describe('created', () => {
-    it('settings.fetch', () => {
-      const fetchSettings = sinon.fake()
-      wrapper = mount(ExternalProviders, { ...common, methods: { fetchSettings } })
-      assert(fetchSettings.calledOnce)
-    })
-  })
-
-  describe('methods', () => {
-    const c = { ...common, methods: { fetchSettings: () => {} } }
-    describe('checkForChange', () => {
-      it('false.values.invalid', () => {
-        wrapper = mount(ExternalProviders, c)
-        expect(wrapper.vm.checkForChange()).to.eq(undefined)
-
-        expect(wrapper.vm.checkForChange(undefined, undefined)).to.eq(undefined)
-        expect(wrapper.vm.checkForChange('name', undefined)).to.eq(undefined)
-      })
-
-      it('false.values.unChanged', () => {
-        wrapper = mount(ExternalProviders, c)
-        expect(wrapper.vm.checkForChange('name', 'oldValue', [ { name: 'name', value: 'oldValue' } ])).to.eq(undefined)
-      })
-
-      it('true.values.changed', () => {
-        wrapper = mount(ExternalProviders, c)
-        expect(wrapper.vm.checkForChange('name', 'newValue', [ { name: 'name', value: 'oldValue' } ])).to.deep.eq({ name: 'name', value: 'newValue' })
-      })
-    })
-
-    describe('onSubmit', (done) => {
-      let systemResolve, systemReject
-      let resolve = { message: 'message' }
-      it('resolve', (done) => {
-        systemResolve = sinon.stub().resolves(resolve)
-        wrapper = mount(ExternalProviders, { ...c, mocks: { ...mocks, $SystemAPI: { settingsUpdate: systemResolve } } })
-
-        wrapper.vm.onSubmit()
-        expect(wrapper.vm.processing).to.eq(true)
-        setTimeout(() => {
-          expect(wrapper.vm.processing).to.eq(false)
-          expect(wrapper.vm.error).to.eq(null)
-          assert(systemResolve.calledOnce)
-          done()
-        })
-      })
-
-      it('reject', (done) => {
-        systemReject = sinon.stub().rejects(new Error('reject'))
-        wrapper = mount(ExternalProviders, { ...c, mocks: { ...mocks, $SystemAPI: { settingsUpdate: systemReject } } })
-
-        wrapper.vm.onSubmit()
-        expect(wrapper.vm.processing).to.eq(true)
-        setTimeout(() => {
-          expect(wrapper.vm.processing).to.eq(false)
-          expect(wrapper.vm.error).to.eq('reject')
-          assert(systemReject.calledOnce)
-          done()
-        })
-      })
-    })
-
-    describe('fetchSettings', () => {
-      let systemResolve, systemReject
-      it('resolve', (done) => {
-        const resolve = []
-        systemResolve = sinon.stub().resolves(resolve)
-        wrapper = mount(ExternalProviders, { ...c, methods: {}, mocks: { ...mocks, $SystemAPI: { settingsList: systemResolve } } })
-
-        expect(wrapper.vm.processing).to.eq(true)
-        setTimeout(() => {
-          expect(wrapper.vm.processing).to.eq(false)
-          assert(systemResolve.calledOnceWith({ prefix }))
-          done()
-        })
-      })
-
-      it('resolve.standard')
-      it('resolve.oidc')
-      it('resolve.enabled')
-
-      it('reject', (done) => {
-        systemReject = sinon.stub().rejects(new Error('reject'))
-        wrapper = mount(ExternalProviders, { ...c, methods: {}, mocks: { ...mocks, $SystemAPI: { settingsList: systemReject } } })
-
-        expect(wrapper.vm.processing).to.eq(true)
-        setTimeout(() => {
-          expect(wrapper.vm.processing).to.eq(false)
-          expect(wrapper.vm.error).to.eq('reject')
-          assert(systemReject.calledOnceWith({ prefix }))
-          done()
-        })
-      })
-    })
-
-    it('extractKeys', () => {
+    it('extract keys helper', () => {
+      const fnc = ExternalProviders.methods.extractKeys
       const provider = 'provider'
       let settings = []
       let base = { k1: 'v1', k2: 'v2', k3: true, k4: true }
-      wrapper = mount(ExternalProviders, c)
 
       let expected = {}
-      expect(wrapper.vm.extractKeys()).to.deep.eq(expected)
+      expect(fnc()).to.deep.eq(expected)
 
       expected = { k1: 'v1', k2: 'v2', k3: true, k4: true }
-      expect(wrapper.vm.extractKeys(provider, settings, base)).to.deep.eq(expected)
+      expect(fnc(provider, settings, base)).to.deep.eq(expected)
 
       settings = [{ name: `${stdPrefix}provider.k1`, value: 'nv1' }, { name: `${stdPrefix}provider.k4`, value: false }]
       expected = { k1: 'nv1', k2: 'v2', k3: true, k4: false }
-      expect(wrapper.vm.extractKeys(provider, settings, base)).to.deep.eq(expected)
+      expect(fnc(provider, settings, base)).to.deep.eq(expected)
+    })
+
+    it('on success - set external auth configuration', async () => {
+      const oidcProviders = sinon.stub().returns(['oidc1'])
+      const settings = [
+        { name: `${prefix}.enabled`, value: true },
+
+        { name: `${stdPrefix}facebook.key`, value: 'fbKey' },
+        { name: `${stdPrefix}facebook.secret`, value: 'fbSecret' },
+        { name: `${stdPrefix}facebook.enabled`, value: true },
+
+        { name: `${oidcPrefix}oidc1.enabled`, value: true },
+        { name: `${oidcPrefix}oidc1.issuer`, value: 'oidc1Issuer' },
+        { name: `${oidcPrefix}oidc1.key`, value: 'oidc1Key' },
+        { name: `${oidcPrefix}oidc1.secret`, value: 'oidc1Secret' },
+      ]
+      $SystemAPI.settingsList = sinon.stub().resolves(settings)
+      const wrap = mountEP({ computed: { oidcProviders } })
+      wrap.vm.fetchSettings()
+
+      await fp()
+      expect(wrap.vm.oidc).to.have.length(1)
+      expect(wrap.vm.oidc[0]).to.deep.eq({ handle: 'oidc1', enabled: true, issuer: 'oidc1Issuer', key: 'oidc1Key', secret: 'oidc1Secret' })
+
+      expect(wrap.vm.standard.facebook).to.deep.eq({ enabled: true, key: 'fbKey', secret: 'fbSecret' })
+
+      expect(wrap.vm.enabled).to.be.true
+
+      expect(wrap.vm.processing).to.be.false
+    })
+
+    it('on error - set error flag', async () => {
+      $SystemAPI.settingsList = stdReject()
+      const wrap = mountEP()
+      wrap.vm.fetchSettings()
+
+      await fp()
+      expect(wrap.vm.error).to.not.be.null
+      expect(wrap.vm.processing).to.be.false
+    })
+  })
+
+  describe('check for changes', () => {
+    describe('check for change helper', () => {
+      const fnc = ExternalProviders.methods.checkForChange
+
+      it('invalid params', () => {
+        expect(fnc()).to.eq(undefined)
+        expect(fnc(undefined, undefined)).to.eq(undefined)
+        expect(fnc('name', undefined)).to.eq(undefined)
+      })
+
+      it('unchanged values', () => {
+        let test = [
+          ['oldValue', 'oldValue'],
+          [true, true],
+          [false, false],
+        ]
+        for (const [newV, oldV] of test) {
+          expect(fnc('name', newV, [ { name: 'name', value: oldV } ])).to.eq(undefined)
+        }
+      })
+
+      it('changed values', () => {
+        let test = [
+          ['newValue', 'oldValue', 'newValue'],
+          [true, false, true],
+          [false, true, false],
+        ]
+
+        for (const [newV, oldV, expected] of test) {
+          expect(fnc('name', newV, [ { name: 'name', value: oldV } ])).to.deep.eq({ name: 'name', value: expected })
+        }
+      })
+    })
+
+    it('over standard', () => {
+      let local = {
+        oidc: [],
+        standard: { std1: { key: 'nk1', secret: 'ns1', enabled: true } },
+        settings: [ { name: `${stdPrefix}std1.key`, value: 'ok1' }, { name: `${stdPrefix}std1.secret`, value: 'os1' }, { name: `${stdPrefix}std1.enabled`, value: true }, { name: `${prefix}.enabled`, value: true } ],
+        checkForChange: ExternalProviders.methods.checkForChange,
+        enabled: true,
+      }
+
+      let changes = ExternalProviders.computed.changes.call(local)
+      expect(changes).to.have.length(2)
+      expect(changes).to.deep.eq([{ name: `${stdPrefix}std1.key`, value: 'nk1' }, { name: `${stdPrefix}std1.secret`, value: 'ns1' }])
+    })
+
+    it('over oidc', () => {
+      let local = {
+        standard: {},
+        oidc: [ { handle: 'h1', key: 'nk1', secret: 'os1', enabled: false } ],
+        settings: [ { name: `${oidcPrefix}h1.key`, value: 'ok1' }, { name: `${oidcPrefix}h1.secret`, value: 'os1' }, { name: `${oidcPrefix}h1.issuer`, value: 'oi1' }, { name: 'auth.external.enabled', value: true } ],
+        checkForChange: ExternalProviders.methods.checkForChange,
+        enabled: true,
+      }
+
+      let changes = ExternalProviders.computed.changes.call(local)
+      expect(changes).to.have.length(3)
+      expect(changes).to.deep.eq([{ name: `${oidcPrefix}h1.key`, value: 'nk1' }, { name: `${oidcPrefix}h1.enabled`, value: false }, { name: `${oidcPrefix}h1.issuer`, value: undefined }])
+    })
+
+    it('over enabled flag - changed', () => {
+      let local = {
+        standard: {},
+        oidc: [],
+        settings: [ { name: 'auth.external.enabled', value: false } ],
+        checkForChange: ExternalProviders.methods.checkForChange,
+        enabled: true,
+      }
+
+      let changes = ExternalProviders.computed.changes.call(local)
+      expect(changes).to.have.length(1)
+      expect(changes).to.deep.eq([{ name: 'auth.external.enabled', value: true }])
+    })
+
+    it('over enabled flag - unchanged', () => {
+      let local = {
+        standard: {},
+        oidc: [],
+        settings: [ { name: 'auth.external.enabled', value: true } ],
+        checkForChange: ExternalProviders.methods.checkForChange,
+        enabled: true,
+      }
+
+      let changes = ExternalProviders.computed.changes.call(local)
+      expect(changes).to.have.length(0)
+    })
+
+    it('tell if submittable', () => {
+      let test = [
+        [ false, false, false ],
+        [ false, true, false ],
+        [ true, false, true ],
+        [ true, true, false ],
+      ]
+      for (const [dirty, processing, expected] of test) {
+        expect(ExternalProviders.computed.submittable.call({ dirty, processing })).to.eq(expected)
+      }
     })
   })
 })

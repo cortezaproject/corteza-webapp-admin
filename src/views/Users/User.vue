@@ -138,21 +138,20 @@ export default {
   methods: {
     fetchUser () {
       this.processing = true
-      this.$SystemAPI.userRead({ userID: this.userID }).then(user => {
-        this.user = user
-      })
-        .catch(this.stdReject)
-        .finally(() => {
-          this.processing = false
+      this.$SystemAPI.userRead({ userID: this.userID })
+        .then(user => {
+          this.user = user
         })
+        .catch(this.stdReject)
+        .finally(this.finalize)
     },
 
     fetchUserRoles () {
       this.processing = true
       this.userRoles = []
       const userID = this.userID
-      this.$SystemAPI.roleList().then(roles => {
-        this.$SystemAPI.userMembershipList({ userID }).then(m => {
+      this.$SystemAPI.roleList().then((roles = []) => {
+        this.$SystemAPI.userMembershipList({ userID }).then((m = []) => {
           let userRoles = []
           roles.forEach(r => {
             let { roleID } = r
@@ -168,6 +167,7 @@ export default {
           this.processing = false
         }).catch(this.stdReject)
       }).catch(this.stdReject)
+        .finally(this.finalize)
     },
 
     onDelete () {
@@ -178,6 +178,7 @@ export default {
           this.$router.push({ name: 'users' })
         })
         .catch(this.stdReject)
+        .finally(this.finalize)
     },
 
     onUserSubmit () {
@@ -187,6 +188,7 @@ export default {
         this.$SystemAPI.userUpdate(payload)
           .then(this.handler)
           .catch(this.stdReject)
+          .finally(this.finalize)
       } else {
         this.$SystemAPI.userCreate(payload)
           .then(this.handler)
@@ -194,9 +196,7 @@ export default {
             this.$router.push({ name: 'users.user', params: { userID } })
           })
           .catch(this.stdReject)
-          .finally(() => {
-            this.processing = false
-          })
+          .finally(this.finalize)
       }
     },
 
@@ -212,50 +212,49 @@ export default {
             return this.$SystemAPI.userMembershipRemove({ roleID, userID })
           }
         }
-      })).then(() => {
-        this.fetchUserRoles()
-      })
+      }))
+        .then(this.fetchUserRoles)
+        .catch(this.stdReject)
+        .finally(this.finalize)
     },
 
     onStatusChange () {
       this.processing = true
       const userID = this.userID
+      let endpoint
       if (this.user.suspendedAt) {
-        this.$SystemAPI.userUnsuspend({ userID })
-          .catch(this.stdReject)
-          .finally(() => {
-            this.fetchUser()
-          })
+        endpoint = this.$SystemAPI.userSuspend
       } else {
-        this.$SystemAPI.userSuspend({ userID })
-          .catch(this.stdReject)
-          .finally(() => {
-            this.fetchUser()
-          })
+        endpoint = this.$SystemAPI.userUnsuspend
       }
+
+      endpoint({ userID })
+        .then(() => {
+          this.fetchUser()
+        })
+        .catch(this.stdReject)
+        .finally(this.finalize)
     },
 
     onPasswordSubmit () {
       this.processing = true
       const { userID, password } = this.user
       this.$SystemAPI.userSetPassword({ userID, password })
-        .catch(this.stdReject)
-        .finally(() => {
+        .then(() => {
           this.user.password = ''
           this.user.confirmPassword = ''
           this.processing = false
         })
+        .catch(this.stdReject)
+        .finally(this.finalize)
     },
 
     stdReject ({ message = null } = {}) {
       this.error = message
-      this.processing = false
       // TODO create alerts
     },
 
     handler (user) {
-      this.processing = false
-
       // Inform parent component about user changes
       // @todo solve this with vuex
       this.$emit('update')
@@ -263,6 +262,10 @@ export default {
         this.user = user
       }
       return Promise.resolve(user)
+    },
+
+    finalize () {
+      this.processing = false
     },
   },
 }

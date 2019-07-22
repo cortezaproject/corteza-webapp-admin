@@ -8,7 +8,7 @@
           <permissions-button v-if="permissionsResourceType"
                               :resource="permissionsResourceType">{{ permissionsButtonLabel }}</permissions-button>
 
-          <b-button class="ml-1"
+          <b-button class="ml-1 create-button"
                     @click.prevent="$emit('create')"
                     v-if="createButtonLabel">{{ createButtonLabel }}</b-button>
         </b-button-group>

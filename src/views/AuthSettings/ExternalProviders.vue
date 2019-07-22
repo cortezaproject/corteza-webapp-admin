@@ -185,15 +185,13 @@ export default {
       this.processing = true
 
       this.$SystemAPI.settingsUpdate({ values: this.changes })
-        .catch(({ message }) => {
-          this.error = message
-        }).finally(() => {
-          this.processing = false
-        })
+        .catch(this.stdReject)
+        .finally(this.finalize)
     },
 
     fetchSettings () {
       this.processing = true
+
       return this.$SystemAPI.settingsList({ prefix }).then((vv = []) => {
         this.settings = vv
 
@@ -217,11 +215,9 @@ export default {
         }
 
         this.enabled = !!(vv.find(v => v.name === 'auth.external.enabled') || {}).value
-      }).catch(({ message }) => {
-        this.error = message
-      }).finally(() => {
-        this.processing = false
       })
+        .catch(this.stdReject)
+        .finally(this.finalize)
     },
 
     extractKeys (provider, settings = {}, base = {}) {
@@ -245,6 +241,14 @@ export default {
       }
 
       return out
+    },
+
+    stdReject ({ message }) {
+      this.error = message
+    },
+
+    finalize () {
+      this.processing = false
     },
   },
 }
