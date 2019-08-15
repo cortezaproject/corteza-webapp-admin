@@ -2,9 +2,9 @@
   <b-form @submit.prevent="onSubmit">
     <div class="header">
       <router-link :to="{ name: 'auth-settings' }" class="float-right"><b-button-close></b-button-close></router-link>
-      <h2 class="header-subtitle header-row">
+      <h5 class="header-subtitle header-row">
         {{ $t('auth-settings.external-providers.title') }}
-      </h2>
+      </h5>
     </div>
 
     <main>

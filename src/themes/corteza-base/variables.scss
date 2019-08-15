@@ -25,6 +25,16 @@ $danger:        #E85568 !default;
 $light:         #F3F3F5 !default;
 $dark:          #1e2224 !default;
 
+// Options
+$enable-rounded:   false !default;
+$enable-gradients: true !default;
+
+// Components
+$border-radius: 0 !default;
+
+// Body
+$body-bg: $light !default;
+
 // Forms
 $input-font-size: $font-size-base !default;
 $input-btn-focus-width:        0 !default;

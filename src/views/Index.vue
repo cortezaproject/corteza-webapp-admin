@@ -1,20 +1,20 @@
 <template>
   <div id="app" class="app" v-if="loaded">
-    <div class="panel">
+    <div class="panel border-right bg-white flex-grow-1">
       <template v-if="$auth.is()">
-        <ul class="menu-layer">
-          <li><router-link :to="{ name: 'auth-settings' }">{{ $t('navigation.auth-settings') }}</router-link></li>
-          <li><router-link :to="{ name: 'applications' }">{{ $t('navigation.app') }}</router-link></li>
-          <li><router-link :to="{ name: 'users' }">{{ $t('navigation.user') }}</router-link></li>
-          <li><router-link :to="{ name: 'roles' }">{{ $t('navigation.role') }}</router-link></li>
-          <li><router-link :to="{ name: 'permissions' }">{{ $t('navigation.permission') }}</router-link></li>
+        <ul class="list-group">
+          <router-link class="list-group-item text-dark p-2" :to="{ name: 'auth-settings' }">{{ $t('navigation.auth-settings') }}</router-link>
+          <router-link class="list-group-item text-dark p-2" :to="{ name: 'applications' }">{{ $t('navigation.app') }}</router-link>
+          <router-link class="list-group-item text-dark p-2" :to="{ name: 'users' }">{{ $t('navigation.user') }}</router-link>
+          <router-link class="list-group-item text-dark p-2" :to="{ name: 'roles' }">{{ $t('navigation.role') }}</router-link>
+          <router-link class="list-group-item text-dark p-2" :to="{ name: 'permissions' }">{{ $t('navigation.permission') }}</router-link>
         </ul>
       </template>
       <template v-else>
         <p>{{ $t('auth.notSignedIn') }}</p>
       </template>
     </div>
-    <div class="main">
+    <div class="flex-grow-1">
       <transition name="slide">
         <router-view class="view"></router-view>
       </transition>
@@ -22,7 +22,7 @@
     </div>
   </div>
   <div class="loader" v-else>
-    <div class="error" v-if="error">{{ error }}</div>
+    <div class="error text-danger bg-white" v-if="error">{{ error }}</div>
   </div>
 </template>
 
@@ -75,16 +75,9 @@ export default {
   flex-direction: row;
 
   .panel {
-    flex: 1;
     z-index: 1;
-    background: $white;
     max-width: 200px;
-    border-right: 2px solid $light;
     padding-top: 55px;
-  }
-
-  .main {
-    flex: 1;
   }
 }
 
@@ -106,9 +99,7 @@ export default {
 }
 
 .error {
-  color: $danger;
   font-size: 24px;
-  background-color: $white;
   width: 100vw;
   height: 20vh;
   padding: 60px;

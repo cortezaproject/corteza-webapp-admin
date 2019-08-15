@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <span>
     <span v-if="!inConfirmation">
       <b-button :variant="ctaClass" @click.prevent="onPrompt" :disabled="disabled" class="confirmation-prompt"><slot></slot></b-button>
@@ -8,6 +9,19 @@
       <b-button variant="secondary" @click.prevent="inConfirmation=false" class="confirmation-cancel">{{ $t('general.label.no') }}</b-button>
     </span>
   </span>
+=======
+  <div class="d-inline">
+    <b-button v-if="!inConfirmation"
+              class="mr-1"
+              :variant="ctaClass"
+              @click.prevent="onPrompt"
+              :disabled="disabled"><slot></slot></b-button>
+    <div v-if="inConfirmation" class="d-inline">
+      <b-button :variant="confirmationClass" @click.prevent="onConfirmation()">{{ $t('general.label.yes') }}</b-button>
+      <b-button variant="secondary" @click.prevent="inConfirmation=false">{{ $t('general.label.no') }}</b-button>
+    </div>
+  </div>
+>>>>>>> Replace menu-layer with Bootstrap group-item
 </template>
 <script>
 export default {
@@ -40,21 +54,3 @@ export default {
   },
 }
 </script>
-<style scoped lang="scss">
-.btn {
-  margin: 0 1px;
-}
-
-.btn-url {
-  color: $danger;
-  text-decoration: none;
-
-  &:hover {
-    color: $danger;
-
-    .icon-trash {
-      font-weight: 900;
-    }
-  }
-}
-</style>

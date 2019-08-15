@@ -1,27 +1,27 @@
 <template>
-  <section>
-    <header v-if="title">
-      <h2 class="header-title">
+  <section class="d-flex flex-column">
+    <header v-if="title" class="bg-white d-flex justify-content-between border-bottom shadow-sm p-3 flex-grow-1">
+      <h5>
         {{ title }}
+      </h5>
+      <b-button-group>
+        <permissions-button v-if="permissionsResourceType"
+                            :resource="permissionsResourceType">{{ permissionsButtonLabel }}</permissions-button>
 
-        <b-button-group class="toolbar">
-          <permissions-button v-if="permissionsResourceType"
-                              :resource="permissionsResourceType">{{ permissionsButtonLabel }}</permissions-button>
-
-          <b-button class="ml-1 create-button"
-                    @click.prevent="$emit('create')"
-                    v-if="createButtonLabel">{{ createButtonLabel }}</b-button>
-        </b-button-group>
-      </h2>
+        <b-button class="ml-1"
+                  @click.prevent="$emit('create')"
+                  v-if="createButtonLabel">{{ createButtonLabel }}</b-button>
+      </b-button-group>
     </header>
-    <main>
-      <aside>
+    <main class="d-flex flex-row flex-grow-1">
+      <aside class="bg-white border-right flex-grow-1">
         <div>
           <slot></slot>
         </div>
       </aside>
       <transition name="slide">
-        <router-view class="details" :key="$route.fullPath" v-on="$listeners"></router-view>
+        <router-view class="details flex-grow-1 p-5"
+                     :key="$route.fullPath" v-on="$listeners"></router-view>
       </transition>
     </main>
   </section>
@@ -50,40 +50,16 @@ export default {
 </script>
 <style scoped lang="scss">
 section {
-  display: flex;
-  flex-direction: column;
-
-  header {
-    flex: 1;
-
-    .toolbar {
-      float: right;
-    }
-  }
-
   main {
-    flex: 1;
-
-    display: flex;
-    flex-direction: row;
-
     aside {
-      flex: 1;
       max-width: 200px;
       z-index: 1;
-      background: $white;
-      border-right: 2px solid $light;
       padding-top: 40px;
 
       & > div {
         height: calc(100vh - 100px);
         overflow-y: scroll;
       }
-    }
-
-    .details {
-      flex: 1;
-      padding: 20px;
     }
 
     .slide-enter-active {

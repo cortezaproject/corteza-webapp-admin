@@ -3,6 +3,7 @@
                      :create-button-label="$t('role.add')"
                      permissions-resource-type="system:role:*"
                      :permissions-button-label="$t('role.manage-wc-permissions')"
+<<<<<<< HEAD
                      @update="onUpdate"
                      @create="onCreate">
 
@@ -10,6 +11,15 @@
       <li v-for="r in roles" :key="r.ID" class="role">
         <router-link :to="{ name: 'roles.role', params: { roleID: r.roleID } }">{{r.name || r.handle || r.roleID || $t('role.unnamed') }}</router-link>
       </li>
+=======
+                     @update="fetchRoles"
+                     @create="$router.push({ name: 'roles.role', params: { roleID: undefined } })">
+    <ul class="list-group">
+      <router-link v-for="r in roles"
+                   :key="r.ID"
+                   class="list-group-item text-dark p-2"
+                   :to="{ name: 'roles.role', params: { roleID: r.roleID } }">{{r.name || r.handle || r.roleID || $t('role.unnamed') }}</router-link>
+>>>>>>> Replace menu-layer with Bootstrap group-item
     </ul>
   </list-with-details>
 </template>

@@ -2,9 +2,9 @@
   <b-form @submit.prevent="onSubmit">
     <div class="header">
       <router-link :to="{ name: 'applications' }" class="float-right"><b-button-close></b-button-close></router-link>
-      <h2 class="header-subtitle header-row">
+      <h5 class="header-subtitle header-row">
         {{ $t('application.information') }}
-      </h2>
+      </h5>
 
     </div>
     <div class="application">

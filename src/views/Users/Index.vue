@@ -1,15 +1,25 @@
 <template>
   <list-with-details :title="$t('user.manage', { count: users.length || 0 })"
-                     class="user-list"
                      :create-button-label="$t('user.add')"
                       permissions-resource-type="system:user:*"
                      :permissions-button-label="$t('user.manage-wc-permissions')"
                      @update="onUpdate"
                      @create="onCreate">
+<<<<<<< HEAD
 
     <ul class="menu-layer">
       <li v-for="u in users" :key="u.userID" class="user">
         <router-link :to="{ name: 'users.user', params: { userID: u.userID } }">{{ u.name || u.username || u.email }}</router-link>
+=======
+                     @update="fetchUsers"
+                     @create="$router.push({ name: 'users.user' })">
+    <ul class="list-group">
+      <li >
+        <router-link v-for="u in users"
+                     :key="u.userID"
+                     class="list-group-item text-dark p-2"
+                     :to="{ name: 'users.user', params: { userID: u.userID } }">{{ u.name || u.username || u.email }}</router-link>
+>>>>>>> Replace menu-layer with Bootstrap group-item
       </li>
     </ul>
   </list-with-details>
