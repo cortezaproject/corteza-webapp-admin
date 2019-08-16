@@ -1,12 +1,12 @@
 <template>
-  <b-form-group :label="$t('role.members', { count: members.length })" label-cols="3">
-    <table v-if="members && users">
-      <tr v-for="u in filteredMembers" :key="u.userID">
+  <b-form-group :label="$t('role.members', { count: members.length })" label-cols-lg="1">
+    <table v-if="members && users" class="w-100 mb-2">
+      <tr v-for="u in filteredMembers" :key="u.userID" class="border-bottom">
         <td>{{ u.name }}</td>
         <td>{{ u.handle }}</td>
         <td>{{ u.username }}</td>
         <td>{{ u.email }}</td>
-        <td class="action">
+        <td class="text-right">
           <b-button @click="removeMember(u)">{{ $t('general.label.remove') }}</b-button>
         </td>
       </tr>
@@ -20,13 +20,13 @@
         <b-button>{{ $t('general.label.search') }}</b-button>
       </b-input-group-append>
     </b-input-group>
-    <table v-if="filter && users">
-      <tr v-for="u in filtered" :key="u.userID">
+    <table v-if="filter && users" class="w-100">
+      <tr v-for="u in filtered" :key="u.userID" class="border-bottom">
         <td>{{ u.name }}</td>
         <td>{{ u.handle }}</td>
         <td>{{ u.username }}</td>
         <td>{{ u.email }}</td>
-        <td class="action">
+        <td class="text-right">
           <b-button v-if="isMember(u)" @click="removeMember(u)">{{ $t('general.label.remove') }}</b-button>
           <b-button v-else @click="addMember(u)">{{ $t('general.label.add') }}</b-button>
         </td>
@@ -112,22 +112,3 @@ export default {
   },
 }
 </script>
-<style scoped lang="scss">
-
-table {
-  width: 100%;
-  margin: 0;
-  padding: 0;
-
-  tr {
-    border-bottom: 1px solid $light;
-    td.action {
-      margin: 0;
-      padding: 0;
-      width: 100px;
-      text-align: right;
-    }
-  }
-}
-
-</style>

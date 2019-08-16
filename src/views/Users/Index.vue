@@ -17,7 +17,7 @@
       <li >
         <router-link v-for="u in users"
                      :key="u.userID"
-                     class="list-group-item text-dark p-2"
+                     class="list-group-item text-dark p-2 border-left-0"
                      :to="{ name: 'users.user', params: { userID: u.userID } }">{{ u.name || u.username || u.email }}</router-link>
 >>>>>>> Replace menu-layer with Bootstrap group-item
       </li>

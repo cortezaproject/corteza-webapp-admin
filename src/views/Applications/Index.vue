@@ -5,16 +5,8 @@
                      :permissions-button-label="$t('application.manage-wc-permissions')"
                      @update="onUpdate"
                      @create="onCreate">
-
-<<<<<<< HEAD
-    <ul class="menu-layer">
-      <li v-for="u in applications" :key="u.ID" class="application">
-        <router-link :to="{ name: 'applications.application', params: { applicationID: u.applicationID } }">{{u.name || u.applicationname || u.email}}</router-link>
-      </li>
-=======
     <ul class="list-group">
-      <router-link v-for="u in applications" :key="u.ID" class="list-group-item text-dark p-2" :to="{ name: 'applications.application', params: { applicationID: u.applicationID } }">{{u.name || u.applicationname || u.email}}</router-link>
->>>>>>> Replace menu-layer with Bootstrap group-item
+      <router-link v-for="u in applications" :key="u.ID" class="list-group-item text-dark p-2 border-left-0" :to="{ name: 'applications.application', params: { applicationID: u.applicationID } }">{{u.name || u.applicationname || u.email}}</router-link>
     </ul>
   </list-with-details>
 </template>

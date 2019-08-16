@@ -1,9 +1,9 @@
 <template>
   <b-form-group :label="$t('user.roles.count', { count: filteredRoles.length })" label-cols="3">
-    <table v-if="filteredRoles">
+    <table v-if="filteredRoles" class="w-100 mb-2">
       <tr v-for="r in filteredRoles" :key="r.userID">
         <td>{{ r.name || r.handle || r.roleID || $t('role.unnamed') }}</td>
-        <td class="action">
+        <td class="text-right">
           <b-button @click="removeRole(r)">{{ $t('general.label.remove') }}</b-button>
         </td>
       </tr>
@@ -14,10 +14,10 @@
       </b-input-group-prepend>
       <b-form-input v-model.trim="filter"></b-form-input>
     </b-input-group>
-    <table v-if="filter && filtered">
+    <table v-if="filter && filtered" class="w-100 mb-2">
       <tr v-for="r in filtered" :key="r.roleID">
         <td>{{ r.name || r.handle || r.roleID || $t('role.unnamed') }}</td>
-        <td class="action">
+        <td class="text-right">
           <b-button @click="addRole(r)">{{ $t('general.label.add') }}</b-button>
         </td>
       </tr>
@@ -90,22 +90,3 @@ export default {
   },
 }
 </script>
-<style scoped lang="scss">
-.roles {
-  min-height: 100px;
-}
-table {
-  width: 100%;
-  margin: 0;
-  padding: 0;
-
-  tr {
-    td.action {
-      margin: 0;
-      padding: 0;
-      width: 100px;
-      text-align: right;
-    }
-  }
-}
-</style>

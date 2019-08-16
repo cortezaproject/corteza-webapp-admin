@@ -1,20 +1,17 @@
 <template>
-  <b-form @submit.prevent="onSubmit">
-    <div class="header">
-      <router-link :to="{ name: 'auth-settings' }" class="float-right"><b-button-close></b-button-close></router-link>
-      <h5 class="header-subtitle header-row">
+  <b-form @submit.prevent="onSubmit" class="d-flex flex-column">
+    <div class="sticky-top bg-white px-3 py-2 border-bottom">
+      <h5>
         {{ $t('auth-settings.external-providers.title') }}
       </h5>
     </div>
 
-    <main>
-      <b-form-group label-cols="3">
-        <b-form-checkbox plain v-model="enabled" :value="true" :unchecked-value="false">
+    <main class="flex-grow-1 overflow-auto p-5">
+      <b-form-group>
+        <b-form-checkbox v-model="enabled" :value="true" :unchecked-value="false">
           {{$t('auth-settings.external-providers.enabled')}}
         </b-form-checkbox>
       </b-form-group>
-
-      <hr/>
 
       <oidc-external
         v-for="(p, i) in oidc" :key="i"
@@ -25,6 +22,7 @@
 
       <standard-external
         :title="$t('auth-settings.external-providers.gplus')"
+        class="border-top"
         v-model="standard.gplus" />
 
       <hr />
@@ -42,10 +40,9 @@
       <standard-external
         :title="$t('auth-settings.external-providers.linkedin')"
         v-model="standard.linkedin"/>
-
     </main>
 
-    <div class="footer">
+    <div class="sticky-bottom mb-3 bg-white p-1 border-top text-right">
       <b-button type="submit" variant="primary" :disabled="!submittable">{{ $t('permission.saveChanges') }}</b-button>
     </div>
   </b-form>
@@ -255,26 +252,6 @@ export default {
 </script>
 <style scoped lang="scss">
 form {
-  display: flex;
-  flex-direction: column;
   height: calc(100vh - 50px);
-
-  .header {
-    flex: 1;
-    border-bottom: 2px solid $light;
-  }
-
-  .footer {
-    flex: 1;
-    text-align: right;
-  }
-
-  main {
-    flex: 1;
-    flex-grow: 100;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    padding-top: 2px;
-  }
 }
 </style>

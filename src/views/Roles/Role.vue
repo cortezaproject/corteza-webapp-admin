@@ -1,31 +1,26 @@
 <template>
-  <b-form @submit.prevent="onSubmit">
-    <div class="header">
-      <router-link :to="{ name: 'roles' }" class="float-right"><b-button-close></b-button-close></router-link>
-      <h2 class="header-subtitle header-row">
+  <b-form @submit.prevent="onSubmit" class="d-flex flex-column">
+    <div class="sticky-top bg-white px-3 py-2 border-bottom">
+      <h5 class="float-left">
         {{ $t('role.information') }}
-      </h2>
+      </h5>
+      <permissions-button :title="role.name" :resource="'system:role:'+roleID" :roleID="roleID" class="float-right">{{ $t('role.manage-id-permissions') }}</permissions-button>
     </div>
-    <div class="role">
-      <b-form-group :label="$t('general.label.name')" label-cols="3">
+    <div class="flex-grow-1 overflow-auto p-5">
+      <b-form-group :label="$t('general.label.name')" label-cols-lg="1">
         <b-form-input v-model="role.name" />
       </b-form-group>
-
-      <b-form-group label-cols="3">
-        <permissions-button :title="role.name" :resource="'system:role:'+roleID" :roleID="roleID">{{ $t('role.manage-id-permissions') }}</permissions-button>
+      <b-form-group :label="$t('general.label.created')" class="d-inline w-50">
+        <b-form-text>{{ role.createdAt }}</b-form-text>
       </b-form-group>
-
-      <b-form-group :label="$t('general.label.lastUpdate')" label-cols="3">
+      <b-form-group :label="$t('general.label.lastUpdate')" class="d-inline w-50">
         <b-form-text>{{ role.updatedAt }}</b-form-text>
       </b-form-group>
 
-      <b-form-group :label="$t('general.label.created')" label-cols="3">
-        <b-form-text>{{ role.createdAt }}</b-form-text>
-      </b-form-group>
-      <role-members :current-members.sync="members"></role-members>
+      <role-members :current-members.sync="members" class="mt-2 pt-2 border-top"></role-members>
     </div>
 
-    <div class="footer">
+    <div class="sticky-bottom mb-3 bg-white p-1 border-top text-right">
       <confirmation-toggle @confirmed="onDelete">{{ $t('role.delete') }}</confirmation-toggle>
       <b-button type="submit" variant="primary" :disabled="processing">{{ $t('general.label.submit') }}</b-button>
     </div>
@@ -135,28 +130,6 @@ export default {
 </script>
 <style scoped lang="scss">
 form {
-  display: flex;
-  flex-direction: column;
   height: calc(100vh - 50px);
-
-  .header {
-    flex: 1;
-    height: 150px;
-  }
-
-  .footer {
-    flex: 1;
-    text-align: right;
-    height: 150px;
-  }
-
-  .role {
-    flex: 1;
-    flex-grow: 100;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    padding-top: 2px;
-  }
 }
-
 </style>

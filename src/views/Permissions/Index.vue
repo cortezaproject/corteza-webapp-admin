@@ -1,18 +1,17 @@
 <template>
-  <div>
+  <div class="p-5">
     <p>{{ $t('permission.managePermissions') }}</p>
-    <ul class="menu-layer">
-      <li>
+    <ul class="list-unstyled">
+      <li class="mb-1">
         <permissions-button resource="system">System</permissions-button>
       </li>
-      <li>
+      <li class="mb-1">
         <permissions-button resource="messaging">Messaging</permissions-button>
       </li>
-      <li>
+      <li class="mb-1">
         <permissions-button resource="compose">Compose</permissions-button>
       </li>
     </ul>
-
   </div>
 </template>
 
@@ -32,8 +31,3 @@ export default {
   },
 }
 </script>
-<style scoped lang="scss">
-div {
-  margin: 10px;
-}
-</style>

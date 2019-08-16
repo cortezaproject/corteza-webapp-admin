@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="app" v-if="loaded">
+  <div id="app" class="d-flex flex-row w-100 app" v-if="loaded">
     <div class="panel border-right bg-white flex-grow-1">
       <template v-if="$auth.is()">
         <ul class="list-group">
@@ -21,8 +21,8 @@
       <permissions-modal />
     </div>
   </div>
-  <div class="loader" v-else>
-    <div class="error text-danger bg-white" v-if="error">{{ error }}</div>
+  <div v-else>
+    <div class="text-danger bg-white h1 p-5 position-absolute text-center w-100" v-if="error">{{ error }}</div>
   </div>
 </template>
 
@@ -66,19 +66,9 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-.app {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-
-  display: flex;
-  flex-direction: row;
-
-  .panel {
-    z-index: 1;
-    max-width: 200px;
-    padding-top: 55px;
-  }
+.panel {
+  max-width: 200px;
+  padding-top: 55px;
 }
 
 .slide-enter-active {
@@ -96,16 +86,6 @@ export default {
 
 .slide-leave-to {
   transform: translateX(-100vw);
-}
-
-.error {
-  font-size: 24px;
-  width: 100vw;
-  height: 20vh;
-  padding: 60px;
-  position: absolute;
-  top: 40vh;
-  text-align: center;
 }
 
 </style>

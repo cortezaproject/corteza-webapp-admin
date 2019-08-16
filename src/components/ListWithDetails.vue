@@ -14,13 +14,13 @@
       </b-button-group>
     </header>
     <main class="d-flex flex-row flex-grow-1">
-      <aside class="bg-white border-right flex-grow-1">
-        <div>
+      <aside class="bg-white border-right flex-grow-1 vh-100">
+        <div class="vh-100 overflow-auto">
           <slot></slot>
         </div>
       </aside>
       <transition name="slide">
-        <router-view class="details flex-grow-1 p-5"
+        <router-view class="flex-grow-1"
                      :key="$route.fullPath" v-on="$listeners"></router-view>
       </transition>
     </main>
@@ -54,12 +54,6 @@ section {
     aside {
       max-width: 200px;
       z-index: 1;
-      padding-top: 40px;
-
-      & > div {
-        height: calc(100vh - 100px);
-        overflow-y: scroll;
-      }
     }
 
     .slide-enter-active {
