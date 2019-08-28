@@ -52,7 +52,6 @@ export default {
 section {
   main {
     aside {
-      max-width: 200px;
       z-index: 1;
     }
 

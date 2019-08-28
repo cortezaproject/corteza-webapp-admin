@@ -1,13 +1,15 @@
 <template>
-  <div class="user-form">
-    <b-form @submit.prevent="onUserSubmit">
-      <div class="header">
-        <router-link :to="{ name: 'users' }" class="float-right"><b-button-close></b-button-close></router-link>
-        <h2 class="header-subtitle header-row">
+  <div class="user-form vh-100 overflow-auto">
+    <b-form @submit.prevent="onUserSubmit" class="d-flex flex-column">
+      <div class="sticky-top bg-white px-3 py-2 border-bottom">
+        <h5 class="float-left">
           {{ $t('user.information') }}
-        </h2>
+        </h5>
+        <span class="float-right">
+          <permissions-button :title="user.name" :resource="'system:user:'+user.userID">{{ $t('user.manage-id-permissions') }}</permissions-button>
+        </span>
       </div>
-      <div class="user">
+      <div class="user flex-grow-1 overflow-auto px-5 pt-5 pb-1">
         <b-form-group :label="$t('user.email')" label-cols="3">
           <b-form-input v-model="user.email" required type="email" />
         </b-form-group>
@@ -24,10 +26,6 @@
           <b-form-text>{{ user.kind }}</b-form-text>
         </b-form-group>
 
-        <b-form-group v-if="userID" label-cols="3">
-          <permissions-button :title="user.name" :resource="'system:user:'+user.userID">{{ $t('user.manage-id-permissions') }}</permissions-button>
-        </b-form-group>
-
         <b-form-group :label="$t('general.label.lastUpdate')" label-cols="3" v-if="userID && user.updatedAt">
           <b-form-text>{{ user.updatedAt }}</b-form-text>
         </b-form-group>
@@ -39,15 +37,15 @@
         <b-form-group :label="$t('user.suspendedAt')" label-cols="3" v-if="userID && user.suspendedAt">
           <b-form-text>{{ user.suspendedAt }}</b-form-text>
         </b-form-group>
-      </div>
-      <div class="footer">
-        <confirmation-toggle v-if="userID" :disabled="processing" @confirmed="onDelete">{{ $t('user.delete') }}</confirmation-toggle>
-        <confirmation-toggle v-if="userID" :disabled="processing" @confirmed="onStatusChange" ctaClass="secondary">{{ statusButtonTitle }}</confirmation-toggle>
-        <b-button type="submit" variant="primary" :disabled="processing" class="ml-3">{{ $t('general.label.submit') }}</b-button>
+        <div class="text-right">
+          <confirmation-toggle v-if="userID" :disabled="processing" @confirmed="onDelete">{{ $t('user.delete') }}</confirmation-toggle>
+          <confirmation-toggle v-if="userID" :disabled="processing" @confirmed="onStatusChange" ctaClass="secondary">{{ statusButtonTitle }}</confirmation-toggle>
+          <b-button type="submit" variant="primary" :disabled="processing">{{ $t('general.label.submit') }}</b-button>
+        </div>
       </div>
     </b-form>
 
-    <b-form v-if="userID" @submit.prevent="onPasswordSubmit">
+    <b-form v-if="userID" @submit.prevent="onPasswordSubmit" class="px-5 py-1 border-top">
       <h2 class="header-subtitle header-row">
         {{ $t('user.password.change') }}
       </h2>
@@ -74,14 +72,14 @@
       </div>
     </b-form>
 
-    <b-form v-if="userID" @submit.prevent="onRoleSubmit">
+    <b-form v-if="userID" @submit.prevent="onRoleSubmit" class="px-5 py-1 border-top mb-5">
       <h2 class="header-subtitle header-row">
         {{ $t('user.roles.manage') }}
       </h2>
 
       <user-roles v-if="userID" :current-roles.sync="userRoles"/>
 
-      <div class="footer">
+      <div class="footer mb-5">
         <b-button v-if="userID" type="submit" variant="primary" :disabled="processing" class="ml-10">
           {{ $t('general.label.submit') }}
         </b-button>
@@ -272,36 +270,12 @@ export default {
 </script>
 <style scoped lang="scss">
 
-.user-form {
-  height: 95vh;
-  overflow-y: auto;
-}
-
 form {
-  display: flex;
-  flex-direction: column;
-  border-bottom: 1px solid #F3F3F5;
-
-  .header {
-    flex: 1;
-  }
 
   .footer {
     flex: 1;
     text-align: right;
     margin: 10px 0;
-  }
-
-  .user {
-    flex: 1;
-    flex-grow: 100;
-    overflow-x: hidden;
-    padding-top: 2px;
-  }
-
-  .status {
-    flex: 1;
-    align-items: center;
   }
 }
 
