@@ -441,7 +441,7 @@ export default {
     kind: 'Kind/Type',
     manage: 'Manage users ({{count}})',
     roles: {
-      count: 'Roles {{count}}',
+      count: 'Roles ({{count}})',
       manage: 'Manage user\'s roles',
     },
     password: {
