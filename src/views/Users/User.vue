@@ -52,20 +52,22 @@
         {{ $t('user.password.change') }}
       </h2>
       <b-form-group :label="$t('user.password.new')" label-cols="3">
-        <b-form-input v-model="user.password"
+        <b-form-input v-model="password"
                       autocomplete="new-password"
+                      :state="passwordState"
                       required
                       type="password" />
       </b-form-group>
 
       <b-form-group :label="$t('user.password.confirm')" label-cols="3">
-        <b-form-input v-model="user.confirmPassword"
+        <b-form-input v-model="confirmPassword"
                       autocomplete="new-password"
+                      :state="confirmPasswordState"
                       required
                       type="password" />
       </b-form-group>
       <div class="footer">
-        <span class="mr-5" v-if="user.confirmPassword && user.password !== user.confirmPassword">
+        <span class="mr-5" v-if="confirmPasswordState === false">
           {{ $t('user.password.missmatch') }}
         </span>
         <b-button v-if="userID" type="submit" variant="primary" :disabled="processing || user.password !== user.confirmPassword" class="ml-10">
@@ -94,6 +96,12 @@
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
 import UserRoles from 'corteza-webapp-admin/src/components/UserRoles'
 
+/**
+ * @todo find a way to get this number from the backend
+ * @type {number}
+ */
+const minPasswordLength = 4
+
 export default {
   components: {
     ConfirmationToggle,
@@ -113,6 +121,10 @@ export default {
       user: {},
       userRoles: [],
       userStatus: false,
+
+      password: '',
+      confirmPassword: '',
+
       error: null,
     }
   },
@@ -121,6 +133,23 @@ export default {
     statusButtonTitle () {
       return this.user.suspendedAt ? this.$t('user.activate') : this.$t('user.suspend')
     },
+
+    passwordState () {
+      if (this.password.length > 0) {
+        return this.password.length > minPasswordLength
+      }
+
+      return null
+    },
+
+    confirmPasswordState () {
+      if (this.password.length > 0) {
+        return this.password === this.confirmPassword
+      }
+
+      return null
+    },
+
   },
 
   watch: {
@@ -238,11 +267,11 @@ export default {
 
     onPasswordSubmit () {
       this.processing = true
-      const { userID, password } = this.user
-      this.$SystemAPI.userSetPassword({ userID, password })
+      const { userID } = this.user
+      this.$SystemAPI.userSetPassword({ userID, password: this.password })
         .then(() => {
-          this.user.password = ''
-          this.user.confirmPassword = ''
+          this.password = ''
+          this.confirmPassword = ''
           this.processing = false
         })
         .catch(this.stdReject)
