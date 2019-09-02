@@ -1,6 +1,7 @@
 /* Import bootstrap styles from npm package */
 @import "variables.scss";
 
+@import "~vue-select/dist/vue-select.css";
 @import '~bootstrap/scss/bootstrap';
 @import 'btns';
 @import 'forms';

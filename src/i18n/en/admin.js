@@ -5,6 +5,7 @@ export default {
     role: 'Roles',
     permission: 'Permissions',
     manageApps: 'Manage applications',
+    automation: 'Automation',
     'auth-settings': 'Authentication settings',
   },
   application: {
@@ -452,6 +453,89 @@ export default {
     },
     'manage-id-permissions': 'Manage permissions for this user',
     'manage-wc-permissions': 'Manage permissions for all users',
+  },
+  automation: {
+    title: 'List of automation script',
+    newLabel: 'Create a new script',
+    newPlaceholder: 'Script name',
+    import: 'Import automation script(s)',
+    add: 'Add script',
+
+
+    manage: 'Manage automation scripts ({{count}})',
+
+    'manage-id-permissions': 'Manage permissions for this script',
+    'manage-wc-permissions': 'Manage permissions for all scripts',
+
+    list: {
+      unnamed: '(Unnamed script)',
+      column: {
+        label: {
+          async: 'Async.',
+          runAs: 'Run As',
+          runInUA: 'In browser',
+          critical: 'Critical',
+          enabled: 'Enabled',
+        },
+      },
+    },
+
+    edit: {
+      settingsTabLabel: 'Settings',
+
+      delete: 'Delete script',
+
+      title: 'Automation script',
+
+      nameLabel: 'Name',
+      namePlaceholder: 'Automation script name',
+
+      criticalLabel: 'Critical script',
+      criticalHelp: 'Wait until this script is executed. In case of errors, abort execution of other scripts and before* trigger',
+
+      asyncLabel: 'Run this script asynchronously',
+      asyncHelp: 'Do not wait for results and ignore errors. Incompatible with critical flag.',
+
+      enabledLabel: 'Enabled',
+      enabledHelp: 'Disabled scripts will be ignored',
+
+      securityLabel: 'Security',
+      runAsHelp: 'Script runner',
+      userPickerPlaceholder: 'Select user',
+      runAsCurrentUser: 'Run as "{{ user }}"',
+
+      timeoutLabel: 'Script execution timeout',
+      timeoutPlaceholder: '1500',
+      timeoutHelp: 'How much time do we wait before aborting the script? Value in milliseconds (1000ms = 1s). It defaults (when 0) to 2s with 30s as maximum. Consult with your administrator for exact numbers and limitations.',
+
+      codeTabLabel: 'Code',
+
+      scheduledTriggers: {
+        tabLabel: 'Scheduled',
+      },
+
+      mailAutomationTriggers: {
+        tabLabel: 'Mail triggers',
+        addTrigger: 'Add trigger',
+        deleteTrigger: 'Delete',
+        addMatcher: 'Add condition',
+        matchAll: 'Must match all conditions',
+        enable: 'Enable trigger',
+        delete: 'Delete trigger',
+
+        matcher: {
+          match: 'Value to match',
+        },
+      },
+    },
+    testing: {
+      parametersHeadline: 'Parameters & payload:',
+      resultsHeadline: 'Results:',
+      load: 'Load',
+      testInCorredor: 'Test in Corredor',
+      testInBrowser: 'Test in Browser',
+      warning: '',
+    },
   },
   auth: {
     notSignedIn: 'You\'re not signed in',

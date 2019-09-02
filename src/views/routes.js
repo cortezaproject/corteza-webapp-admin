@@ -45,6 +45,13 @@ export default [
           { path: ':applicationID?', name: 'applications.application', component: view('Applications/Application'), props: true },
         ],
       },
+      { path: 'automation',
+        name: 'automation',
+        component: view('Automation/Index'),
+        children: [
+          { path: ':scriptID?', name: 'automation.script', component: view('Automation/Script'), props: true },
+        ],
+      },
     ],
   },
 

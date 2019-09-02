@@ -84,6 +84,8 @@ section {
     .details {
       flex: 1;
       padding: 20px;
+      overflow: auto;
+      height: calc( 100vh - 80px );
     }
 
     .slide-enter-active {

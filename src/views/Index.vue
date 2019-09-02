@@ -8,6 +8,7 @@
           <li><router-link :to="{ name: 'users' }">{{ $t('navigation.user') }}</router-link></li>
           <li><router-link :to="{ name: 'roles' }">{{ $t('navigation.role') }}</router-link></li>
           <li><router-link :to="{ name: 'permissions' }">{{ $t('navigation.permission') }}</router-link></li>
+          <li><router-link :to="{ name: 'automation' }">{{ $t('navigation.automation') }}</router-link></li>
         </ul>
       </template>
       <template v-else>
