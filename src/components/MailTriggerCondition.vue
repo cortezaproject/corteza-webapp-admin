@@ -50,27 +50,30 @@ export default {
   },
 
   data () {
+    const f = (k) => this.$t('matcher.fields.' + k)
+    const o = (k) => this.$t('matcher.operators.' + k)
+
     return {
       headers: [],
       matchAll: false,
 
       mailHeaderName: {
-        null: 'Mail header field',
-        subject: 'Subject',
-        to: 'To',
-        from: 'From',
-        cc: 'CC',
-        bcc: 'BCC',
-        replyTo: 'Reply To',
+        null: f('placeholder'), // 'Mail header field',
+        subject: f('subject'), // 'Subject',
+        to: f('to'), // 'To',
+        from: f('from'), // 'From',
+        cc: f('cc'), // 'CC',
+        bcc: f('bcc'), // 'BCC',
+        replyTo: f('replyTo'), // 'Reply To',
       },
 
       mailHeaderOperator: {
-        null: 'Operator',
-        'prefix-ci': 'Match prefix',
-        'suffix-ci': 'Match suffix',
-        'equal-ci': 'Match full',
-        'regex': 'Regex',
-        'user': 'Existing user',
+        null: o('placeholder'), // 'Operator',
+        'prefix-ci': o('prefix-ci'), // 'Match prefix',
+        'suffix-ci': o('suffix-ci'), // 'Match suffix',
+        'equal-ci': o('equal-ci'),
+        'regex': o('regex'), // 'Regex',
+        'user': o('user'), // 'Existing user',
       },
     }
   },

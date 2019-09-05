@@ -108,6 +108,10 @@ export default {
         title: 'Manage all settings',
         description: 'Default: allow',
       },
+      'automation-script-create': {
+        title: 'Create automation scripts',
+        description: 'Default: allow',
+      },
     },
     'system-role': {
       read: {
@@ -179,6 +183,30 @@ export default {
       access: {
         title: 'Access to all organisations',
         description: 'Default: deny',
+      },
+    },
+    'system-automation-script': {
+      read: {
+        title: 'Read any script',
+        specific: 'Read script "{{target}}"',
+        description: 'Default: deny',
+      },
+      update: {
+        title: 'Update any script',
+        specific: 'Update script "{{target}}"',
+        description: 'Default: deny',
+      },
+      'delete': {
+        title: 'Delete any script',
+        specific: 'Delete script "{{target}}"',
+        description: 'Default: deny',
+      },
+    },
+    'system-automation-trigger': {
+      run: {
+        title: 'Run any trigger (on any script)',
+        specific: 'Can run this trigger',
+        description: 'Controls ability to run scripts through manual (or user-invoked) triggers either explicitly or implicitly through browser (Scripts, runnable in User-Agent). Other kinds of automation scripts and triggers that run implicitly on the backend are always executed. Default: allow',
       },
     },
     messaging: {
@@ -461,7 +489,6 @@ export default {
     import: 'Import automation script(s)',
     add: 'Add script',
 
-
     manage: 'Manage automation scripts ({{count}})',
 
     'manage-id-permissions': 'Manage permissions for this script',
@@ -525,6 +552,25 @@ export default {
 
         matcher: {
           match: 'Value to match',
+
+          fields: {
+            placeholder: 'Mail header field',
+            subject: 'Subject',
+            to: 'To',
+            from: 'From',
+            cc: 'CC',
+            bcc: 'BCC',
+            replyTo: 'Reply To',
+          },
+
+          operators: {
+            placeholder: 'Operator',
+            'prefix-ci': 'Match prefix',
+            'suffix-ci': 'Match suffix',
+            'equal-ci': 'Match full',
+            'regex': 'Regex',
+            'user': 'Existing user',
+          },
         },
       },
     },
