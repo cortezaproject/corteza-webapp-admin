@@ -3,12 +3,12 @@
     <div class="panel">
       <template v-if="$auth.is()">
         <ul class="menu-layer">
-          <li><router-link :to="{ name: 'auth-settings' }">{{ $t('navigation.auth-settings') }}</router-link></li>
           <li><router-link :to="{ name: 'applications' }">{{ $t('navigation.app') }}</router-link></li>
           <li><router-link :to="{ name: 'users' }">{{ $t('navigation.user') }}</router-link></li>
           <li><router-link :to="{ name: 'roles' }">{{ $t('navigation.role') }}</router-link></li>
           <li><router-link :to="{ name: 'permissions' }">{{ $t('navigation.permission') }}</router-link></li>
           <li><router-link :to="{ name: 'automation' }">{{ $t('navigation.automation') }}</router-link></li>
+          <li><router-link :to="{ name: 'settings' }">{{ $t('navigation.settings') }}</router-link></li>
         </ul>
       </template>
       <template v-else>

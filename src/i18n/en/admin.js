@@ -6,7 +6,7 @@ export default {
     permission: 'Permissions',
     manageApps: 'Manage applications',
     automation: 'Automation',
-    'auth-settings': 'Authentication settings',
+    settings: 'Settings',
   },
   application: {
     information: 'Application information',
@@ -53,7 +53,6 @@ export default {
     clearFilter: 'Clear filter',
     setOnAllFiltered: 'Set on all filtered ({{count}})',
     search: 'Search/filter permissions',
-    saveChanges: 'Save changes',
     resetBack: 'Reset back to "{{current}}"',
     managePermissions: 'Set base permissions',
     setFor: 'Set permissions for {{target}}',
@@ -588,20 +587,29 @@ export default {
     notSignedIn: 'You\'re not signed in',
     noAccess: 'Not allowed to access Crust Admin',
   },
-  'auth-settings': {
-    'external-providers': {
-      title: 'External providers',
-      enabled: 'Enable external authentication',
-      handle: 'Handle',
-      'client-key': 'Client key',
-      secret: 'Secret',
-      issuer: 'OIDC Issuer URL',
-      'provider-enabled': 'Enable this external authentication provider',
-      oidc: 'OpenID Connect',
-      gplus: 'Google',
-      facebook: 'Facebook',
-      github: 'GitHub',
-      linkedin: 'LinkedIn',
+  settings: {
+    auth: {
+      title: 'Authentication settings',
+      'external-providers': {
+        title: 'External providers',
+        enabled: 'Enable external authentication',
+        handle: 'Handle',
+        'client-key': 'Client key',
+        secret: 'Secret',
+        issuer: 'OIDC Issuer URL',
+        'provider-enabled': 'Enable this external authentication provider',
+        oidc: 'OpenID Connect',
+        gplus: 'Google',
+        facebook: 'Facebook',
+        github: 'GitHub',
+        linkedin: 'LinkedIn',
+      },
+    },
+    compose: {
+      title: 'Compose settings',
+    },
+    messaging: {
+      title: 'Messaging settings',
     },
   },
   general: {
@@ -617,6 +625,7 @@ export default {
       name: 'Name',
       lastUpdate: 'Last update',
       created: 'Created',
+      saveChanges: 'Save changes',
     },
   },
 }

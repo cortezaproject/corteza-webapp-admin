@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 import sinon from 'sinon'
-import ExternalProviders from 'corteza-webapp-admin/src/views/AuthSettings/ExternalProviders'
+import ExternalProviders from 'corteza-webapp-admin/src/views/Settings/Auth'
 import { stdReject, shallowMount } from 'corteza-webapp-admin/tests/lib/helpers'
 import fp from 'flush-promises'
 
-describe('views/AuthSettings/ExternalProviders.vue', () => {
+describe('views/Settings/Auth.vue', () => {
   afterEach(() => {
     sinon.restore()
   })

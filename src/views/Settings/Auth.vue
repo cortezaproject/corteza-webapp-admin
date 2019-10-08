@@ -1,16 +1,16 @@
 <template>
   <b-form @submit.prevent="onSubmit">
     <div class="header">
-      <router-link :to="{ name: 'auth-settings' }" class="float-right"><b-button-close></b-button-close></router-link>
+      <router-link :to="{ name: 'settings' }" class="float-right"><b-button-close></b-button-close></router-link>
       <h2 class="header-subtitle header-row">
-        {{ $t('auth-settings.external-providers.title') }}
+        {{ $t('settings.auth.external-providers.title') }}
       </h2>
     </div>
 
     <main>
       <b-form-group label-cols="3">
         <b-form-checkbox plain v-model="enabled" :value="true" :unchecked-value="false">
-          {{$t('auth-settings.external-providers.enabled')}}
+          {{$t('settings.auth.external-providers.enabled')}}
         </b-form-checkbox>
       </b-form-group>
 
@@ -18,35 +18,35 @@
 
       <oidc-external
         v-for="(p, i) in oidc" :key="i"
-        :title="$t('auth-settings.external-providers.oidc')"
+        :title="$t('settings.auth.external-providers.oidc')"
         v-model="oidc[i]"/>
 
       <hr />
 
       <standard-external
-        :title="$t('auth-settings.external-providers.gplus')"
+        :title="$t('settings.auth.external-providers.gplus')"
         v-model="standard.gplus" />
 
       <hr />
 
       <standard-external
-        :title="$t('auth-settings.external-providers.facebook')"
+        :title="$t('settings.auth.external-providers.facebook')"
         v-model="standard.facebook"/>
       <hr />
 
       <standard-external
-        :title="$t('auth-settings.external-providers.github')"
+        :title="$t('settings.auth.external-providers.github')"
         v-model="standard.github"/>
       <hr />
 
       <standard-external
-        :title="$t('auth-settings.external-providers.linkedin')"
+        :title="$t('settings.auth.external-providers.linkedin')"
         v-model="standard.linkedin"/>
 
     </main>
 
     <div class="footer">
-      <b-button type="submit" variant="primary" :disabled="!submittable">{{ $t('permission.saveChanges') }}</b-button>
+      <b-button type="submit" variant="primary" :disabled="!submittable">{{ $t('general.label.saveChanges') }}</b-button>
     </div>
   </b-form>
 </template>
