@@ -448,6 +448,7 @@ export default {
     information: 'Role Information',
     'delete': 'Delete role',
     add: 'Add Role',
+    handle: 'Handle',
     members: 'Members {{count}}',
     unnamed: 'Unnamed role',
     'manage-id-permissions': 'Manage permissions for this role',

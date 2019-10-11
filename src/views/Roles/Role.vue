@@ -11,6 +11,10 @@
         <b-form-input v-model="role.name" />
       </b-form-group>
 
+      <b-form-group :label="$t('role.handle')" label-cols="3">
+        <b-form-input v-model="role.handle" />
+      </b-form-group>
+
       <b-form-group label-cols="3">
         <permissions-button :title="role.name" :resource="'system:role:'+roleID" :roleID="roleID">{{ $t('role.manage-id-permissions') }}</permissions-button>
       </b-form-group>
