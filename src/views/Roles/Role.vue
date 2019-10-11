@@ -8,11 +8,15 @@
     </div>
     <div class="role">
       <b-form-group :label="$t('general.label.name')" label-cols="3">
-        <b-form-input v-model="role.name" />
+        <b-form-input :state="checkName"
+                      v-model="role.name" />
+
       </b-form-group>
 
       <b-form-group :label="$t('role.handle')" label-cols="3">
-        <b-form-input v-model="role.handle" />
+        <b-form-input :state="checkHandle"
+                      v-model="role.handle" />
+
       </b-form-group>
 
       <b-form-group label-cols="3">
@@ -31,7 +35,7 @@
 
     <div class="footer">
       <confirmation-toggle @confirmed="onDelete">{{ $t('role.delete') }}</confirmation-toggle>
-      <b-button type="submit" variant="primary" :disabled="processing">{{ $t('general.label.submit') }}</b-button>
+      <b-button type="submit" variant="primary" :disabled="!canSubmit">{{ $t('general.label.submit') }}</b-button>
     </div>
   </b-form>
 </template>
@@ -60,6 +64,24 @@ export default {
       role: {},
       members: [],
     }
+  },
+
+  computed: {
+    // At least 1 character
+    checkName () {
+      return /^.+$/.test(this.role.name || '') ? null : false
+    },
+
+    // 2+ alpha-numeric + _
+    checkHandle () {
+      return /^\w{2,}$/.test(this.role.handle || '') ? null : false
+    },
+
+    canSubmit () {
+      return !this.processing &&
+        this.checkHandle === null &&
+        this.checkName === null
+    },
   },
 
   watch: {

@@ -120,6 +120,55 @@ describe('views/Roles/Role.vue', () => {
     })
   })
 
+  describe('input validation', () => {
+    it('name -- has to be at least 1 character', () => {
+      propsData.roleID = undefined
+      const wrap = mountRole()
+      const test = [
+        ['', false],
+        ['q', null],
+        ['qwerty 123', null],
+      ]
+      for (const [name, e] of test) {
+        wrap.setData({ role: { name } })
+        expect(wrap.vm.checkName).to.eq(e)
+      }
+    })
+
+    it('role -- has to be at least 2 character, only alpha-numeric + _', () => {
+      propsData.roleID = undefined
+      const wrap = mountRole()
+      const test = [
+        ['', false],
+        ['q', false],
+        ['qwerty 123', false],
+        ['qwerty123', null],
+      ]
+      for (const [handle, e] of test) {
+        wrap.setData({ role: { handle } })
+        expect(wrap.vm.checkHandle).to.eq(e)
+      }
+    })
+
+    it('role valid if all validations pass', () => {
+      propsData.roleID = undefined
+      const wrap = mountRole()
+      const submit = wrap.find('.footer b-button')
+
+      const test = [
+        [ '', '', 'true' ],
+        [ 'qw', '', 'true' ],
+        [ '', 'q', 'true' ],
+        [ 'qw', 'q', undefined ],
+      ]
+
+      for (const [ handle, name, e ] of test) {
+        wrap.setData({ role: { handle, name } })
+        expect(submit.attributes('disabled')).to.eq(e)
+      }
+    })
+  })
+
   describe('create role', () => {
     it('on success - redirect', async () => {
       propsData.roleID = undefined
