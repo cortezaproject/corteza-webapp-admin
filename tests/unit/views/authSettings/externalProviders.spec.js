@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 import sinon from 'sinon'
-import ExternalProviders from 'corteza-webapp-admin/src/views/Settings/Auth'
+import ExternalProviders from 'corteza-webapp-admin/src/views/Settings/External'
 import { stdReject, shallowMount } from 'corteza-webapp-admin/tests/lib/helpers'
 import fp from 'flush-promises'
 

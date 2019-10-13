@@ -17,7 +17,7 @@
       </b-form-group>
 
       <b-form-group label-cols="3">
-        <b-form-checkbox plain v-model="application.enabled">{{ $t('application.enabled') }}</b-form-checkbox>
+        <b-form-checkbox v-model="application.enabled">{{ $t('application.enabled') }}</b-form-checkbox>
       </b-form-group>
 
       <b-form-group label-cols="3">
@@ -26,7 +26,7 @@
 
       <b-form-group :label="$t('application.appSelector.label')" label-cols="3" v-if="application.unify" class="unify">
         <b-form-group>
-          <b-form-checkbox plain v-model="application.unify.listed">{{ $t('application.listed') }}</b-form-checkbox>
+          <b-form-checkbox v-model="application.unify.listed">{{ $t('application.listed') }}</b-form-checkbox>
         </b-form-group>
 
         <b-form-group :label="$t('application.name.label')" label-cols="3" :description="$t('application.name.description')">

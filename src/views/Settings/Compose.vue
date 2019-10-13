@@ -1,17 +1,44 @@
 <template>
-  <b-form @submit.prevent="onSubmit">
+  <b-form @submit.prevent="onSubmit" class="overflow-hidden">
+    <router-link :to="{ name: 'settings' }" class="float-right pr-1"><b-button-close></b-button-close></router-link>
     <div class="header">
-      <router-link :to="{ name: 'settings' }" class="float-right"><b-button-close></b-button-close></router-link>
       <h2 class="header-subtitle header-row">
         {{ $t('settings.compose.title') }}
       </h2>
     </div>
 
+    <hr />
+
     <main>
+      <b-form-group :label="$t('settings.compose.panel.title')" label-size="lg">
+        <b-form-group label-cols="3">
+          <b-form-checkbox v-model="settings['panel.namespace-switcher']" :value="true" :unchecked-value="false">
+            {{ $t('settings.compose.panel.namespace-switcher') }}
+          </b-form-checkbox>
+        </b-form-group>
+      </b-form-group>
+
+      <hr />
+
+      <b-form-group :label="$t('settings.compose.file.title')" label-size="lg">
+        <b-form-group :label="$t('settings.compose.file.max-size')" label-cols="3">
+          <b-input-group>
+            <b-form-input type="number" v-model="settings['file.max-size']" />
+          </b-input-group>
+        </b-form-group>
+        <b-form-group :label="$t('settings.compose.file.type.whitelist')"
+                      :description="$t('settings.compose.file.type.description')"
+                      label-cols="3">
+
+          <b-input-group class="m-0">
+            <b-form-input v-model="settings['file.type.whitelist']" />
+          </b-input-group>
+        </b-form-group>
+      </b-form-group>
     </main>
 
-    <div class="footer">
-      <b-button type="submit" variant="primary" :disabled="!submittable">{{ $t('general.label.saveChanges') }}</b-button>
+    <div class="text-right">
+      <b-button type="submit" variant="primary">{{ $t('general.label.saveChanges') }}</b-button>
     </div>
   </b-form>
 </template>
@@ -24,25 +51,8 @@ export default {
 
       error: null,
 
-      settings: [],
-
-      enabled: false,
+      settings: {},
     }
-  },
-
-  computed: {
-    dirty () {
-      return this.changes.length > 0
-    },
-
-    submittable () {
-      return this.dirty && !this.processing
-    },
-
-    changes () {
-      let c = []
-      return c
-    },
   },
 
   created () {
@@ -50,34 +60,29 @@ export default {
   },
 
   methods: {
-    checkForChange (name, newValue, settings = []) {
-      const oldValue = (settings.find(s => s.name === name) || {}).value
-
-      if (oldValue === undefined && newValue === undefined) {
-        // Do not be greedy, skip when old value is undefined and
-        // new value is falsy
-        return
-      }
-
-      if (newValue === oldValue) {
-        return
-      }
-
-      // Values changed, record
-      return { name, value: newValue }
-    },
-
     onSubmit () {
       // Collect changed variables
       this.processing = true
 
-      this.$SystemAPI.settingsUpdate({ values: this.changes })
+      const values = Object.entries(this.settings).map(([name, value]) => {
+        return { name, value }
+      })
+
+      this.$SystemAPI.settingsUpdate({ values })
         .catch(this.stdReject)
         .finally(this.finalize)
     },
 
     fetchSettings () {
       this.processing = true
+
+      this.$ComposeAPI.settingsList().then(vv => {
+        vv.forEach(({ name, value }) => {
+          this.$set(this.settings, name, value)
+        })
+      })
+        .catch(this.stdReject)
+        .finally(this.finalize)
     },
 
     stdReject ({ message }) {
@@ -91,27 +96,10 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-form {
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 50px);
-
-  .header {
-    flex: 1;
-    border-bottom: 2px solid $light;
-  }
-
-  .footer {
-    flex: 1;
-    text-align: right;
-  }
-
-  main {
-    flex: 1;
-    flex-grow: 100;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    padding-top: 2px;
-  }
+main {
+  height: auto;
+  max-height: 80vh;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 </style>

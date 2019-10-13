@@ -18,6 +18,7 @@ export default [
         component: view('Settings/Index'),
         children: [
           { path: 'auth-settings', name: 'auth-settings', component: view('Settings/Auth'), props: true, canReuse: false },
+          { path: 'external-providers', name: 'external-providers', component: view('Settings/External'), props: true, canReuse: false },
           { path: 'compose', name: 'compose', component: view('Settings/Compose'), props: true, canReuse: false },
           { path: 'messaging', name: 'messaging', component: view('Settings/Messaging'), props: true, canReuse: false },
         ],

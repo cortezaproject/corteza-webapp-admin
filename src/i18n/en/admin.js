@@ -588,28 +588,102 @@ export default {
     noAccess: 'Not allowed to access Crust Admin',
   },
   settings: {
-    auth: {
-      title: 'Authentication settings',
-      'external-providers': {
-        title: 'External providers',
-        enabled: 'Enable external authentication',
-        handle: 'Handle',
-        'client-key': 'Client key',
-        secret: 'Secret',
-        issuer: 'OIDC Issuer URL',
-        'provider-enabled': 'Enable this external authentication provider',
-        oidc: 'OpenID Connect',
-        gplus: 'Google',
-        facebook: 'Facebook',
-        github: 'GitHub',
-        linkedin: 'LinkedIn',
+    system: {
+      auth: {
+        title: 'Authentication',
+        'external-providers': {
+          title: 'External Authentication Providers',
+          enabled: 'Enable external authentication',
+          handle: 'Handle',
+          'client-key': 'Client key',
+          secret: 'Secret',
+          issuer: 'OIDC Issuer URL',
+          'provider-enabled': 'Enable this external authentication provider',
+          oidc: 'OpenID Connect',
+          gplus: 'Google',
+          facebook: 'Facebook',
+          github: 'GitHub',
+          linkedin: 'LinkedIn',
+        },
+        internal: {
+          title: 'Internal',
+          enabled: 'Internal authentication enabled',
+          'password-reset': {
+            enabled: 'Password reset enabled',
+          },
+          signup: {
+            enabled: 'Signup enabled',
+          },
+          'signup-email-confirmation-required': 'Signup email confirmation required',
+        },
+        frontend: {
+          title: 'Frontend',
+          url: {
+            base: 'Base',
+            'email-confirmation': 'Email confirmation',
+            'password-reset': 'Password reset',
+            redirect: 'Redirect',
+          },
+        },
+        mail: {
+          title: 'Mail',
+          'from-address': 'Sender address',
+          'from-name': 'Sender name',
+        },
       },
     },
     compose: {
-      title: 'Compose settings',
+      title: 'Compose',
+      panel: {
+        title: 'Panel',
+        'namespace-switcher': 'Enable namespace switcher',
+      },
+      file: {
+        title: 'File',
+        'max-size': 'Max size (MB)',
+        type: {
+          whitelist: 'File type whitelist',
+          description: 'MIME types, sepparated with ",". Example: "text/plain,text/csv"',
+        },
+      },
     },
     messaging: {
-      title: 'Messaging settings',
+      title: 'Messaging',
+      emoji: {
+        title: 'Emoji',
+        enabled: 'Enable emoji',
+      },
+      message: {
+        attachment: {
+          title: 'Attachment',
+          enabled: 'Enable attachments',
+          'max-size': 'Max size (MB)',
+          source: {
+            gallery: {
+              enabled: 'Enable attchment upload from gallery',
+            },
+            camera: {
+              enabled: 'Enable attachment upload from camera',
+            },
+          },
+          type: {
+            whitelist: 'File type whitelist',
+            description: 'MIME types, sepparated with ",". Example: "text/plain,text/csv"',
+          },
+        },
+      },
+      notification: {
+        title: 'Notifications',
+        enabled: 'Enable notifications',
+        header: {
+          template: 'Template for notification header',
+          // eslint-disable-next-line
+          description: 'Use ${user}/${channel} in place of user and channel names',
+        },
+        message: {
+          'max-length': 'Number of characters shown in the notification',
+        },
+      },
     },
   },
   general: {
