@@ -11,7 +11,7 @@
 
     <main>
       <b-form-group :label="$t('settings.messaging.emoji.title')" label-size="lg">
-        <b-form-group label-cols="3">
+        <b-form-group label-cols="2">
           <b-form-checkbox v-model="settings['emoji.enabled']" :value="true" :unchecked-value="false">
             {{ $t('settings.messaging.emoji.enabled') }}
           </b-form-checkbox>
@@ -21,29 +21,29 @@
       <hr />
 
       <b-form-group :label="$t('settings.messaging.message.attachment.title')" label-size="lg">
-        <b-form-group label-cols="3">
+        <b-form-group label-cols="2">
           <b-form-checkbox v-model="settings['message.attachment.enabled']" :value="true" :unchecked-value="false">
             {{ $t('settings.messaging.message.attachment.enabled') }}
           </b-form-checkbox>
         </b-form-group>
-        <b-form-group label-cols="3">
+        <b-form-group v-if="settings['message.attachment.enabled']" label-cols="2">
           <b-form-checkbox v-model="settings['message.attachment.source.gallery.enabled']" :value="true" :unchecked-value="false">
             {{ $t('settings.messaging.message.attachment.source.gallery.enabled') }}
           </b-form-checkbox>
         </b-form-group>
-        <b-form-group label-cols="3">
+        <b-form-group v-if="settings['message.attachment.enabled']" label-cols="2">
           <b-form-checkbox v-model="settings['message.attachment.source.camera.enabled']" :value="true" :unchecked-value="false">
             {{ $t('settings.messaging.message.attachment.source.camera.enabled') }}
           </b-form-checkbox>
         </b-form-group>
-        <b-form-group :label="$t('settings.messaging.message.attachment.max-size')" label-cols="3">
+        <b-form-group v-if="settings['message.attachment.enabled']" :label="$t('settings.messaging.message.attachment.max-size')" label-cols="2">
           <b-input-group>
             <b-form-input type="number" v-model="settings['message.attachment.max-size']" />
           </b-input-group>
         </b-form-group>
-        <b-form-group :label="$t('settings.messaging.message.attachment.type.whitelist')"
+        <b-form-group v-if="settings['message.attachment.enabled']" :label="$t('settings.messaging.message.attachment.type.whitelist')"
                       :description="$t('settings.messaging.message.attachment.type.description')"
-                      label-cols="3">
+                      label-cols="2">
           <b-input-group class="m-0">
             <b-form-input v-model="settings['message.attachment.type.whitelist']" />
           </b-input-group>
@@ -53,19 +53,24 @@
       <hr />
 
       <b-form-group :label="$t('settings.messaging.notification.title')" label-size="lg">
-        <b-form-group label-cols="3">
+        <b-form-group label-cols="2">
           <b-form-checkbox v-model="settings['notification.enabled']" :value="true" :unchecked-value="false">
             {{ $t('settings.messaging.notification.enabled') }}
           </b-form-checkbox>
         </b-form-group>
-        <b-form-group :label="$t('settings.messaging.notification.header.template')"
+        <b-form-group v-if="settings['notification.enabled']"
+                      :label="$t('settings.messaging.notification.header.template')"
                       :description="$t('settings.messaging.notification.header.description')"
-                      label-cols="3">
+                      label-cols="2">
+
           <b-input-group class="m-0">
             <b-form-input v-model="settings['notification.header.template']" />
           </b-input-group>
         </b-form-group>
-        <b-form-group :label="$t('settings.messaging.notification.message.max-length')" label-cols="3">
+        <b-form-group v-if="settings['notification.enabled']"
+                      :label="$t('settings.messaging.notification.message.max-length')"
+                      label-cols="2">
+
           <b-input-group>
             <b-form-input type="number" v-model="settings['notification.message.max-length']" />
           </b-input-group>

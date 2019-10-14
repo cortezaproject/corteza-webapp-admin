@@ -11,7 +11,7 @@
 
     <main>
       <b-form-group :label="$t('settings.compose.panel.title')" label-size="lg">
-        <b-form-group label-cols="3">
+        <b-form-group label-cols="2">
           <b-form-checkbox v-model="settings['panel.namespace-switcher']" :value="true" :unchecked-value="false">
             {{ $t('settings.compose.panel.namespace-switcher') }}
           </b-form-checkbox>
@@ -21,14 +21,14 @@
       <hr />
 
       <b-form-group :label="$t('settings.compose.file.title')" label-size="lg">
-        <b-form-group :label="$t('settings.compose.file.max-size')" label-cols="3">
+        <b-form-group :label="$t('settings.compose.file.max-size')" label-cols="2">
           <b-input-group>
             <b-form-input type="number" v-model="settings['file.max-size']" />
           </b-input-group>
         </b-form-group>
         <b-form-group :label="$t('settings.compose.file.type.whitelist')"
                       :description="$t('settings.compose.file.type.description')"
-                      label-cols="3">
+                      label-cols="2">
 
           <b-input-group class="m-0">
             <b-form-input v-model="settings['file.type.whitelist']" />

@@ -11,22 +11,22 @@
 
     <main>
       <b-form-group :label="$t('settings.system.auth.internal.title')" label-size="lg">
-        <b-form-group label-cols="3">
+        <b-form-group label-cols="2">
           <b-form-checkbox v-model="settings['auth.internal.enabled']" :value="true" :unchecked-value="false">
             {{ $t('settings.system.auth.internal.enabled') }}
           </b-form-checkbox>
         </b-form-group>
-        <b-form-group label-cols="3">
+        <b-form-group label-cols="2">
           <b-form-checkbox v-model="settings['auth.internal.password-reset.enabled']" :value="true" :unchecked-value="false">
             {{ $t('settings.system.auth.internal.password-reset.enabled') }}
           </b-form-checkbox>
         </b-form-group>
-        <b-form-group label-cols="3">
+        <b-form-group label-cols="2">
           <b-form-checkbox v-model="settings['auth.internal.signup-email-confirmation-required']" :value="true" :unchecked-value="false">
             {{ $t('settings.system.auth.internal.signup-email-confirmation-required') }}
           </b-form-checkbox>
         </b-form-group>
-        <b-form-group label-cols="3">
+        <b-form-group label-cols="2">
           <b-form-checkbox v-model="settings['auth.internal.signup.enabled']" :value="true" :unchecked-value="false">
             {{ $t('settings.system.auth.internal.signup.enabled') }}
           </b-form-checkbox>
@@ -36,22 +36,22 @@
       <hr />
 
       <b-form-group :label="$t('settings.system.auth.frontend.title')" label-size="lg">
-        <b-form-group :label="$t('settings.system.auth.frontend.url.base')" label-cols="3">
+        <b-form-group :label="$t('settings.system.auth.frontend.url.base')" label-cols="2">
           <b-input-group>
             <b-form-input v-model="settings['auth.frontend.url.base']" />
           </b-input-group>
         </b-form-group>
-        <b-form-group :label="$t('settings.system.auth.frontend.url.email-confirmation')" label-cols="3">
+        <b-form-group :label="$t('settings.system.auth.frontend.url.email-confirmation')" label-cols="2">
           <b-input-group>
             <b-form-input v-model="settings['auth.frontend.url.email-confirmation']" />
           </b-input-group>
         </b-form-group>
-        <b-form-group :label="$t('settings.system.auth.frontend.url.password-reset')" label-cols="3">
+        <b-form-group :label="$t('settings.system.auth.frontend.url.password-reset')" label-cols="2">
           <b-input-group>
             <b-form-input v-model="settings['auth.frontend.url.password-reset']" />
           </b-input-group>
         </b-form-group>
-        <b-form-group :label="$t('settings.system.auth.frontend.url.redirect')" label-cols="3">
+        <b-form-group :label="$t('settings.system.auth.frontend.url.redirect')" label-cols="2">
           <b-input-group>
             <b-form-input v-model="settings['auth.frontend.url.redirect']" />
           </b-input-group>
@@ -61,12 +61,12 @@
       <hr />
 
       <b-form-group :label="$t('settings.system.auth.mail.title')" label-size="lg">
-        <b-form-group :label="$t('settings.system.auth.mail.from-address')" label-cols="3">
+        <b-form-group :label="$t('settings.system.auth.mail.from-address')" label-cols="2">
           <b-input-group>
             <b-form-input v-model="settings['auth.mail.from-address']" />
           </b-input-group>
         </b-form-group>
-        <b-form-group :label="$t('settings.system.auth.mail.from-name')" label-cols="3">
+        <b-form-group :label="$t('settings.system.auth.mail.from-name')" label-cols="2">
           <b-input-group>
             <b-form-input v-model="settings['auth.mail.from-name']" />
           </b-input-group>

@@ -10,39 +10,42 @@
     <hr />
 
     <main>
-      <b-form-group label-cols="3">
-        <b-form-checkbox v-model="enabled" :value="true" :unchecked-value="false">
-          {{$t('settings.system.auth.external-providers.enabled')}}
-        </b-form-checkbox>
+      <b-form-group :label="$t('settings.system.auth.external-providers.external')" label-size="lg">
+        <b-form-group label-cols="2">
+          <b-form-checkbox v-model="enabled" :value="true" :unchecked-value="false">
+            {{$t('settings.system.auth.external-providers.enabled')}}
+          </b-form-checkbox>
+        </b-form-group>
       </b-form-group>
 
-      <oidc-external
-        v-for="(p, i) in oidc" :key="i"
-        :title="$t('settings.system.auth.external-providers.oidc')"
-        v-model="oidc[i]"/>
+      <div v-if="enabled">
+        <oidc-external
+          v-for="(p, i) in oidc" :key="i"
+          :title="$t('settings.system.auth.external-providers.oidc')"
+          v-model="oidc[i]"/>
 
-      <hr />
+        <hr />
 
-      <standard-external
-        :title="$t('settings.system.auth.external-providers.gplus')"
-        v-model="standard.gplus" />
+        <standard-external
+          :title="$t('settings.system.auth.external-providers.gplus')"
+          v-model="standard.gplus" />
 
-      <hr />
+        <hr />
 
-      <standard-external
-        :title="$t('settings.system.auth.external-providers.facebook')"
-        v-model="standard.facebook"/>
-      <hr />
+        <standard-external
+          :title="$t('settings.system.auth.external-providers.facebook')"
+          v-model="standard.facebook"/>
+        <hr />
 
-      <standard-external
-        :title="$t('settings.system.auth.external-providers.github')"
-        v-model="standard.github"/>
-      <hr />
+        <standard-external
+          :title="$t('settings.system.auth.external-providers.github')"
+          v-model="standard.github"/>
+        <hr />
 
-      <standard-external
-        :title="$t('settings.system.auth.external-providers.linkedin')"
-        v-model="standard.linkedin"/>
-
+        <standard-external
+          :title="$t('settings.system.auth.external-providers.linkedin')"
+          v-model="standard.linkedin"/>
+      </div>
     </main>
 
     <div class="text-right pt-1">

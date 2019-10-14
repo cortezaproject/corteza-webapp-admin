@@ -7,27 +7,27 @@
       </h2>
     </div>
     <div class="role">
-      <b-form-group :label="$t('general.label.name')" label-cols="3">
+      <b-form-group :label="$t('general.label.name')" label-cols="2">
         <b-form-input :state="checkName"
                       v-model="role.name" />
 
       </b-form-group>
 
-      <b-form-group :label="$t('role.handle')" label-cols="3">
+      <b-form-group :label="$t('role.handle')" label-cols="2">
         <b-form-input :state="checkHandle"
                       v-model="role.handle" />
 
       </b-form-group>
 
-      <b-form-group label-cols="3">
+      <b-form-group label-cols="2">
         <permissions-button :title="role.name" :resource="'system:role:'+roleID" :roleID="roleID">{{ $t('role.manage-id-permissions') }}</permissions-button>
       </b-form-group>
 
-      <b-form-group :label="$t('general.label.lastUpdate')" label-cols="3">
+      <b-form-group :label="$t('general.label.lastUpdate')" label-cols="2">
         <b-form-text>{{ role.updatedAt }}</b-form-text>
       </b-form-group>
 
-      <b-form-group :label="$t('general.label.created')" label-cols="3">
+      <b-form-group :label="$t('general.label.created')" label-cols="2">
         <b-form-text>{{ role.createdAt }}</b-form-text>
       </b-form-group>
       <role-members :current-members.sync="members"></role-members>

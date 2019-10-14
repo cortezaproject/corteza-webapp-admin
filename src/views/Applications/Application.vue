@@ -8,40 +8,40 @@
 
     </div>
     <div class="application">
-      <b-form-group :label="$t('application.id.label')" label-cols="3">
+      <b-form-group :label="$t('application.id.label')" label-cols="2">
         <b-form-text>{{ application.applicationID }}</b-form-text>
       </b-form-group>
 
-      <b-form-group :label="$t('application.name.label')" label-cols="3">
+      <b-form-group :label="$t('application.name.label')" label-cols="2">
         <b-form-input v-model="application.name" required />
       </b-form-group>
 
-      <b-form-group label-cols="3">
+      <b-form-group label-cols="2">
         <b-form-checkbox v-model="application.enabled">{{ $t('application.enabled') }}</b-form-checkbox>
       </b-form-group>
 
-      <b-form-group label-cols="3">
+      <b-form-group label-cols="2">
         <permissions-button :title="application.name" :resource="'system:application:'+applicationID">{{ $t('application.manage-id-permissions') }}</permissions-button>
       </b-form-group>
 
-      <b-form-group :label="$t('application.appSelector.label')" label-cols="3" v-if="application.unify" class="unify">
+      <b-form-group :label="$t('application.appSelector.label')" label-cols="2" v-if="application.unify" class="unify">
         <b-form-group>
           <b-form-checkbox v-model="application.unify.listed">{{ $t('application.listed') }}</b-form-checkbox>
         </b-form-group>
 
-        <b-form-group :label="$t('application.name.label')" label-cols="3" :description="$t('application.name.description')">
+        <b-form-group :label="$t('application.name.label')" label-cols="2" :description="$t('application.name.description')">
           <b-form-input v-model="application.unify.name" />
         </b-form-group>
 
-        <b-form-group :label="$t('application.icon.label')" :description="$t('application.icon.description')" label-cols="3">
+        <b-form-group :label="$t('application.icon.label')" :description="$t('application.icon.description')" label-cols="2">
           <b-form-input v-model="application.unify.icon" />
         </b-form-group>
 
-        <b-form-group :label="$t('application.logo.label')" :description="$t('application.logo.description')" label-cols="3">
+        <b-form-group :label="$t('application.logo.label')" :description="$t('application.logo.description')" label-cols="2">
           <b-form-input v-model="application.unify.logo" />
         </b-form-group>
 
-        <b-form-group :label="$t('application.url.label')" :description="$t('application.url.description')" label-cols="3">
+        <b-form-group :label="$t('application.url.label')" :description="$t('application.url.description')" label-cols="2">
           <b-form-input v-model="application.unify.url" />
         </b-form-group>
 
@@ -50,11 +50,11 @@
         </b-form-group>
       </b-form-group>
 
-      <b-form-group :label="$t('application.lastUpdate.label')" label-cols="3">
+      <b-form-group :label="$t('application.lastUpdate.label')" label-cols="2">
         <b-form-text>{{ application.updatedAt }}</b-form-text>
       </b-form-group>
 
-      <b-form-group :label="$t('application.created.label')" label-cols="3">
+      <b-form-group :label="$t('application.created.label')" label-cols="2">
         <b-form-text>{{ application.createdAt }}</b-form-text>
       </b-form-group>
     </div>

@@ -77,7 +77,7 @@ section {
 
       & > div {
         height: calc(100vh - 100px);
-        overflow-y: scroll;
+        overflow-y: auto;
       }
     }
 

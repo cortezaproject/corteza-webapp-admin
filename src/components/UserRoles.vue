@@ -1,5 +1,5 @@
 <template>
-  <b-form-group :label="$t('user.roles.count', { count: filteredRoles.length })" label-cols="3">
+  <b-form-group :label="$t('user.roles.count', { count: filteredRoles.length })" label-cols="2">
     <table v-if="filteredRoles">
       <tr v-for="r in filteredRoles" :key="r.userID">
         <td>{{ r.name || r.handle || r.roleID || $t('role.unnamed') }}</td>

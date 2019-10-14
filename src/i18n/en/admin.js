@@ -593,6 +593,7 @@ export default {
         title: 'Authentication',
         'external-providers': {
           title: 'External Authentication Providers',
+          external: 'External',
           enabled: 'Enable external authentication',
           handle: 'Handle',
           'client-key': 'Client key',
@@ -655,7 +656,7 @@ export default {
       },
       message: {
         attachment: {
-          title: 'Attachment',
+          title: 'Attachments',
           enabled: 'Enable attachments',
           'max-size': 'Max size (MB)',
           source: {
