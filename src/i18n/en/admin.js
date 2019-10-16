@@ -630,6 +630,16 @@ export default {
           title: 'Mail',
           'from-address': 'Sender address',
           'from-name': 'Sender name',
+          emailConfirmation: {
+            title: 'Email Confirmation',
+            subject: 'Subject',
+            body: 'Body',
+          },
+          passwordReset: {
+            title: 'Password Reset',
+            subject: 'Subject',
+            body: 'Body',
+          },
         },
       },
     },
@@ -685,6 +695,11 @@ export default {
           'max-length': 'Number of characters shown in the notification',
         },
       },
+    },
+    mail: {
+      title: 'Email',
+      header: 'Header (EmailHeaderEn):',
+      footer: 'Footer (EmailFooterEn):',
     },
   },
   general: {

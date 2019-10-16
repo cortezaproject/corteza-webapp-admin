@@ -21,6 +21,7 @@ export default [
           { path: 'external-providers', name: 'external-providers', component: view('Settings/External'), props: true, canReuse: false },
           { path: 'compose', name: 'compose', component: view('Settings/Compose'), props: true, canReuse: false },
           { path: 'messaging', name: 'messaging', component: view('Settings/Messaging'), props: true, canReuse: false },
+          { path: 'email', name: 'email', component: view('Settings/Email'), props: true, canReuse: false },
         ],
       },
       { path: 'roles',

@@ -72,6 +72,38 @@
           </b-input-group>
         </b-form-group>
       </b-form-group>
+
+      <b-form-group :label="$t('settings.system.auth.mail.emailConfirmation.title')" label-size="lg">
+        <b-form-group :label="$t('settings.system.auth.mail.emailConfirmation.subject')" label-cols="2">
+          <b-input-group>
+            <b-form-input v-model="settings['auth.mail.email-confirmation.subject.en']" />
+          </b-input-group>
+        </b-form-group>
+
+        <b-form-group :label="$t('settings.system.auth.mail.emailConfirmation.body')" label-cols="2">
+          <b-input-group>
+            <b-form-textarea v-model="settings['auth.mail.email-confirmation.body.en']"
+                             class="overflow-auto"
+                             max-rows="20" />
+          </b-input-group>
+        </b-form-group>
+      </b-form-group>
+
+      <b-form-group :label="$t('settings.system.auth.mail.passwordReset.title')" label-size="lg">
+        <b-form-group :label="$t('settings.system.auth.mail.passwordReset.subject')" label-cols="2">
+          <b-input-group>
+            <b-form-input v-model="settings['auth.mail.password-reset.subject.en']" />
+          </b-input-group>
+        </b-form-group>
+
+        <b-form-group :label="$t('settings.system.auth.mail.passwordReset.body')" label-cols="2">
+          <b-input-group>
+            <b-form-textarea v-model="settings['auth.mail.password-reset.body.en']"
+                             class="overflow-auto"
+                             max-rows="20" />
+          </b-input-group>
+        </b-form-group>
+      </b-form-group>
     </main>
 
     <div class="text-right">

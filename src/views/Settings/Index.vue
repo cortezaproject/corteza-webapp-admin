@@ -6,6 +6,7 @@
         <router-link :to="{ name: 'external-providers' }">{{ $t('settings.system.auth.external-providers.title') }}</router-link>
         <router-link :to="{ name: 'compose' }">{{ $t('settings.compose.title') }}</router-link>
         <router-link :to="{ name: 'messaging' }">{{ $t('settings.messaging.title') }}</router-link>
+        <router-link :to="{ name: 'email' }">{{ $t('settings.mail.title') }}</router-link>
       </li>
     </ul>
   </list-with-details>
