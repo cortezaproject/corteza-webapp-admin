@@ -45,7 +45,7 @@
                       :description="$t('settings.messaging.message.attachment.type.description')"
                       label-cols="2">
           <b-input-group class="m-0">
-            <b-form-input v-model="settings['message.attachment.type.whitelist']" />
+            <b-form-input v-model="attachmentWhitelist" />
           </b-input-group>
         </b-form-group>
       </b-form-group>
@@ -96,6 +96,22 @@ export default {
     }
   },
 
+  computed: {
+    attachmentWhitelist: {
+      get () {
+        return (this.settings['message.attachment.type.whitelist'] || []).join(',')
+      },
+
+      set (value) {
+        this.settings['message.attachment.type.whitelist'] = (value || '').split(',').map(v => {
+          return v.replace(/ /g, '')
+        }).filter(v => {
+          return v
+        })
+      },
+    },
+  },
+
   created () {
     this.fetchSettings()
   },
@@ -109,7 +125,7 @@ export default {
         return { name, value }
       })
 
-      this.$SystemAPI.settingsUpdate({ values })
+      this.$ComposeAPI.settingsUpdate({ values })
         .catch(this.stdReject)
         .finally(this.finalize)
     },

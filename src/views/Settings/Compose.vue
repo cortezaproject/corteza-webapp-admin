@@ -31,7 +31,7 @@
                       label-cols="2">
 
           <b-input-group class="m-0">
-            <b-form-input v-model="settings['file.type.whitelist']" />
+            <b-form-input v-model="fileWhitelist" />
           </b-input-group>
         </b-form-group>
       </b-form-group>
@@ -55,6 +55,22 @@ export default {
     }
   },
 
+  computed: {
+    fileWhitelist: {
+      get () {
+        return (this.settings['file.type.whitelist'] || []).join(',')
+      },
+
+      set (value) {
+        this.settings['file.type.whitelist'] = (value || '').split(',').map(v => {
+          return v.replace(/ /g, '')
+        }).filter(v => {
+          return v
+        })
+      },
+    },
+  },
+
   created () {
     this.fetchSettings()
   },
@@ -68,7 +84,7 @@ export default {
         return { name, value }
       })
 
-      this.$SystemAPI.settingsUpdate({ values })
+      this.$ComposeAPI.settingsUpdate({ values })
         .catch(this.stdReject)
         .finally(this.finalize)
     },
