@@ -5,7 +5,7 @@ import ExternalProviders from 'corteza-webapp-admin/src/views/Settings/External'
 import { stdReject, shallowMount } from 'corteza-webapp-admin/tests/lib/helpers'
 import fp from 'flush-promises'
 
-describe('views/Settings/Auth.vue', () => {
+describe('views/Settings/External.vue', () => {
   afterEach(() => {
     sinon.restore()
   })
