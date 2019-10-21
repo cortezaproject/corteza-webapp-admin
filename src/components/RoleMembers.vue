@@ -1,5 +1,5 @@
 <template>
-  <b-form-group :label="$t('role.members', { count: members.length })" label-cols="3">
+  <b-form-group :label="$t('role.members', { count: members.length })" label-cols="2">
     <table v-if="members && users">
       <tr v-for="u in filteredMembers" :key="u.userID">
         <td>{{ u.name }}</td>

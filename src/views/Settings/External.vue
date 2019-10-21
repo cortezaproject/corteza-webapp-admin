@@ -1,52 +1,55 @@
 <template>
-  <b-form @submit.prevent="onSubmit">
+  <b-form @submit.prevent="onSubmit" class="overflow-hidden">
+    <router-link :to="{ name: 'settings' }" class="float-right pr-1"><b-button-close></b-button-close></router-link>
     <div class="header">
-      <router-link :to="{ name: 'auth-settings' }" class="float-right"><b-button-close></b-button-close></router-link>
       <h2 class="header-subtitle header-row">
-        {{ $t('auth-settings.external-providers.title') }}
+        {{ $t('settings.system.auth.external-providers.title') }}
       </h2>
     </div>
 
+    <hr />
+
     <main>
-      <b-form-group label-cols="3">
-        <b-form-checkbox plain v-model="enabled" :value="true" :unchecked-value="false">
-          {{$t('auth-settings.external-providers.enabled')}}
-        </b-form-checkbox>
+      <b-form-group :label="$t('settings.system.auth.external-providers.external')" label-size="lg">
+        <b-form-group label-cols="2">
+          <b-form-checkbox v-model="enabled" :value="true" :unchecked-value="false">
+            {{$t('settings.system.auth.external-providers.enabled')}}
+          </b-form-checkbox>
+        </b-form-group>
       </b-form-group>
 
-      <hr/>
+      <div v-if="enabled">
+        <oidc-external
+          v-for="(p, i) in oidc" :key="i"
+          :title="$t('settings.system.auth.external-providers.oidc')"
+          v-model="oidc[i]"/>
 
-      <oidc-external
-        v-for="(p, i) in oidc" :key="i"
-        :title="$t('auth-settings.external-providers.oidc')"
-        v-model="oidc[i]"/>
+        <hr />
 
-      <hr />
+        <standard-external
+          :title="$t('settings.system.auth.external-providers.gplus')"
+          v-model="standard.gplus" />
 
-      <standard-external
-        :title="$t('auth-settings.external-providers.gplus')"
-        v-model="standard.gplus" />
+        <hr />
 
-      <hr />
+        <standard-external
+          :title="$t('settings.system.auth.external-providers.facebook')"
+          v-model="standard.facebook"/>
+        <hr />
 
-      <standard-external
-        :title="$t('auth-settings.external-providers.facebook')"
-        v-model="standard.facebook"/>
-      <hr />
+        <standard-external
+          :title="$t('settings.system.auth.external-providers.github')"
+          v-model="standard.github"/>
+        <hr />
 
-      <standard-external
-        :title="$t('auth-settings.external-providers.github')"
-        v-model="standard.github"/>
-      <hr />
-
-      <standard-external
-        :title="$t('auth-settings.external-providers.linkedin')"
-        v-model="standard.linkedin"/>
-
+        <standard-external
+          :title="$t('settings.system.auth.external-providers.linkedin')"
+          v-model="standard.linkedin"/>
+      </div>
     </main>
 
-    <div class="footer">
-      <b-button type="submit" variant="primary" :disabled="!submittable">{{ $t('permission.saveChanges') }}</b-button>
+    <div class="text-right pt-1">
+      <b-button type="submit" variant="primary" :disabled="!submittable">{{ $t('general.label.saveChanges') }}</b-button>
     </div>
   </b-form>
 </template>
@@ -254,27 +257,10 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-form {
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 50px);
-
-  .header {
-    flex: 1;
-    border-bottom: 2px solid $light;
-  }
-
-  .footer {
-    flex: 1;
-    text-align: right;
-  }
-
-  main {
-    flex: 1;
-    flex-grow: 100;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    padding-top: 2px;
-  }
+main {
+  height: auto;
+  max-height: 80vh;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 </style>

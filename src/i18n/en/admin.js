@@ -6,7 +6,7 @@ export default {
     permission: 'Permissions',
     manageApps: 'Manage applications',
     automation: 'Automation',
-    'auth-settings': 'Authentication settings',
+    settings: 'Settings',
   },
   application: {
     information: 'Application information',
@@ -53,7 +53,6 @@ export default {
     clearFilter: 'Clear filter',
     setOnAllFiltered: 'Set on all filtered ({{count}})',
     search: 'Search/filter permissions',
-    saveChanges: 'Save changes',
     resetBack: 'Reset back to "{{current}}"',
     managePermissions: 'Set base permissions',
     setFor: 'Set permissions for {{target}}',
@@ -588,20 +587,119 @@ export default {
     notSignedIn: 'You\'re not signed in',
     noAccess: 'Not allowed to access Crust Admin',
   },
-  'auth-settings': {
-    'external-providers': {
-      title: 'External providers',
-      enabled: 'Enable external authentication',
-      handle: 'Handle',
-      'client-key': 'Client key',
-      secret: 'Secret',
-      issuer: 'OIDC Issuer URL',
-      'provider-enabled': 'Enable this external authentication provider',
-      oidc: 'OpenID Connect',
-      gplus: 'Google',
-      facebook: 'Facebook',
-      github: 'GitHub',
-      linkedin: 'LinkedIn',
+  settings: {
+    system: {
+      auth: {
+        title: 'Authentication',
+        'external-providers': {
+          title: 'External Authentication Providers',
+          external: 'External',
+          enabled: 'Enable external authentication',
+          handle: 'Handle',
+          'client-key': 'Client key',
+          secret: 'Secret',
+          issuer: 'OIDC Issuer URL',
+          'provider-enabled': 'Enable this external authentication provider',
+          oidc: 'OpenID Connect',
+          gplus: 'Google',
+          facebook: 'Facebook',
+          github: 'GitHub',
+          linkedin: 'LinkedIn',
+        },
+        internal: {
+          title: 'Internal',
+          enabled: 'Internal authentication enabled',
+          'password-reset': {
+            enabled: 'Password reset enabled',
+          },
+          signup: {
+            enabled: 'Signup enabled',
+          },
+          'signup-email-confirmation-required': 'Signup email confirmation required',
+        },
+        frontend: {
+          title: 'Frontend',
+          url: {
+            base: 'Base',
+            'email-confirmation': 'Email confirmation',
+            'password-reset': 'Password reset',
+            redirect: 'Redirect',
+          },
+        },
+        mail: {
+          title: 'Mail',
+          'from-address': 'Sender address',
+          'from-name': 'Sender name',
+          emailConfirmation: {
+            title: 'Email Confirmation',
+            subject: 'Subject',
+            body: 'Body',
+          },
+          passwordReset: {
+            title: 'Password Reset',
+            subject: 'Subject',
+            body: 'Body',
+          },
+        },
+      },
+    },
+    compose: {
+      title: 'Compose',
+      panel: {
+        title: 'Panel',
+        'namespace-switcher': 'Enable namespace switcher',
+      },
+      file: {
+        title: 'File',
+        'max-size': 'Max size (MB)',
+        type: {
+          whitelist: 'File type whitelist',
+          description: 'MIME types, sepparated with ",". Example: "text/plain,text/csv"',
+        },
+      },
+    },
+    messaging: {
+      title: 'Messaging',
+      emoji: {
+        title: 'Emoji',
+        enabled: 'Enable emoji',
+      },
+      message: {
+        attachment: {
+          title: 'Attachments',
+          enabled: 'Enable attachments',
+          'max-size': 'Max size (MB)',
+          source: {
+            gallery: {
+              enabled: 'Enable attchment upload from gallery',
+            },
+            camera: {
+              enabled: 'Enable attachment upload from camera',
+            },
+          },
+          type: {
+            whitelist: 'File type whitelist',
+            description: 'MIME types, sepparated with ",". Example: "text/plain,text/csv"',
+          },
+        },
+      },
+      notification: {
+        title: 'Notifications',
+        enabled: 'Enable notifications',
+        header: {
+          template: 'Template for notification header',
+          // eslint-disable-next-line
+          description: 'Use ${user}/${channel} in place of user and channel names',
+        },
+        message: {
+          'max-length': 'Number of characters shown in the notification',
+        },
+      },
+    },
+    mail: {
+      title: 'Email',
+      header: 'Header (EmailHeaderEn):',
+      footer: 'Footer (EmailFooterEn):',
     },
   },
   general: {
@@ -617,6 +715,7 @@ export default {
       name: 'Name',
       lastUpdate: 'Last update',
       created: 'Created',
+      saveChanges: 'Save changes',
     },
   },
 }

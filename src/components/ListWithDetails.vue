@@ -69,7 +69,7 @@ section {
 
     aside {
       flex: 1;
-      max-width: 200px;
+      max-width: 225px;
       z-index: 1;
       background: $white;
       border-right: 2px solid $light;
@@ -77,7 +77,7 @@ section {
 
       & > div {
         height: calc(100vh - 100px);
-        overflow-y: scroll;
+        overflow-y: auto;
       }
     }
 

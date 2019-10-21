@@ -8,15 +8,15 @@
         </h2>
       </div>
       <div class="user">
-        <b-form-group :label="$t('user.email')" label-cols="3">
+        <b-form-group :label="$t('user.email')" label-cols="2">
           <b-form-input v-model="user.email" required type="email" />
         </b-form-group>
 
-        <b-form-group :label="$t('user.fullName')" label-cols="3">
+        <b-form-group :label="$t('user.fullName')" label-cols="2">
           <b-form-input v-model="user.name" required />
         </b-form-group>
 
-        <b-form-group :label="$t('user.handle')" label-cols="3">
+        <b-form-group :label="$t('user.handle')" label-cols="2">
           <b-form-input v-model="user.handle" />
         </b-form-group>
 
@@ -24,19 +24,19 @@
           <b-form-text>{{ user.kind }}</b-form-text>
         </b-form-group>
 
-        <b-form-group v-if="userID" label-cols="3">
+        <b-form-group v-if="userID" label-cols="2">
           <permissions-button :title="user.name" :resource="'system:user:'+user.userID">{{ $t('user.manage-id-permissions') }}</permissions-button>
         </b-form-group>
 
-        <b-form-group :label="$t('general.label.lastUpdate')" label-cols="3" v-if="userID && user.updatedAt">
+        <b-form-group :label="$t('general.label.lastUpdate')" label-cols="2" v-if="userID && user.updatedAt">
           <b-form-text>{{ user.updatedAt }}</b-form-text>
         </b-form-group>
 
-        <b-form-group :label="$t('general.label.created')" label-cols="3" v-if="userID">
+        <b-form-group :label="$t('general.label.created')" label-cols="2" v-if="userID">
           <b-form-text>{{ user.createdAt }}</b-form-text>
         </b-form-group>
 
-        <b-form-group :label="$t('user.suspendedAt')" label-cols="3" v-if="userID && user.suspendedAt">
+        <b-form-group :label="$t('user.suspendedAt')" label-cols="2" v-if="userID && user.suspendedAt">
           <b-form-text>{{ user.suspendedAt }}</b-form-text>
         </b-form-group>
       </div>
@@ -51,7 +51,7 @@
       <h2 class="header-subtitle header-row">
         {{ $t('user.password.change') }}
       </h2>
-      <b-form-group :label="$t('user.password.new')" label-cols="3">
+      <b-form-group :label="$t('user.password.new')" label-cols="2">
         <b-form-input v-model="password"
                       autocomplete="new-password"
                       :state="passwordState"
@@ -59,7 +59,7 @@
                       type="password" />
       </b-form-group>
 
-      <b-form-group :label="$t('user.password.confirm')" label-cols="3">
+      <b-form-group :label="$t('user.password.confirm')" label-cols="2">
         <b-form-input v-model="confirmPassword"
                       autocomplete="new-password"
                       :state="confirmPasswordState"
