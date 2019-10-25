@@ -1,55 +1,82 @@
 <template>
-  <b-form @submit.prevent="onSubmit" class="overflow-hidden">
-    <router-link :to="{ name: 'settings' }" class="float-right pr-1"><b-button-close></b-button-close></router-link>
+  <b-form
+    class="overflow-hidden"
+    @submit.prevent="onSubmit"
+  >
+    <router-link
+      :to="{ name: 'settings' }"
+      class="float-right pr-1"
+    >
+      <b-button-close />
+    </router-link>
     <div class="header">
       <h2 class="header-subtitle header-row">
         {{ $t('settings.system.auth.external-providers.title') }}
       </h2>
     </div>
 
-    <hr />
+    <hr>
 
     <main>
-      <b-form-group :label="$t('settings.system.auth.external-providers.external')" label-size="lg">
+      <b-form-group
+        :label="$t('settings.system.auth.external-providers.external')"
+        label-size="lg"
+      >
         <b-form-group label-cols="2">
-          <b-form-checkbox v-model="enabled" :value="true" :unchecked-value="false">
-            {{$t('settings.system.auth.external-providers.enabled')}}
+          <b-form-checkbox
+            v-model="enabled"
+            :value="true"
+            :unchecked-value="false"
+          >
+            {{ $t('settings.system.auth.external-providers.enabled') }}
           </b-form-checkbox>
         </b-form-group>
       </b-form-group>
 
       <div v-if="enabled">
         <oidc-external
-          v-for="(p, i) in oidc" :key="i"
+          v-for="(p, i) in oidc"
+          :key="i"
+          v-model="oidc[i]"
           :title="$t('settings.system.auth.external-providers.oidc')"
-          v-model="oidc[i]"/>
+        />
 
-        <hr />
+        <hr>
 
         <standard-external
+          v-model="standard.gplus"
           :title="$t('settings.system.auth.external-providers.gplus')"
-          v-model="standard.gplus" />
+        />
 
-        <hr />
+        <hr>
 
         <standard-external
+          v-model="standard.facebook"
           :title="$t('settings.system.auth.external-providers.facebook')"
-          v-model="standard.facebook"/>
-        <hr />
+        />
+        <hr>
 
         <standard-external
+          v-model="standard.github"
           :title="$t('settings.system.auth.external-providers.github')"
-          v-model="standard.github"/>
-        <hr />
+        />
+        <hr>
 
         <standard-external
+          v-model="standard.linkedin"
           :title="$t('settings.system.auth.external-providers.linkedin')"
-          v-model="standard.linkedin"/>
+        />
       </div>
     </main>
 
     <div class="text-right pt-1">
-      <b-button type="submit" variant="primary" :disabled="!submittable">{{ $t('general.label.saveChanges') }}</b-button>
+      <b-button
+        :disabled="!submittable"
+        type="submit"
+        variant="primary"
+      >
+        {{ $t('general.label.saveChanges') }}
+      </b-button>
     </div>
   </b-form>
 </template>

@@ -1,10 +1,18 @@
 <template>
-  <b-form-group :label="$t('user.roles.count', { count: filteredRoles.length })" label-cols="2">
+  <b-form-group
+    :label="$t('user.roles.count', { count: filteredRoles.length })"
+    label-cols="2"
+  >
     <table v-if="filteredRoles">
-      <tr v-for="r in filteredRoles" :key="r.userID">
+      <tr
+        v-for="r in filteredRoles"
+        :key="r.userID"
+      >
         <td>{{ r.name || r.handle || r.roleID || $t('role.unnamed') }}</td>
         <td class="action">
-          <b-button @click="removeRole(r)">{{ $t('general.label.remove') }}</b-button>
+          <b-button @click="removeRole(r)">
+            {{ $t('general.label.remove') }}
+          </b-button>
         </td>
       </tr>
     </table>
@@ -12,13 +20,18 @@
       <b-input-group-prepend>
         <b-input-group-text>{{ $t('general.label.searchRoles') }}</b-input-group-text>
       </b-input-group-prepend>
-      <b-form-input v-model.trim="filter"></b-form-input>
+      <b-form-input v-model.trim="filter" />
     </b-input-group>
     <table v-if="filter && filtered">
-      <tr v-for="r in filtered" :key="r.roleID">
+      <tr
+        v-for="r in filtered"
+        :key="r.roleID"
+      >
         <td>{{ r.name || r.handle || r.roleID || $t('role.unnamed') }}</td>
         <td class="action">
-          <b-button @click="addRole(r)">{{ $t('general.label.add') }}</b-button>
+          <b-button @click="addRole(r)">
+            {{ $t('general.label.add') }}
+          </b-button>
         </td>
       </tr>
     </table>

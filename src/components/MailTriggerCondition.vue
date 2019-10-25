@@ -1,43 +1,64 @@
 <template>
   <b-card-body>
-    <b-input-group v-for="(m, i) in headers" :key="i">
-      <b-select plain
-                v-model="m.name"
-                :options="mailHeaderName"></b-select>
-      <b-select plain
-                v-model="m.op"
-                :options="mailHeaderOperator"></b-select>
-      <b-input v-model="m.match"
-               v-if="m.op!='user'"
-               :placeholder="$t('matcher.match')"></b-input>
-      <b-button :disabled="headers.length < 2"
-                variant="danger"
-                @click="onDeleteHeaderMatcher(i)">-</b-button>
+    <b-input-group
+      v-for="(m, i) in headers"
+      :key="i"
+    >
+      <b-select
+        v-model="m.name"
+        :options="mailHeaderName"
+        plain
+      />
+      <b-select
+        v-model="m.op"
+        :options="mailHeaderOperator"
+        plain
+      />
+      <b-input
+        v-if="m.op!='user'"
+        v-model="m.match"
+        :placeholder="$t('matcher.match')"
+      />
+      <b-button
+        :disabled="headers.length < 2"
+        variant="danger"
+        @click="onDeleteHeaderMatcher(i)"
+      >
+        -
+      </b-button>
     </b-input-group>
     <b-container>
       <b-row>
-        <b-col cols="6"
-               class="pl-0">
-          <b-checkbox v-model="matchAll"
-                      :disabled="headers.length < 2">{{ $t('matchAll') }}</b-checkbox>
+        <b-col
+          cols="6"
+          class="pl-0"
+        >
+          <b-checkbox
+            v-model="matchAll"
+            :disabled="headers.length < 2"
+          >
+            {{ $t('matchAll') }}
+          </b-checkbox>
         </b-col>
-        <b-col cols="6" class="text-right pr-0">
-          <b-button variant="link"
-                    class="m-0 p-0"
-                    @click="onAddHeaderMatcher">{{ $t('addMatcher') }}</b-button>
+        <b-col
+          cols="6"
+          class="text-right pr-0"
+        >
+          <b-button
+            variant="link"
+            class="m-0 p-0"
+            @click="onAddHeaderMatcher"
+          >
+            {{ $t('addMatcher') }}
+          </b-button>
         </b-col>
       </b-row>
     </b-container>
   </b-card-body>
 </template>
 <script>
-import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
 
 export default {
-  components: {
-    ConfirmationToggle,
-  },
-
   i18nOptions: {
     keyPrefix: 'automation.edit.mailAutomationTriggers',
   },

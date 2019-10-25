@@ -1,26 +1,53 @@
 <template>
-  <b-form-group v-if="value.enabled" :label="`${title}: ${value.handle}`" label-size="lg">
+  <b-form-group
+    v-if="value.enabled"
+    :label="`${title}: ${value.handle}`"
+    label-size="lg"
+  >
     <b-form-group label-cols="2">
-      <b-form-checkbox v-model="value.enabled" :value="true" :unchecked-value="false">
-        {{$t('settings.system.auth.external-providers.provider-enabled')}}
+      <b-form-checkbox
+        v-model="value.enabled"
+        :value="true"
+        :unchecked-value="false"
+      >
+        {{ $t('settings.system.auth.external-providers.provider-enabled') }}
       </b-form-checkbox>
     </b-form-group>
-    <b-form-group v-if="value.enabled" :label="$t('settings.system.auth.external-providers.handle')" label-cols="2">
+    <b-form-group
+      v-if="value.enabled"
+      :label="$t('settings.system.auth.external-providers.handle')"
+      label-cols="2"
+    >
       <b-input-group>
-        <b-form-input v-model="value.handle" :formatter="alphanum" />
+        <b-form-input
+          v-model="value.handle"
+          :formatter="alphanum"
+        />
       </b-input-group>
     </b-form-group>
-    <b-form-group v-if="value.enabled" :label="$t('settings.system.auth.external-providers.issuer')" label-cols="2">
+    <b-form-group
+      v-if="value.enabled"
+      :label="$t('settings.system.auth.external-providers.issuer')"
+      label-cols="2"
+    >
       <b-input-group>
         <b-form-input v-model="value.issuer" />
       </b-input-group>
     </b-form-group>
-    <b-form-group v-if="value.enabled" :label="$t('settings.system.auth.external-providers.key')" label-cols="2">
+    <b-form-group
+      v-if="value.enabled"
+      :label="$t('settings.system.auth.external-providers.key')"
+      label-cols="2"
+    >
       <b-input-group>
         <b-form-input v-model="value.key" />
       </b-input-group>
     </b-form-group>
-    <b-form-group v-if="value.enabled" :label="$t('settings.system.auth.external-providers.secret')" label-cols="2">
+    <b-form-group
+      v-if="value.enabled"
+      :label="$t('settings.system.auth.external-providers.secret')"
+      label-cols="2"
+    >
       <b-input-group>
         <b-form-input v-model="value.secret" />
       </b-input-group>

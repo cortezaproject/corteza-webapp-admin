@@ -1,11 +1,24 @@
 <template>
   <span>
     <span v-if="!inConfirmation">
-      <b-button :variant="ctaClass" @click.prevent="onPrompt" :disabled="disabled" class="confirmation-prompt"><slot></slot></b-button>
+      <b-button
+        :variant="ctaClass"
+        :disabled="disabled"
+        class="confirmation-prompt"
+        @click.prevent="onPrompt"
+      ><slot /></b-button>
     </span>
     <span v-if="inConfirmation">
-      <b-button :variant="confirmationClass" @click.prevent="onConfirmation()" class="confirmation-confirm">{{ $t('label.yes') }}</b-button>
-      <b-button variant="secondary" @click.prevent="inConfirmation=false" class="confirmation-cancel">{{ $t('label.no') }}</b-button>
+      <b-button
+        :variant="confirmationClass"
+        class="confirmation-confirm"
+        @click.prevent="onConfirmation()"
+      >{{ $t('label.yes') }}</b-button>
+      <b-button
+        variant="secondary"
+        class="confirmation-cancel"
+        @click.prevent="inConfirmation=false"
+      >{{ $t('label.no') }}</b-button>
     </span>
   </span>
 </template>
@@ -13,7 +26,10 @@
 export default {
   props: {
     ctaClass: { type: String, default: 'danger' },
-    confirmationClass: { default: 'danger' },
+    confirmationClass: {
+      default: 'danger',
+      type: String,
+    },
     disabled: Boolean,
     noPrompt: Boolean,
   },

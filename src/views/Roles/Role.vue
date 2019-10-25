@@ -1,41 +1,74 @@
 <template>
   <b-form @submit.prevent="onSubmit">
     <div class="header">
-      <router-link :to="{ name: 'roles' }" class="float-right"><b-button-close></b-button-close></router-link>
+      <router-link
+        :to="{ name: 'roles' }"
+        class="float-right"
+      >
+        <b-button-close />
+      </router-link>
       <h2 class="header-subtitle header-row">
         {{ $t('role.information') }}
       </h2>
     </div>
     <div class="role">
-      <b-form-group :label="$t('general.label.name')" label-cols="2">
-        <b-form-input :state="checkName"
-                      v-model="role.name" />
-
+      <b-form-group
+        :label="$t('general.label.name')"
+        label-cols="2"
+      >
+        <b-form-input
+          v-model="role.name"
+          :state="checkName"
+        />
       </b-form-group>
 
-      <b-form-group :label="$t('role.handle')" label-cols="2">
-        <b-form-input :state="checkHandle"
-                      v-model="role.handle" />
-
+      <b-form-group
+        :label="$t('role.handle')"
+        label-cols="2"
+      >
+        <b-form-input
+          v-model="role.handle"
+          :state="checkHandle"
+        />
       </b-form-group>
 
       <b-form-group label-cols="2">
-        <permissions-button :title="role.name" :resource="'system:role:'+roleID" :roleID="roleID">{{ $t('role.manage-id-permissions') }}</permissions-button>
+        <permissions-button
+          :title="role.name"
+          :resource="'system:role:'+roleID"
+          :role-i-d="roleID"
+        >
+          {{ $t('role.manage-id-permissions') }}
+        </permissions-button>
       </b-form-group>
 
-      <b-form-group :label="$t('general.label.lastUpdate')" label-cols="2">
+      <b-form-group
+        :label="$t('general.label.lastUpdate')"
+        label-cols="2"
+      >
         <b-form-text>{{ role.updatedAt }}</b-form-text>
       </b-form-group>
 
-      <b-form-group :label="$t('general.label.created')" label-cols="2">
+      <b-form-group
+        :label="$t('general.label.created')"
+        label-cols="2"
+      >
         <b-form-text>{{ role.createdAt }}</b-form-text>
       </b-form-group>
-      <role-members :current-members.sync="members"></role-members>
+      <role-members :current-members.sync="members" />
     </div>
 
     <div class="footer">
-      <confirmation-toggle @confirmed="onDelete">{{ $t('role.delete') }}</confirmation-toggle>
-      <b-button type="submit" variant="primary" :disabled="!canSubmit">{{ $t('general.label.submit') }}</b-button>
+      <confirmation-toggle @confirmed="onDelete">
+        {{ $t('role.delete') }}
+      </confirmation-toggle>
+      <b-button
+        :disabled="!canSubmit"
+        type="submit"
+        variant="primary"
+      >
+        {{ $t('general.label.submit') }}
+      </b-button>
     </div>
   </b-form>
 </template>
@@ -54,6 +87,7 @@ export default {
     roleID: {
       type: String,
       required: false,
+      default: undefined,
     },
   },
 

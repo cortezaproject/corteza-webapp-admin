@@ -2,89 +2,188 @@
   <div class="user-form">
     <b-form @submit.prevent="onUserSubmit">
       <div class="header">
-        <router-link :to="{ name: 'users' }" class="float-right"><b-button-close></b-button-close></router-link>
+        <router-link
+          :to="{ name: 'users' }"
+          class="float-right"
+        >
+          <b-button-close />
+        </router-link>
         <h2 class="header-subtitle header-row">
           {{ $t('user.information') }}
         </h2>
       </div>
       <div class="user">
-        <b-form-group :label="$t('user.email')" label-cols="2">
-          <b-form-input v-model="user.email" required type="email" />
+        <b-form-group
+          :label="$t('user.email')"
+          label-cols="2"
+        >
+          <b-form-input
+            v-model="user.email"
+            required
+            type="email"
+          />
         </b-form-group>
 
-        <b-form-group :label="$t('user.fullName')" label-cols="2">
-          <b-form-input v-model="user.name" required />
+        <b-form-group
+          :label="$t('user.fullName')"
+          label-cols="2"
+        >
+          <b-form-input
+            v-model="user.name"
+            required
+          />
         </b-form-group>
 
-        <b-form-group :label="$t('user.handle')" label-cols="2">
+        <b-form-group
+          :label="$t('user.handle')"
+          label-cols="2"
+        >
           <b-form-input v-model="user.handle" />
         </b-form-group>
 
-        <b-form-group :label="$t('user.kind')" horizontal v-if="false">
+        <b-form-group
+          v-if="false"
+          :label="$t('user.kind')"
+          horizontal
+        >
           <b-form-text>{{ user.kind }}</b-form-text>
         </b-form-group>
 
-        <b-form-group v-if="userID" label-cols="2">
-          <permissions-button :title="user.name" :resource="'system:user:'+user.userID">{{ $t('user.manage-id-permissions') }}</permissions-button>
+        <b-form-group
+          v-if="userID"
+          label-cols="2"
+        >
+          <permissions-button
+            :title="user.name"
+            :resource="'system:user:'+user.userID"
+          >
+            {{ $t('user.manage-id-permissions') }}
+          </permissions-button>
         </b-form-group>
 
-        <b-form-group :label="$t('general.label.lastUpdate')" label-cols="2" v-if="userID && user.updatedAt">
+        <b-form-group
+          v-if="userID && user.updatedAt"
+          :label="$t('general.label.lastUpdate')"
+          label-cols="2"
+        >
           <b-form-text>{{ user.updatedAt }}</b-form-text>
         </b-form-group>
 
-        <b-form-group :label="$t('general.label.created')" label-cols="2" v-if="userID">
+        <b-form-group
+          v-if="userID"
+          :label="$t('general.label.created')"
+          label-cols="2"
+        >
           <b-form-text>{{ user.createdAt }}</b-form-text>
         </b-form-group>
 
-        <b-form-group :label="$t('user.suspendedAt')" label-cols="2" v-if="userID && user.suspendedAt">
+        <b-form-group
+          v-if="userID && user.suspendedAt"
+          :label="$t('user.suspendedAt')"
+          label-cols="2"
+        >
           <b-form-text>{{ user.suspendedAt }}</b-form-text>
         </b-form-group>
       </div>
       <div class="footer">
-        <confirmation-toggle v-if="userID" :disabled="processing" @confirmed="onDelete">{{ $t('user.delete') }}</confirmation-toggle>
-        <confirmation-toggle v-if="userID" :disabled="processing" @confirmed="onStatusChange" ctaClass="secondary">{{ statusButtonTitle }}</confirmation-toggle>
-        <b-button type="submit" variant="primary" :disabled="processing" class="ml-3">{{ $t('general.label.submit') }}</b-button>
-      </div>
-    </b-form>
-
-    <b-form v-if="userID" @submit.prevent="onPasswordSubmit">
-      <h2 class="header-subtitle header-row">
-        {{ $t('user.password.change') }}
-      </h2>
-      <b-form-group :label="$t('user.password.new')" label-cols="2">
-        <b-form-input v-model="password"
-                      autocomplete="new-password"
-                      :state="passwordState"
-                      required
-                      type="password" />
-      </b-form-group>
-
-      <b-form-group :label="$t('user.password.confirm')" label-cols="2">
-        <b-form-input v-model="confirmPassword"
-                      autocomplete="new-password"
-                      :state="confirmPasswordState"
-                      required
-                      type="password" />
-      </b-form-group>
-      <div class="footer">
-        <span class="mr-5" v-if="confirmPasswordState === false">
-          {{ $t('user.password.missmatch') }}
-        </span>
-        <b-button v-if="userID" type="submit" variant="primary" :disabled="processing || user.password !== user.confirmPassword" class="ml-10">
+        <confirmation-toggle
+          v-if="userID"
+          :disabled="processing"
+          @confirmed="onDelete"
+        >
+          {{ $t('user.delete') }}
+        </confirmation-toggle>
+        <confirmation-toggle
+          v-if="userID"
+          :disabled="processing"
+          cta-class="secondary"
+          @confirmed="onStatusChange"
+        >
+          {{ statusButtonTitle }}
+        </confirmation-toggle>
+        <b-button
+          :disabled="processing"
+          type="submit"
+          variant="primary"
+          class="ml-3"
+        >
           {{ $t('general.label.submit') }}
         </b-button>
       </div>
     </b-form>
 
-    <b-form v-if="userID" @submit.prevent="onRoleSubmit">
+    <b-form
+      v-if="userID"
+      @submit.prevent="onPasswordSubmit"
+    >
+      <h2 class="header-subtitle header-row">
+        {{ $t('user.password.change') }}
+      </h2>
+      <b-form-group
+        :label="$t('user.password.new')"
+        label-cols="2"
+      >
+        <b-form-input
+          v-model="password"
+          :state="passwordState"
+          autocomplete="new-password"
+          required
+          type="password"
+        />
+      </b-form-group>
+
+      <b-form-group
+        :label="$t('user.password.confirm')"
+        label-cols="2"
+      >
+        <b-form-input
+          v-model="confirmPassword"
+          :state="confirmPasswordState"
+          autocomplete="new-password"
+          required
+          type="password"
+        />
+      </b-form-group>
+      <div class="footer">
+        <span
+          v-if="confirmPasswordState === false"
+          class="mr-5"
+        >
+          {{ $t('user.password.missmatch') }}
+        </span>
+        <b-button
+          v-if="userID"
+          :disabled="processing || user.password !== user.confirmPassword"
+          type="submit"
+          variant="primary"
+          class="ml-10"
+        >
+          {{ $t('general.label.submit') }}
+        </b-button>
+      </div>
+    </b-form>
+
+    <b-form
+      v-if="userID"
+      @submit.prevent="onRoleSubmit"
+    >
       <h2 class="header-subtitle header-row">
         {{ $t('user.roles.manage') }}
       </h2>
 
-      <user-roles v-if="userID" :current-roles.sync="userRoles"/>
+      <user-roles
+        v-if="userID"
+        :current-roles.sync="userRoles"
+      />
 
       <div class="footer">
-        <b-button v-if="userID" type="submit" variant="primary" :disabled="processing" class="ml-10">
+        <b-button
+          v-if="userID"
+          :disabled="processing"
+          type="submit"
+          variant="primary"
+          class="ml-10"
+        >
           {{ $t('general.label.submit') }}
         </b-button>
       </div>
@@ -112,6 +211,7 @@ export default {
     userID: {
       type: String,
       required: false,
+      default: undefined,
     },
   },
 

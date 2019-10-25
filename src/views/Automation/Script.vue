@@ -1,163 +1,227 @@
 <template>
-  <div class="mt-3 mb-4" v-if="script">
-    <b-form @submit.prevent="handleSave" class="pb-5">
+  <div
+    v-if="script"
+    class="mt-3 mb-4"
+  >
+    <b-form
+      class="pb-5"
+      @submit.prevent="handleSave"
+    >
       <b-row>
-        <b-col md="12" class="mb-1">
+        <b-col
+          md="12"
+          class="mb-1"
+        >
           <div :title="$t('automation.edit.title')">
             <!-- <export :list="[script]" type="script" class="float-right" slot="header"/> -->
 
             <b-tabs v-model="activeTab">
               <b-tab :title="$t('automation.edit.settingsTabLabel')">
                 <b-form class="m-3">
-                  <b-form-group horizontal
-                                :label="$t('automation.edit.nameLabel')">
-                    <b-form-input v-model="script.name"
-                                  require
-                                  :placeholder="$t('automation.edit.namePlaceholder')"></b-form-input>
+                  <b-form-group
+                    :label="$t('automation.edit.nameLabel')"
+                    horizontal
+                  >
+                    <b-form-input
+                      v-model="script.name"
+                      :placeholder="$t('automation.edit.namePlaceholder')"
+                      require
+                    />
                   </b-form-group>
                   <b-form-group horizontal>
-                    <b-form-checkbox v-model="script.enabled" checked>
+                    <b-form-checkbox
+                      v-model="script.enabled"
+                      checked
+                    >
                       {{ $t('automation.edit.enabledLabel') }}
                       <b-form-text>{{ $t('automation.edit.enabledHelp') }}</b-form-text>
                     </b-form-checkbox>
-                    <b-form-checkbox v-model="script.critical" checked @change="onCriticalChange">
+                    <b-form-checkbox
+                      v-model="script.critical"
+                      checked
+                      @change="onCriticalChange"
+                    >
                       {{ $t('automation.edit.criticalLabel') }}
                       <b-form-text>{{ $t('automation.edit.criticalHelp') }}</b-form-text>
                     </b-form-checkbox>
-                    <b-form-checkbox v-model="script.async" :disabled="script.critical">
+                    <b-form-checkbox
+                      v-model="script.async"
+                      :disabled="script.critical"
+                    >
                       {{ $t('automation.edit.asyncLabel') }}
                       <b-form-text>{{ $t('automation.edit.asyncHelp') }}</b-form-text>
                     </b-form-checkbox>
                   </b-form-group>
 
-                  <b-form-group horizontal
-                                :label="$t('automation.edit.timeoutLabel')">
+                  <b-form-group
+                    :label="$t('automation.edit.timeoutLabel')"
+                    horizontal
+                  >
                     <b-input-group>
-                      <b-form-input type="number"
-                                    number
-                                    min="0"
-                                    max="60000"
-                                    trim
-                                    :placeholder="$t('automation.edit.timeoutPlaceholder')"
-                                    v-model="script.timeout"></b-form-input>
+                      <b-form-input
+                        v-model="script.timeout"
+                        :placeholder="$t('automation.edit.timeoutPlaceholder')"
+                        type="number"
+                        number
+                        min="0"
+                        max="60000"
+                        trim
+                      />
                       <b-input-group-append><b-input-group-text>ms</b-input-group-text></b-input-group-append>
                     </b-input-group>
                     <b-form-text>{{ $t('automation.edit.timeoutHelp') }}</b-form-text>
                   </b-form-group>
 
-                  <b-form-group horizontal
-                                v-if="canModifySecurty"
-                                :label="$t('automation.edit.securityLabel')">
-                    <vue-select :options="users"
-                                :reduce="u => u.userID"
-                                @search="onUserSearch"
-                                label="email"
-                                :key="script.runAs"
-                                :disabled="script.runInUA"
-                                :placeholder="$t('automation.edit.userPickerPlaceholder')"
-                                v-model="script.runAs"></vue-select>
+                  <b-form-group
+                    v-if="canModifySecurty"
+                    :label="$t('automation.edit.securityLabel')"
+                    horizontal
+                  >
+                    <vue-select
+                      :key="script.runAs"
+                      v-model="script.runAs"
+                      :options="users"
+                      :reduce="u => u.userID"
+                      :disabled="script.runInUA"
+                      :placeholder="$t('automation.edit.userPickerPlaceholder')"
+                      label="email"
+                      @search="onUserSearch"
+                    />
                     <b-form-text>{{ $t('automation.edit.runAsHelp') }}</b-form-text>
-                    <b-button @click="preloadRunner($auth.user.userID)">{{ $t('automation.edit.runAsCurrentUser', { user: $auth.user.name || $auth.user.email }) }}</b-button>
+                    <b-button @click="preloadRunner($auth.user.userID)">
+                      {{ $t('automation.edit.runAsCurrentUser', { user: $auth.user.name || $auth.user.email }) }}
+                    </b-button>
                   </b-form-group>
                 </b-form>
               </b-tab>
               <b-tab :title="$t('automation.edit.codeTabLabel')">
-                <AceEditor :value="script.source"
-                           :fontSize="14"
-                           :showPrintMargin="false"
-                           :showGutter="true"
-                           :highlightActiveLine="true"
-                           :enableBasicAutocompletion="true"
-                           :minLines="10"
-                           :maxLines="30"
-                           :editorProps="{$blockScrolling: true}"
-                           :onChange="onSourceEditorChange"
-                           :onBeforeLoad="onBeforeSourceEditorLoad"
-                           :onLoad="onSourceEditorLoad"
-                           width="100%"
-                           mode="javascript"
-                           theme="monokai"
-                           name="scriptSource"/>
+                <ace-editor
+                  :value="script.source"
+                  :font-size="14"
+                  :show-print-margin="false"
+                  :show-gutter="true"
+                  :highlight-active-line="true"
+                  :enable-basic-autocompletion="true"
+                  :min-lines="10"
+                  :max-lines="30"
+                  :editor-props="{$blockScrolling: true}"
+                  :on-change="onSourceEditorChange"
+                  :on-before-load="onBeforeSourceEditorLoad"
+                  :on-load="onSourceEditorLoad"
+                  width="100%"
+                  mode="javascript"
+                  theme="monokai"
+                  name="scriptSource"
+                />
 
                 <b-container v-if="false">
-
                   <b-row class="mt-3">
-                    <b-col cols="6">{{ $t('automation.testing.parametersHeadline') }}</b-col>
-                    <b-col cols="6">{{ $t('automation.testing.resultsHeadline') }}</b-col>
+                    <b-col cols="6">
+                      {{ $t('automation.testing.parametersHeadline') }}
+                    </b-col>
+                    <b-col cols="6">
+                      {{ $t('automation.testing.resultsHeadline') }}
+                    </b-col>
                   </b-row>
                   <b-row class="mt-1">
-                    <b-col cols="6"></b-col>
+                    <b-col cols="6" />
                     <b-col cols="6">
                       <b-button-group>
-                        <b-button type="button"
-                                  @click="onClickRunTestInCorredor">{{ $t('automation.testing.testInCorredor') }}</b-button>
+                        <b-button
+                          type="button"
+                          @click="onClickRunTestInCorredor"
+                        >
+                          {{ $t('automation.testing.testInCorredor') }}
+                        </b-button>
                       </b-button-group>
                     </b-col>
                   </b-row>
                   <b-row class="mt-1">
                     <b-col cols="6">
                       <div v-if="testPayloadErr">
-                        <b-button variant="link" class="float-right" @click="testPayloadErr=null">Clear error</b-button>
+                        <b-button
+                          variant="link"
+                          class="float-right"
+                          @click="testPayloadErr=null"
+                        >
+                          Clear error
+                        </b-button>
                         <pre class="text-danger">{{ testPayloadErr }}</pre>
                       </div>
-                      <AceEditor v-else
-                                 :value="testPayload"
-                                 :fontSize="14"
-                                 :showPrintMargin="false"
-                                 :showGutter="true"
-                                 :highlightActiveLine="true"
-                                 :enableBasicAutocompletion="true"
-                                 :minLines="20"
-                                 :maxLines="20"
-                                 :onChange="onTestRecordEditorChange"
-                                 width="100%"
-                                 mode="json"
-                                 theme="monokai"
-                                 name="testPayload" />
+                      <ace-editor
+                        v-else
+                        :value="testPayload"
+                        :font-size="14"
+                        :show-print-margin="false"
+                        :show-gutter="true"
+                        :highlight-active-line="true"
+                        :enable-basic-autocompletion="true"
+                        :min-lines="20"
+                        :max-lines="20"
+                        :on-change="onTestRecordEditorChange"
+                        width="100%"
+                        mode="json"
+                        theme="monokai"
+                        name="testPayload"
+                      />
                     </b-col>
                     <b-col cols="6">
                       <div v-if="testResponseErr">
                         <pre class="text-danger">{{ testResponseErr }}</pre>
                       </div>
-                      <AceEditor v-else
-                                 :value="testResponse"
-                                 :fontSize="14"
-                                 :showPrintMargin="false"
-                                 :showGutter="true"
-                                 :highlightActiveLine="false"
-                                 :enableBasicAutocompletion="false"
-                                 :minLines="20"
-                                 :maxLines="20"
-                                 :readOnly="true"
-                                 width="100%"
-                                 mode="json"
-                                 theme="monokai"
-                                 name="testResponse"/>
+                      <ace-editor
+                        v-else
+                        :value="testResponse"
+                        :font-size="14"
+                        :show-print-margin="false"
+                        :show-gutter="true"
+                        :highlight-active-line="false"
+                        :enable-basic-autocompletion="false"
+                        :min-lines="20"
+                        :max-lines="20"
+                        :read-only="true"
+                        width="100%"
+                        mode="json"
+                        theme="monokai"
+                        name="testResponse"
+                      />
                     </b-col>
                   </b-row>
                   <b-row>
-                    <b-col cols="6">
-
-                    </b-col>
+                    <b-col cols="6" />
                     <b-col cols="6">
                       <div><i18next path="automation.testing.warning" /></div>
                     </b-col>
                   </b-row>
                 </b-container>
               </b-tab>
-              <b-tab :title="$t('automation.edit.scheduledTriggers.tabLabel')" v-if="false">
+              <b-tab
+                v-if="false"
+                :title="$t('automation.edit.scheduledTriggers.tabLabel')"
+              >
                 @todo intervals & deferred
               </b-tab>
               <b-tab :title="$t('automation.edit.mailAutomationTriggers.tabLabel')">
-                <mail-triggers class="mt-3" v-model="triggers" />
+                <mail-triggers
+                  v-model="triggers"
+                  class="mt-3"
+                />
               </b-tab>
             </b-tabs>
           </div>
         </b-col>
       </b-row>
       <div class="footer">
-        <confirmation-toggle @confirmed="onDelete">{{ $t('automation.edit.delete') }}</confirmation-toggle>
-        <b-button type="submit" variant="primary" :disabled="processing">{{ $t('general.label.submit') }}</b-button>
+        <confirmation-toggle @confirmed="onDelete">
+          {{ $t('automation.edit.delete') }}
+        </confirmation-toggle>
+        <b-button
+          :disabled="processing"
+          type="submit"
+          variant="primary"
+        >
+          {{ $t('general.label.submit') }}
+        </b-button>
       </div>
     </b-form>
   </div>
@@ -186,6 +250,7 @@ export default {
     scriptID: {
       type: String,
       required: false,
+      default: undefined,
     },
   },
 

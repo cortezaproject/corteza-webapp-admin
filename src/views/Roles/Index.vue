@@ -1,14 +1,21 @@
 <template>
-  <list-with-details :title="title"
-                     :create-button-label="$t('role.add')"
-                     permissions-resource-type="system:role:*"
-                     :permissions-button-label="$t('role.manage-wc-permissions')"
-                     @update="onUpdate"
-                     @create="onCreate">
-
+  <list-with-details
+    :title="title"
+    :create-button-label="$t('role.add')"
+    :permissions-button-label="$t('role.manage-wc-permissions')"
+    permissions-resource-type="system:role:*"
+    @update="onUpdate"
+    @create="onCreate"
+  >
     <ul class="menu-layer">
-      <li v-for="r in roles" :key="r.ID" class="role">
-        <router-link :to="{ name: 'roles.role', params: { roleID: r.roleID } }">{{r.name || r.handle || r.roleID || $t('role.unnamed') }}</router-link>
+      <li
+        v-for="r in roles"
+        :key="r.ID"
+        class="role"
+      >
+        <router-link :to="{ name: 'roles.role', params: { roleID: r.roleID } }">
+          {{ r.name || r.handle || r.roleID || $t('role.unnamed') }}
+        </router-link>
       </li>
     </ul>
   </list-with-details>

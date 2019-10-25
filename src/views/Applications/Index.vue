@@ -1,14 +1,21 @@
 <template>
-  <list-with-details :title="`${$t('navigation.manageApps')} (${applications.length})`"
-                     :create-button-label="$t('application.add')"
-                     permissions-resource-type="system:application:*"
-                     :permissions-button-label="$t('application.manage-wc-permissions')"
-                     @update="onUpdate"
-                     @create="onCreate">
-
+  <list-with-details
+    :title="`${$t('navigation.manageApps')} (${applications.length})`"
+    :create-button-label="$t('application.add')"
+    :permissions-button-label="$t('application.manage-wc-permissions')"
+    permissions-resource-type="system:application:*"
+    @update="onUpdate"
+    @create="onCreate"
+  >
     <ul class="menu-layer">
-      <li v-for="u in applications" :key="u.ID" class="application">
-        <router-link :to="{ name: 'applications.application', params: { applicationID: u.applicationID } }">{{u.name || u.applicationname || u.email}}</router-link>
+      <li
+        v-for="u in applications"
+        :key="u.ID"
+        class="application"
+      >
+        <router-link :to="{ name: 'applications.application', params: { applicationID: u.applicationID } }">
+          {{ u.name || u.applicationname || u.email }}
+        </router-link>
       </li>
     </ul>
   </list-with-details>

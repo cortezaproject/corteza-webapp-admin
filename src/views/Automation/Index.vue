@@ -1,13 +1,21 @@
 <template>
-  <list-with-details :title="$t('automation.manage', { count: scripts.length })"
-                     :create-button-label="$t('automation.add')"
-                     permissions-resource-type="system:automation-script:*"
-                     :permissions-button-label="$t('automation.manage-wc-permissions')"
-                     @update="fetch"
-                     @create="$router.push({ name: 'automation.script' })">
+  <list-with-details
+    :title="$t('automation.manage', { count: scripts.length })"
+    :create-button-label="$t('automation.add')"
+    :permissions-button-label="$t('automation.manage-wc-permissions')"
+    permissions-resource-type="system:automation-script:*"
+    @update="fetch"
+    @create="$router.push({ name: 'automation.script' })"
+  >
     <ul class="menu-layer">
-      <li v-for="s in scripts" :key="s.scriptID" class="script">
-        <router-link :to="{ name: 'automation.script', params: { scriptID: s.scriptID } }">{{ s.name || s.scriptID }}</router-link>
+      <li
+        v-for="s in scripts"
+        :key="s.scriptID"
+        class="script"
+      >
+        <router-link :to="{ name: 'automation.script', params: { scriptID: s.scriptID } }">
+          {{ s.name || s.scriptID }}
+        </router-link>
       </li>
     </ul>
   </list-with-details>

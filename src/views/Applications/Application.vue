@@ -1,66 +1,133 @@
 <template>
   <b-form @submit.prevent="onSubmit">
     <div class="header">
-      <router-link :to="{ name: 'applications' }" class="float-right"><b-button-close></b-button-close></router-link>
+      <router-link
+        :to="{ name: 'applications' }"
+        class="float-right"
+      >
+        <b-button-close />
+      </router-link>
       <h2 class="header-subtitle header-row">
         {{ $t('application.information') }}
       </h2>
-
     </div>
     <div class="application">
-      <b-form-group :label="$t('application.id.label')" label-cols="2">
+      <b-form-group
+        :label="$t('application.id.label')"
+        label-cols="2"
+      >
         <b-form-text>{{ application.applicationID }}</b-form-text>
       </b-form-group>
 
-      <b-form-group :label="$t('application.name.label')" label-cols="2">
-        <b-form-input v-model="application.name" required />
+      <b-form-group
+        :label="$t('application.name.label')"
+        label-cols="2"
+      >
+        <b-form-input
+          v-model="application.name"
+          required
+        />
       </b-form-group>
 
       <b-form-group label-cols="2">
-        <b-form-checkbox v-model="application.enabled">{{ $t('application.enabled') }}</b-form-checkbox>
+        <b-form-checkbox v-model="application.enabled">
+          {{ $t('application.enabled') }}
+        </b-form-checkbox>
       </b-form-group>
 
       <b-form-group label-cols="2">
-        <permissions-button :title="application.name" :resource="'system:application:'+applicationID">{{ $t('application.manage-id-permissions') }}</permissions-button>
+        <permissions-button
+          :title="application.name"
+          :resource="'system:application:'+applicationID"
+        >
+          {{ $t('application.manage-id-permissions') }}
+        </permissions-button>
       </b-form-group>
 
-      <b-form-group :label="$t('application.appSelector.label')" label-cols="2" v-if="application.unify" class="unify">
+      <b-form-group
+        v-if="application.unify"
+        :label="$t('application.appSelector.label')"
+        label-cols="2"
+        class="unify"
+      >
         <b-form-group>
-          <b-form-checkbox v-model="application.unify.listed">{{ $t('application.listed') }}</b-form-checkbox>
+          <b-form-checkbox v-model="application.unify.listed">
+            {{ $t('application.listed') }}
+          </b-form-checkbox>
         </b-form-group>
 
-        <b-form-group :label="$t('application.name.label')" label-cols="2" :description="$t('application.name.description')">
+        <b-form-group
+          :label="$t('application.name.label')"
+          :description="$t('application.name.description')"
+          label-cols="2"
+        >
           <b-form-input v-model="application.unify.name" />
         </b-form-group>
 
-        <b-form-group :label="$t('application.icon.label')" :description="$t('application.icon.description')" label-cols="2">
+        <b-form-group
+          :label="$t('application.icon.label')"
+          :description="$t('application.icon.description')"
+          label-cols="2"
+        >
           <b-form-input v-model="application.unify.icon" />
         </b-form-group>
 
-        <b-form-group :label="$t('application.logo.label')" :description="$t('application.logo.description')" label-cols="2">
+        <b-form-group
+          :label="$t('application.logo.label')"
+          :description="$t('application.logo.description')"
+          label-cols="2"
+        >
           <b-form-input v-model="application.unify.logo" />
         </b-form-group>
 
-        <b-form-group :label="$t('application.url.label')" :description="$t('application.url.description')" label-cols="2">
+        <b-form-group
+          :label="$t('application.url.label')"
+          :description="$t('application.url.description')"
+          label-cols="2"
+        >
           <b-form-input v-model="application.unify.url" />
         </b-form-group>
 
-        <b-form-group :label="$t('application.config.label')" :description="$t('application.config.description')">
-          <b-form-textarea rows="10" v-model="application.unify.config" :state="configState"></b-form-textarea>
+        <b-form-group
+          :label="$t('application.config.label')"
+          :description="$t('application.config.description')"
+        >
+          <b-form-textarea
+            v-model="application.unify.config"
+            :state="configState"
+            rows="10"
+          />
         </b-form-group>
       </b-form-group>
 
-      <b-form-group :label="$t('application.lastUpdate.label')" label-cols="2">
+      <b-form-group
+        :label="$t('application.lastUpdate.label')"
+        label-cols="2"
+      >
         <b-form-text>{{ application.updatedAt }}</b-form-text>
       </b-form-group>
 
-      <b-form-group :label="$t('application.created.label')" label-cols="2">
+      <b-form-group
+        :label="$t('application.created.label')"
+        label-cols="2"
+      >
         <b-form-text>{{ application.createdAt }}</b-form-text>
       </b-form-group>
     </div>
     <div class="footer">
-      <confirmation-toggle @confirmed="onDelete" v-if="applicationID">{{ $t('application.delete') }}</confirmation-toggle>
-      <b-button type="submit" variant="primary" :disabled="disableSubmit">{{ $t('general.label.submit') }}</b-button>
+      <confirmation-toggle
+        v-if="applicationID"
+        @confirmed="onDelete"
+      >
+        {{ $t('application.delete') }}
+      </confirmation-toggle>
+      <b-button
+        :disabled="disableSubmit"
+        type="submit"
+        variant="primary"
+      >
+        {{ $t('general.label.submit') }}
+      </b-button>
     </div>
   </b-form>
 </template>
@@ -76,6 +143,7 @@ export default {
     applicationID: {
       type: String,
       required: false,
+      default: undefined,
     },
   },
 

@@ -13,22 +13,31 @@
     </p>
 
     <p>
-      Crust System API:<br/>
+      Crust System API:<br>
       <code>{{ backend }}</code>
     </p>
 
     Manage your JWT here:
-    <textarea placeholder="your.jwt.string" rows="5" v-model.trim="newJWT"></textarea>
-    <b-button @click="check" :disabled="!this.newJWT">Check & store</b-button> &nbsp;
+    <textarea
+      v-model.trim="newJWT"
+      placeholder="your.jwt.string"
+      rows="5"
+    />
+    <b-button
+      :disabled="!newJWT"
+      @click="check"
+    >
+      Check & store
+    </b-button> &nbsp;
 
-    <br />
-    <br />
+    <br>
+    <br>
 
     <span v-if="checkRsp">Response: <code>{{ checkRsp }}</code></span>
 
     <pre v-if="$auth.user">User data: {{ $auth.user }}</pre>
 
-    <hr />
+    <hr>
 
     <a href="/">&laquo; Back</a>
   </main>

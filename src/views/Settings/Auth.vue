@@ -1,113 +1,191 @@
 <template>
-  <b-form @submit.prevent="onSubmit" class="overflow-hidden">
-    <router-link :to="{ name: 'settings' }" class="float-right pr-1"><b-button-close></b-button-close></router-link>
+  <b-form
+    class="overflow-hidden"
+    @submit.prevent="onSubmit"
+  >
+    <router-link
+      :to="{ name: 'settings' }"
+      class="float-right pr-1"
+    >
+      <b-button-close />
+    </router-link>
     <div class="header">
       <h2 class="header-subtitle header-row">
         {{ $t('settings.system.auth.title') }}
       </h2>
     </div>
 
-    <hr />
+    <hr>
 
     <main>
-      <b-form-group :label="$t('settings.system.auth.internal.title')" label-size="lg">
+      <b-form-group
+        :label="$t('settings.system.auth.internal.title')"
+        label-size="lg"
+      >
         <b-form-group label-cols="2">
-          <b-form-checkbox v-model="settings['auth.internal.enabled']" :value="true" :unchecked-value="false">
+          <b-form-checkbox
+            v-model="settings['auth.internal.enabled']"
+            :value="true"
+            :unchecked-value="false"
+          >
             {{ $t('settings.system.auth.internal.enabled') }}
           </b-form-checkbox>
         </b-form-group>
         <b-form-group label-cols="2">
-          <b-form-checkbox v-model="settings['auth.internal.password-reset.enabled']" :value="true" :unchecked-value="false">
+          <b-form-checkbox
+            v-model="settings['auth.internal.password-reset.enabled']"
+            :value="true"
+            :unchecked-value="false"
+          >
             {{ $t('settings.system.auth.internal.password-reset.enabled') }}
           </b-form-checkbox>
         </b-form-group>
         <b-form-group label-cols="2">
-          <b-form-checkbox v-model="settings['auth.internal.signup-email-confirmation-required']" :value="true" :unchecked-value="false">
+          <b-form-checkbox
+            v-model="settings['auth.internal.signup-email-confirmation-required']"
+            :value="true"
+            :unchecked-value="false"
+          >
             {{ $t('settings.system.auth.internal.signup-email-confirmation-required') }}
           </b-form-checkbox>
         </b-form-group>
         <b-form-group label-cols="2">
-          <b-form-checkbox v-model="settings['auth.internal.signup.enabled']" :value="true" :unchecked-value="false">
+          <b-form-checkbox
+            v-model="settings['auth.internal.signup.enabled']"
+            :value="true"
+            :unchecked-value="false"
+          >
             {{ $t('settings.system.auth.internal.signup.enabled') }}
           </b-form-checkbox>
         </b-form-group>
       </b-form-group>
 
-      <hr />
+      <hr>
 
-      <b-form-group :label="$t('settings.system.auth.frontend.title')" label-size="lg">
-        <b-form-group :label="$t('settings.system.auth.frontend.url.base')" label-cols="2">
+      <b-form-group
+        :label="$t('settings.system.auth.frontend.title')"
+        label-size="lg"
+      >
+        <b-form-group
+          :label="$t('settings.system.auth.frontend.url.base')"
+          label-cols="2"
+        >
           <b-input-group>
             <b-form-input v-model="settings['auth.frontend.url.base']" />
           </b-input-group>
         </b-form-group>
-        <b-form-group :label="$t('settings.system.auth.frontend.url.email-confirmation')" label-cols="2">
+        <b-form-group
+          :label="$t('settings.system.auth.frontend.url.email-confirmation')"
+          label-cols="2"
+        >
           <b-input-group>
             <b-form-input v-model="settings['auth.frontend.url.email-confirmation']" />
           </b-input-group>
         </b-form-group>
-        <b-form-group :label="$t('settings.system.auth.frontend.url.password-reset')" label-cols="2">
+        <b-form-group
+          :label="$t('settings.system.auth.frontend.url.password-reset')"
+          label-cols="2"
+        >
           <b-input-group>
             <b-form-input v-model="settings['auth.frontend.url.password-reset']" />
           </b-input-group>
         </b-form-group>
-        <b-form-group :label="$t('settings.system.auth.frontend.url.redirect')" label-cols="2">
+        <b-form-group
+          :label="$t('settings.system.auth.frontend.url.redirect')"
+          label-cols="2"
+        >
           <b-input-group>
             <b-form-input v-model="settings['auth.frontend.url.redirect']" />
           </b-input-group>
         </b-form-group>
       </b-form-group>
 
-      <hr />
+      <hr>
 
-      <b-form-group :label="$t('settings.system.auth.mail.title')" label-size="lg">
-        <b-form-group :label="$t('settings.system.auth.mail.from-address')" label-cols="2">
+      <b-form-group
+        :label="$t('settings.system.auth.mail.title')"
+        label-size="lg"
+      >
+        <b-form-group
+          :label="$t('settings.system.auth.mail.from-address')"
+          label-cols="2"
+        >
           <b-input-group>
             <b-form-input v-model="settings['auth.mail.from-address']" />
           </b-input-group>
         </b-form-group>
-        <b-form-group :label="$t('settings.system.auth.mail.from-name')" label-cols="2">
+        <b-form-group
+          :label="$t('settings.system.auth.mail.from-name')"
+          label-cols="2"
+        >
           <b-input-group>
             <b-form-input v-model="settings['auth.mail.from-name']" />
           </b-input-group>
         </b-form-group>
       </b-form-group>
 
-      <b-form-group :label="$t('settings.system.auth.mail.emailConfirmation.title')" label-size="lg">
-        <b-form-group :label="$t('settings.system.auth.mail.emailConfirmation.subject')" label-cols="2">
+      <b-form-group
+        :label="$t('settings.system.auth.mail.emailConfirmation.title')"
+        label-size="lg"
+      >
+        <b-form-group
+          :label="$t('settings.system.auth.mail.emailConfirmation.subject')"
+          label-cols="2"
+        >
           <b-input-group>
             <b-form-input v-model="settings['auth.mail.email-confirmation.subject.en']" />
           </b-input-group>
         </b-form-group>
 
-        <b-form-group :label="$t('settings.system.auth.mail.emailConfirmation.body')" label-cols="2">
+        <b-form-group
+          :label="$t('settings.system.auth.mail.emailConfirmation.body')"
+          label-cols="2"
+        >
           <b-input-group>
-            <b-form-textarea v-model="settings['auth.mail.email-confirmation.body.en']"
-                             class="overflow-auto"
-                             max-rows="20" />
+            <b-form-textarea
+              v-model="settings['auth.mail.email-confirmation.body.en']"
+              class="overflow-auto"
+              max-rows="20"
+            />
           </b-input-group>
         </b-form-group>
       </b-form-group>
 
-      <b-form-group :label="$t('settings.system.auth.mail.passwordReset.title')" label-size="lg">
-        <b-form-group :label="$t('settings.system.auth.mail.passwordReset.subject')" label-cols="2">
+      <b-form-group
+        :label="$t('settings.system.auth.mail.passwordReset.title')"
+        label-size="lg"
+      >
+        <b-form-group
+          :label="$t('settings.system.auth.mail.passwordReset.subject')"
+          label-cols="2"
+        >
           <b-input-group>
             <b-form-input v-model="settings['auth.mail.password-reset.subject.en']" />
           </b-input-group>
         </b-form-group>
 
-        <b-form-group :label="$t('settings.system.auth.mail.passwordReset.body')" label-cols="2">
+        <b-form-group
+          :label="$t('settings.system.auth.mail.passwordReset.body')"
+          label-cols="2"
+        >
           <b-input-group>
-            <b-form-textarea v-model="settings['auth.mail.password-reset.body.en']"
-                             class="overflow-auto"
-                             max-rows="20" />
+            <b-form-textarea
+              v-model="settings['auth.mail.password-reset.body.en']"
+              class="overflow-auto"
+              max-rows="20"
+            />
           </b-input-group>
         </b-form-group>
       </b-form-group>
     </main>
 
     <div class="text-right">
-      <b-button type="submit" variant="primary">{{ $t('general.label.saveChanges') }}</b-button>
+      <b-button
+        type="submit"
+        variant="primary"
+      >
+        {{ $t('general.label.saveChanges') }}
+      </b-button>
     </div>
   </b-form>
 </template>

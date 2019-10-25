@@ -46,8 +46,11 @@
     "@vue/cli-plugin-eslint": "3.10.0",
     "@vue/cli-plugin-unit-mocha": "3.10.0",
     "@vue/cli-service": "3.10.0",
-    "@vue/eslint-config-standard": "^3.0.5",
+    "@vue/eslint-config-standard": "^4.0.0",
     "@vue/test-utils": "^1.0.0-beta.25",
+    "eslint-plugin-vue": "5.2.3",
+    "eslint": "^5.8.0",
+    "babel-eslint": "^10.0.2",
     "chai": "^4.1.2",
     "node-sass": "4.12.0",
     "sass-loader": "^7.1.0",
@@ -63,20 +66,6 @@
       "color-hex-length": null,
       "no-empty-source": null,
       "selector-list-comma-newline-after": null
-    }
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "rules": {},
-    "parserOptions": {
-      "parser": "babel-eslint"
     }
   },
   "postcss": {

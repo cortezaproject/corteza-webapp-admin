@@ -1,14 +1,42 @@
 <template>
-  <div id="app" class="app" v-if="loaded">
+  <div
+    v-if="loaded"
+    id="app"
+    class="app"
+  >
     <div class="panel">
       <template v-if="$auth.is()">
         <ul class="menu-layer">
-          <li><router-link :to="{ name: 'applications' }">{{ $t('navigation.app') }}</router-link></li>
-          <li><router-link :to="{ name: 'users' }">{{ $t('navigation.user') }}</router-link></li>
-          <li><router-link :to="{ name: 'roles' }">{{ $t('navigation.role') }}</router-link></li>
-          <li><router-link :to="{ name: 'permissions' }">{{ $t('navigation.permission') }}</router-link></li>
-          <li><router-link :to="{ name: 'automation' }">{{ $t('navigation.automation') }}</router-link></li>
-          <li><router-link :to="{ name: 'settings' }">{{ $t('navigation.settings') }}</router-link></li>
+          <li>
+            <router-link :to="{ name: 'applications' }">
+              {{ $t('navigation.app') }}
+            </router-link>
+          </li>
+          <li>
+            <router-link :to="{ name: 'users' }">
+              {{ $t('navigation.user') }}
+            </router-link>
+          </li>
+          <li>
+            <router-link :to="{ name: 'roles' }">
+              {{ $t('navigation.role') }}
+            </router-link>
+          </li>
+          <li>
+            <router-link :to="{ name: 'permissions' }">
+              {{ $t('navigation.permission') }}
+            </router-link>
+          </li>
+          <li>
+            <router-link :to="{ name: 'automation' }">
+              {{ $t('navigation.automation') }}
+            </router-link>
+          </li>
+          <li>
+            <router-link :to="{ name: 'settings' }">
+              {{ $t('navigation.settings') }}
+            </router-link>
+          </li>
         </ul>
       </template>
       <template v-else>
@@ -17,13 +45,21 @@
     </div>
     <div class="main">
       <transition name="slide">
-        <router-view class="view"></router-view>
+        <router-view class="view" />
       </transition>
       <permissions-modal />
     </div>
   </div>
-  <div class="loader" v-else>
-    <div class="error" v-if="error">{{ error }}</div>
+  <div
+    v-else
+    class="loader"
+  >
+    <div
+      v-if="error"
+      class="error"
+    >
+      {{ error }}
+    </div>
   </div>
 </template>
 

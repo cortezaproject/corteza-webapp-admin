@@ -5,23 +5,35 @@
         {{ title }}
 
         <b-button-group class="toolbar">
-          <permissions-button v-if="permissionsResourceType"
-                              :resource="permissionsResourceType">{{ permissionsButtonLabel }}</permissions-button>
+          <permissions-button
+            v-if="permissionsResourceType"
+            :resource="permissionsResourceType"
+          >
+            {{ permissionsButtonLabel }}
+          </permissions-button>
 
-          <b-button class="ml-1 create-button"
-                    @click.prevent="$emit('create')"
-                    v-if="createButtonLabel">{{ createButtonLabel }}</b-button>
+          <b-button
+            v-if="createButtonLabel"
+            class="ml-1 create-button"
+            @click.prevent="$emit('create')"
+          >
+            {{ createButtonLabel }}
+          </b-button>
         </b-button-group>
       </h2>
     </header>
     <main>
       <aside>
         <div>
-          <slot></slot>
+          <slot />
         </div>
       </aside>
       <transition name="slide">
-        <router-view class="details" :key="$route.fullPath" v-on="$listeners"></router-view>
+        <router-view
+          :key="$route.fullPath"
+          class="details"
+          v-on="$listeners"
+        />
       </transition>
     </main>
   </section>
@@ -31,19 +43,23 @@ export default {
   props: {
     title: {
       type: String,
+      default: '',
     },
 
     createButtonLabel: {
       type: String,
       required: false,
+      default: '',
     },
 
     permissionsButtonLabel: {
       type: String,
+      default: '',
     },
 
     permissionsResourceType: {
       type: String,
+      default: '',
     },
   },
 }
