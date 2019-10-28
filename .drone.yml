@@ -1,55 +1,42 @@
 kind: pipeline
-name: Build & Pack
+name: "Test & Build"
+type: docker
 
 steps:
-  - name: deps
+  - name: Dependencies
     image: cortezaproject/corteza-webapp-builder
-    commands:
-      - yarn install
+    commands: [ "yarn install" ]
 
-  - name: test
+  - name: Lint
     image: cortezaproject/corteza-webapp-builder
-    commands:
-      - yarn lint
-      - yarn test:unit
+    commands: [ "yarn lint" ]
 
-  - name: build
+  - name: Test
     image: cortezaproject/corteza-webapp-builder
-    commands:
-      - yarn build
+    commands: [ "yarn test:unit" ]
 
-    when:
-      ref:
-        - refs/heads/master
-        - refs/heads/beta
-        - refs/heads/feature-*
-        - refs/tags/20??.*.*
-      events: [ tag, push ]
-
-  - name: pack
+  - name: Build
     image: cortezaproject/corteza-webapp-builder
-    volumes:
-      - name: webapp-build
-        path: /var/build
-    commands:
-      - tar -cjf /var/build/$DRONE_REPO_NAME-${DRONE_TAG=${DRONE_BRANCH}}.tar.bz2 -C dist/ .
+    commands: [ "yarn build" ]
 
-  - name: trigger
+  - name: Pack
+    when: { ref: [ "refs/heads/master", "refs/heads/beta", "refs/heads/feature-*", "refs/tags/20??.*.*" ] }
+    image: cortezaproject/corteza-webapp-builder
+    volumes: [ { name: webapp-build, path: /var/build} ]
+    commands:  [ "tar -cjf /var/build/$DRONE_REPO_NAME-${DRONE_TAG=${DRONE_BRANCH}}.tar.bz2 -C dist/ ." ]
+
+  - name: Trigger build merge
+    when: { ref: [ "refs/heads/master", "refs/heads/beta", "refs/heads/feature-*", "refs/tags/20??.*.*" ] }
     image: plugins/downstream
+    commands: []
     settings:
       fork: true
       server: https://drone.crust.tech
-      token:
-        from_secret: drone_token
-      params:
-        - "APP_VERSION=${DRONE_TAG=${DRONE_BRANCH}}"
+      token: { from_secret: drone_token }
+      params: [ "APP_VERSION=${DRONE_TAG=${DRONE_BRANCH}}" ]
       repositories:
         # Dynamically constructs Drone repo name that will be notified
-        #  - namespace (cortezaproject/crusttech),
-        #  - removing suffix (admin) from repo name (corteza-webapp..., crust-webapp...)
-        - "${DRONE_REPO_NAMESPACE}/${DRONE_REPO_NAME%%-admin}"
-
-trigger:
+        - "${DRONE_REPO_NAMESPACE}/${DRONE_REPO_NAME%%-admin}@${DRONE_BRANCH}"
 
 volumes:
   - name: webapp-build
