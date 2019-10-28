@@ -12,6 +12,12 @@
           {{ $t('user.information') }}
         </h2>
       </div>
+      <div
+        v-if="error"
+        class="bg-danger alert text-white"
+      >
+        {{ error }}
+      </div>
       <div class="user">
         <b-form-group
           :label="$t('user.email')"
