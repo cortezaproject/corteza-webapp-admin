@@ -2,7 +2,7 @@
   "name": "corteza-webapp-admin",
   "description": "Admin WebApp",
   "private": true,
-  "version": "2019.9.0-rc.1",
+  "version": "2019.9.0-rc.2",
   "license": "Apache-2.0",
   "author": "Denis Arh <denis.arh@gmail.com>",
   "scripts": {
@@ -34,7 +34,7 @@
     "stylelint-config-standard": "^18.2.0",
     "stylelint-scss": "3.9.3",
     "stylelint-webpack-plugin": "^0.10.5",
-    "vue": "^2.5.17",
+    "vue": "2.6.10",
     "vue-router": "3.0.7",
     "vue-select": "^3.1.0",
     "vue2-brace-editor": "^2.0.2",
