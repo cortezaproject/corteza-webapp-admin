@@ -61,8 +61,8 @@ export default {
     },
 
     fetchRoles () {
-      this.$SystemAPI.roleList({ query: this.query.toLowerCase() }).then(rr => {
-        this.roles = rr.filter(r => !systemRoles.includes(r.roleID))
+      this.$SystemAPI.roleList({ query: this.query.toLowerCase() }).then(({ set }) => {
+        this.roles = set.filter(r => !systemRoles.includes(r.roleID))
       }).catch(({ message }) => {
         this.error = message
       })

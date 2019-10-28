@@ -51,8 +51,8 @@ export default {
     },
 
     fetchApplications () {
-      this.$SystemAPI.applicationList({ query: this.query.toLowerCase() }).then(uu => {
-        this.applications = uu
+      this.$SystemAPI.applicationList({ query: this.query.toLowerCase() }).then(({ set }) => {
+        this.applications = set
       }).catch(({ message }) => {
         this.error = message
       })
