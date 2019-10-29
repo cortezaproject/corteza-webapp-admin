@@ -50,7 +50,7 @@
         type="submit"
         variant="primary"
       >
-        {{ $t('general.label.saveChanges') }}
+        {{ $t('permission.saveChanges') }}
       </b-button>
     </div>
   </b-form>

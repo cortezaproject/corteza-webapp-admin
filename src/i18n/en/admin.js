@@ -56,6 +56,7 @@ export default {
     resetBack: 'Reset back to "{{current}}"',
     managePermissions: 'Set base permissions',
     setFor: 'Set permissions for {{target}}',
+    saveChanges: 'Save changes',
     base: {
       system: 'System',
       compose: 'Compose',
@@ -110,6 +111,10 @@ export default {
       'automation-script-create': {
         title: 'Create automation scripts',
         description: 'Default: allow',
+      },
+      'reminder-assign': {
+        title: 'Allow reminder assignment',
+        description: 'Default: deny',
       },
     },
     'system-role': {
@@ -242,6 +247,14 @@ export default {
         title: 'Manage own webhooks',
         description: 'Default: deny',
       },
+      'settings-read': {
+        title: 'Access all settings',
+        description: 'Default: allow',
+      },
+      'settings-manage': {
+        title: 'Manage all settings',
+        description: 'Default: allow',
+      },
     },
     'messaging-channel': {
       read: {
@@ -338,6 +351,14 @@ export default {
       'namespace-create': {
         title: 'Create namespaces',
         description: 'Default: deny',
+      },
+      'settings-read': {
+        title: 'Access all settings',
+        description: 'Default: allow',
+      },
+      'settings-manage': {
+        title: 'Manage all settings',
+        description: 'Default: allow',
       },
     },
     'compose-page': {
@@ -715,7 +736,6 @@ export default {
       name: 'Name',
       lastUpdate: 'Last update',
       created: 'Created',
-      saveChanges: 'Save changes',
     },
   },
 }
