@@ -24,7 +24,7 @@
       >
         <b-input-group>
           <b-form-textarea
-            v-model="settings['mail.header.en']"
+            v-model="settings['general.mail.header.en']"
             class="overflow-auto"
             max-rows="20"
           />
@@ -37,7 +37,7 @@
       >
         <b-input-group>
           <b-form-textarea
-            v-model="settings['mail.footer.en']"
+            v-model="settings['general.mail.footer.en']"
             class="overflow-auto"
             max-rows="20"
           />
@@ -89,7 +89,7 @@ export default {
     fetchSettings () {
       this.processing = true
 
-      this.$SystemAPI.settingsList({ prefix: 'mail.' }).then(vv => {
+      this.$SystemAPI.settingsList({ prefix: 'general.mail.' }).then(vv => {
         vv.forEach(({ name, value }) => {
           this.$set(this.settings, name, value)
         })
