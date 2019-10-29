@@ -102,11 +102,11 @@ export default {
       },
       'settings-read': {
         title: 'Access all settings',
-        description: 'Default: allow',
+        description: 'Default: deny',
       },
       'settings-manage': {
         title: 'Manage all settings',
-        description: 'Default: allow',
+        description: 'Default: deny',
       },
       'automation-script-create': {
         title: 'Create automation scripts',
@@ -249,11 +249,11 @@ export default {
       },
       'settings-read': {
         title: 'Access all settings',
-        description: 'Default: allow',
+        description: 'Default: deny',
       },
       'settings-manage': {
         title: 'Manage all settings',
-        description: 'Default: allow',
+        description: 'Default: deny',
       },
     },
     'messaging-channel': {
@@ -354,11 +354,11 @@ export default {
       },
       'settings-read': {
         title: 'Access all settings',
-        description: 'Default: allow',
+        description: 'Default: deny',
       },
       'settings-manage': {
         title: 'Manage all settings',
-        description: 'Default: allow',
+        description: 'Default: deny',
       },
     },
     'compose-page': {
