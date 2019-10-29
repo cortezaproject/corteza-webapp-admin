@@ -15,6 +15,13 @@
       </h2>
     </div>
 
+    <div
+      v-if="error"
+      class="bg-danger alert text-white"
+    >
+      {{ error }}
+    </div>
+
     <hr>
 
     <main>
