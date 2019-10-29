@@ -220,6 +220,7 @@ export default {
     onSubmit () {
       // Collect changed variables
       this.processing = true
+      this.error = null
 
       this.$SystemAPI.settingsUpdate({ values: this.changes })
         .catch(this.stdReject)
@@ -228,6 +229,7 @@ export default {
 
     fetchSettings () {
       this.processing = true
+      this.error = null
 
       return this.$SystemAPI.settingsList({ prefix }).then((vv = []) => {
         this.settings = vv

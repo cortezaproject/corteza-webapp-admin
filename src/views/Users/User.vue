@@ -12,12 +12,14 @@
           {{ $t('user.information') }}
         </h2>
       </div>
+
       <div
         v-if="error"
         class="bg-danger alert text-white"
       >
         {{ error }}
       </div>
+
       <div class="user">
         <b-form-group
           :label="$t('user.email')"
@@ -273,6 +275,8 @@ export default {
   methods: {
     fetchUser () {
       this.processing = true
+      this.error = null
+
       this.$SystemAPI.userRead({ userID: this.userID })
         .then(user => {
           this.user = user
@@ -283,6 +287,8 @@ export default {
 
     fetchUserRoles () {
       this.processing = true
+      this.error = null
+
       this.userRoles = []
       const userID = this.userID
       this.$SystemAPI.roleList().then((roles = []) => {
@@ -307,6 +313,8 @@ export default {
 
     onDelete () {
       this.processing = true
+      this.error = null
+
       this.$SystemAPI.userDelete({ userID: this.userID })
         .then(this.handler)
         .then(() => {
@@ -318,6 +326,8 @@ export default {
 
     onUserSubmit () {
       this.processing = true
+      this.error = null
+
       const payload = { ...this.user }
       if (this.userID) {
         this.$SystemAPI.userUpdate(payload)
@@ -337,6 +347,8 @@ export default {
 
     onRoleSubmit () {
       this.processing = true
+      this.error = null
+
       const userID = this.userID
       Promise.all(this.userRoles.map(async role => {
         let { roleID, current, dirty } = role
@@ -355,24 +367,30 @@ export default {
 
     onStatusChange () {
       this.processing = true
-      const userID = this.userID
-      let endpoint
-      if (this.user.suspendedAt) {
-        endpoint = this.$SystemAPI.userSuspend
-      } else {
-        endpoint = this.$SystemAPI.userUnsuspend
-      }
+      this.error = null
 
-      endpoint({ userID })
-        .then(() => {
-          this.fetchUser()
-        })
-        .catch(this.stdReject)
-        .finally(this.finalize)
+      const userID = this.userID
+      if (this.user.suspendedAt) {
+        this.$SystemAPI.userUnsuspend({ userID })
+          .then(() => {
+            this.fetchUser()
+          })
+          .catch(this.stdReject)
+          .finally(this.finalize)
+      } else {
+        this.$SystemAPI.userSuspend({ userID })
+          .then(() => {
+            this.fetchUser()
+          })
+          .catch(this.stdReject)
+          .finally(this.finalize)
+      }
     },
 
     onPasswordSubmit () {
       this.processing = true
+      this.error = null
+
       const { userID } = this.user
       this.$SystemAPI.userSetPassword({ userID, password: this.password })
         .then(() => {

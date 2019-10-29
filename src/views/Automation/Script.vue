@@ -12,6 +12,12 @@
           md="12"
           class="mb-1"
         >
+          <div
+            v-if="error"
+            class="bg-danger alert text-white"
+          >
+            {{ error }}
+          </div>
           <div :title="$t('automation.edit.title')">
             <!-- <export :list="[script]" type="script" class="float-right" slot="header"/> -->
 
@@ -211,8 +217,11 @@
           </div>
         </b-col>
       </b-row>
-      <div class="footer">
-        <confirmation-toggle @confirmed="onDelete">
+      <div class="footer text-right">
+        <confirmation-toggle
+          v-if="script.scriptID"
+          @confirmed="onDelete"
+        >
           {{ $t('automation.edit.delete') }}
         </confirmation-toggle>
         <b-button
@@ -257,6 +266,8 @@ export default {
   data () {
     return {
       processing: false,
+      error: null,
+
       activeTab: 0,
 
       editor: null,
@@ -288,9 +299,8 @@ export default {
         return this.loadTriggers()
       }).then(() => {
         // ...
-      }).catch(err => {
-        console.error(err)
-      })
+      }).catch(this.stdReject)
+        .finally(this.finalize)
     }
   },
 
@@ -326,6 +336,9 @@ export default {
     },
 
     handleSave () {
+      this.processing = true
+      this.error = null
+
       if (!this.script.runAs) {
         this.script.runAs = '0'
       }
@@ -344,21 +357,19 @@ export default {
         if (!this.script.updatedAt) {
           this.$router.push({ name: 'automation.script', params: this.script })
         }
-      }).catch(err => {
-        console.error(err)
-        this.error = err.message
-      }).finally(() => {
-        this.processing = false
-      })
+      }).catch(this.stdReject)
+        .finally(this.finalize)
     },
 
     onDelete () {
+      this.processing = true
+      this.error = null
+
       this.$SystemAPI.automationScriptDelete({ ...this.script }).then(() => {
         this.$emit('update')
         this.$router.push({ name: 'automation' })
-      }).catch(err => {
-        console.error(err)
-      })
+      }).catch(this.stdReject)
+        .finally(this.finalize)
     },
 
     /**
@@ -441,6 +452,9 @@ export default {
     },
 
     onClickRunTestInCorredor () {
+      this.processing = true
+      this.error = null
+
       const payload = {
         source: this.script.source,
         ...this.parseTestPayload(),
@@ -451,13 +465,11 @@ export default {
 
         this.testResponse = JSON.stringify(rval, null, '  ')
       }).catch(err => {
-        if (err.message) {
-          err = err.message
-        }
+        this.stdReject(err)
 
         this.testResponseErr = err
         this.testResponse = null
-      })
+      }).finally(this.finalize)
     },
 
     parseTestPayload () {
@@ -475,6 +487,14 @@ export default {
 
     redirect () {
       this.$router.push({ name: 'admin.automation' })
+    },
+
+    stdReject ({ message = null } = {}) {
+      this.error = message
+    },
+
+    finalize () {
+      this.processing = false
     },
   },
 }

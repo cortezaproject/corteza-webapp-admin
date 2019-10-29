@@ -118,6 +118,7 @@ export default {
     onSubmit () {
       // Collect changed variables
       this.processing = true
+      this.error = null
 
       const values = Object.entries(this.settings).map(([name, value]) => {
         return { name, value }
@@ -130,6 +131,7 @@ export default {
 
     fetchSettings () {
       this.processing = true
+      this.error = null
 
       this.$ComposeAPI.settingsList().then(vv => {
         vv.forEach(({ name, value }) => {

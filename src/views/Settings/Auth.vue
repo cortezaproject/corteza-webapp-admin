@@ -219,6 +219,7 @@ export default {
     onSubmit () {
       // Collect changed variables
       this.processing = true
+      this.error = null
 
       const values = Object.entries(this.settings).map(([name, value]) => {
         return { name, value }
@@ -231,6 +232,7 @@ export default {
 
     fetchSettings () {
       this.processing = true
+      this.error = null
 
       this.$SystemAPI.settingsList({ prefix }).then(vv => {
         vv.filter(v => v.name.split('.')[1] !== 'external').forEach(({ name, value }) => {

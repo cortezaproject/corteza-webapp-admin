@@ -11,6 +11,14 @@
         {{ $t('application.information') }}
       </h2>
     </div>
+
+    <div
+      v-if="error"
+      class="bg-danger alert text-white"
+    >
+      {{ error }}
+    </div>
+
     <div class="application">
       <b-form-group
         :label="$t('application.id.label')"
@@ -150,8 +158,9 @@ export default {
   data () {
     return {
       processing: false,
-      application: {},
       error: null,
+
+      application: {},
     }
   },
 
@@ -198,6 +207,8 @@ export default {
   methods: {
     fetchApplication () {
       this.processing = true
+      this.error = null
+
       this.$SystemAPI.applicationRead({ applicationID: this.applicationID })
         .then(this.prepare)
         .catch(this.stdReject)
@@ -206,6 +217,7 @@ export default {
 
     onDelete () {
       this.processing = true
+      this.error = null
 
       this.$SystemAPI.applicationDelete({ applicationID: this.applicationID })
         .then(this.handler)
@@ -218,6 +230,7 @@ export default {
 
     onSubmit () {
       this.processing = true
+      this.error = null
 
       const payload = { ...this.application }
 

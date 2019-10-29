@@ -11,6 +11,14 @@
         {{ $t('role.information') }}
       </h2>
     </div>
+
+    <div
+      v-if="error"
+      class="bg-danger alert text-white"
+    >
+      {{ error }}
+    </div>
+
     <div class="role">
       <b-form-group
         :label="$t('general.label.name')"
@@ -132,6 +140,8 @@ export default {
   methods: {
     fetchRole () {
       this.processing = true
+      this.error = null
+
       this.$SystemAPI.roleRead({ roleID: this.roleID })
         .then(r => {
           this.role = r
@@ -144,6 +154,8 @@ export default {
 
     onDelete () {
       this.processing = true
+      this.error = null
+
       this.$SystemAPI.roleDelete({ roleID: this.roleID })
         .then(this.handler)
         .then(() => {
@@ -155,6 +167,7 @@ export default {
 
     onSubmit () {
       this.processing = true
+      this.error = null
 
       const payload = { ...this.role, members: this.members }
 
