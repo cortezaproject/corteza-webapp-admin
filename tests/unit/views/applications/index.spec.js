@@ -28,8 +28,8 @@ describe('views/Applications/Index.vue', () => {
   describe('fetch applications', () => {
     it('on success - set applications', async () => {
       sinon.stub(Index, 'created')
-      let rr = [{}, {}]
-      $SystemAPI.applicationList = sinon.stub().resolves(rr)
+      let set = [{}, {}]
+      $SystemAPI.applicationList = sinon.stub().resolves({ set })
       const wrap = mountIndex()
       wrap.vm.fetchApplications()
 

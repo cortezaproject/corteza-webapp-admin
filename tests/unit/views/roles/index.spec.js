@@ -33,12 +33,12 @@ describe('views/Roles/Index.vue', () => {
   describe('fetch roles', () => {
     it('on success - filter and set roles', async () => {
       sinon.stub(Index, 'created')
-      let rr = [
+      let set = [
         { roleID: '1' }, // removed
         { roleID: '2' },
         { roleID: '3' },
       ]
-      $SystemAPI.roleList = sinon.stub().resolves(rr)
+      $SystemAPI.roleList = sinon.stub().resolves({ set })
       const wrap = mountIndex()
       wrap.vm.fetchRoles()
 
