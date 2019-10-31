@@ -246,7 +246,7 @@ describe('views/Users/User.vue', () => {
     })
   })
 
-  describe('status change', () => {
+  describe.skip('status change', () => {
     it('on success - unsuspend - re-fetch user', async () => {
       const fetchUser = sinon.stub()
       const wrap = mountUser({ methods: { fetchUser } })
