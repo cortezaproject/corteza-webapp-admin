@@ -1,5 +1,15 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faUserCog, faUsers, faHatCowboy, faLock, faMagic, faThLarge, faAngleDoubleLeft, faAngleDoubleRight } from '@fortawesome/free-solid-svg-icons'
+import {
+  faUserCog,
+  faUsers,
+  faHatCowboy,
+  faLock,
+  faMagic,
+  faThLarge,
+  faAngleDoubleLeft,
+  faAngleDoubleRight,
+  faCogs,
+} from '@fortawesome/free-solid-svg-icons'
 
 library.add(
   faUserCog,
@@ -7,6 +17,7 @@ library.add(
   faHatCowboy,
   faLock,
   faMagic,
+  faCogs,
   faThLarge,
   faAngleDoubleLeft,
   faAngleDoubleRight,

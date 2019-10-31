@@ -104,12 +104,6 @@ export default {
 </script>
 <style scoped lang="scss">
 .app {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-
-  display: flex;
-  flex-direction: row;
 
   .panel {
     flex: 1;

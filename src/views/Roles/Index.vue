@@ -1,72 +1,118 @@
 <template>
-  <list-with-details
-    :title="title"
-    :create-button-label="$t('role.add')"
-    :permissions-button-label="$t('role.manage-wc-permissions')"
-    permissions-resource-type="system:role:*"
-    @update="onUpdate"
-    @create="onCreate"
+  <b-card
+    no-body
+    class="shadow border-0 m-5"
   >
-    <ul class="menu-layer">
-      <li
-        v-for="r in roles"
-        :key="r.ID"
-        class="role"
-      >
-        <router-link :to="{ name: 'roles.role', params: { roleID: r.roleID } }">
-          {{ r.name || r.handle || r.roleID || $t('role.unnamed') }}
-        </router-link>
-      </li>
-    </ul>
-  </list-with-details>
+    <b-table
+      id="roles"
+      hover
+      primary-key="roleID"
+      :sort-by.sync="params.sortBy"
+      :sort-desc.sync="params.sortDesc"
+      :per-page="params.perPage"
+      :current-page.sync="params.page"
+      :items="items"
+      :fields="fields"
+    >
+      <template v-slot:table-busy>
+        <div class="text-center text-danger my-2">
+          <b-spinner class="align-middle" />
+          <strong>Loading...</strong>
+        </div>
+      </template>
+
+      <template v-slot:cell(actions)="row">
+        <b-button
+          size="sm"
+        >
+          E
+        </b-button>
+      </template>
+    </b-table>
+    <b-pagination
+      v-model="params.page"
+      :total-rows="totalItems"
+      :disabled="totalItems===0"
+      :per-page.sync="params.perPage"
+      limit="10"
+      align="right"
+      aria-controls="roles"
+    />
+  </b-card>
 </template>
 
 <script>
-import ListWithDetails from 'corteza-webapp-admin/src/components/ListWithDetails'
-
-const systemRoles = [
-  '1', // Everyone
-]
+import * as moment from 'moment'
 
 export default {
-  components: {
-    ListWithDetails,
-  },
-
   data () {
     return {
-      query: '',
-      roles: [],
       error: null,
+
+      totalItems: 0,
+
+      params: {
+        perPage: 30,
+        page: 4,
+        sortBy: 'createdAt',
+        sortDesc: true,
+      },
+
+      fields: [
+        {
+          key: 'name',
+          sortable: true,
+        },
+        {
+          key: 'handle',
+          sortable: true,
+        },
+        {
+          key: 'createdAt',
+          label: 'Created',
+          sortable: true,
+          formatter: (v) => moment(v).fromNow(),
+        },
+        {
+          key: 'actions',
+          label: '',
+          tdClass: 'text-right',
+        },
+      ],
     }
   },
 
-  computed: {
-    title () {
-      return `Manage roles (${this.roles.length})`
-    },
-  },
-
-  created () {
-    this.fetchRoles()
+  create () {
+    // Pull params from route query
+    const { perPage, page, sortBy, sortDesc } = this.$route.query
+    this.params = {
+      // and values from query-string
+      perPage: parseInt(perPage) || this.params.perPage,
+      page: parseInt(page) || this.params.page,
+      sortBy,
+      sortDesc: sortDesc === 'false',
+    }
   },
 
   methods: {
-    onUpdate (e) {
-      this.fetchRoles(e)
-    },
+    items (ctx) {
+      const params = {
+        query: ctx.filter,
+        perPage: ctx.perPage,
+        page: ctx.currentPage,
+        sort: ctx.sortBy ? `${ctx.sortBy} ${ctx.sortDesc ? 'DESC' : 'ASC'}` : undefined,
+      }
 
-    onCreate () {
-      this.$router.push({ name: 'roles.role', params: { roleID: undefined } })
-    },
+      this.$router.push({ name: 'roles', query: this.params })
 
-    fetchRoles () {
-      this.$SystemAPI.roleList({ query: this.query.toLowerCase() }).then(({ set }) => {
-        this.roles = set.filter(r => !systemRoles.includes(r.roleID))
+      return this.$SystemAPI.roleList(params).then(({ set, filter } = {}) => {
+        this.totalItems = filter.count
+        return set
       }).catch(({ message }) => {
-        this.error = message
+        console.log(message)
       })
     },
+
   },
 }
 </script>

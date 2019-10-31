@@ -17,51 +17,54 @@
         class="left-sidebar overflow-auto h-100 pb-5"
         :class="leftSidebarClass"
       >
-        <b-list-group
-          flush
-        >
+        <b-list-group>
           <b-list-group-item
-            href="#"
-            active
-            class="p-2 border-0 text-nowrap"
-          >
-            <font-awesome-icon :icon="['fas', 'user-cog']" />
-            <span>Authentication settings</span>
-          </b-list-group-item>
-          <b-list-group-item
-            href="#"
+            :to="{ name: 'applications' }"
+            active-class="active"
             class="p-2 border-0 text-nowrap"
           >
             <font-awesome-icon :icon="['fas', 'th-large']" />
             <span>Applications</span>
           </b-list-group-item>
           <b-list-group-item
-            href="#"
+            :to="{ name: 'users' }"
+            active-class="active"
             class="p-2 border-0 text-nowrap"
           >
             <font-awesome-icon :icon="['fas', 'users']" />
             <span>Users</span>
           </b-list-group-item>
           <b-list-group-item
-            href="#"
+            :to="{ name: 'roles' }"
+            active-class="active"
             class="p-2 border-0 text-nowrap"
           >
             <font-awesome-icon :icon="['fas', 'hat-cowboy']" />
             <span>Roles</span>
           </b-list-group-item>
           <b-list-group-item
-            href="#"
+            :to="{ name: 'permissions' }"
+            active-class="active"
             class="p-2 border-0 text-nowrap"
           >
             <font-awesome-icon :icon="['fas', 'lock']" />
             <span>Permissions</span>
           </b-list-group-item>
           <b-list-group-item
-            href="#"
+            :to="{ name: 'automation' }"
+            active-class="active"
             class="p-2 border-0 text-nowrap"
           >
             <font-awesome-icon :icon="['fas', 'magic']" />
             <span>Automation</span>
+          </b-list-group-item>
+          <b-list-group-item
+            :to="{ name: 'settings' }"
+            active-class="active"
+            class="p-2 border-0 text-nowrap"
+          >
+            <font-awesome-icon :icon="['fas', 'cogs']" />
+            <span>{{ $t('navigation.settings') }}</span>
           </b-list-group-item>
           <b-list-group-item
             class="p-2 border-0 bg-dark text-white position-absolute left-switcher"
@@ -74,8 +77,7 @@
       <div
         class="bg-light flex-grow-1 overflow-auto h-100 p-2 pb-5"
       >
-        <b-spinner />
-        Loading content
+        <router-view class="view" />
       </div>
       <div
         class="right-sidebar overflow-auto h-100 p-2 pb-5"
@@ -105,7 +107,7 @@ export default {
   computed: {
     leftSidebarClass () {
       return {
-        minified: this.showLeftSidebar,
+        minified: !this.showLeftSidebar,
       }
     },
     rightSidebarClass () {

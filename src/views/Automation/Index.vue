@@ -1,66 +1,122 @@
 <template>
-  <list-with-details
-    :title="$t('automation.manage', { count: scripts.length })"
-    :create-button-label="$t('automation.add')"
-    :permissions-button-label="$t('automation.manage-wc-permissions')"
-    permissions-resource-type="system:automation-script:*"
-    @update="fetch"
-    @create="$router.push({ name: 'automation.script' })"
+  <b-card
+    no-body
+    class="shadow border-0 m-5"
   >
-    <ul class="menu-layer">
-      <li
-        v-for="s in scripts"
-        :key="s.scriptID"
-        class="script"
-      >
-        <router-link :to="{ name: 'automation.script', params: { scriptID: s.scriptID } }">
-          {{ s.name || s.scriptID }}
-        </router-link>
-      </li>
-    </ul>
-  </list-with-details>
+    <b-table
+      id="automationScripts"
+      hover
+      primary-key="scriptID"
+      :sort-by.sync="params.sortBy"
+      :sort-desc.sync="params.sortDesc"
+      :per-page="params.perPage"
+      :current-page.sync="params.page"
+      :items="items"
+      :fields="fields"
+    >
+      <template v-slot:table-busy>
+        <div class="text-center text-danger my-2">
+          <b-spinner class="align-middle" />
+          <strong>Loading...</strong>
+        </div>
+      </template>
+
+      <template v-slot:cell(actions)="row">
+        <b-button
+          size="sm"
+        >
+          E
+        </b-button>
+      </template>
+    </b-table>
+    <b-pagination
+      v-model="params.page"
+      :total-rows="totalItems"
+      :disabled="totalItems===0"
+      :per-page.sync="params.perPage"
+      limit="10"
+      align="right"
+      aria-controls="automationScripts"
+    />
+  </b-card>
 </template>
 
 <script>
-import ListWithDetails from 'corteza-webapp-admin/src/components/ListWithDetails'
+import * as moment from 'moment'
 
 export default {
-  components: {
-    ListWithDetails,
-  },
-
   data () {
     return {
-      scripts: [],
       error: null,
+
+      totalItems: 0,
+
+      params: {
+        perPage: 30,
+        page: 4,
+        sortBy: 'createdAt',
+        sortDesc: true,
+      },
+
+      fields: [
+        {
+          key: 'name',
+          sortable: true,
+        },
+        {
+          key: 'email',
+          sortable: true,
+        },
+        {
+          key: 'handle',
+          sortable: true,
+        },
+        {
+          key: 'createdAt',
+          label: 'Created',
+          sortable: true,
+          formatter: (v) => moment(v).fromNow(),
+        },
+        {
+          key: 'actions',
+          label: '',
+          tdClass: 'text-right',
+        },
+      ],
     }
   },
 
-  created () {
-    this.fetch()
+  create () {
+    // Pull params from route query
+    const { perPage, page, sortBy, sortDesc } = this.$route.query
+    this.params = {
+      // and values from query-string
+      perPage: parseInt(perPage) || this.params.perPage,
+      page: parseInt(page) || this.params.page,
+      sortBy,
+      sortDesc: sortDesc === 'false',
+    }
   },
 
   methods: {
-    onUpdate (e) {
-      this.fetch(e)
-    },
-
-    onCreate () {
-      this.$router.push({ name: 'automation.script' })
-    },
-
-    fetch () {
-      const filter = {
-        incDeleted: false,
+    items (ctx) {
+      const params = {
+        query: ctx.filter,
+        perPage: ctx.perPage,
+        page: ctx.currentPage,
+        sort: ctx.sortBy ? `${ctx.sortBy} ${ctx.sortDesc ? 'DESC' : 'ASC'}` : undefined,
       }
 
-      this.$SystemAPI.automationScriptList(filter).then(({ set }) => {
-        this.scripts = set
-      }).catch(err => {
-        this.error = err.message
-        console.log(err)
+      this.$router.push({ name: 'automation', query: this.params })
+
+      return this.$SystemAPI.automationScriptList(params).then(({ set, filter } = {}) => {
+        this.totalItems = filter.count
+        return set
+      }).catch(({ message }) => {
+        console.log(message)
       })
     },
+
   },
 }
 </script>

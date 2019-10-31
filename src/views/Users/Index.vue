@@ -1,63 +1,122 @@
 <template>
-  <list-with-details
-    :title="$t('user.manage', { count: users.length || 0 })"
-    :create-button-label="$t('user.add')"
-    :permissions-button-label="$t('user.manage-wc-permissions')"
-    class="user-list"
-    permissions-resource-type="system:user:*"
-    @update="onUpdate"
-    @create="onCreate"
+  <b-card
+    no-body
+    class="shadow border-0 m-5"
   >
-    <ul class="menu-layer">
-      <li
-        v-for="u in users"
-        :key="u.userID"
-        class="user"
-      >
-        <router-link :to="{ name: 'users.user', params: { userID: u.userID } }">
-          {{ u.name || u.username || u.email }}
-        </router-link>
-      </li>
-    </ul>
-  </list-with-details>
+    <b-table
+      id="users"
+      hover
+      primary-key="userID"
+      :sort-by.sync="params.sortBy"
+      :sort-desc.sync="params.sortDesc"
+      :per-page="params.perPage"
+      :current-page.sync="params.page"
+      :items="items"
+      :fields="fields"
+    >
+      <template v-slot:table-busy>
+        <div class="text-center text-danger my-2">
+          <b-spinner class="align-middle" />
+          <strong>Loading...</strong>
+        </div>
+      </template>
+
+      <template v-slot:cell(actions)="row">
+        <b-button
+          size="sm"
+        >
+          E
+        </b-button>
+      </template>
+    </b-table>
+    <b-pagination
+      v-model="params.page"
+      :total-rows="totalItems"
+      :disabled="totalItems===0"
+      :per-page.sync="params.perPage"
+      limit="10"
+      align="right"
+      aria-controls="users"
+    />
+  </b-card>
 </template>
 
 <script>
-import ListWithDetails from 'corteza-webapp-admin/src/components/ListWithDetails'
+import * as moment from 'moment'
 
 export default {
-  components: {
-    ListWithDetails,
-  },
-
   data () {
     return {
-      query: '',
-      users: [],
       error: null,
+
+      totalItems: 0,
+
+      params: {
+        perPage: 30,
+        page: 4,
+        sortBy: 'createdAt',
+        sortDesc: true,
+      },
+
+      fields: [
+        {
+          key: 'name',
+          sortable: true,
+        },
+        {
+          key: 'email',
+          sortable: true,
+        },
+        {
+          key: 'handle',
+          sortable: true,
+        },
+        {
+          key: 'createdAt',
+          label: 'Created',
+          sortable: true,
+          formatter: (v) => moment(v).fromNow(),
+        },
+        {
+          key: 'actions',
+          label: '',
+          tdClass: 'text-right',
+        },
+      ],
     }
   },
 
-  created () {
-    this.fetchUsers()
+  create () {
+    // Pull params from route query
+    const { perPage, page, sortBy, sortDesc } = this.$route.query
+    this.params = {
+      // and values from query-string
+      perPage: parseInt(perPage) || this.params.perPage,
+      page: parseInt(page) || this.params.page,
+      sortBy,
+      sortDesc: sortDesc === 'false',
+    }
   },
 
   methods: {
-    onUpdate (e) {
-      this.fetchUsers(e)
-    },
+    items (ctx) {
+      const params = {
+        query: ctx.filter,
+        perPage: ctx.perPage,
+        page: ctx.currentPage,
+        sort: ctx.sortBy ? `${ctx.sortBy} ${ctx.sortDesc ? 'DESC' : 'ASC'}` : undefined,
+      }
 
-    onCreate () {
-      this.$router.push({ name: 'users.user' })
-    },
+      this.$router.push({ name: 'users', query: this.params })
 
-    fetchUsers () {
-      this.$SystemAPI.userList({ query: this.query.toLowerCase(), sort: 'createdAt DESC' }).then(({ set } = {}) => {
-        this.users = set
+      return this.$SystemAPI.userList(params).then(({ set, filter } = {}) => {
+        this.totalItems = filter.count
+        return set
       }).catch(({ message }) => {
-        this.error = message
+        console.log(message)
       })
     },
+
   },
 }
 </script>
