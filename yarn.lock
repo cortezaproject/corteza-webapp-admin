@@ -2863,8 +2863,8 @@ core-util-is@1.0.2, core-util-is@~1.0.0:
   integrity sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
 
 corteza-webapp-common@cortezaproject/corteza-webapp-common.git#master:
-  version "2019.9.0-rc.41"
-  resolved "https://codeload.github.com/cortezaproject/corteza-webapp-common/tar.gz/26d67eaac7554e8093380000e3c4e20b3130a8cf"
+  version "2019.9.0-rc.42"
+  resolved "https://codeload.github.com/cortezaproject/corteza-webapp-common/tar.gz/c2cb710f40cf1ecaea4b6a2bb53885b1025c1ffd"
   dependencies:
     diff "4.0.1"
     mime-types "2.1.24"
