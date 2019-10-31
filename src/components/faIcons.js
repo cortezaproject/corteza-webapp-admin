@@ -9,5 +9,5 @@ library.add(
   faMagic,
   faThLarge,
   faAngleDoubleLeft,
-  faAngleDoubleRight
+  faAngleDoubleRight,
 )
