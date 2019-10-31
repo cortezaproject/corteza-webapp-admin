@@ -10,13 +10,14 @@ import './components'
 import i18n from './i18n'
 import store from './store'
 import router from './router'
+import Layout from './views/Layout'
 
 export default (options = {}) => {
   options = {
     el: '#app',
     name: 'admin',
-    template: '<div id="admin" class="crust"><router-view/></div>',
-
+    // template: '<div id="admin" class="crust"><router-view/></div>',
+    render: h => h(Layout),
     router,
     store,
     i18n: i18n(),
