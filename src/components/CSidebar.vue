@@ -1,6 +1,6 @@
 <template>
   <div
-    class="overflow-auto h-100 pb-5"
+    class="overflow-auto h-100 pb-5 pt-3"
     :class="mainStyleClasses"
   >
     <slot />
@@ -10,7 +10,6 @@
         :class="switcherClasses"
         @click="minified=!minified"
       >
-        {{ minified }}
         <font-awesome-icon
           :icon="['fas', 'angle-double-' + orientation]"
         />
@@ -67,7 +66,7 @@ export default {
 
 .left-sidebar {
   &.minified {
-    width: 50px;
+    width: 35px;
     /deep/ .label {
       opacity: 0;
       transition: all 0.5s ease;

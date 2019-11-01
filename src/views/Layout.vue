@@ -1,21 +1,34 @@
 <template>
   <b-container
-    class="vh-100"
+    class="vh-100 bg-light p-0 m-0"
     fluid
   >
     <b-row
-      class="py-2 px-3"
+      class="py-2 px-3 m-0"
     >
-      <h4 class="m-0">
-        Admin
-      </h4>
+      <b-col
+        align-self="start"
+        class="m-0 p-0"
+      >
+        <h4 class="m-0 mt-3">
+          Admin
+        </h4>
+      </b-col>
+
+      <b-col
+        align-self="end"
+        class="text-right"
+      >
+        identity..
+      </b-col>
     </b-row>
     <b-row
-      class="h-100"
+      class="h-100 m-0"
     >
       <c-sidebar>
         <b-list-group>
           <c-main-nav-item
+            v-if="false"
             :label="$t('navigation.stats')"
             :to="{ name: 'stats' }"
             :icon="['fas', 'th-large']"
@@ -59,7 +72,7 @@
         </b-list-group>
       </c-sidebar>
       <div
-        class="bg-light flex-grow-1 overflow-auto h-100 p-2 pb-5"
+        class="flex-grow-1 overflow-auto h-100"
       >
         <router-view />
       </div>
@@ -86,7 +99,3 @@ export default {
 
 }
 </script>
-
-<style scoped lang="scss">
-
-</style>
