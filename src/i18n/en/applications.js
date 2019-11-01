@@ -1,25 +1,17 @@
 export default {
-  label: 'Application',
-
-  intro: {
-    title: '@TODO what you cand o with apps',
-    text: '@TODO lorem ipsum dolor sit...',
-  },
-
-  quickAdd: {
-    title: '@TODO Create new application',
-    form: {
-      name: {
-        label: '@TODO Application name',
-        description: '@TODO this is app name...',
-      },
-    },
-  },
+  label: 'Applications',
 
   list: {
+    searchForm: {
+      query: {
+        label: 'Filter applications list',
+      },
+    },
+
     columns: {
       name: 'Name',
       createdAt: 'Created',
+      enabled: 'Enabled',
       actions: '',
     },
   },

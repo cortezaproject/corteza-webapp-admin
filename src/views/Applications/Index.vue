@@ -1,79 +1,118 @@
 <template>
   <main>
-    <h1>
-      {{ $t('label') }}
-      <b-badge>
-        {{ totalItems }}
-      </b-badge>
-    </h1>
-    <b-card-group>
-      <b-card>
-        <b-card-title>
-          {{ $t('intro.title') }}
-        </b-card-title>
-        <b-card-body>
-          {{ $t('intro.text') }}
-        </b-card-body>
-      </b-card>
-      <b-card>
-        <b-card-title>
-          {{ $t('quickAdd.title') }}
-        </b-card-title>
-        <b-card-body>
-          <b-form>
-            <b-form-group
-              :label="$t('quickAdd.form.name.label')"
-              :description="$t('quickAdd.form.name.description')"
-            >
-              <b-input-group>
-                <b-form-input />
-                <b-button>&raquo;</b-button>
-              </b-input-group>
-            </b-form-group>
-          </b-form>
-        </b-card-body>
-      </b-card>
-    </b-card-group>
+    <b-container fluid>
+      <b-row class="m-0">
+        <h1>
+          {{ $t('label') }}
+          <b-badge
+            class="rounded-pill"
+          >
+            {{ totalItems }}
+          </b-badge>
+        </h1>
+      </b-row>
+      <b-row class="m-0">
+        <b-button-toolbar
+          class="text-right"
+        >
+          <b-button-group>
+            <b-button variant="link">
+              New
+            </b-button>
+          </b-button-group>
+          <b-button-group>
+            <b-button variant="link">
+              Permissions
+            </b-button>
+          </b-button-group>
+          <b-dropdown
+            variant="link"
+            right
+
+            menu-class="shadow-sm"
+            text="Export"
+          >
+            <b-dropdown-item-button variant="link">
+              YAML
+            </b-dropdown-item-button>
+          </b-dropdown>
+          <b-button-group>
+            <b-button variant="link">
+              Help
+            </b-button>
+          </b-button-group>
+        </b-button-toolbar>
+      </b-row>
+    </b-container>
+
     <b-card
       no-body
-      class="shadow border-0 m-5"
+      class="shadow-sm border-0 m-2"
     >
-      <b-table
-        id="applications"
-        hover
-        primary-key="applicationID"
-        :sort-by.sync="params.sortBy"
-        :sort-desc.sync="params.sortDesc"
-        :per-page="params.perPage"
-        :current-page.sync="params.page"
-        :items="items"
-        :fields="fields"
-      >
-        <template v-slot:table-busy>
-          <div class="text-center text-danger my-2">
-            <b-spinner class="align-middle" />
-            <strong>Loading...</strong>
-          </div>
-        </template>
-
-        <template v-slot:cell(actions)="row">
-          <b-button
-            size="sm"
-            :to="{ name: 'applications.editor', params: { applicationID: row.item.applicationID } }"
+      <b-card-body>
+        <b-form>
+          <b-form-group
+            :label="$t('list.searchForm.query.label')"
           >
-            E
-          </b-button>
-        </template>
-      </b-table>
-      <b-pagination
-        v-model="params.page"
-        :total-rows="totalItems"
-        :disabled="totalItems===0"
-        :per-page.sync="params.perPage"
-        limit="10"
-        align="right"
-        aria-controls="applications"
-      />
+            <b-form-input>
+              <b-form-input />
+            </b-form-input>
+          </b-form-group>
+        </b-form>
+      </b-card-body>
+      <b-card-body
+        class="p-0 m-0"
+      >
+        <b-table
+          id="applications"
+          hover
+          fixed
+          head-variant="dark"
+          sticky-header
+          primary-key="applicationID"
+          :sort-by.sync="params.sortBy"
+          :sort-desc.sync="params.sortDesc"
+          :per-page="params.perPage"
+          :current-page.sync="params.page"
+          :items="items"
+          :fields="fields"
+        >
+          <template v-slot:table-busy>
+            <div class="text-center text-danger my-2">
+              <b-spinner class="align-middle" />
+              <strong>Loading...</strong>
+            </div>
+          </template>
+
+          <template v-slot:cell(enabled)="row">
+            {{ row.value ? '&checkmark;' : '' }}
+          </template>
+
+          <template v-slot:cell(actions)="row">
+            <b-button
+              size="sm"
+              variant="link"
+              :to="{ name: 'applications.editor', params: { applicationID: row.item.applicationID } }"
+            >
+              <font-awesome-icon
+                :icon="['fas', 'pen']"
+              />
+            </b-button>
+          </template>
+        </b-table>
+      </b-card-body>
+
+      <template v-slot:footer>
+        <b-pagination
+          v-model="params.page"
+          :total-rows="totalItems"
+          :disabled="totalItems===0"
+          :per-page.sync="params.perPage"
+          limit="10"
+          align="right"
+          aria-controls="applications"
+        />
+      </template>
     </b-card>
   </main>
 </template>
@@ -103,6 +142,9 @@ export default {
         {
           key: 'name',
           sortable: true,
+        },
+        {
+          key: 'enabled',
         },
         {
           key: 'createdAt',

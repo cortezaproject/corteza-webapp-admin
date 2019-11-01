@@ -4,4 +4,3 @@ import './faIcons'
 
 Vue.component('permissions-button', () => import('corteza-webapp-common/src/components/Permissions/Button'))
 Vue.component('font-awesome-icon', FontAwesomeIcon)
-Vue.component('permissions-button', () => import('corteza-webapp-common/src/components/Permissions/Button'))

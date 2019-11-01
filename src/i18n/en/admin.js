@@ -1,6 +1,6 @@
 export default {
   navigation: {
-    applications: 'Applications',
+    stats: 'Statistics',
     users: 'Users',
     roles: 'Roles',
     permissions: 'Permissions',
