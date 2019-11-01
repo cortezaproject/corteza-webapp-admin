@@ -27,11 +27,6 @@ export default {
       type: String,
       default: 'left',
     },
-
-    // minified: {
-    //   type: Boolean,
-    //   value: false,
-    // }
   },
 
   data () {
@@ -44,13 +39,13 @@ export default {
     mainStyleClasses () {
       return {
         minified: this.minified,
-        [this.orientation + '-sidebar']: true,
+        [this.orientation]: true,
       }
     },
 
     switcherClasses () {
       return {
-        [this.orientation + '-switcher']: true,
+        [this.orientation]: true,
       }
     },
   },
@@ -58,42 +53,39 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.left-sidebar,
-.right-sidebar {
+.sidebar {
   width: $sidebar-width;
   min-width: $sidebar-width;
   transition: all 0.3s ease;
   z-index: 10;
 }
 
-.left-sidebar {
-  &.minified {
+.switcher {
+  bottom: 0;
+  cursor: pointer;
+
+  &.right {
+    right: 0;
+  }
+}
+
+.minified {
+  .switcher {
+    transform: rotate(180deg);
+  }
+
+  &.left {
     width: 35px;
     min-width: 35px;
+
     /deep/ .label {
       opacity: 0;
       transition: all 0.5s ease;
     }
-    .left-switcher {
-      transform: rotate(180deg);
-    }
   }
-}
 
-.right-sidebar {
-  &.minified {
+  &.right {
     margin-right: -($sidebar-width);
-    .right-switcher {
-      transform: rotate(180deg);
-    }
   }
-}
-.switcher {
-  bottom: 0;
-  cursor: pointer;
-}
-
-.right-switcher {
-  right: 0;
 }
 </style>
