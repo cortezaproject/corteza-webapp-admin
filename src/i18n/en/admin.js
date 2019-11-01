@@ -1,10 +1,9 @@
 export default {
   navigation: {
-    app: 'Applications',
-    user: 'Users',
-    role: 'Roles',
-    permission: 'Permissions',
-    manageApps: 'Manage applications',
+    applications: 'Applications',
+    users: 'Users',
+    roles: 'Roles',
+    permissions: 'Permissions',
     automation: 'Automation',
     settings: 'Settings',
   },

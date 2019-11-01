@@ -18,59 +18,50 @@
         :class="leftSidebarClass"
       >
         <b-list-group>
-          <b-list-group-item
+          <main-nav-item
+            :label="$t('navigation.applications')"
             :to="{ name: 'applications' }"
-            active-class="active"
-            class="p-2 border-0 text-nowrap"
-          >
-            <font-awesome-icon :icon="['fas', 'th-large']" />
-            <span>Applications</span>
-          </b-list-group-item>
-          <b-list-group-item
+            :icon="['fas', 'th-large']"
+          />
+
+          <main-nav-item
+            :label="$t('navigation.users')"
             :to="{ name: 'users' }"
-            active-class="active"
-            class="p-2 border-0 text-nowrap"
-          >
-            <font-awesome-icon :icon="['fas', 'users']" />
-            <span>Users</span>
-          </b-list-group-item>
-          <b-list-group-item
+            :icon="['fas', 'users']"
+          />
+
+          <main-nav-item
+            :label="$t('navigation.roles')"
             :to="{ name: 'roles' }"
-            active-class="active"
-            class="p-2 border-0 text-nowrap"
-          >
-            <font-awesome-icon :icon="['fas', 'hat-cowboy']" />
-            <span>Roles</span>
-          </b-list-group-item>
-          <b-list-group-item
+            :icon="['fas', 'hat-cowboy']"
+          />
+
+          <main-nav-item
+            :label="$t('navigation.permissions')"
             :to="{ name: 'permissions' }"
-            active-class="active"
-            class="p-2 border-0 text-nowrap"
-          >
-            <font-awesome-icon :icon="['fas', 'lock']" />
-            <span>Permissions</span>
-          </b-list-group-item>
-          <b-list-group-item
+            :icon="['fas', 'lock']"
+          />
+
+          <main-nav-item
+            :label="$t('navigation.automation')"
             :to="{ name: 'automation' }"
-            active-class="active"
-            class="p-2 border-0 text-nowrap"
-          >
-            <font-awesome-icon :icon="['fas', 'magic']" />
-            <span>Automation</span>
-          </b-list-group-item>
-          <b-list-group-item
+            :icon="['fas', 'magic']"
+          />
+
+          <main-nav-item
+            :label="$t('navigation.settings')"
             :to="{ name: 'settings' }"
-            active-class="active"
-            class="p-2 border-0 text-nowrap"
-          >
-            <font-awesome-icon :icon="['fas', 'cogs']" />
-            <span>{{ $t('navigation.settings') }}</span>
-          </b-list-group-item>
+            :icon="['fas', 'cogs']"
+          />
+        </b-list-group>
+        <b-list-group>
           <b-list-group-item
             class="p-2 border-0 bg-dark text-white position-absolute left-switcher"
             @click="showLeftSidebar=!showLeftSidebar"
           >
-            <font-awesome-icon :icon="['fas', 'angle-double-left']" />
+            <font-awesome-icon
+              :icon="['fas', 'angle-double-left']"
+            />
           </b-list-group-item>
         </b-list-group>
       </div>
@@ -88,16 +79,22 @@
           class="p-2 bg-dark text-white position-absolute right-switcher"
           @click="showRightSidebar=!showRightSidebar"
         >
-          <font-awesome-icon :icon="['fas', 'angle-double-right']" />
+          <font-awesome-icon
+            :icon="['fas', 'angle-double-right']"
+          />
         </div>
       </div>
     </b-row>
   </b-container>
 </template>
-
 <script>
+import MainNavItem from '../components/MainNavItem'
 
 export default {
+  components: {
+    MainNavItem,
+  },
+
   data () {
     return {
       showLeftSidebar: true,
@@ -129,7 +126,7 @@ export default {
 .left-sidebar {
   &.minified {
     width: 50px;
-    span {
+    /deep/ .label {
       opacity: 0;
       transition: all 0.5s ease;
     }
@@ -137,9 +134,6 @@ export default {
       transform: rotate(180deg);
     }
   }
-}
-.svg-inline--fa {
-  width: 30px;
 }
 .right-sidebar {
   &.hidden {
