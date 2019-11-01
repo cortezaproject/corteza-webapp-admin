@@ -65,7 +65,7 @@ describe('views/Users/User.vue', () => {
 
   describe('fetch user roles', () => {
     it('on success - set roles', async () => {
-      const roleList = [{ roleID: '2' }, { roleID: '3' }]
+      const roleList = { set: [{ roleID: '2' }, { roleID: '3' }] }
       const userMembershipList = ['2']
       const expected = [ { roleID: '2', current: true, dirty: true }, { roleID: '3', current: false, dirty: false } ]
       $SystemAPI.roleList = sinon.stub().resolves(roleList)
@@ -81,7 +81,7 @@ describe('views/Users/User.vue', () => {
     })
 
     it('on success - ignore roleID 1', async () => {
-      const roleList = [{ roleID: '1' }]
+      const roleList = { set:[{ roleID: '1' }]}
       const userMembershipList = ['1']
       const expected = []
       $SystemAPI.roleList = sinon.stub().resolves(roleList)
@@ -109,6 +109,7 @@ describe('views/Users/User.vue', () => {
     })
 
     it('on error - user membership - set error flag', async () => {
+      $SystemAPI.roleList = sinon.stub().resolves({})
       $SystemAPI.userMembershipList = stdReject()
       const wrap = mountUser()
       wrap.vm.fetchUserRoles()

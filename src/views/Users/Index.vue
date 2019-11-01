@@ -52,7 +52,7 @@ export default {
     },
 
     fetchUsers () {
-      this.$SystemAPI.userList({ query: this.query.toLowerCase(), sort: 'name' }).then(({ set } = {}) => {
+      this.$SystemAPI.userList({ query: this.query.toLowerCase(), sort: 'createdAt DESC' }).then(({ set } = {}) => {
         this.users = set
       }).catch(({ message }) => {
         this.error = message

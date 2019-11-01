@@ -291,7 +291,7 @@ export default {
 
       this.userRoles = []
       const userID = this.userID
-      this.$SystemAPI.roleList().then((roles = []) => {
+      this.$SystemAPI.roleList().then(({ set: roles = [] }) => {
         this.$SystemAPI.userMembershipList({ userID }).then((m = []) => {
           let userRoles = []
           roles.forEach(r => {
