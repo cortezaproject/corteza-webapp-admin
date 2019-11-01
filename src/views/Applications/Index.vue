@@ -1,50 +1,91 @@
 <template>
-  <b-card
-    no-body
-    class="shadow border-0 m-5"
-  >
-    <b-table
-      id="applications"
-      hover
-      primary-key="applicationID"
-      :sort-by.sync="params.sortBy"
-      :sort-desc.sync="params.sortDesc"
-      :per-page="params.perPage"
-      :current-page.sync="params.page"
-      :items="items"
-      :fields="fields"
+  <main>
+    <h1>
+      {{ $t('label') }}
+      <b-badge>
+        {{ totalItems }}
+      </b-badge>
+    </h1>
+    <b-card-group>
+      <b-card>
+        <b-card-title>
+          {{ $t('intro.title') }}
+        </b-card-title>
+        <b-card-body>
+          {{ $t('intro.text') }}
+        </b-card-body>
+      </b-card>
+      <b-card>
+        <b-card-title>
+          {{ $t('quickAdd.title') }}
+        </b-card-title>
+        <b-card-body>
+          <b-form>
+            <b-form-group
+              :label="$t('quickAdd.form.name.label')"
+              :description="$t('quickAdd.form.name.description')"
+            >
+              <b-input-group>
+                <b-form-input />
+                <b-button>&raquo;</b-button>
+              </b-input-group>
+            </b-form-group>
+          </b-form>
+        </b-card-body>
+      </b-card>
+    </b-card-group>
+    <b-card
+      no-body
+      class="shadow border-0 m-5"
     >
-      <template v-slot:table-busy>
-        <div class="text-center text-danger my-2">
-          <b-spinner class="align-middle" />
-          <strong>Loading...</strong>
-        </div>
-      </template>
+      <b-table
+        id="applications"
+        hover
+        primary-key="applicationID"
+        :sort-by.sync="params.sortBy"
+        :sort-desc.sync="params.sortDesc"
+        :per-page="params.perPage"
+        :current-page.sync="params.page"
+        :items="items"
+        :fields="fields"
+      >
+        <template v-slot:table-busy>
+          <div class="text-center text-danger my-2">
+            <b-spinner class="align-middle" />
+            <strong>Loading...</strong>
+          </div>
+        </template>
 
-      <template v-slot:cell(actions)="row">
-        <b-button
-          size="sm"
-        >
-          E
-        </b-button>
-      </template>
-    </b-table>
-    <b-pagination
-      v-model="params.page"
-      :total-rows="totalItems"
-      :disabled="totalItems===0"
-      :per-page.sync="params.perPage"
-      limit="10"
-      align="right"
-      aria-controls="applications"
-    />
-  </b-card>
+        <template v-slot:cell(actions)="row">
+          <b-button
+            size="sm"
+            :to="{ name: 'applications.editor', params: { applicationID: row.item.applicationID } }"
+          >
+            E
+          </b-button>
+        </template>
+      </b-table>
+      <b-pagination
+        v-model="params.page"
+        :total-rows="totalItems"
+        :disabled="totalItems===0"
+        :per-page.sync="params.perPage"
+        limit="10"
+        align="right"
+        aria-controls="applications"
+      />
+    </b-card>
+  </main>
 </template>
 
 <script>
 import * as moment from 'moment'
 
 export default {
+  i18nOptions: {
+    namespaces: [ 'applications' ],
+  },
+
   data () {
     return {
       error: null,
@@ -54,7 +95,7 @@ export default {
       params: {
         perPage: 30,
         page: 4,
-        sortBy: 'createdAt',
+        sortBy: 'id',
         sortDesc: true,
       },
 
@@ -64,21 +105,19 @@ export default {
           sortable: true,
         },
         {
-          key: 'handle',
-          sortable: true,
-        },
-        {
           key: 'createdAt',
-          label: 'Created',
           sortable: true,
           formatter: (v) => moment(v).fromNow(),
         },
         {
           key: 'actions',
-          label: '',
           tdClass: 'text-right',
         },
-      ],
+      ].map(c => ({
+        ...c,
+        // Generate column label translation key
+        label: this.$t(`list.columns.${c.key}`),
+      })),
     }
   },
 

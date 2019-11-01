@@ -16,8 +16,8 @@
       <c-sidebar>
         <b-list-group>
           <c-main-nav-item
-            :label="$t('navigation.applications')"
-            :to="{ name: 'applications' }"
+            :label="$t('navigation.stats')"
+            :to="{ name: 'stats' }"
             :icon="['fas', 'th-large']"
           />
 
@@ -37,6 +37,12 @@
             :label="$t('navigation.permissions')"
             :to="{ name: 'permissions' }"
             :icon="['fas', 'lock']"
+          />
+
+          <c-main-nav-item
+            :label="$t('applications:label')"
+            :to="{ name: 'applications' }"
+            :icon="['fas', 'th-large']"
           />
 
           <c-main-nav-item

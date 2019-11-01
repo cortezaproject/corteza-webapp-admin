@@ -40,10 +40,8 @@ export default [
   { path: '/applications',
     name: 'applications',
     component: view('Applications/Index'),
-    children: [
-      { path: '/:applicationID?', name: 'applications.application', component: view('Applications/Application'), props: true },
-    ],
   },
+  { path: '/applications/editor/:applicationID?', name: 'applications.editor', component: view('Applications/Editor'), props: true },
   { path: '/automation',
     name: 'automation',
     component: view('Automation/Index'),
