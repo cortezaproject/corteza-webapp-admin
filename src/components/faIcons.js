@@ -5,11 +5,12 @@ import {
   faHatCowboy,
   faLock,
   faMagic,
+  faCogs,
   faThLarge,
+  faPen,
   faAngleDoubleLeft,
   faAngleDoubleRight,
-  faCogs,
-  faPen,
+  faPowerOff,
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
@@ -23,4 +24,5 @@ library.add(
   faPen,
   faAngleDoubleLeft,
   faAngleDoubleRight,
+  faPowerOff
 )

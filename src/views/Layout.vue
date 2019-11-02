@@ -3,16 +3,26 @@
     class="d-flex flex-column vh-100 bg-light"
   >
     <header
-      class="d-flex py-2 px-3 bg-primary text-light fixed-top"
+      class="d-flex py-2 px-3 bg-primary shadow-sm text-light fixed-top align-items-center"
     >
-      <h4 class="p-1">
+      <h4 class="m-0">
         Corteza Admin
       </h4>
       <div
         align-self="end"
         class="flex-fill text-right"
       >
-        identity..
+        <p class="m-0 d-inline">
+          John Doe
+        </p>
+        <a
+          href="#"
+          class="text-white ml-3 h5"
+        >
+          <font-awesome-icon
+            :icon="['fas', 'power-off']"
+          />
+        </a>
       </div>
     </header>
 
