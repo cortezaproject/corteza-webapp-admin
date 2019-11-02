@@ -5,6 +5,7 @@ export default {
     searchForm: {
       query: {
         label: 'Filter applications list',
+        placeholder: 'Filter applications by name',
       },
     },
 

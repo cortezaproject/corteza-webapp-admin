@@ -1,72 +1,23 @@
 <template>
-  <main class="p-3">
-    <b-container fluid>
-      <b-row class="m-0">
-        <h1>
-          {{ $t('label') }}
-          <b-badge
-            class="rounded-pill"
-          >
-            {{ totalItems }}
-          </b-badge>
-        </h1>
-      </b-row>
-      <b-row class="m-0">
-        <b-button-toolbar
-          class="text-right"
-        >
-          <b-button-group>
-            <b-button variant="link">
-              New
-            </b-button>
-          </b-button-group>
-          <b-button-group>
-            <b-button variant="link">
-              Permissions
-            </b-button>
-          </b-button-group>
-          <b-dropdown
-            variant="link"
-            right
-
-            menu-class="shadow-sm"
-            text="Export"
-          >
-            <b-dropdown-item-button variant="link">
-              YAML
-            </b-dropdown-item-button>
-          </b-dropdown>
-          <b-button-group>
-            <b-button variant="link">
-              Help
-            </b-button>
-          </b-button-group>
-        </b-button-toolbar>
-      </b-row>
-    </b-container>
+  <main class="px-3 py-5">
+    <c-header
+      :title="$t('label')"
+      :total="totalItems"
+    >
+      <c-application-toolbar />
+    </c-header>
 
     <b-card
       no-body
       class="shadow-sm border-0 m-2"
     >
-      <b-card-body>
-        <b-form>
-          <b-form-group
-            :label="$t('list.searchForm.query.label')"
-          >
-            <b-form-input>
-              <b-form-input />
-            </b-form-input>
-          </b-form-group>
-        </b-form>
-      </b-card-body>
       <b-card-body
         class="p-0 m-0"
       >
         <b-table
-          id="applications"
+          :id="id"
           hover
-          head-variant="dark"
+          head-variant="light"
           primary-key="applicationID"
           :sort-by.sync="params.sortBy"
           :sort-desc.sync="params.sortDesc"
@@ -76,11 +27,12 @@
           :fields="fields"
         >
           <template v-slot:table-busy>
-            <div class="text-center text-danger my-2">
+            <div class="text-center m-5">
               <b-spinner class="align-middle" />
               <strong>Loading...</strong>
             </div>
           </template>
+          >
 
           <template v-slot:cell(enabled)="row">
             {{ row.value ? '&checkmark;' : '' }}
@@ -100,16 +52,31 @@
         </b-table>
       </b-card-body>
 
-      <template v-slot:footer>
-        <b-pagination
-          v-model="params.page"
-          :total-rows="totalItems"
-          :disabled="totalItems===0"
-          :per-page.sync="params.perPage"
-          limit="10"
-          align="right"
-          aria-controls="applications"
-        />
+      <template v-slot:header>
+        <div class="d-flex flex-columns">
+          <b-form-group
+            :label="$t('list.searchForm.query.label')"
+          >
+            <b-input-group>
+              <b-form-input
+                v-model.trim="params.query"
+                :placeholder="$t('list.searchForm.query.label')"
+                @keyup="search"
+              />
+            </b-input-group>
+          </b-form-group>
+
+          <b-pagination
+            v-model="params.page"
+            class="flex-fill"
+            :total-rows="totalItems"
+            :disabled="totalItems===0"
+            :per-page.sync="params.perPage"
+            limit="10"
+            align="right"
+            aria-controls="applications"
+          />
+        </div>
       </template>
     </b-card>
   </main>
@@ -117,19 +84,26 @@
 
 <script>
 import * as moment from 'moment'
+import _ from 'lodash'
+import CApplicationToolbar from '../../components/CApplicationToolbar'
+import CHeader from '../../components/CHeader'
 
 export default {
+  components: { CHeader, CApplicationToolbar },
   i18nOptions: {
     namespaces: [ 'applications' ],
   },
 
   data () {
     return {
+      id: 'applications',
+
       error: null,
 
       totalItems: 0,
 
       params: {
+        query: null,
         perPage: 30,
         page: 4,
         sortBy: 'id',
@@ -163,9 +137,9 @@ export default {
 
   create () {
     // Pull params from route query
-    const { perPage, page, sortBy, sortDesc } = this.$route.query
+    const { query, perPage, page, sortBy, sortDesc } = this.$route.query
     this.params = {
-      // and values from query-string
+      query: query || this.params.query,
       perPage: parseInt(perPage) || this.params.perPage,
       page: parseInt(page) || this.params.page,
       sortBy,
@@ -174,24 +148,29 @@ export default {
   },
 
   methods: {
+    search: _.debounce(function () {
+      this.$root.$emit('bv::refresh::table', this.id)
+    }, 300),
+
     items (ctx) {
       const params = {
-        query: ctx.filter,
+        query: this.params.query,
         perPage: ctx.perPage,
         page: ctx.currentPage,
         sort: ctx.sortBy ? `${ctx.sortBy} ${ctx.sortDesc ? 'DESC' : 'ASC'}` : undefined,
       }
 
-      this.$router.push({ name: 'applications', query: this.params })
-
       return this.$SystemAPI.applicationList(params).then(({ set, filter } = {}) => {
+        // Push new router/params
+        this.$router.push({ name: 'applications', query: this.params })
+
+        // Update total items counter
         this.totalItems = filter.count
         return set
       }).catch(({ message }) => {
         console.log(message)
       })
     },
-
   },
 }
 </script>
