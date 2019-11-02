@@ -4,7 +4,7 @@
       :title="$t('label')"
       :total="totalItems"
     >
-      <c-automationScript-toolbar />
+      <c-automation-script-toolbar />
     </c-header>
 
     <b-card

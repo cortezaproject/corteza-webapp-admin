@@ -69,7 +69,7 @@
 
           <c-main-nav-item
             :label="$t('navigation.automation')"
-            :to="{ name: 'automation' }"
+            :to="{ name: 'automation-scripts' }"
             :icon="['fas', 'magic']"
           />
 

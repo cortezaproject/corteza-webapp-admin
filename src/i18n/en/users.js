@@ -5,7 +5,7 @@ export default {
     searchForm: {
       query: {
         label: 'Filter users list',
-        placeholder: 'Filter users by name',
+        placeholder: 'Filter users by name, email',
       },
     },
 

@@ -60,7 +60,7 @@
             <b-input-group>
               <b-form-input
                 v-model.trim="params.query"
-                :placeholder="$t('list.searchForm.query.label')"
+                :placeholder="$t('list.searchForm.query.placeholder')"
                 @keyup="search"
               />
             </b-input-group>
