@@ -3,7 +3,7 @@
     class="d-flex flex-column vh-100 bg-light"
   >
     <header
-      class="d-flex vw-100 py-2 px-3 m-0 bg-primary text-light fixed-top"
+      class="d-flex py-2 px-3 bg-primary text-light fixed-top"
     >
       <h4 class="p-1">
         Corteza Admin
@@ -20,7 +20,7 @@
       class="d-flex flex-fill pt-5 vh-100"
     >
       <c-sidebar
-        class="overflow-auto shadow"
+        class="overflow-auto"
       >
         <b-list-group>
           <c-main-nav-item
@@ -58,162 +58,6 @@
             :label="$t('navigation.automation')"
             :to="{ name: 'automation' }"
             :icon="['fas', 'magic']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
           />
 
           <c-main-nav-item

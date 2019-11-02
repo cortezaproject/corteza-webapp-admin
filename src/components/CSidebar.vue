@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="bg-light"
+    class="bg-light sidebar pt-4"
     :class="mainStyleClasses"
   >
     <b-list-group>
@@ -58,23 +58,13 @@ export default {
   min-width: $sidebar-width;
   transition: all 0.3s ease;
   z-index: 10;
-}
 
-.switcher {
-  bottom: 0;
-  cursor: pointer;
-
-  &.right {
-    right: 0;
-  }
-}
-
-.minified {
   .switcher {
-    transform: rotate(180deg);
+    bottom: 0;
+    cursor: pointer;
   }
 
-  &.left {
+  &.minified {
     width: 35px;
     min-width: 35px;
 
@@ -82,10 +72,11 @@ export default {
       opacity: 0;
       transition: all 0.5s ease;
     }
-  }
 
-  &.right {
-    margin-right: -($sidebar-width);
+    .switcher {
+      transform: rotate(180deg);
+    }
   }
 }
+
 </style>
