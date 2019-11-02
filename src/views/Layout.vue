@@ -33,6 +33,9 @@
         class="overflow-auto"
       >
         <b-list-group>
+          <small class="ml-1 mt-3 font-weight-light text-uppercase">
+            System
+          </small>
           <c-main-nav-item
             v-if="false"
             :label="$t('navigation.stats')"
@@ -74,6 +77,42 @@
             :label="$t('navigation.settings')"
             :to="{ name: 'settings' }"
             :icon="['fas', 'cogs']"
+          />
+        </b-list-group>
+
+        <b-list-group>
+          <small class="ml-1 mt-3 font-weight-light text-uppercase">
+            Compose
+          </small>
+
+          <c-main-nav-item
+            :label="$t('navigation.settings')"
+            :to="{ name: 'settings' }"
+            :icon="['fas', 'cogs']"
+          />
+
+          <c-main-nav-item
+            :label="$t('navigation.permissions')"
+            :to="{ name: 'permissions' }"
+            :icon="['fas', 'lock']"
+          />
+        </b-list-group>
+
+        <b-list-group>
+          <small class="ml-1 mt-3 font-weight-light text-uppercase">
+            Messaging
+          </small>
+
+          <c-main-nav-item
+            :label="$t('navigation.settings')"
+            :to="{ name: 'settings' }"
+            :icon="['fas', 'cogs']"
+          />
+
+          <c-main-nav-item
+            :label="$t('navigation.permissions')"
+            :to="{ name: 'permissions' }"
+            :icon="['fas', 'lock']"
           />
         </b-list-group>
       </c-sidebar>

@@ -68,7 +68,8 @@ export default {
     width: 35px;
     min-width: 35px;
 
-    /deep/ .label {
+    /deep/ .label,
+    small {
       opacity: 0;
       transition: all 0.5s ease;
     }
