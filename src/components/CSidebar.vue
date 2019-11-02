@@ -1,12 +1,11 @@
 <template>
-  <div
-    class="overflow-auto h-100 pb-5 pt-3"
+  <aside
+    class="bg-light"
     :class="mainStyleClasses"
   >
-    <slot />
     <b-list-group>
       <b-list-group-item
-        class="p-2 border-0 bg-dark text-white position-absolute switcher"
+        class="p-2 border-0 bg-dark text-white switcher position-absolute"
         :class="switcherClasses"
         @click="minified=!minified"
       >
@@ -15,7 +14,8 @@
         />
       </b-list-group-item>
     </b-list-group>
-  </div>
+    <slot />
+  </aside>
 </template>
 
 <script>
@@ -61,12 +61,15 @@ export default {
 .left-sidebar,
 .right-sidebar {
   width: $sidebar-width;
+  min-width: $sidebar-width;
   transition: all 0.3s ease;
+  z-index: 10;
 }
 
 .left-sidebar {
   &.minified {
     width: 35px;
+    min-width: 35px;
     /deep/ .label {
       opacity: 0;
       transition: all 0.5s ease;

@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="p-3">
     <b-container fluid>
       <b-row class="m-0">
         <h1>
@@ -66,9 +66,7 @@
         <b-table
           id="applications"
           hover
-          fixed
           head-variant="dark"
-          sticky-header
           primary-key="applicationID"
           :sort-by.sync="params.sortBy"
           :sort-desc.sync="params.sortDesc"
