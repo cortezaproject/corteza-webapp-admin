@@ -1,11 +1,11 @@
 export default {
-  label: 'Users',
+  label: 'Scripts',
 
   list: {
     searchForm: {
       query: {
-        label: 'Filter users list',
-        placeholder: 'Filter users by name',
+        label: 'Filter scripts list',
+        placeholder: 'Filter scripts by name',
       },
     },
 
@@ -19,19 +19,19 @@ export default {
   },
 
   ____legacy: {
-    information: 'User information',
+    information: 'Script information',
     enabled: 'Enabled',
     listed: 'Listed',
-    'manage-id-permissions': 'Manage permissions for this user',
-    'manage-wc-permissions': 'Manage permissions for all users',
-    add: 'Add User',
-    'delete': 'Delete user',
+    'manage-id-permissions': 'Manage permissions for this script',
+    'manage-wc-permissions': 'Manage permissions for all scripts',
+    add: 'Add Script',
+    'delete': 'Delete script',
     id: {
       label: 'ID',
     },
     name: {
       label: 'Name',
-      description: 'As an alternative to user name',
+      description: 'As an alternative to script name',
     },
     appSelector: {
       label: 'Unify app selector',
@@ -42,15 +42,15 @@ export default {
     },
     logo: {
       label: 'Logo',
-      description: 'Logo used in Unify user selector',
+      description: 'Logo used in Unify script selector',
     },
     url: {
       label: 'URL',
-      description: 'User URL',
+      description: 'Script URL',
     },
     config: {
       label: 'Configuration',
-      description: 'User configuration (JSON)',
+      description: 'Script configuration (JSON)',
     },
     lastUpdate: {
       label: 'Last update',

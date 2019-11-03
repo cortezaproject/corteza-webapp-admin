@@ -38,12 +38,12 @@
         />
       </b-form-group>
       <div class="footer">
-                <span
-                  v-if="confirmPasswordState === false"
-                  class="mr-5"
-                >
-                  {{ $t('user.password.missmatch') }}
-                </span>
+        <span
+          v-if="confirmPasswordState === false"
+          class="mr-5"
+        >
+          {{ $t('user.password.missmatch') }}
+        </span>
         <b-button
           v-if="userID"
           :disabled="processing || user.password !== user.confirmPassword"
@@ -66,7 +66,7 @@ export default {
     userID: {
       type: String,
       required: true,
-    }
+    },
   },
 
   data () {

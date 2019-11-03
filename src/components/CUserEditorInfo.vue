@@ -8,7 +8,6 @@
       </h5>
     </template>
     <b-form @submit.prevent="onUserSubmit">
-
       <div
         v-if="error"
         class="bg-danger alert text-white"
@@ -56,9 +55,7 @@
         <b-form-group
           v-if="userID"
           label-cols="2"
-        >
-
-        </b-form-group>
+        />
 
         <b-form-group
           v-if="userID && user.updatedAt"
@@ -120,9 +117,9 @@ export default {
   props: {
     user: {
       type: Object,
-      required: true
-    }
-  }
+      required: true,
+    },
+  },
 }
 </script>
 

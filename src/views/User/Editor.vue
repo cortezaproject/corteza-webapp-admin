@@ -15,7 +15,7 @@
             :user.sync="user"
           />
           <c-user-editor-password
-            :userID="user.id"
+            :user-i-d="user.id"
           />
         </b-col>
         <b-col cols="6">
@@ -32,13 +32,11 @@
       >
         {{ $t('user.manage-id-permissions') }}
       </permissions-button>
-
     </b-container>
   </main>
 </template>
 
 <script>
-import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
 import CUserToolbar from 'corteza-webapp-admin/src/components/CUserToolbar'
 import CHeader from 'corteza-webapp-admin/src/components/CHeader'
 import CUserEditorInfo from 'corteza-webapp-admin/src/components/CUserEditorInfo'
@@ -58,7 +56,6 @@ export default {
     CUserEditorInfo,
     CHeader,
     CUserToolbar,
-    ConfirmationToggle,
   },
 
   props: {

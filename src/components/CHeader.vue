@@ -4,10 +4,10 @@
       <h1>
         {{ title }}
         <b-badge
-          v-if="total"
+          v-if="badge"
           class="rounded-pill"
         >
-          {{ total }}
+          {{ badge }}
         </b-badge>
       </h1>
     </b-row>
@@ -27,8 +27,8 @@ export default {
       required: true,
     },
 
-    total: {
-      type: Number,
+    badge: {
+      type: [String, Number],
       default: 0,
     },
   },

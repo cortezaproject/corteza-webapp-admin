@@ -45,13 +45,13 @@
 
           <c-main-nav-item
             :label="$t('navigation.users')"
-            :to="{ name: 'users' }"
+            :to="{ name: 'user.list' }"
             :icon="['fas', 'users']"
           />
 
           <c-main-nav-item
             :label="$t('navigation.roles')"
-            :to="{ name: 'roles' }"
+            :to="{ name: 'role.list' }"
             :icon="['fas', 'hat-cowboy']"
           />
 
@@ -63,13 +63,13 @@
 
           <c-main-nav-item
             :label="$t('applications:label')"
-            :to="{ name: 'applications' }"
+            :to="{ name: 'application.list' }"
             :icon="['fas', 'th-large']"
           />
 
           <c-main-nav-item
-            :label="$t('navigation.automation')"
-            :to="{ name: 'automation-scripts' }"
+            :label="$t('navigation.scripts')"
+            :to="{ name: 'script.list' }"
             :icon="['fas', 'magic']"
           />
 
