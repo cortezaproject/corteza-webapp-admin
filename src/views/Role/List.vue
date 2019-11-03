@@ -7,6 +7,8 @@
       <c-role-toolbar />
     </c-header>
 
+    <c-error :error="error" />
+
     <c-resource-list
       primary-key="roleID"
       edit-route="role.edit"
@@ -35,17 +37,17 @@
 
 <script>
 import * as moment from 'moment'
-import _ from 'lodash'
 import CRoleToolbar from 'corteza-webapp-admin/src/components/CRoleToolbar'
-import CHeader from 'corteza-webapp-admin/src/components/CHeader'
-import { default as CResourceList, loadQueryParams, stdPagingParams } from 'corteza-webapp-admin/src/components/CResourceList'
+import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
 
 export default {
   components: {
-    CResourceList,
-    CHeader,
     CRoleToolbar,
   },
+
+  mixins: [
+    listHelpers,
+  ],
 
   i18nOptions: {
     namespaces: [ 'roles' ],
@@ -54,18 +56,6 @@ export default {
   data () {
     return {
       id: 'roles',
-
-      error: null,
-
-      totalItems: 0,
-
-      params: {
-        query: null,
-        perPage: 30,
-        page: 4,
-        sortBy: 'id',
-        sortDesc: true,
-      },
 
       fields: [
         {
@@ -91,19 +81,11 @@ export default {
     }
   },
 
-  create () {
-    this.params = loadQueryParams(this.$route.query, this.params)
-  },
-
   methods: {
-    search: _.debounce(function () {
-      this.$root.$emit('bv::refresh::table', this.id)
-    }, 300),
-
     items (ctx) {
       const params = {
         query: this.params.query,
-        ...stdPagingParams(ctx),
+        ...this.stdPagingParams(ctx),
 
       }
 

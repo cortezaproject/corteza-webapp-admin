@@ -7,6 +7,8 @@
       <c-user-toolbar />
     </c-header>
 
+    <c-error :error="error" />
+
     <c-resource-list
       primary-key="userID"
       edit-route="user.edit"
@@ -35,17 +37,17 @@
 
 <script>
 import * as moment from 'moment'
-import _ from 'lodash'
 import CUserToolbar from 'corteza-webapp-admin/src/components/CUserToolbar'
-import CHeader from 'corteza-webapp-admin/src/components/CHeader'
-import { default as CResourceList, loadQueryParams, stdPagingParams } from 'corteza-webapp-admin/src/components/CResourceList'
+import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
 
 export default {
   components: {
-    CResourceList,
-    CHeader,
     CUserToolbar,
   },
+
+  mixins: [
+    listHelpers,
+  ],
 
   i18nOptions: {
     namespaces: [ 'users' ],
@@ -54,18 +56,6 @@ export default {
   data () {
     return {
       id: 'users',
-
-      error: null,
-
-      totalItems: 0,
-
-      params: {
-        query: null,
-        perPage: 30,
-        page: 4,
-        sortBy: 'id',
-        sortDesc: true,
-      },
 
       fields: [
         {
@@ -95,19 +85,12 @@ export default {
     }
   },
 
-  create () {
-    this.params = loadQueryParams(this.$route.query, this.params)
-  },
-
   methods: {
-    search: _.debounce(function () {
-      this.$root.$emit('bv::refresh::table', 'resource-list')
-    }, 300),
-
     items (ctx) {
+      this.error = null
       const params = {
         query: this.params.query,
-        ...stdPagingParams(ctx),
+        ...this.stdPagingParams(ctx),
       }
 
       return this.$SystemAPI.userList(params).then(({ set, filter } = {}) => {
@@ -118,8 +101,8 @@ export default {
         this.totalItems = filter.count
 
         return set
-      }).catch(({ message }) => {
-        console.log(message)
+      }).catch((error) => {
+        this.error = error
       })
     },
   },

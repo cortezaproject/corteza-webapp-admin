@@ -5,6 +5,17 @@
     >
       <c-user-toolbar />
     </c-header>
+
+    <b-alert
+      show
+      fade
+      dismissible
+      variant="danger"
+      class="m-2"
+    >
+      abcd alert!
+    </b-alert>
+
     <b-container
       class="p-0"
     >

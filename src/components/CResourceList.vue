@@ -47,6 +47,9 @@
       </b-table>
     </b-card-body>
 
+    <!--
+      Card header
+    -->
     <template v-slot:header>
       <b-container class="p-0">
         <b-row no-gutters>
@@ -72,7 +75,7 @@
     </template>
 
     <!--
-      Show bottom paging when min-items > 0 && items > min-items
+      Card footer
     -->
     <template v-slot:footer>
       <b-container class="p-0">
@@ -100,24 +103,6 @@
   </b-card>
 </template>
 <script>
-
-export function loadQueryParams (qp = {}, p = {}) {
-  return {
-    query: qp.query || p.query,
-    perPage: parseInt(qp.perPage) || p.perPage,
-    page: parseInt(qp.page) || p.page,
-    sortBy: qp.sortBy,
-    sortDesc: qp.sortDesc === 'false',
-  }
-}
-
-export function stdPagingParams (ctx) {
-  return {
-    perPage: ctx.perPage,
-    page: ctx.currentPage,
-    sort: ctx.sortBy ? `${ctx.sortBy} ${ctx.sortDesc ? 'DESC' : 'ASC'}` : undefined,
-  }
-}
 
 export default {
   name: 'CResourceList',
