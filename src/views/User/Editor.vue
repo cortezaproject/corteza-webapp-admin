@@ -1,72 +1,61 @@
 <template>
-  <main class="px-3 py-5">
-    <c-header
-      :title="$t('label')"
+  <b-container
+    class="py-3"
+  >
+    <c-content-header
+      :title="$t('title')"
     >
-      <c-user-toolbar />
-    </c-header>
+      <b-button-group>
+        <b-button
+          variant="link"
+          :to="{ name: 'user.new' }"
+        >
+          New &blk14;
+        </b-button>
+      </b-button-group>
+      <b-button-group>
+        <permissions-button
+          title="Users"
+          resource="system:users:*"
+          button-variant="link"
+        >
+          Permissions &blk14;
+        </permissions-button>
+      </b-button-group>
+    </c-content-header>
 
-    <b-alert
-      show
-      fade
-      dismissible
-      variant="danger"
-      class="m-2"
-    >
-      abcd alert!
-    </b-alert>
-
-    <b-container
-      class="p-0"
-    >
-      {{ user }}
-      <b-row no-gutters>
-        <b-col cols="6">
-          <c-user-editor-info
-            :user.sync="user"
-          />
-          <c-user-editor-password
-            :user-i-d="user.id"
-          />
-        </b-col>
-        <b-col cols="6">
-          <c-user-editor-roles
-            v-if="userID"
-            :current-roles.sync="userRoles"
-          />
-        </b-col>
-      </b-row>
-
-      <permissions-button
-        :title="user.name"
-        :resource="'system:user:'+user.userID"
-      >
-        {{ $t('user.manage-id-permissions') }}
-      </permissions-button>
-    </b-container>
-  </main>
+    <c-user-editor-info
+      :user="user"
+      :processing="processingInfo"
+      @submit="onInfoSubmit"
+    />
+    <c-user-editor-password
+      v-if="user && user.userID"
+      :user-i-d="user.userID"
+    />
+    <c-user-editor-roles
+      v-if="user && user.userID"
+      :user-i-d="user.userID"
+      :current-roles.sync="userRoles"
+    />
+  </b-container>
 </template>
 
 <script>
-import CUserToolbar from 'corteza-webapp-admin/src/components/CUserToolbar'
-import CHeader from 'corteza-webapp-admin/src/components/CHeader'
-import CUserEditorInfo from 'corteza-webapp-admin/src/components/CUserEditorInfo'
-import CUserEditorPassword from 'corteza-webapp-admin/src/components/CUserEditorPassword'
-import CUserEditorRoles from 'corteza-webapp-admin/src/components/CUserEditorRoles'
-
-/**
- * @todo find a way to get this number from the backend
- * @type {number}
- */
-const minPasswordLength = 4
+import CUserEditorInfo from 'corteza-webapp-admin/src/components/User/CUserEditorInfo'
+import CUserEditorPassword from 'corteza-webapp-admin/src/components/User/CUserEditorPassword'
+import CUserEditorRoles from 'corteza-webapp-admin/src/components/User/CUserEditorRoles'
 
 export default {
   components: {
     CUserEditorRoles,
     CUserEditorPassword,
     CUserEditorInfo,
-    CHeader,
-    CUserToolbar,
+  },
+
+  i18nOptions: {
+    namespaces: [ 'users' ],
+    keyPrefix: 'editor',
   },
 
   props: {
@@ -79,7 +68,8 @@ export default {
 
   data () {
     return {
-      processing: false,
+      processingInfo: false,
+
       user: {},
       userRoles: [],
       userStatus: false,
@@ -95,23 +85,6 @@ export default {
     statusButtonTitle () {
       return this.user.suspendedAt ? this.$t('user.activate') : this.$t('user.suspend')
     },
-
-    passwordState () {
-      if (this.password.length > 0) {
-        return this.password.length > minPasswordLength
-      }
-
-      return null
-    },
-
-    confirmPasswordState () {
-      if (this.password.length > 0) {
-        return this.password === this.confirmPassword
-      }
-
-      return null
-    },
-
   },
 
   watch: {
@@ -128,7 +101,6 @@ export default {
 
   methods: {
     fetchUser () {
-      this.processing = true
       this.error = null
 
       this.$SystemAPI.userRead({ userID: this.userID })
@@ -140,7 +112,6 @@ export default {
     },
 
     fetchUserRoles () {
-      this.processing = true
       this.error = null
 
       this.userRoles = []
@@ -159,14 +130,12 @@ export default {
             }
           })
           this.userRoles = userRoles
-          this.processing = false
         }).catch(this.stdReject)
       }).catch(this.stdReject)
         .finally(this.finalize)
     },
 
     onDelete () {
-      this.processing = true
       this.error = null
 
       this.$SystemAPI.userDelete({ userID: this.userID })
@@ -178,29 +147,37 @@ export default {
         .finally(this.finalize)
     },
 
-    onUserSubmit () {
-      this.processing = true
-      this.error = null
+    /**
+     * Handles user info submit event, calls user update or create API endpoint
+     * and handles response & errors
+     *
+     * @param user {Object}
+     */
+    onInfoSubmit (user) {
+      this.procesingInfo = true
 
-      const payload = { ...this.user }
-      if (this.userID) {
+      const payload = { ...user }
+
+      if (payload.userID) {
+        // On update, reset the user obj
         this.$SystemAPI.userUpdate(payload)
-          .then(this.handler)
+          .then(u => {
+            this.user = u
+            this.procesingInfo = false
+          })
           .catch(this.stdReject)
-          .finally(this.finalize)
       } else {
+        // On creation, redirect to edit page
         this.$SystemAPI.userCreate(payload)
-          .then(this.handler)
           .then(({ userID }) => {
+            this.procesingInfo = false
             this.$router.push({ name: 'users.user', params: { userID } })
           })
           .catch(this.stdReject)
-          .finally(this.finalize)
       }
     },
 
     onRoleSubmit () {
-      this.processing = true
       this.error = null
 
       const userID = this.userID
@@ -220,7 +197,6 @@ export default {
     },
 
     onStatusChange () {
-      this.processing = true
       this.error = null
 
       const userID = this.userID
@@ -242,7 +218,6 @@ export default {
     },
 
     onPasswordSubmit () {
-      this.processing = true
       this.error = null
 
       const { userID } = this.user
@@ -250,15 +225,13 @@ export default {
         .then(() => {
           this.password = ''
           this.confirmPassword = ''
-          this.processing = false
         })
         .catch(this.stdReject)
         .finally(this.finalize)
     },
 
-    stdReject ({ message = null } = {}) {
-      this.error = message
-      // TODO create alerts
+    stdReject (error) {
+      this.$store.dispatch('ui/appendAlert', error)
     },
 
     handler (user) {
@@ -272,44 +245,7 @@ export default {
     },
 
     finalize () {
-      this.processing = false
     },
   },
 }
 </script>
-<style scoped lang="scss">
-
-.user-form {
-  height: 95vh;
-  overflow-y: auto;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  border-bottom: 1px solid #F3F3F5;
-
-  .header {
-    flex: 1;
-  }
-
-  .footer {
-    flex: 1;
-    text-align: right;
-    margin: 10px 0;
-  }
-
-  .user {
-    flex: 1;
-    flex-grow: 100;
-    overflow-x: hidden;
-    padding-top: 2px;
-  }
-
-  .status {
-    flex: 1;
-    align-items: center;
-  }
-}
-
-</style>

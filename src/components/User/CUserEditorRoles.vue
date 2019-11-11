@@ -1,12 +1,7 @@
 <template>
   <b-card
-    class="shadow-sm m-2"
+    class="shadow-sm m-2 p-0"
   >
-    <template v-slot:header>
-      <h5 class="m-0">
-        {{ $t('user.roles.manage') }}
-      </h5>
-    </template>
     <b-form
       v-if="userID"
       @submit.prevent="onRoleSubmit"
@@ -60,12 +55,33 @@
         </b-button>
       </div>
     </b-form>
+
+    <template #header>
+      <h3 class="m-0">
+        {{ $t('title') }}
+      </h3>
+    </template>
   </b-card>
 </template>
 
 <script>
 export default {
+  i18nOptions: {
+    namespaces: [ 'users' ],
+    keyPrefix: 'editor.roles',
+  },
+
   props: {
+    userID: {
+      type: String,
+      required: true,
+    },
+
+    processing: {
+      type: Boolean,
+      value: false,
+    },
+
     currentRoles: {
       type: Array,
       required: true,

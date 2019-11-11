@@ -1,49 +1,73 @@
 <template>
-  <main class="px-3 py-5">
-    <c-header
-      :title="$t('label')"
-      :badge="totalItems"
+  <b-container
+    class="py-3"
+  >
+    <c-content-header
+      :title="$t('title')"
     >
-      <c-user-toolbar />
-    </c-header>
-
-    <c-error :error="error" />
+      <b-button-group>
+        <b-button
+          variant="link"
+          :to="{ name: 'user.new' }"
+        >
+          New &blk14;
+        </b-button>
+      </b-button-group>
+      <b-button-group>
+        <permissions-button
+          title="Users"
+          resource="system:users:*"
+          button-variant="link"
+        >
+          Permissions &blk14;
+        </permissions-button>
+      </b-button-group>
+      <b-dropdown
+        v-if="false"
+        variant="link"
+        right
+        menu-class="shadow-sm"
+        text="Export"
+      >
+        <b-dropdown-item-button variant="link">
+          YAML  &blk14;
+        </b-dropdown-item-button>
+      </b-dropdown>
+    </c-content-header>
 
     <c-resource-list
       primary-key="userID"
       edit-route="user.edit"
       :loading-text="$t('loading')"
+      :total-text="$t('numFound', [ totalItems ])"
       :params="params"
       :items="items"
       :fields="fields"
       :total-items="totalItems"
     >
-      <template v-slot:filter>
+      <template #filter>
         <b-form-group
-          class="p-0 m-0 col-6"
+          class="p-0 m-0"
         >
           <b-input-group>
             <b-form-input
               v-model.trim="params.query"
-              :placeholder="$t('list.searchForm.query.placeholder')"
+              :placeholder="$t('searchForm.query.placeholder')"
               @keyup="search"
             />
           </b-input-group>
         </b-form-group>
       </template>
     </c-resource-list>
-  </main>
+  </b-container>
 </template>
 
 <script>
 import * as moment from 'moment'
-import CUserToolbar from 'corteza-webapp-admin/src/components/CUserToolbar'
 import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
 
 export default {
-  components: {
-    CUserToolbar,
-  },
+  name: 'UserList',
 
   mixins: [
     listHelpers,
@@ -51,6 +75,7 @@ export default {
 
   i18nOptions: {
     namespaces: [ 'users' ],
+    keyPrefix: 'list',
   },
 
   data () {
@@ -87,7 +112,6 @@ export default {
 
   methods: {
     items (ctx) {
-      this.error = null
       const params = {
         query: this.params.query,
         ...this.stdPagingParams(ctx),
@@ -102,7 +126,7 @@ export default {
 
         return set
       }).catch((error) => {
-        this.error = error
+        this.$store.dispatch('ui/appendAlert', error)
       })
     },
   },

@@ -1,14 +1,39 @@
 <template>
-  <main class="px-3 py-5">
-    <c-header
-      :title="$t('label')"
-      :total="totalItems"
+  <b-container
+    class="py-3"
+  >
+    <c-content-header
+      :title="$t('title')"
     >
-      <c-application-toolbar />
-    </c-header>
-
-    <c-error :error="error" />
-
+      <b-button-group>
+        <b-button
+          variant="link"
+          :to="{ name: 'user.new' }"
+        >
+          New &blk14;
+        </b-button>
+      </b-button-group>
+      <b-button-group>
+        <permissions-button
+          title="Users"
+          resource="system:users:*"
+          button-variant="link"
+        >
+          Permissions &blk14;
+        </permissions-button>
+      </b-button-group>
+      <b-dropdown
+        v-if="false"
+        variant="link"
+        right
+        menu-class="shadow-sm"
+        text="Export"
+      >
+        <b-dropdown-item-button variant="link">
+          YAML  &blk14;
+        </b-dropdown-item-button>
+      </b-dropdown>
+    </c-content-header>
     <c-resource-list
       primary-key="applicationID"
       edit-route="application.edit"
@@ -32,25 +57,21 @@
         </b-form-group>
       </template>
     </c-resource-list>
-  </main>
+  </b-container>
 </template>
 
 <script>
 import * as moment from 'moment'
-import CApplicationToolbar from 'corteza-webapp-admin/src/components/CApplicationToolbar'
 import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
 
 export default {
-  components: {
-    CApplicationToolbar,
-  },
-
   mixins: [
     listHelpers,
   ],
 
   i18nOptions: {
     namespaces: [ 'applications' ],
+    keyPrefix: 'list',
   },
 
   data () {

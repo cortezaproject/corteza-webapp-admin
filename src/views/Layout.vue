@@ -2,160 +2,35 @@
   <div
     class="d-flex flex-column vh-100 bg-light"
   >
-    <header
-      class="d-flex py-2 px-3 bg-primary shadow-sm text-light fixed-top align-items-center"
-    >
-      <h4 class="m-0">
-        Corteza Admin
-      </h4>
-      <div
-        align-self="end"
-        class="flex-fill text-right"
-      >
-        <p class="m-0 d-inline">
-          John Doe
-        </p>
-        <a
-          href="#"
-          class="text-white ml-3 h5"
-        >
-          <font-awesome-icon
-            :icon="['fas', 'power-off']"
-          />
-        </a>
-      </div>
-    </header>
+    <c-the-header />
 
     <div
-      class="d-flex flex-fill pt-5 vh-100"
+      class="d-flex flex-row overflow-hidden"
     >
-      <c-sidebar
-        class="overflow-auto"
-      >
-        <b-list-group>
-          <small class="ml-1 mt-3 font-weight-light text-uppercase">
-            System
-          </small>
-          <c-main-nav-item
-            v-if="false"
-            :label="$t('navigation.stats')"
-            :to="{ name: 'stats' }"
-            :icon="['fas', 'th-large']"
-          />
+      <c-the-main-nav />
 
-          <c-main-nav-item
-            :label="$t('navigation.users')"
-            :to="{ name: 'user.list' }"
-            :icon="['fas', 'users']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.roles')"
-            :to="{ name: 'role.list' }"
-            :icon="['fas', 'hat-cowboy']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.permissions')"
-            :to="{ name: 'permissions' }"
-            :icon="['fas', 'lock']"
-          />
-
-          <c-main-nav-item
-            :label="$t('applications:label')"
-            :to="{ name: 'application.list' }"
-            :icon="['fas', 'th-large']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.scripts')"
-            :to="{ name: 'script.list' }"
-            :icon="['fas', 'magic']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
-          />
-        </b-list-group>
-
-        <b-list-group>
-          <small class="ml-1 mt-3 font-weight-light text-uppercase">
-            Compose
-          </small>
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.permissions')"
-            :to="{ name: 'permissions' }"
-            :icon="['fas', 'lock']"
-          />
-        </b-list-group>
-
-        <b-list-group>
-          <small class="ml-1 mt-3 font-weight-light text-uppercase">
-            Messaging
-          </small>
-
-          <c-main-nav-item
-            :label="$t('navigation.settings')"
-            :to="{ name: 'settings' }"
-            :icon="['fas', 'cogs']"
-          />
-
-          <c-main-nav-item
-            :label="$t('navigation.permissions')"
-            :to="{ name: 'permissions' }"
-            :icon="['fas', 'lock']"
-          />
-        </b-list-group>
-      </c-sidebar>
-      <router-view
+      <main
         class="flex-fill overflow-auto"
-      />
-    </div>
-    <!--
-    <b-row
-      class="m-0"
-    >
-      <div
-        class="flex-grow-1 overflow-auto h-100"
       >
+        <c-the-alert-container />
         <router-view />
-      </div>
-
-      <c-sidebar
-        v-show="false"
-        orientation="right"
-      >
-        <code>
-          @todo should not hide on narrow view (maybe slide over?)
-        </code>
-      </c-sidebar>
-    </b-row>
-    -->
+        <permissions-modal />
+      </main>
+    </div>
   </div>
 </template>
 <script>
-import CMainNavItem from '../components/CMainNavItem'
-import CSidebar from '../components/CSidebar'
+import CTheAlertContainer from '../components/CTheAlertContainer'
+import CTheHeader from '../components/CTheHeader'
+import CTheMainNav from '../components/CTheMainNav'
+import { PermissionsModal } from 'corteza-webapp-common/components'
 
 export default {
   components: {
-    CSidebar,
-    CMainNavItem,
+    PermissionsModal,
+    CTheAlertContainer,
+    CTheHeader,
+    CTheMainNav,
   },
-
 }
 </script>
-<style scoped lang="scss">
-header {
-  height: $header-height !important;
-}
-</style>

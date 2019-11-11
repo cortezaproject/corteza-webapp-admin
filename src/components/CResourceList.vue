@@ -1,7 +1,7 @@
 <template>
   <b-card
     no-body
-    class="shadow-sm m-2"
+    class="shadow-sm"
   >
     <b-card-body
       class="p-0"
@@ -9,6 +9,7 @@
       <b-table
         id="resource-list"
         hover
+        responsive
         class="mb-0"
         head-variant="light"
         :primary-key="primaryKey"
@@ -20,7 +21,6 @@
         :fields="fields"
       >
         <template v-slot:table-busy>
-          <!-- set bust=true to enable/test this -->
           <div class="text-center m-5">
             <div>
               <b-spinner
@@ -51,25 +51,25 @@
       Card header
     -->
     <template v-slot:header>
-      <b-container class="p-0">
-        <b-row no-gutters>
-          <b-col lg="6">
+      <b-container
+        class="p-0"
+        fluid
+      >
+        <b-row
+          align-v="end"
+        >
+          <b-col
+            lg="9"
+          >
             <slot
               name="filter"
             />
           </b-col>
-          <b-col lg="6">
-            <b-pagination
-              v-model="params.page"
-              class="flex-fill m-0 align-self-end"
-              :total-rows="totalItems"
-              :disabled="totalItems===0"
-              :per-page.sync="params.perPage"
-              limit="10"
-              align="right"
-              aria-controls="resource-list"
-            />
-          </b-col>
+          <b-col
+            lg="3"
+            class="text-right align-text-bottom text-secondary"
+            v-html="totalText"
+          />
         </b-row>
       </b-container>
     </template>
@@ -78,27 +78,16 @@
       Card footer
     -->
     <template v-slot:footer>
-      <b-container class="p-0">
-        <b-row no-gutters>
-          <b-col lg="6">
-            <span class="text-secondary">
-              {{ totalItems }} record(s) found.
-            </span>
-          </b-col>
-          <b-col lg="6">
-            <b-pagination
-              v-model="params.page"
-              class="flex-fill m-0 align-self-end"
-              :total-rows="totalItems"
-              :disabled="totalItems===0"
-              :per-page.sync="params.perPage"
-              limit="10"
-              align="right"
-              aria-controls="resource-list"
-            />
-          </b-col>
-        </b-row>
-      </b-container>
+      <b-pagination
+        v-model="params.page"
+        class="m-0 overflow-auto"
+        :total-rows="totalItems"
+        :disabled="paginationDisabled"
+        :per-page.sync="params.perPage"
+        limit="7"
+        align="right"
+        aria-controls="resource-list"
+      />
     </template>
   </b-card>
 </template>
@@ -111,6 +100,11 @@ export default {
     loadingText: {
       type: String,
       default: 'Loading',
+    },
+
+    totalText: {
+      type: String,
+      default: '',
     },
 
     editRoute: {
@@ -146,6 +140,12 @@ export default {
     items: {
       type: Function,
       required: true,
+    },
+  },
+
+  computed: {
+    paginationDisabled () {
+      return this.totalItems < this.params.perPage
     },
   },
 }

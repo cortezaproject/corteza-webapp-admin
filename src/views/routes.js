@@ -1,14 +1,55 @@
+/**
+ * Simple route generator
+ *
+ * @param name {String}
+ * @param path {String}
+ * @param component {String}
+ * @returns {Object}
+ */
 function r (name, path, component) {
   return {
     path,
     name,
     component: () => import(`./${component}.vue`),
     props: true,
+    // canReuse: false,
+  }
+}
+
+/**
+ * Wrap route generator
+ *
+ * Creates a route with simple template that contains only router-view component
+ *
+ * @param name
+ * @param path
+ * @param name {String}
+ * @param path {String}
+ * @param component {String}
+ * @returns {Object}
+ */
+function wrap (name, path) {
+  return {
+    path,
+    name,
+    component: { name: name + 'Wrap', template: `<router-view />` },
+    props: true,
+    // canReuse: false,
   }
 }
 
 // Generates 3 routes - list, new-form, edit-form
-function combo (name, opt) {
+
+/**
+ * Combo routes generator
+ *
+ * Creates 4 routes - list, editor for new and existing / wrapper
+ *
+ * @param name {String}
+ * @param opt {Object}
+ * @returns {Object}
+ */
+function combo (name, opt = {}) {
   opt = {
     pkey: `${name}ID`,
     plural: `${name}s`,
@@ -17,15 +58,18 @@ function combo (name, opt) {
   }
 
   return [
-    r(`${name}.list`, `/${name}/list`, `${opt.cmpDir}/List`),
-    r(`${name}.new`, `/${name}/new`, `${opt.cmpDir}/Editor`),
-    r(`${name}.edit`, `/${name}/edit/:${opt.pkey}`, `${opt.cmpDir}/Editor`),
+    {
+      ...wrap(`${name}`, `/${name}`),
+      children: [
+        r(`${name}.list`, `list`, `${opt.cmpDir}/List`),
+        r(`${name}.new`, `new`, `${opt.cmpDir}/Editor`),
+        r(`${name}.edit`, `edit/:${opt.pkey}`, `${opt.cmpDir}/Editor`),
+      ],
+    },
   ]
 }
 
-// @todo make route def. helper (same as one we have with compose, auth)
 export default [
-
   r('settings', '/settings', 'Settings'),
 
   ...combo('user'),

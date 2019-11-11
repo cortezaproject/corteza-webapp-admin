@@ -7,10 +7,15 @@ module.exports = ({ appFlavour, appName, appLabel, version, theme, packageAlias,
   const isProduction = (env === 'production')
   const isTest = (env === 'test')
 
+  var Vue = require('vue')
   if (isTest) {
-    var Vue = require('vue')
     Vue.config.devtools = false
     Vue.config.productionTip = false
+  }
+
+  if (isDevelopment) {
+    Vue.config.devtools = true
+    Vue.config.performance = true
   }
 
   const publicPath = isProduction ? '/' + appName : '/'

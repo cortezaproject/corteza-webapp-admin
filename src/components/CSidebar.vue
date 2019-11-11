@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="bg-light sidebar pt-4"
+    class="sidebar bv-d-sm-down-none"
     :class="mainStyleClasses"
   >
     <b-list-group>
@@ -57,7 +57,6 @@ export default {
   width: $sidebar-width;
   min-width: $sidebar-width;
   transition: all 0.3s ease;
-  z-index: 10;
 
   .switcher {
     bottom: 0;

@@ -1,13 +1,7 @@
 <template>
   <b-card
-    class="shadow-sm m-2"
+    class="shadow-sm m-2 p-0"
   >
-    <template v-slot:header>
-      <h5 class="m-0">
-        {{ $t('user.password.change') }}
-        {{ $t('user.information') }}
-      </h5>
-    </template>
     <b-form
       v-if="userID"
       @submit.prevent="onPasswordSubmit"
@@ -46,7 +40,7 @@
         </span>
         <b-button
           v-if="userID"
-          :disabled="processing || user.password !== user.confirmPassword"
+          :disabled="processing || password !== confirmPassword"
           type="submit"
           variant="primary"
           class="ml-10"
@@ -55,14 +49,30 @@
         </b-button>
       </div>
     </b-form>
+
+    <template #header>
+      <h3 class="m-0">
+        {{ $t('title') }}
+      </h3>
+    </template>
   </b-card>
 </template>
-
 <script>
+/**
+ * @todo find a way to get this number from the backend
+ * @type {number}
+ */
+const minPasswordLength = 4
+
 export default {
   name: 'CUserEditorPassword',
 
-  params: {
+  i18nOptions: {
+    namespaces: [ 'users' ],
+    keyPrefix: 'editor.password',
+  },
+
+  props: {
     userID: {
       type: String,
       required: true,
@@ -79,6 +89,25 @@ export default {
       error: null,
     }
   },
+
+  computed: {
+    passwordState () {
+      if (this.password.length > 0) {
+        return this.password.length > minPasswordLength
+      }
+
+      return null
+    },
+
+    confirmPasswordState () {
+      if (this.password.length > 0) {
+        return this.password === this.confirmPassword
+      }
+
+      return null
+    },
+  },
+
 }
 </script>
 

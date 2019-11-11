@@ -10,6 +10,13 @@ $regular: 'nunito_sansregular' !default;
 $bold: 'nunito_sansbold' !default;
 $semibold: 'nunito_sanssemibold' !default;
 $font-size-base: 0.85rem !default;
+$h1-font-size: $font-size-base * 1.50 !default;
+$h2-font-size: $font-size-base * 1.30 !default;
+$h3-font-size: $font-size-base * 1.20 !default;
+$h4-font-size: $font-size-base * 1.10 !default;
+$h5-font-size: $font-size-base * 1.05 !default;
+$h6-font-size: $font-size-base * 1.00 !default;
+
 
 $font-family-base:      $regular !default;
 $headings-font-family:  $semibold !default;
@@ -26,7 +33,6 @@ $light:         #F3F3F5 !default;
 $dark:          #1e2224 !default;
 
 $sidebar-width: 200px !default;
-$header-height:  50px !default;
 
 // Options
 $enable-rounded:   false !default;

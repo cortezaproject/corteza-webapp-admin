@@ -1,8 +1,28 @@
 <template>
-  <div
-    v-if="script"
-    class="mt-3 mb-4"
+  <b-container
+    class="py-3"
   >
+    <c-content-header
+      :title="$t('title')"
+    >
+      <b-button-group>
+        <b-button
+          variant="link"
+          :to="{ name: 'user.new' }"
+        >
+          New &blk14;
+        </b-button>
+      </b-button-group>
+      <b-button-group>
+        <permissions-button
+          title="Users"
+          resource="system:users:*"
+          button-variant="link"
+        >
+          Permissions &blk14;
+        </permissions-button>
+      </b-button-group>
+    </c-content-header>
     <b-form
       class="pb-5"
       @submit.prevent="handleSave"
@@ -233,7 +253,7 @@
         </b-button>
       </div>
     </b-form>
-  </div>
+  </b-container>
 </template>
 <script>
 import _ from 'lodash'
@@ -253,6 +273,11 @@ export default {
     MailTriggers,
     AceEditor,
     VueSelect,
+  },
+
+  i18nOptions: {
+    namespaces: [ 'script' ],
+    keyPrefix: 'editor',
   },
 
   props: {
