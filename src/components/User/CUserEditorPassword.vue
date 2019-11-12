@@ -3,7 +3,6 @@
     class="shadow-sm m-2 p-0"
   >
     <b-form
-      v-if="userID"
       @submit.prevent="onPasswordSubmit"
     >
       <b-form-group
@@ -22,6 +21,7 @@
       <b-form-group
         :label="$t('confirm')"
         label-cols="2"
+        class="mb-0"
       >
         <b-form-input
           v-model="confirmPassword"
@@ -30,31 +30,38 @@
           required
           type="password"
         />
+        <span
+          v-if="confirmPasswordState === false"
+        >
+          {{ $t('missmatch') }}
+        </span>
+        <span
+          v-if="passwordState === false"
+        >
+          {{ $t('length', { length: minPasswordLength }) }}
+        </span>
       </b-form-group>
-
-      <span
-        v-if="confirmPasswordState === false"
-        class="mr-5"
-      >
-        {{ $t('missmatch') }}
-      </span>
-      <span
-        v-if="passwordState === false"
-        class="mr-5"
-      >
-        {{ $t('length', { length: minPasswordLength }) }}
-      </span>
     </b-form>
 
     <template #header>
       <h3 class="m-0">
         {{ $t('title') }}
+        <b-spinner
+          v-if="processing"
+          small
+          class="float-right"
+          type="grow"
+        />
+        <font-awesome-icon
+          v-else-if="success"
+          :icon="['fas', 'check']"
+          class="text-success float-right"
+        />
       </h3>
     </template>
 
     <template #footer>
       <b-button
-        v-if="userID"
         :disabled="processing || password !== confirmPassword"
         type="submit"
         variant="primary"
@@ -66,6 +73,7 @@
     </template>
   </b-card>
 </template>
+
 <script>
 /**
  * @todo find a way to get this number from the backend
@@ -82,11 +90,11 @@ export default {
   },
 
   props: {
-    userID: {
-      type: String,
-      required: true,
-    },
     processing: {
+      type: Boolean,
+      value: false,
+    },
+    success: {
       type: Boolean,
       value: false,
     },

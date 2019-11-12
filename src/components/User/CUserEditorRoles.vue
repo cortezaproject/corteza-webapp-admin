@@ -3,12 +3,12 @@
     class="shadow-sm m-2 p-0"
   >
     <b-form
-      v-if="userID"
       @submit.prevent="$emit('submit')"
     >
       <b-form-group
         :label="$t('count', { count: filteredRoles.length })"
         label-cols="2"
+        class="mb-0"
       >
         <table v-if="filteredRoles">
           <tr
@@ -48,12 +48,22 @@
     <template #header>
       <h3 class="m-0">
         {{ $t('title') }}
+        <b-spinner
+          v-if="processing"
+          small
+          class="float-right"
+          type="grow"
+        />
+        <font-awesome-icon
+          v-else-if="success"
+          :icon="['fas', 'check']"
+          class="text-success float-right"
+        />
       </h3>
     </template>
 
     <template #footer>
       <b-button
-        v-if="userID"
         :disabled="processing"
         type="submit"
         variant="primary"
@@ -74,9 +84,10 @@ export default {
   },
 
   props: {
-    userID: {
-      type: String,
+    currentRoles: {
+      type: Array,
       required: true,
+      default: () => [],
     },
 
     processing: {
@@ -84,16 +95,16 @@ export default {
       value: false,
     },
 
-    currentRoles: {
-      type: Array,
-      required: true,
-      default: () => [],
+    success: {
+      type: Boolean,
+      value: false,
     },
   },
 
   data () {
     return {
       filter: '',
+
       error: null,
     }
   },

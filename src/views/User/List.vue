@@ -114,6 +114,7 @@ export default {
     items (ctx) {
       const params = {
         query: this.params.query,
+        incSuspended: true,
         ...this.stdPagingParams(ctx),
       }
 

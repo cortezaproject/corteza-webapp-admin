@@ -38,6 +38,7 @@
       <b-form-group
         :label="$t('handle')"
         label-cols="2"
+        class="mb-0"
       >
         <b-form-input
           v-model="user.handle"
@@ -48,6 +49,17 @@
     <template #header>
       <h3 class="m-0">
         {{ $t('title') }}
+        <b-spinner
+          v-if="processing"
+          small
+          class="float-right"
+          type="grow"
+        />
+        <font-awesome-icon
+          v-else-if="success"
+          :icon="['fas', 'check']"
+          class="text-success float-right"
+        />
       </h3>
     </template>
 
@@ -59,18 +71,23 @@
         @click.prevent="$emit('submit', user)"
       >
         {{ $t('submit') }}
-        <b-spinner
-          v-if="processing"
-          small
-          type="grow"
-        />
       </b-button>
 
       <confirmation-toggle
+        v-if="user && user.userID"
         class="ml-2"
         @confirmed="$emit('delete')"
       >
         {{ $t('delete') }}
+      </confirmation-toggle>
+
+      <confirmation-toggle
+        v-if="user && user.userID"
+        class="ml-2"
+        cta-class="secondary"
+        @confirmed="$emit('status')"
+      >
+        {{ getStatus }}
       </confirmation-toggle>
     </template>
   </b-card>
@@ -100,6 +117,17 @@ export default {
     processing: {
       type: Boolean,
       value: false,
+    },
+
+    success: {
+      type: Boolean,
+      value: false,
+    },
+  },
+
+  computed: {
+    getStatus () {
+      return this.user.suspendedAt ? this.$t('unsuspend') : this.$t('suspend')
     },
   },
 }

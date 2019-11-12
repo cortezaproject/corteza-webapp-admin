@@ -32,6 +32,18 @@ export default {
 
       submit: 'Submit',
       delete: 'Delete',
+      suspend: 'Suspend',
+      unsuspend: 'Suspend',
+    },
+
+    status: {
+      title: 'Status',
+
+      current: 'Current status',
+      active: 'Active',
+      suspended: 'Suspended',
+
+      submit: 'Submit',
     },
 
     password: {

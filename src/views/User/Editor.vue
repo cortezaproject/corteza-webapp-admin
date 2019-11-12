@@ -26,20 +26,22 @@
 
     <c-user-editor-info
       :user="user"
-      :processing="processing"
+      :processing="processing || info.processing"
+      :success="info.success"
       @submit="onInfoSubmit"
       @delete="onDelete"
+      @status="onStatusChange"
     />
     <c-user-editor-password
       v-if="user && user.userID"
-      :user-i-d="user.userID"
-      :processing="processing"
+      :processing="processing || password.processing"
+      :success="password.success"
       @submit="onPasswordSubmit"
     />
     <c-user-editor-roles
       v-if="user && user.userID"
-      :user-i-d="user.userID"
-      :processing="processing"
+      :processing="processing || roles.processing"
+      :success="roles.success"
       :current-roles.sync="userRoles"
       @submit="onRoleSubmit"
     />
@@ -73,18 +75,25 @@ export default {
 
   data () {
     return {
-      processing: false,
-      error: null,
-
       user: {},
       userRoles: [],
-    }
-  },
 
-  computed: {
-    statusButtonTitle () {
-      return this.user.suspendedAt ? this.$t('user.activate') : this.$t('user.suspend')
-    },
+      info: {
+        processing: false,
+        success: false,
+      },
+      password: {
+        processing: false,
+        success: false,
+      },
+      roles: {
+        processing: false,
+        success: false,
+      },
+
+      processing: false,
+      error: null,
+    }
   },
 
   watch: {
@@ -144,7 +153,7 @@ export default {
      * @param user {Object}
      */
     onInfoSubmit (user) {
-      this.processing = true
+      this.info.processing = true
 
       const payload = { ...user }
 
@@ -153,19 +162,23 @@ export default {
         this.$SystemAPI.userUpdate(payload)
           .then(u => {
             this.user = u
-            this.processing = false
+            this.toggleSuccess('info')
           })
           .catch(this.stdReject)
-          .finally(this.finalize)
+          .finally(() => {
+            this.info.processing = false
+          })
       } else {
         // On creation, redirect to edit page
         this.$SystemAPI.userCreate(payload)
           .then(({ userID }) => {
-            this.processing = false
-            this.$router.push({ name: 'users.user', params: { userID } })
+            this.$router.push({ name: 'user.edit', params: { userID } })
+            this.toggleSuccess('info')
           })
           .catch(this.stdReject)
-          .finally(this.finalize)
+          .finally(() => {
+            this.info.processing = false
+          })
       }
     },
 
@@ -178,9 +191,8 @@ export default {
       this.processing = true
 
       this.$SystemAPI.userDelete({ userID: this.userID })
-        .then(this.handler)
         .then(() => {
-          this.$router.push({ name: 'users' })
+          this.$router.push({ name: 'user.list' })
         })
         .catch(this.stdReject)
         .finally(this.finalize)
@@ -194,11 +206,16 @@ export default {
      */
     onPasswordSubmit (password) {
       this.error = null
-      this.processing = true
+      this.password.processing = true
 
       this.$SystemAPI.userSetPassword({ userID: this.userID, password })
+        .then(() => {
+          this.toggleSuccess('password')
+        })
         .catch(this.stdReject)
-        .finally(this.finalize)
+        .finally(() => {
+          this.password.processing = false
+        })
     },
 
     /**
@@ -207,7 +224,7 @@ export default {
      */
     onRoleSubmit () {
       this.error = null
-      this.processing = true
+      this.roles.processing = true
 
       const userID = this.userID
       Promise.all(this.userRoles.map(async role => {
@@ -220,30 +237,41 @@ export default {
           }
         }
       }))
-        .then(this.fetchUserRoles)
+        .then(() => {
+          this.fetchUserRoles()
+          this.toggleSuccess('roles')
+        })
         .catch(this.stdReject)
-        .finally(this.finalize)
+        .finally(() => {
+          this.roles.processing = false
+        })
     },
 
     onStatusChange () {
       this.error = null
-      this.processing = true
+      this.info.processing = true
 
       const userID = this.userID
       if (this.user.suspendedAt) {
         this.$SystemAPI.userUnsuspend({ userID })
           .then(() => {
             this.fetchUser()
+            this.toggleSuccess('info')
           })
           .catch(this.stdReject)
-          .finally(this.finalize)
+          .finally(() => {
+            this.info.processing = false
+          })
       } else {
         this.$SystemAPI.userSuspend({ userID })
           .then(() => {
             this.fetchUser()
+            this.toggleSuccess('info')
           })
           .catch(this.stdReject)
-          .finally(this.finalize)
+          .finally(() => {
+            this.info.processing = false
+          })
       }
     },
 
@@ -251,14 +279,11 @@ export default {
       this.$store.dispatch('ui/appendAlert', error)
     },
 
-    handler (user) {
-      // Inform parent component about user changes
-      // @todo solve this with vuex
-      this.$emit('update')
-      if (user) {
-        this.user = user
-      }
-      return Promise.resolve(user)
+    toggleSuccess (key) {
+      this[key].success = true
+      setTimeout(() => {
+        this[key].success = false
+      }, 2000)
     },
 
     finalize () {

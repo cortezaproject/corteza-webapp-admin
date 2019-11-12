@@ -11,6 +11,7 @@ import {
   faAngleDoubleLeft,
   faAngleDoubleRight,
   faPowerOff,
+  faCheck,
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
@@ -24,5 +25,6 @@ library.add(
   faPen,
   faAngleDoubleLeft,
   faAngleDoubleRight,
-  faPowerOff
+  faPowerOff,
+  faCheck
 )
