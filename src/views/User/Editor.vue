@@ -26,17 +26,22 @@
 
     <c-user-editor-info
       :user="user"
-      :processing="processingInfo"
+      :processing="processing"
       @submit="onInfoSubmit"
+      @delete="onDelete"
     />
     <c-user-editor-password
       v-if="user && user.userID"
       :user-i-d="user.userID"
+      :processing="processing"
+      @submit="onPasswordSubmit"
     />
     <c-user-editor-roles
       v-if="user && user.userID"
       :user-i-d="user.userID"
+      :processing="processing"
       :current-roles.sync="userRoles"
+      @submit="onRoleSubmit"
     />
   </b-container>
 </template>
@@ -68,16 +73,11 @@ export default {
 
   data () {
     return {
-      processingInfo: false,
+      processing: false,
+      error: null,
 
       user: {},
       userRoles: [],
-      userStatus: false,
-
-      password: '',
-      confirmPassword: '',
-
-      error: null,
     }
   },
 
@@ -102,6 +102,7 @@ export default {
   methods: {
     fetchUser () {
       this.error = null
+      this.processing = true
 
       this.$SystemAPI.userRead({ userID: this.userID })
         .then(user => {
@@ -113,6 +114,7 @@ export default {
 
     fetchUserRoles () {
       this.error = null
+      this.processing = true
 
       this.userRoles = []
       const userID = this.userID
@@ -135,8 +137,45 @@ export default {
         .finally(this.finalize)
     },
 
+    /**
+     * Handles user info submit event, calls user update or create API endpoint
+     * and handles response & errors
+     *
+     * @param user {Object}
+     */
+    onInfoSubmit (user) {
+      this.processing = true
+
+      const payload = { ...user }
+
+      if (payload.userID) {
+        // On update, reset the user obj
+        this.$SystemAPI.userUpdate(payload)
+          .then(u => {
+            this.user = u
+            this.processing = false
+          })
+          .catch(this.stdReject)
+          .finally(this.finalize)
+      } else {
+        // On creation, redirect to edit page
+        this.$SystemAPI.userCreate(payload)
+          .then(({ userID }) => {
+            this.processing = false
+            this.$router.push({ name: 'users.user', params: { userID } })
+          })
+          .catch(this.stdReject)
+          .finally(this.finalize)
+      }
+    },
+
+    /**
+     * Handles user delete event, calls user delete API endpoint
+     * and handles response & errors
+     */
     onDelete () {
       this.error = null
+      this.processing = true
 
       this.$SystemAPI.userDelete({ userID: this.userID })
         .then(this.handler)
@@ -148,37 +187,27 @@ export default {
     },
 
     /**
-     * Handles user info submit event, calls user update or create API endpoint
+     * Handles user password submit event, calls set password API endpoint
      * and handles response & errors
      *
-     * @param user {Object}
+     * @param password {String}
      */
-    onInfoSubmit (user) {
-      this.procesingInfo = true
+    onPasswordSubmit (password) {
+      this.error = null
+      this.processing = true
 
-      const payload = { ...user }
-
-      if (payload.userID) {
-        // On update, reset the user obj
-        this.$SystemAPI.userUpdate(payload)
-          .then(u => {
-            this.user = u
-            this.procesingInfo = false
-          })
-          .catch(this.stdReject)
-      } else {
-        // On creation, redirect to edit page
-        this.$SystemAPI.userCreate(payload)
-          .then(({ userID }) => {
-            this.procesingInfo = false
-            this.$router.push({ name: 'users.user', params: { userID } })
-          })
-          .catch(this.stdReject)
-      }
+      this.$SystemAPI.userSetPassword({ userID: this.userID, password })
+        .catch(this.stdReject)
+        .finally(this.finalize)
     },
 
+    /**
+     * Handles user role submit event, calls membership add or remove API endpoint
+     * and handles response & errors
+     */
     onRoleSubmit () {
       this.error = null
+      this.processing = true
 
       const userID = this.userID
       Promise.all(this.userRoles.map(async role => {
@@ -198,6 +227,7 @@ export default {
 
     onStatusChange () {
       this.error = null
+      this.processing = true
 
       const userID = this.userID
       if (this.user.suspendedAt) {
@@ -217,19 +247,6 @@ export default {
       }
     },
 
-    onPasswordSubmit () {
-      this.error = null
-
-      const { userID } = this.user
-      this.$SystemAPI.userSetPassword({ userID, password: this.password })
-        .then(() => {
-          this.password = ''
-          this.confirmPassword = ''
-        })
-        .catch(this.stdReject)
-        .finally(this.finalize)
-    },
-
     stdReject (error) {
       this.$store.dispatch('ui/appendAlert', error)
     },
@@ -245,6 +262,7 @@ export default {
     },
 
     finalize () {
+      this.processing = false
     },
   },
 }

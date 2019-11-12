@@ -4,10 +4,10 @@
   >
     <b-form
       v-if="userID"
-      @submit.prevent="onRoleSubmit"
+      @submit.prevent="$emit('submit')"
     >
       <b-form-group
-        :label="$t('user.roles.count', { count: filteredRoles.length })"
+        :label="$t('count', { count: filteredRoles.length })"
         label-cols="2"
       >
         <table v-if="filteredRoles">
@@ -15,17 +15,17 @@
             v-for="r in filteredRoles"
             :key="r.userID"
           >
-            <td>{{ r.name || r.handle || r.roleID || $t('role.unnamed') }}</td>
+            <td>{{ r.name || r.handle || r.roleID || $t('unnamed') }}</td>
             <td class="action">
               <b-button @click="removeRole(r)">
-                {{ $t('general.label.remove') }}
+                {{ $t('remove') }}
               </b-button>
             </td>
           </tr>
         </table>
         <b-input-group>
           <b-input-group-prepend>
-            <b-input-group-text>{{ $t('general.label.searchRoles') }}</b-input-group-text>
+            <b-input-group-text>{{ $t('searchRoles') }}</b-input-group-text>
           </b-input-group-prepend>
           <b-form-input v-model.trim="filter" />
         </b-input-group>
@@ -34,32 +34,34 @@
             v-for="r in filtered"
             :key="r.roleID"
           >
-            <td>{{ r.name || r.handle || r.roleID || $t('role.unnamed') }}</td>
+            <td>{{ r.name || r.handle || r.roleID || $t('unnamed') }}</td>
             <td class="action">
               <b-button @click="addRole(r)">
-                {{ $t('general.label.add') }}
+                {{ $t('add') }}
               </b-button>
             </td>
           </tr>
         </table>
       </b-form-group>
-      <div class="footer">
-        <b-button
-          v-if="userID"
-          :disabled="processing"
-          type="submit"
-          variant="primary"
-          class="ml-10"
-        >
-          {{ $t('general.label.submit') }}
-        </b-button>
-      </div>
     </b-form>
 
     <template #header>
       <h3 class="m-0">
         {{ $t('title') }}
       </h3>
+    </template>
+
+    <template #footer>
+      <b-button
+        v-if="userID"
+        :disabled="processing"
+        type="submit"
+        variant="primary"
+        class="ml-10"
+        @click.prevent="$emit('submit')"
+      >
+        {{ $t('submit') }}
+      </b-button>
     </template>
   </b-card>
 </template>

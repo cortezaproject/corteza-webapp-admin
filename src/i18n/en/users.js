@@ -31,15 +31,31 @@ export default {
       handle: 'Handle',
 
       submit: 'Submit',
+      delete: 'Delete',
     },
 
     password: {
       title: 'Password',
-      // @todo
+
+      new: 'New password',
+      confirm: 'Confirm password',
+      missmatch: 'The passwords must match !',
+      length: 'The passwords must be at least {{length}} characters long!',
+
+      submit: 'Submit',
     },
 
     roles: {
       title: 'Role membership',
+
+      count: 'Roles ({{count}})',
+      unnamed: 'Unnamed role',
+
+      add: 'Add',
+      remove: 'Remove',
+      searchRoles: 'Search roles',
+
+      submit: 'Submit',
       // @todo
     },
   },

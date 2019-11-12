@@ -55,7 +55,6 @@
       <b-button
         type="submit"
         variant="primary"
-        class="ml-3"
         :disabled="processing"
         @click.prevent="$emit('submit', user)"
       >
@@ -66,18 +65,30 @@
           type="grow"
         />
       </b-button>
+
+      <confirmation-toggle
+        class="ml-2"
+        @confirmed="$emit('delete')"
+      >
+        {{ $t('delete') }}
+      </confirmation-toggle>
     </template>
-    {{ processing }}
   </b-card>
 </template>
 
 <script>
+import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
+
 export default {
   name: 'CUserEditorInfo',
 
   i18nOptions: {
     namespaces: [ 'users' ],
     keyPrefix: 'editor.info',
+  },
+
+  components: {
+    ConfirmationToggle,
   },
 
   props: {

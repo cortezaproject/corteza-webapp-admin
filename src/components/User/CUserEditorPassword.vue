@@ -7,7 +7,7 @@
       @submit.prevent="onPasswordSubmit"
     >
       <b-form-group
-        :label="$t('user.password.new')"
+        :label="$t('new')"
         label-cols="2"
       >
         <b-form-input
@@ -20,7 +20,7 @@
       </b-form-group>
 
       <b-form-group
-        :label="$t('user.password.confirm')"
+        :label="$t('confirm')"
         label-cols="2"
       >
         <b-form-input
@@ -31,29 +31,38 @@
           type="password"
         />
       </b-form-group>
-      <div class="footer">
-        <span
-          v-if="confirmPasswordState === false"
-          class="mr-5"
-        >
-          {{ $t('user.password.missmatch') }}
-        </span>
-        <b-button
-          v-if="userID"
-          :disabled="processing || password !== confirmPassword"
-          type="submit"
-          variant="primary"
-          class="ml-10"
-        >
-          {{ $t('general.label.submit') }}
-        </b-button>
-      </div>
+
+      <span
+        v-if="confirmPasswordState === false"
+        class="mr-5"
+      >
+        {{ $t('missmatch') }}
+      </span>
+      <span
+        v-if="passwordState === false"
+        class="mr-5"
+      >
+        {{ $t('length', { length: minPasswordLength }) }}
+      </span>
     </b-form>
 
     <template #header>
       <h3 class="m-0">
         {{ $t('title') }}
       </h3>
+    </template>
+
+    <template #footer>
+      <b-button
+        v-if="userID"
+        :disabled="processing || password !== confirmPassword"
+        type="submit"
+        variant="primary"
+        class="ml-10"
+        @click.prevent="onPasswordSubmit"
+      >
+        {{ $t('submit') }}
+      </b-button>
     </template>
   </b-card>
 </template>
@@ -62,7 +71,7 @@
  * @todo find a way to get this number from the backend
  * @type {number}
  */
-const minPasswordLength = 4
+// const minPasswordLength = 5
 
 export default {
   name: 'CUserEditorPassword',
@@ -77,14 +86,17 @@ export default {
       type: String,
       required: true,
     },
+    processing: {
+      type: Boolean,
+      value: false,
+    },
   },
 
   data () {
     return {
-      processing: false,
-
       password: '',
       confirmPassword: '',
+      minPasswordLength: 5,
 
       error: null,
     }
@@ -93,14 +105,14 @@ export default {
   computed: {
     passwordState () {
       if (this.password.length > 0) {
-        return this.password.length > minPasswordLength
+        return this.password.length >= this.minPasswordLength
       }
 
       return null
     },
 
     confirmPasswordState () {
-      if (this.password.length > 0) {
+      if (this.passwordState && this.confirmPassword.length > 0) {
         return this.password === this.confirmPassword
       }
 
@@ -108,6 +120,14 @@ export default {
     },
   },
 
+  methods: {
+    onPasswordSubmit () {
+      this.$emit('submit', this.password)
+
+      this.password = ''
+      this.confirmPassword = ''
+    },
+  },
 }
 </script>
 
