@@ -10,6 +10,12 @@ export default {
         label: 'Filter users list',
         placeholder: 'Filter users by name, email',
       },
+      incSuspended: {
+        label: 'Include suspended',
+      },
+      incDeleted: {
+        label: 'Include deleted',
+      },
     },
 
     columns: {

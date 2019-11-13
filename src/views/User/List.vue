@@ -57,6 +57,24 @@
             />
           </b-input-group>
         </b-form-group>
+        <b-form-group
+          class="mt-1"
+        >
+          <b-form-checkbox
+            v-model="adtParams.incSuspended"
+            class="d-inline mr-2"
+            @change="search"
+          >
+            {{ $t('searchForm.incSuspended.label') }}
+          </b-form-checkbox>
+          <b-form-checkbox
+            v-model="adtParams.incDeleted"
+            class="d-inline mr-2"
+            @change="search"
+          >
+            {{ $t('searchForm.incDeleted.label') }}
+          </b-form-checkbox>
+        </b-form-group>
       </template>
     </c-resource-list>
   </b-container>
@@ -81,6 +99,11 @@ export default {
   data () {
     return {
       id: 'users',
+
+      adtParams: {
+        incSuspended: true,
+        incDeleted: false,
+      },
 
       fields: [
         {
@@ -117,7 +140,9 @@ export default {
 
       const params = {
         query: this.params.query,
-        incSuspended: true,
+
+        ...this.adtParams,
+
         ...this.stdPagingParams(ctx),
       }
 
