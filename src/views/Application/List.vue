@@ -105,20 +105,21 @@ export default {
 
   methods: {
     items (ctx) {
+      // Push new router/params
+      this.$router.push({ query: this.params })
+
       const params = {
         query: this.params.query,
         ...this.stdPagingParams(ctx),
       }
 
       return this.$SystemAPI.applicationList(params).then(({ set, filter } = {}) => {
-        // Push new router/params
-        this.$router.push({ name: 'application.list', query: this.params })
-
         // Update total items counter
         this.totalItems = filter.count
+
         return set
-      }).catch(({ message }) => {
-        console.log(message)
+      }).catch((error) => {
+        this.$store.dispatch('ui/appendAlert', error)
       })
     },
   },

@@ -112,6 +112,9 @@ export default {
 
   methods: {
     items (ctx) {
+      // Push new router/params
+      this.$router.push({ query: this.params })
+
       const params = {
         query: this.params.query,
         incSuspended: true,
@@ -119,9 +122,6 @@ export default {
       }
 
       return this.$SystemAPI.userList(params).then(({ set, filter } = {}) => {
-        // Push new router/params
-        this.$router.push({ name: 'user.list', query: this.params })
-
         // Update total items counter
         this.totalItems = filter.count
 

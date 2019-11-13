@@ -28,7 +28,7 @@ export default {
       params: {
         query: null,
         perPage: 30,
-        page: 4,
+        page: 1,
         sortBy: 'id',
         sortDesc: true,
       },
