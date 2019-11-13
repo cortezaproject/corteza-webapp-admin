@@ -49,29 +49,15 @@
     <template #header>
       <h3 class="m-0">
         {{ $t('title') }}
-        <b-spinner
-          v-if="processing"
-          small
-          class="float-right"
-          type="grow"
-        />
-        <font-awesome-icon
-          v-else-if="success"
-          :icon="['fas', 'check']"
-          class="text-success float-right"
-        />
       </h3>
     </template>
 
     <template #footer>
-      <b-button
-        type="submit"
-        variant="primary"
-        :disabled="processing"
-        @click.prevent="$emit('submit', user)"
-      >
-        {{ $t('submit') }}
-      </b-button>
+      <c-submit-button
+        :processing="processing"
+        :success="success"
+        @submit="$emit('submit', user)"
+      />
 
       <confirmation-toggle
         v-if="user && user.userID"
@@ -95,6 +81,7 @@
 
 <script>
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
+import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 
 export default {
   name: 'CUserEditorInfo',
@@ -106,6 +93,7 @@ export default {
 
   components: {
     ConfirmationToggle,
+    CSubmitButton,
   },
 
   props: {

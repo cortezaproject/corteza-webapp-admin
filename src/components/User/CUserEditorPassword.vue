@@ -8,6 +8,7 @@
       <b-form-group
         :label="$t('new')"
         label-cols="2"
+        :description="getPasswordWarning"
       >
         <b-form-input
           v-model="password"
@@ -21,60 +22,40 @@
       <b-form-group
         :label="$t('confirm')"
         label-cols="2"
+        :description="getConfirmPasswordWarning"
         class="mb-0"
       >
         <b-form-input
           v-model="confirmPassword"
-          :state="confirmPasswordState"
+          type="password"
           autocomplete="new-password"
           required
-          type="password"
+          :disabled="!passwordState"
+          :state="confirmPasswordState"
         />
-        <span
-          v-if="confirmPasswordState === false"
-        >
-          {{ $t('missmatch') }}
-        </span>
-        <span
-          v-if="passwordState === false"
-        >
-          {{ $t('length', { length: minPasswordLength }) }}
-        </span>
       </b-form-group>
     </b-form>
 
     <template #header>
       <h3 class="m-0">
         {{ $t('title') }}
-        <b-spinner
-          v-if="processing"
-          small
-          class="float-right"
-          type="grow"
-        />
-        <font-awesome-icon
-          v-else-if="success"
-          :icon="['fas', 'check']"
-          class="text-success float-right"
-        />
       </h3>
     </template>
 
     <template #footer>
-      <b-button
-        :disabled="processing || password !== confirmPassword"
-        type="submit"
-        variant="primary"
-        class="ml-10"
-        @click.prevent="onPasswordSubmit"
-      >
-        {{ $t('submit') }}
-      </b-button>
+      <c-submit-button
+        :processing="processing"
+        :success="success"
+        :disabled="!passwordState || !confirmPasswordState"
+        @submit="onPasswordSubmit"
+      />
     </template>
   </b-card>
 </template>
 
 <script>
+import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
+
 /**
  * @todo find a way to get this number from the backend
  * @type {number}
@@ -87,6 +68,10 @@ export default {
   i18nOptions: {
     namespaces: [ 'users' ],
     keyPrefix: 'editor.password',
+  },
+
+  components: {
+    CSubmitButton,
   },
 
   props: {
@@ -105,8 +90,6 @@ export default {
       password: '',
       confirmPassword: '',
       minPasswordLength: 5,
-
-      error: null,
     }
   },
 
@@ -122,6 +105,22 @@ export default {
     confirmPasswordState () {
       if (this.passwordState && this.confirmPassword.length > 0) {
         return this.password === this.confirmPassword
+      }
+
+      return null
+    },
+
+    getPasswordWarning () {
+      if (this.passwordState === false) {
+        return this.$t('length', { length: this.minPasswordLength })
+      }
+
+      return null
+    },
+
+    getConfirmPasswordWarning () {
+      if (this.confirmPasswordState === false) {
+        return this.$t('missmatch')
       }
 
       return null

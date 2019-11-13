@@ -78,6 +78,7 @@ export default {
       user: {},
       userRoles: [],
 
+      // Processing and success flags for each form
       info: {
         processing: false,
         success: false,
@@ -91,8 +92,8 @@ export default {
         success: false,
       },
 
+      // General processing flag
       processing: false,
-      error: null,
     }
   },
 
@@ -103,6 +104,8 @@ export default {
         if (this.userID) {
           this.fetchUser()
           this.fetchUserRoles()
+        } else {
+          this.user = {}
         }
       },
     },
@@ -110,20 +113,18 @@ export default {
 
   methods: {
     fetchUser () {
-      this.error = null
-      this.processing = true
+      this.toggleProcessing()
 
       this.$SystemAPI.userRead({ userID: this.userID })
         .then(user => {
           this.user = user
         })
         .catch(this.stdReject)
-        .finally(this.finalize)
+        .finally(this.toggleProcessing)
     },
 
     fetchUserRoles () {
-      this.error = null
-      this.processing = true
+      this.toggleProcessing()
 
       this.userRoles = []
       const userID = this.userID
@@ -143,7 +144,7 @@ export default {
           this.userRoles = userRoles
         }).catch(this.stdReject)
       }).catch(this.stdReject)
-        .finally(this.finalize)
+        .finally(this.toggleProcessing)
     },
 
     /**
@@ -153,7 +154,7 @@ export default {
      * @param user {Object}
      */
     onInfoSubmit (user) {
-      this.info.processing = true
+      this.toggleProcessing('info')
 
       const payload = { ...user }
 
@@ -166,7 +167,7 @@ export default {
           })
           .catch(this.stdReject)
           .finally(() => {
-            this.info.processing = false
+            this.toggleProcessing('info')
           })
       } else {
         // On creation, redirect to edit page
@@ -177,7 +178,7 @@ export default {
           })
           .catch(this.stdReject)
           .finally(() => {
-            this.info.processing = false
+            this.toggleProcessing('info')
           })
       }
     },
@@ -187,15 +188,14 @@ export default {
      * and handles response & errors
      */
     onDelete () {
-      this.error = null
-      this.processing = true
+      this.toggleProcessing()
 
       this.$SystemAPI.userDelete({ userID: this.userID })
         .then(() => {
           this.$router.push({ name: 'user.list' })
         })
         .catch(this.stdReject)
-        .finally(this.finalize)
+        .finally(this.toggleProcessing)
     },
 
     /**
@@ -205,8 +205,7 @@ export default {
      * @param password {String}
      */
     onPasswordSubmit (password) {
-      this.error = null
-      this.password.processing = true
+      this.toggleProcessing('password')
 
       this.$SystemAPI.userSetPassword({ userID: this.userID, password })
         .then(() => {
@@ -214,7 +213,7 @@ export default {
         })
         .catch(this.stdReject)
         .finally(() => {
-          this.password.processing = false
+          this.toggleProcessing('password')
         })
     },
 
@@ -223,8 +222,7 @@ export default {
      * and handles response & errors
      */
     onRoleSubmit () {
-      this.error = null
-      this.roles.processing = true
+      this.toggleProcessing('roles')
 
       const userID = this.userID
       Promise.all(this.userRoles.map(async role => {
@@ -238,39 +236,38 @@ export default {
         }
       }))
         .then(() => {
-          this.fetchUserRoles()
           this.toggleSuccess('roles')
+          this.fetchUserRoles()
         })
         .catch(this.stdReject)
         .finally(() => {
-          this.roles.processing = false
+          this.toggleProcessing('roles')
         })
     },
 
     onStatusChange () {
-      this.error = null
-      this.info.processing = true
+      this.toggleProcessing('info')
 
       const userID = this.userID
       if (this.user.suspendedAt) {
         this.$SystemAPI.userUnsuspend({ userID })
           .then(() => {
-            this.fetchUser()
             this.toggleSuccess('info')
+            this.fetchUser()
           })
           .catch(this.stdReject)
           .finally(() => {
-            this.info.processing = false
+            this.toggleProcessing('info')
           })
       } else {
         this.$SystemAPI.userSuspend({ userID })
           .then(() => {
-            this.fetchUser()
             this.toggleSuccess('info')
+            this.fetchUser()
           })
           .catch(this.stdReject)
           .finally(() => {
-            this.info.processing = false
+            this.toggleProcessing('info')
           })
       }
     },
@@ -279,15 +276,19 @@ export default {
       this.$store.dispatch('ui/appendAlert', error)
     },
 
+    toggleProcessing (key = '') {
+      if (key) {
+        this[key].processing = !this[key].processing
+      } else {
+        this.processing = !this.processing
+      }
+    },
+
     toggleSuccess (key) {
       this[key].success = true
       setTimeout(() => {
         this[key].success = false
       }, 2000)
-    },
-
-    finalize () {
-      this.processing = false
     },
   },
 }

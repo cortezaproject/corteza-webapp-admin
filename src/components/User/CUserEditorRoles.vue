@@ -48,39 +48,30 @@
     <template #header>
       <h3 class="m-0">
         {{ $t('title') }}
-        <b-spinner
-          v-if="processing"
-          small
-          class="float-right"
-          type="grow"
-        />
-        <font-awesome-icon
-          v-else-if="success"
-          :icon="['fas', 'check']"
-          class="text-success float-right"
-        />
       </h3>
     </template>
 
     <template #footer>
-      <b-button
-        :disabled="processing"
-        type="submit"
-        variant="primary"
-        class="ml-10"
-        @click.prevent="$emit('submit')"
-      >
-        {{ $t('submit') }}
-      </b-button>
+      <c-submit-button
+        :processing="processing"
+        :success="success"
+        @submit="$emit('submit')"
+      />
     </template>
   </b-card>
 </template>
 
 <script>
+import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
+
 export default {
   i18nOptions: {
     namespaces: [ 'users' ],
     keyPrefix: 'editor.roles',
+  },
+
+  components: {
+    CSubmitButton,
   },
 
   props: {
@@ -104,8 +95,6 @@ export default {
   data () {
     return {
       filter: '',
-
-      error: null,
     }
   },
 

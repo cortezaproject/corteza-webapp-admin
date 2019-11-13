@@ -39,7 +39,7 @@ export default {
       submit: 'Submit',
       delete: 'Delete',
       suspend: 'Suspend',
-      unsuspend: 'Suspend',
+      unsuspend: 'Unsuspend',
     },
 
     status: {
