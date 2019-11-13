@@ -2,6 +2,13 @@
   <div
     class="d-flex flex-column vh-100 bg-light"
   >
+    <span
+      class="p-1 position-fixed text-black text-sm"
+      style="bottom: 0px; right: 0px; z-index: 0; opacity: .3"
+    >
+      {{ frontendVersion }}
+    </span>
+
     <c-the-header />
 
     <div
@@ -10,7 +17,7 @@
       <c-the-main-nav />
 
       <main
-        class="flex-fill overflow-auto"
+        class="flex-fill overflow-auto pb-5"
       >
         <c-the-alert-container />
         <router-view />
@@ -31,6 +38,13 @@ export default {
     CTheAlertContainer,
     CTheHeader,
     CTheMainNav,
+  },
+
+  data () {
+    return {
+      /* eslint-disable no-undef */
+      frontendVersion: VERSION,
+    }
   },
 }
 </script>
