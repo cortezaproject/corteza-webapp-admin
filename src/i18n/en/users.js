@@ -36,18 +36,13 @@ export default {
       name: 'Full name',
       handle: 'Handle',
 
-      submit: 'Submit',
-      delete: 'Delete',
       suspend: 'Suspend',
       unsuspend: 'Unsuspend',
-    },
+      suspendedAt: 'Suspended at',
 
-    status: {
-      title: 'Status',
-
-      current: 'Current status',
-      active: 'Active',
-      suspended: 'Suspended',
+      delete: 'Delete',
+      undelete: 'Undelete',
+      deletedAt: 'Deleted at',
 
       submit: 'Submit',
     },
@@ -74,7 +69,6 @@ export default {
       searchRoles: 'Search roles',
 
       submit: 'Submit',
-      // @todo
     },
   },
 }

@@ -53,6 +53,7 @@
 
     <template #footer>
       <c-submit-button
+        class="float-right"
         :processing="processing"
         :success="success"
         @submit="$emit('submit')"

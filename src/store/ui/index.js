@@ -5,14 +5,14 @@ export default {
   namespaced: true,
 
   state: {
-    // loader: 0,
+    loader: 0,
     alerts: [],
   },
 
   getters: {
-    // isLoading (state) {
-    //   return state.loader > 0
-    // },
+    isLoading (state) {
+      return state.loader > 0
+    },
 
     alerts (state) {
       return state.alerts

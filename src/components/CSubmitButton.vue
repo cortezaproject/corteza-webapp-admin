@@ -49,7 +49,7 @@ export default {
 
 <style>
 .submit {
-  min-width: 70px;
+  min-width: 75px;
   min-height: 35px;
 }
 </style>

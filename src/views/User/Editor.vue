@@ -26,7 +26,7 @@
 
     <c-user-editor-info
       :user="user"
-      :processing="processing || info.processing"
+      :processing="info.processing"
       :success="info.success"
       @submit="onInfoSubmit"
       @delete="onDelete"
@@ -34,13 +34,13 @@
     />
     <c-user-editor-password
       v-if="user && user.userID"
-      :processing="processing || password.processing"
+      :processing="password.processing"
       :success="password.success"
       @submit="onPasswordSubmit"
     />
     <c-user-editor-roles
       v-if="user && user.userID"
-      :processing="processing || roles.processing"
+      :processing="roles.processing"
       :success="roles.success"
       :current-roles.sync="userRoles"
       @submit="onRoleSubmit"
@@ -49,6 +49,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import CUserEditorInfo from 'corteza-webapp-admin/src/components/User/CUserEditorInfo'
 import CUserEditorPassword from 'corteza-webapp-admin/src/components/User/CUserEditorPassword'
 import CUserEditorRoles from 'corteza-webapp-admin/src/components/User/CUserEditorRoles'
@@ -91,9 +92,6 @@ export default {
         processing: false,
         success: false,
       },
-
-      // General processing flag
-      processing: false,
     }
   },
 
@@ -112,22 +110,30 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      incLoader: 'ui/incLoader',
+      decLoader: 'ui/decLoader',
+    }),
+
     fetchUser () {
-      this.toggleProcessing()
+      this.incLoader()
 
       this.$SystemAPI.userRead({ userID: this.userID })
         .then(user => {
           this.user = user
         })
         .catch(this.stdReject)
-        .finally(this.toggleProcessing)
+        .finally(() => {
+          this.decLoader()
+        })
     },
 
     fetchUserRoles () {
-      this.toggleProcessing()
+      this.incLoader()
 
       this.userRoles = []
       const userID = this.userID
+
       this.$SystemAPI.roleList().then(({ set: roles = [] }) => {
         this.$SystemAPI.userMembershipList({ userID }).then((m = []) => {
           let userRoles = []
@@ -144,7 +150,9 @@ export default {
           this.userRoles = userRoles
         }).catch(this.stdReject)
       }).catch(this.stdReject)
-        .finally(this.toggleProcessing)
+        .finally(() => {
+          this.decLoader()
+        })
     },
 
     /**
@@ -154,7 +162,7 @@ export default {
      * @param user {Object}
      */
     onInfoSubmit (user) {
-      this.toggleProcessing('info')
+      this.info.processing = true
 
       const payload = { ...user }
 
@@ -162,23 +170,23 @@ export default {
         // On update, reset the user obj
         this.$SystemAPI.userUpdate(payload)
           .then(u => {
+            this.animateSuccess('info')
             this.user = u
-            this.toggleSuccess('info')
           })
           .catch(this.stdReject)
           .finally(() => {
-            this.toggleProcessing('info')
+            this.info.processing = false
           })
       } else {
         // On creation, redirect to edit page
         this.$SystemAPI.userCreate(payload)
           .then(({ userID }) => {
+            this.animateSuccess('info')
             this.$router.push({ name: 'user.edit', params: { userID } })
-            this.toggleSuccess('info')
           })
           .catch(this.stdReject)
           .finally(() => {
-            this.toggleProcessing('info')
+            this.info.processing = false
           })
       }
     },
@@ -188,14 +196,17 @@ export default {
      * and handles response & errors
      */
     onDelete () {
-      this.toggleProcessing()
+      // TODO UNDELETE
+      this.incLoader()
 
       this.$SystemAPI.userDelete({ userID: this.userID })
         .then(() => {
-          this.$router.push({ name: 'user.list' })
+          this.fetchUser()
         })
         .catch(this.stdReject)
-        .finally(this.toggleProcessing)
+        .finally(() => {
+          this.decLoader()
+        })
     },
 
     /**
@@ -205,15 +216,15 @@ export default {
      * @param password {String}
      */
     onPasswordSubmit (password) {
-      this.toggleProcessing('password')
+      this.password.processing = true
 
       this.$SystemAPI.userSetPassword({ userID: this.userID, password })
         .then(() => {
-          this.toggleSuccess('password')
+          this.animateSuccess('password')
         })
         .catch(this.stdReject)
         .finally(() => {
-          this.toggleProcessing('password')
+          this.password.processing = false
         })
     },
 
@@ -222,7 +233,7 @@ export default {
      * and handles response & errors
      */
     onRoleSubmit () {
-      this.toggleProcessing('roles')
+      this.roles.processing = true
 
       const userID = this.userID
       Promise.all(this.userRoles.map(async role => {
@@ -236,38 +247,41 @@ export default {
         }
       }))
         .then(() => {
-          this.toggleSuccess('roles')
+          this.animateSuccess('roles')
           this.fetchUserRoles()
         })
         .catch(this.stdReject)
         .finally(() => {
-          this.toggleProcessing('roles')
+          this.roles.processing = false
         })
     },
 
+    /**
+     * Handles user status change event, calls suspend or unsuspend API endpoint
+     * and handles response & errors
+     */
     onStatusChange () {
-      this.toggleProcessing('info')
+      this.incLoader()
 
       const userID = this.userID
+
       if (this.user.suspendedAt) {
         this.$SystemAPI.userUnsuspend({ userID })
           .then(() => {
-            this.toggleSuccess('info')
             this.fetchUser()
           })
           .catch(this.stdReject)
           .finally(() => {
-            this.toggleProcessing('info')
+            this.decLoader()
           })
       } else {
         this.$SystemAPI.userSuspend({ userID })
           .then(() => {
-            this.toggleSuccess('info')
             this.fetchUser()
           })
           .catch(this.stdReject)
           .finally(() => {
-            this.toggleProcessing('info')
+            this.decLoader()
           })
       }
     },
@@ -276,15 +290,11 @@ export default {
       this.$store.dispatch('ui/appendAlert', error)
     },
 
-    toggleProcessing (key = '') {
-      if (key) {
-        this[key].processing = !this[key].processing
-      } else {
-        this.processing = !this.processing
-      }
-    },
-
-    toggleSuccess (key) {
+    /**
+     * Animates a checkmark on a submit button when a request has successfully resolved
+     * @param key {String}
+     */
+    animateSuccess (key) {
       this[key].success = true
       setTimeout(() => {
         this[key].success = false

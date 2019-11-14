@@ -8,14 +8,12 @@
     <div
       class="flex-fill text-center"
     >
-      <!--
       <b-spinner
         v-if="isLoading"
         variant="light"
         type="grow"
         small
       />
-      -->
     </div>
 
     <div
@@ -36,13 +34,13 @@
   </header>
 </template>
 <script>
-// import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
-  // computed: {
-  //   ...mapGetters({
-  //     isLoading: 'ui/isLoading',
-  //   }),
-  // },
+  computed: {
+    ...mapGetters({
+      isLoading: 'ui/isLoading',
+    }),
+  },
 }
 </script>

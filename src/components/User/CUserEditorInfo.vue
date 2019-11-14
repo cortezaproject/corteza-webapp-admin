@@ -38,10 +38,34 @@
       <b-form-group
         :label="$t('handle')"
         label-cols="2"
-        class="mb-0"
       >
         <b-form-input
           v-model="user.handle"
+        />
+      </b-form-group>
+
+      <b-form-group
+        v-if="user.suspendedAt"
+        :label="$t('suspendedAt')"
+        label-cols="2"
+      >
+        <b-form-input
+          v-model="user.suspendedAt"
+          plaintext
+          disabled
+        />
+      </b-form-group>
+
+      <b-form-group
+        v-if="user.deletedAt"
+        :label="$t('deletedAt')"
+        label-cols="2"
+        class="mb-0"
+      >
+        <b-form-input
+          v-model="user.deletedAt"
+          plaintext
+          disabled
         />
       </b-form-group>
     </b-form>
@@ -54,6 +78,7 @@
 
     <template #footer>
       <c-submit-button
+        class="float-right"
         :processing="processing"
         :success="success"
         @submit="$emit('submit', user)"
@@ -61,10 +86,9 @@
 
       <confirmation-toggle
         v-if="user && user.userID"
-        class="ml-2"
         @confirmed="$emit('delete')"
       >
-        {{ $t('delete') }}
+        {{ getDeleteStatus }}
       </confirmation-toggle>
 
       <confirmation-toggle
@@ -73,7 +97,7 @@
         cta-class="secondary"
         @confirmed="$emit('status')"
       >
-        {{ getStatus }}
+        {{ getSuspendStatus }}
       </confirmation-toggle>
     </template>
   </b-card>
@@ -114,7 +138,11 @@ export default {
   },
 
   computed: {
-    getStatus () {
+    getDeleteStatus () {
+      return this.user.deletedAt ? this.$t('undelete') : this.$t('delete')
+    },
+
+    getSuspendStatus () {
       return this.user.suspendedAt ? this.$t('unsuspend') : this.$t('suspend')
     },
   },
