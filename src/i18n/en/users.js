@@ -44,6 +44,9 @@ export default {
       undelete: 'Undelete',
       deletedAt: 'Deleted at',
 
+      updatedAt: 'Updated at',
+      createdAt: 'Created at',
+
       submit: 'Submit',
     },
 

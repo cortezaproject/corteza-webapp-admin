@@ -45,12 +45,36 @@
       </b-form-group>
 
       <b-form-group
+        v-if="user.updatedAt"
+        :label="$t('updatedAt')"
+        label-cols="2"
+      >
+        <b-form-input
+          v-model="user.updatedAt"
+          plaintext
+          disabled
+        />
+      </b-form-group>
+
+      <b-form-group
         v-if="user.suspendedAt"
         :label="$t('suspendedAt')"
         label-cols="2"
       >
         <b-form-input
           v-model="user.suspendedAt"
+          plaintext
+          disabled
+        />
+      </b-form-group>
+
+      <b-form-group
+        v-if="user.createdAt"
+        :label="$t('createdAt')"
+        label-cols="2"
+      >
+        <b-form-input
+          v-model="user.createdAt"
           plaintext
           disabled
         />
