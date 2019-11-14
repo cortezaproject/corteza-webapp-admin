@@ -5,121 +5,67 @@
     <c-content-header
       :title="$t('title')"
     >
-      <b-button-group>
+      <b-button-group
+        v-if="roleID"
+      >
         <b-button
           variant="link"
-          :to="{ name: 'user.new' }"
+          :to="{ name: 'role.new' }"
         >
           New &blk14;
         </b-button>
       </b-button-group>
-      <b-button-group>
+      <b-button-group
+        v-if="roleID"
+      >
         <permissions-button
-          title="Users"
-          resource="system:users:*"
+          :title="role.name"
+          :resource="'system:role:'+roleID"
           button-variant="link"
         >
           Permissions &blk14;
         </permissions-button>
       </b-button-group>
     </c-content-header>
-    <b-form @submit.prevent="onSubmit">
-      <div class="header">
-        <router-link
-          :to="{ name: 'roles' }"
-          class="float-right"
-        >
-          <b-button-close />
-        </router-link>
-        <h2 class="header-subtitle header-row">
-          {{ $t('role.information') }}
-        </h2>
-      </div>
 
-      <div
-        v-if="error"
-        class="bg-danger alert text-white"
-      >
-        {{ error }}
-      </div>
+    <c-role-editor-info
+      :role="role"
+      :processing="info.processing"
+      :success="info.success"
+      @submit="onInfoSubmit"
+      @delete="onDelete"
+      @status="onStatusChange"
+    />
 
-      <div class="role">
-        <b-form-group
-          :label="$t('general.label.name')"
-          label-cols="2"
-        >
-          <b-form-input
-            v-model="role.name"
-            :state="checkName"
-          />
-        </b-form-group>
-
-        <b-form-group
-          :label="$t('role.handle')"
-          label-cols="2"
-        >
-          <b-form-input
-            v-model="role.handle"
-            :state="checkHandle"
-          />
-        </b-form-group>
-
-        <b-form-group label-cols="2">
-          <permissions-button
-            :title="role.name"
-            :resource="'system:role:'+roleID"
-            :role-i-d="roleID"
-          >
-            {{ $t('role.manage-id-permissions') }}
-          </permissions-button>
-        </b-form-group>
-
-        <b-form-group
-          :label="$t('general.label.lastUpdate')"
-          label-cols="2"
-        >
-          <b-form-text>{{ role.updatedAt }}</b-form-text>
-        </b-form-group>
-
-        <b-form-group
-          :label="$t('general.label.created')"
-          label-cols="2"
-        >
-          <b-form-text>{{ role.createdAt }}</b-form-text>
-        </b-form-group>
-        <role-members :current-members.sync="members" />
-      </div>
-
-      <div class="footer">
-        <confirmation-toggle @confirmed="onDelete">
-          {{ $t('role.delete') }}
-        </confirmation-toggle>
-        <b-button
-          :disabled="!canSubmit"
-          type="submit"
-          variant="primary"
-        >
-          {{ $t('general.label.submit') }}
-        </b-button>
-      </div>
-    </b-form>
+    <c-role-editor-members
+      v-if="role && role.roleID && roleMembers"
+      :processing="members.processing"
+      :success="members.success"
+      :current-members.sync="roleMembers"
+      @submit="onMembersSubmit"
+    />
   </b-container>
 </template>
 
 <script>
-import RoleMembers from 'corteza-webapp-admin/src/components/RoleMembers'
-import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
+import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
+import CRoleEditorInfo from 'corteza-webapp-admin/src/components/Role/CRoleEditorInfo'
+import CRoleEditorMembers from 'corteza-webapp-admin/src/components/Role/CRoleEditorMembers'
 
 export default {
   components: {
-    ConfirmationToggle,
-    RoleMembers,
+    CRoleEditorInfo,
+    CRoleEditorMembers,
   },
 
   i18nOptions: {
-    namespaces: [ 'role' ],
+    namespaces: [ 'roles' ],
     keyPrefix: 'editor',
   },
+
+  mixins: [
+    editorHelpers,
+  ],
 
   props: {
     roleID: {
@@ -131,29 +77,18 @@ export default {
 
   data () {
     return {
-      processing: false,
-      error: null,
       role: {},
-      members: [],
+      roleMembers: null,
+
+      info: {
+        processing: false,
+        success: false,
+      },
+      members: {
+        processing: false,
+        success: false,
+      },
     }
-  },
-
-  computed: {
-    // At least 1 character
-    checkName () {
-      return /^.+$/.test(this.role.name || '') ? null : false
-    },
-
-    // 2+ alpha-numeric + _
-    checkHandle () {
-      return /^\w{2,}$/.test(this.role.handle || '') ? null : false
-    },
-
-    canSubmit () {
-      return !this.processing &&
-        this.checkHandle === null &&
-        this.checkName === null
-    },
   },
 
   watch: {
@@ -162,6 +97,8 @@ export default {
       handler () {
         if (this.roleID) {
           this.fetchRole()
+        } else {
+          this.role = {}
         }
       },
     },
@@ -169,22 +106,23 @@ export default {
 
   methods: {
     fetchRole () {
-      this.processing = true
-      this.error = null
+      this.incLoader()
 
       this.$SystemAPI.roleRead({ roleID: this.roleID })
         .then(r => {
           this.role = r
           return this.$SystemAPI.roleMemberList(r)
         })
-        .then((mm) => { this.members = mm })
+        .then((mm = []) => { this.roleMembers = mm })
         .catch(this.stdReject)
-        .finally(this.finalize)
+        .finally(() => {
+          this.decLoader()
+        })
     },
 
     onDelete () {
-      this.processing = true
-      this.error = null
+      // TODO UNDELETE
+      this.incLoader()
 
       this.$SystemAPI.roleDelete({ roleID: this.roleID })
         .then(this.handler)
@@ -192,74 +130,82 @@ export default {
           this.$router.push({ name: 'roles' })
         })
         .catch(this.stdReject)
-        .finally(this.finalize)
+        .finally(() => {
+          this.decLoader()
+        })
     },
 
-    onSubmit () {
-      this.processing = true
-      this.error = null
-
-      const payload = { ...this.role, members: this.members }
+    onInfoSubmit (role) {
+      this.info.processing = true
 
       if (this.roleID) {
-        this.$SystemAPI.roleUpdate(payload)
-          .then(this.handler)
-          .catch(this.stdReject)
-          .finally(this.finalize)
-      } else {
-        this.$SystemAPI.roleCreate(payload)
-          .then(this.handler)
-          .then(({ roleID }) => {
-            this.$router.push({ name: 'roles.role', params: { roleID } })
+        this.$SystemAPI.roleUpdate(role)
+          .then(role => {
+            this.animateSuccess('info')
+            this.role = role
           })
           .catch(this.stdReject)
-          .finally(this.finalize)
+          .finally(() => {
+            this.info.processing = false
+          })
+      } else {
+        this.$SystemAPI.roleCreate(role)
+          .then(({ roleID }) => {
+            this.animateSuccess('info')
+            this.$router.push({ name: 'role.edit', params: { roleID } })
+          })
+          .catch(this.stdReject)
+          .finally(() => {
+            this.info.processing = false
+          })
       }
     },
 
-    stdReject ({ message = null } = {}) {
-      this.error = message
+    /**
+     * Handles user status change event, calls suspend or unsuspend API endpoint
+     * and handles response & errors
+     */
+    onStatusChange () {
+      this.incLoader()
+
+      const roleID = this.roleID
+
+      if (this.role.archivedAt) {
+        this.$SystemAPI.roleUnarchive({ roleID })
+          .then(() => {
+            this.fetchRole()
+          })
+          .catch(this.stdReject)
+          .finally(() => {
+            this.decLoader()
+          })
+      } else {
+        this.$SystemAPI.roleArchive({ roleID })
+          .then(() => {
+            this.fetchRole()
+          })
+          .catch(this.stdReject)
+          .finally(() => {
+            this.decLoader()
+          })
+      }
     },
 
-    handler (role) {
-      // Inform parent component about role changes
-      // @todo solve this with vuex
-      this.$emit('update')
-      this.role = role
+    onMembersSubmit () {
+      this.members.processing = true
 
-      return Promise.resolve(role)
-    },
-
-    finalize () {
-      this.processing = false
+      if (this.roleID) {
+        this.$SystemAPI.roleUpdate({ ...this.role, members: this.roleMembers })
+          .then(role => {
+            this.animateSuccess('members')
+            this.role = role
+          })
+          .catch(this.stdReject)
+          .finally(() => {
+            this.members.processing = false
+          })
+      }
     },
   },
 }
 </script>
-<style scoped lang="scss">
-form {
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 50px);
-
-  .header {
-    flex: 1;
-    height: 150px;
-  }
-
-  .footer {
-    flex: 1;
-    text-align: right;
-    height: 150px;
-  }
-
-  .role {
-    flex: 1;
-    flex-grow: 100;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    padding-top: 2px;
-  }
-}
-
-</style>

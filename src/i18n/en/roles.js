@@ -2,6 +2,10 @@ export default {
   label: 'Roles',
 
   list: {
+    title: 'Roles',
+    loading: 'Loading roles',
+    numFound: `{{0}} role(s) found`,
+
     searchForm: {
       query: {
         label: 'Filter roles list',
@@ -14,6 +18,42 @@ export default {
       createdAt: 'Created',
       enabled: 'Enabled',
       actions: '',
+    },
+  },
+
+  editor: {
+    title: 'Edit role',
+
+    info: {
+      title: 'Basic information',
+      name: 'Role name',
+      handle: 'Handle',
+
+      archive: 'Archive',
+      unarchive: 'Unarchive',
+      archivedAt: 'Archived at',
+
+      delete: 'Delete',
+      undelete: 'Undelete',
+      deletedAt: 'Deleted at',
+
+      updatedAt: 'Updated at',
+      createdAt: 'Created at',
+
+      submit: 'Submit',
+    },
+
+    members: {
+      title: 'Role members',
+
+      count: 'Members ({{count}})',
+      unnamed: 'Unnamed user',
+
+      add: 'Add',
+      remove: 'Remove',
+      searchUsers: 'Search users',
+
+      submit: 'Submit',
     },
   },
 
