@@ -5,7 +5,9 @@
     <c-content-header
       :title="$t('title')"
     >
-      <b-button-group>
+      <b-button-group
+        v-if="userID"
+      >
         <b-button
           variant="link"
           :to="{ name: 'user.new' }"
@@ -13,10 +15,12 @@
           New &blk14;
         </b-button>
       </b-button-group>
-      <b-button-group>
+      <b-button-group
+        v-if="userID"
+      >
         <permissions-button
           title="Users"
-          resource="system:users:*"
+          :resource="'system:users:'+userID"
           button-variant="link"
         >
           Permissions &blk14;
@@ -49,7 +53,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CUserEditorInfo from 'corteza-webapp-admin/src/components/User/CUserEditorInfo'
 import CUserEditorPassword from 'corteza-webapp-admin/src/components/User/CUserEditorPassword'
 import CUserEditorRoles from 'corteza-webapp-admin/src/components/User/CUserEditorRoles'
@@ -65,6 +69,10 @@ export default {
     namespaces: [ 'users' ],
     keyPrefix: 'editor',
   },
+
+  mixins: [
+    editorHelpers,
+  ],
 
   props: {
     userID: {
@@ -110,11 +118,6 @@ export default {
   },
 
   methods: {
-    ...mapActions({
-      incLoader: 'ui/incLoader',
-      decLoader: 'ui/decLoader',
-    }),
-
     fetchUser () {
       this.incLoader()
 
@@ -284,21 +287,6 @@ export default {
             this.decLoader()
           })
       }
-    },
-
-    stdReject (error) {
-      this.$store.dispatch('ui/appendAlert', error)
-    },
-
-    /**
-     * Animates a checkmark on a submit button when a request has successfully resolved
-     * @param key {String}
-     */
-    animateSuccess (key) {
-      this[key].success = true
-      setTimeout(() => {
-        this[key].success = false
-      }, 2000)
     },
   },
 }
