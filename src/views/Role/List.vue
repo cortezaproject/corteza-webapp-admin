@@ -8,15 +8,15 @@
       <b-button-group>
         <b-button
           variant="link"
-          :to="{ name: 'user.new' }"
+          :to="{ name: 'role.new' }"
         >
           New &blk14;
         </b-button>
       </b-button-group>
       <b-button-group>
         <permissions-button
-          title="Users"
-          resource="system:users:*"
+          title="Roles"
+          resource="system:roles:*"
           button-variant="link"
         >
           Permissions &blk14;
@@ -38,19 +38,20 @@
       primary-key="roleID"
       edit-route="role.edit"
       :loading-text="$t('loading')"
+      :total-text="$t('numFound', [ totalItems ])"
       :params="params"
       :items="items"
       :fields="fields"
       :total-items="totalItems"
     >
-      <template v-slot:filter>
+      <template #filter>
         <b-form-group
-          class="p-0 m-0 col-6"
+          class="p-0 m-0"
         >
           <b-input-group>
             <b-form-input
               v-model.trim="params.query"
-              :placeholder="$t('list.searchForm.query.placeholder')"
+              :placeholder="$t('searchForm.query.placeholder')"
               @keyup="search"
             />
           </b-input-group>
