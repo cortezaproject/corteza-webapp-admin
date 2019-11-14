@@ -10,13 +10,16 @@
         label-cols="2"
         class="mb-0"
       >
-        <table v-if="filteredRoles">
+        <table
+          v-if="filteredRoles"
+          class="w-100 m-0 p-0"
+        >
           <tr
             v-for="r in filteredRoles"
             :key="r.userID"
           >
             <td>{{ r.name || r.handle || r.roleID || $t('unnamed') }}</td>
-            <td class="action">
+            <td class="m-0 p-0 float-right">
               <b-button @click="removeRole(r)">
                 {{ $t('remove') }}
               </b-button>
@@ -29,13 +32,16 @@
           </b-input-group-prepend>
           <b-form-input v-model.trim="filter" />
         </b-input-group>
-        <table v-if="filter && filtered">
+        <table
+          v-if="filter && filtered"
+          class="w-100 m-0 p-0"
+        >
           <tr
             v-for="r in filtered"
             :key="r.roleID"
           >
             <td>{{ r.name || r.handle || r.roleID || $t('unnamed') }}</td>
-            <td class="action">
+            <td class="m-0 p-0 float-right">
               <b-button @click="addRole(r)">
                 {{ $t('add') }}
               </b-button>
@@ -147,22 +153,3 @@ export default {
   },
 }
 </script>
-<style scoped lang="scss">
-.roles {
-  min-height: 100px;
-}
-table {
-  width: 100%;
-  margin: 0;
-  padding: 0;
-
-  tr {
-    td.action {
-      margin: 0;
-      padding: 0;
-      width: 100px;
-      text-align: right;
-    }
-  }
-}
-</style>

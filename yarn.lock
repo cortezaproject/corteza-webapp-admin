@@ -2909,8 +2909,8 @@ core-util-is@1.0.2, core-util-is@~1.0.0:
   integrity sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
 
 corteza-webapp-common@cortezaproject/corteza-webapp-common.git#master:
-  version "2019.9.0-rc.42"
-  resolved "https://codeload.github.com/cortezaproject/corteza-webapp-common/tar.gz/c2cb710f40cf1ecaea4b6a2bb53885b1025c1ffd"
+  version "2019.9.0-rc.46"
+  resolved "https://codeload.github.com/cortezaproject/corteza-webapp-common/tar.gz/3fef5647b551f2f2993c635bdcac6f8ef70c376f"
   dependencies:
     diff "4.0.1"
     mime-types "2.1.24"
@@ -8334,9 +8334,9 @@ qs@6.7.0:
   integrity sha512-VCdBRNFTX1fyE7Nb6FYoURo/SPe62QCaAyzJvUjwRaIsc+NePBEniHlvxFmmX56+HZphIGtV0XeCirBtpDrTyQ==
 
 qs@^6.8.0:
-  version "6.9.0"
-  resolved "https://registry.yarnpkg.com/qs/-/qs-6.9.0.tgz#d1297e2a049c53119cb49cca366adbbacc80b409"
-  integrity sha512-27RP4UotQORTpmNQDX8BHPukOnBP3p1uUJY5UnDhaJB+rMt9iMsok724XL+UHU23bEFOHRMQ2ZhI99qOWUMGFA==
+  version "6.9.1"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.9.1.tgz#20082c65cb78223635ab1a9eaca8875a29bf8ec9"
+  integrity sha512-Cxm7/SS/y/Z3MHWSxXb8lIFqgqBowP5JMlTUFyJN88y0SGQhVmZnqFK/PeuMX9LzUyWsqqhNxIyg0jlzq946yA==
 
 query-string@^5.0.1:
   version "5.1.1"
