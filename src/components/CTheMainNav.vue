@@ -7,46 +7,45 @@
         System &blk14;
       </small>
       <c-main-nav-item
-        v-if="false"
-        :label="$t('navigation.stats')"
+        :label="$t('system.stats:navItem.label')"
         :to="{ name: 'stats' }"
         :icon="['fas', 'th-large']"
       />
 
       <c-main-nav-item
-        :label="$t('navigation.users')"
+        :label="$t('system.users:navItem.label')"
         :to="{ name: 'user.list' }"
         :icon="['fas', 'users']"
       />
 
       <c-main-nav-item
-        :label="$t('navigation.roles')"
+        :label="$t('system.roles:navItem.label')"
         :to="{ name: 'role.list' }"
         :icon="['fas', 'hat-cowboy']"
       />
 
       <c-main-nav-item
-        :label="$t('navigation.permissions')"
-        :to="{ name: 'permissions' }"
-        :icon="['fas', 'lock']"
-      />
-
-      <c-main-nav-item
-        :label="$t('applications:label')"
+        :label="$t('system.applications:navItem.label')"
         :to="{ name: 'application.list' }"
         :icon="['fas', 'th-large']"
       />
 
       <c-main-nav-item
-        :label="$t('navigation.scripts')"
+        :label="$t('system.scripts:navItem.label')"
         :to="{ name: 'script.list' }"
         :icon="['fas', 'magic']"
       />
 
       <c-main-nav-item
-        :label="$t('navigation.settings')"
+        :label="$t('system-settings:navItem.label')"
         :to="{ name: 'settings' }"
         :icon="['fas', 'cogs']"
+      />
+
+      <c-main-nav-item
+        :label="$t('system-permissions:navItem.label')"
+        :to="{ name: 'permissions' }"
+        :icon="['fas', 'lock']"
       />
     </b-list-group>
 
@@ -56,14 +55,14 @@
       </small>
 
       <c-main-nav-item
-        :label="$t('navigation.settings')"
-        :to="{ name: 'settings' }"
+        :label="$t('compose.settings:navItem.label')"
+        :to="{ name: 'compose.settings' }"
         :icon="['fas', 'cogs']"
       />
 
       <c-main-nav-item
-        :label="$t('navigation.permissions')"
-        :to="{ name: 'permissions' }"
+        :label="$t('compose.permissions:navItem.label')"
+        :to="{ name: 'compose.permissions' }"
         :icon="['fas', 'lock']"
       />
     </b-list-group>
@@ -74,14 +73,14 @@
       </small>
 
       <c-main-nav-item
-        :label="$t('navigation.settings')"
-        :to="{ name: 'settings' }"
+        :label="$t('messaging.settings:navItem.label')"
+        :to="{ name: 'messaging.settings' }"
         :icon="['fas', 'cogs']"
       />
 
       <c-main-nav-item
-        :label="$t('navigation.permissions')"
-        :to="{ name: 'permissions' }"
+        :label="$t('messaging.permissions:navItem.label')"
+        :to="{ name: 'messaging.permissions' }"
         :icon="['fas', 'lock']"
       />
     </b-list-group>

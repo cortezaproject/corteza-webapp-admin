@@ -94,7 +94,7 @@ export default {
   ],
 
   i18nOptions: {
-    namespaces: [ 'users' ],
+    namespaces: [ 'system.users' ],
     keyPrefix: 'list',
   },
 

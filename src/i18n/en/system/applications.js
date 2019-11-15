@@ -1,4 +1,7 @@
 export default {
+  navItem: {
+    label: 'Applications',
+  },
 
   list: {
     title: 'Applications',

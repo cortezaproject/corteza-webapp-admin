@@ -84,7 +84,7 @@ export default {
   ],
 
   i18nOptions: {
-    namespaces: [ 'applications' ],
+    namespaces: [ 'system.applications' ],
     keyPrefix: 'list',
   },
 

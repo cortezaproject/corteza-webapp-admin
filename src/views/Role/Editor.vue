@@ -59,7 +59,7 @@ export default {
   },
 
   i18nOptions: {
-    namespaces: [ 'roles' ],
+    namespaces: [ 'system.roles' ],
     keyPrefix: 'editor',
   },
 

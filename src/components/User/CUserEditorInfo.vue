@@ -135,7 +135,7 @@ export default {
   name: 'CUserEditorInfo',
 
   i18nOptions: {
-    namespaces: [ 'users' ],
+    namespaces: [ 'system.users' ],
     keyPrefix: 'editor.info',
   },
 

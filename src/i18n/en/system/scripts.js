@@ -1,7 +1,10 @@
 export default {
-  label: 'Scripts',
+  navItem: {
+    label: 'Scripts',
+  },
 
   list: {
+    title: 'Scripts',
     filterForm: {
       query: {
         label: 'Filter scripts list',

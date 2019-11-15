@@ -67,7 +67,7 @@ export default {
   name: 'CUserEditorPassword',
 
   i18nOptions: {
-    namespaces: [ 'users' ],
+    namespaces: [ 'system.users' ],
     keyPrefix: 'editor.password',
   },
 

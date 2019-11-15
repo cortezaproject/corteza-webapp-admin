@@ -1,5 +1,7 @@
 export default {
-  label: 'Roles',
+  navItem: {
+    label: 'Roles',
+  },
 
   list: {
     title: 'Roles',

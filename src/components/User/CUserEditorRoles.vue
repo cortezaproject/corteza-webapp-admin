@@ -73,7 +73,7 @@ import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 
 export default {
   i18nOptions: {
-    namespaces: [ 'users' ],
+    namespaces: [ 'system.users' ],
     keyPrefix: 'editor.roles',
   },
 

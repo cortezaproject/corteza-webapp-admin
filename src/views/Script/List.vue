@@ -71,7 +71,7 @@ export default {
   ],
 
   i18nOptions: {
-    namespaces: [ 'scripts' ],
+    namespaces: [ 'system.scripts' ],
     keyPrefix: 'list',
   },
 

@@ -1,4 +1,7 @@
 export default {
+  navItem: {
+    label: 'Users',
+  },
 
   list: {
     title: 'Users',

@@ -276,7 +276,7 @@ export default {
   },
 
   i18nOptions: {
-    namespaces: [ 'script' ],
+    namespaces: [ 'system.script' ],
     keyPrefix: 'editor',
   },
 
