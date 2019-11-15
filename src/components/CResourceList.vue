@@ -13,10 +13,10 @@
         class="mb-0"
         head-variant="light"
         :primary-key="primaryKey"
-        :sort-by.sync="params.sortBy"
-        :sort-desc.sync="params.sortDesc"
-        :per-page="params.perPage"
-        :current-page.sync="params.page"
+        :sort-by.sync="sorting.sortBy"
+        :sort-desc.sync="sorting.sortDesc"
+        :per-page="paging.perPage"
+        :current-page.sync="paging.page"
         :items="items"
         :fields="fields"
       >
@@ -78,15 +78,15 @@
       Card footer
     -->
     <template v-slot:footer>
-      <b-pagination
-        v-model="params.page"
-        class="m-0 overflow-auto"
-        :total-rows="totalItems"
-        :disabled="paginationDisabled"
-        :per-page.sync="params.perPage"
-        limit="7"
+      <b-pagination-nav
+        v-model="paging.page"
+        use-router
         align="right"
         aria-controls="resource-list"
+        class="m-0 overflow-auto"
+        :number-of-pages="numberOfPages"
+        :link-gen="paginationLinkGenerator"
+        :disabled="paginationDisabled"
       />
     </template>
   </b-card>
@@ -117,7 +117,12 @@ export default {
       required: true,
     },
 
-    params: {
+    sorting: {
+      type: Object,
+      required: true,
+    },
+
+    paging: {
       type: Object,
       required: true,
     },
@@ -144,8 +149,41 @@ export default {
   },
 
   computed: {
+    /**
+     * Disable pagination when there we have less items than we show per-page
+     *
+     * @returns {boolean}
+     */
     paginationDisabled () {
-      return this.totalItems < this.params.perPage
+      return this.totalItems < this.paging.perPage
+    },
+
+    /**
+     * Calculate number of pages
+     *
+     * Never returns value lower than 1
+     *
+     * @returns {number}
+     */
+    numberOfPages () {
+      const n = Math.ceil(this.totalItems / this.paging.perPage)
+      return n > 0 ? n : 1
+    },
+  },
+
+  methods: {
+    /**
+     * Returns (partial) router params, combined with existing query parameters
+     * @param page
+     * @returns {{query: {page: *}}}
+     */
+    paginationLinkGenerator (page) {
+      return {
+        query: {
+          ...this.$route.query,
+          page,
+        },
+      }
     },
   },
 }

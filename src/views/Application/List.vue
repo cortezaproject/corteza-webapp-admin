@@ -38,7 +38,9 @@
       primary-key="applicationID"
       edit-route="application.edit"
       :loading-text="$t('loading')"
-      :params="params"
+      :total-text="$t('numFound', [ totalItems ])"
+      :paging="paging"
+      :sorting="sorting"
       :items="items"
       :fields="fields"
       :total-items="totalItems"
@@ -49,12 +51,24 @@
         >
           <b-input-group>
             <b-form-input
-              v-model.trim="params.query"
-              :placeholder="$t('list.searchForm.query.placeholder')"
-              @keyup="search"
+              v-model.trim="filter.query"
+              :placeholder="$t('filterForm.query.placeholder')"
+              @keyup="filterList"
             />
           </b-input-group>
         </b-form-group>
+        <b-row
+          class="mt-2 mb-0 p-0"
+        >
+          <c-resource-list-status-filter
+            v-model="filter.deleted"
+            :label="$t('filterForm.deleted.label')"
+            :excluded-label="$t('filterForm.excluded.label')"
+            :inclusive-label="$t('filterForm.inclusive.label')"
+            :exclusive-label="$t('filterForm.exclusive.label')"
+            @change="filterList"
+          />
+        </b-row>
       </template>
     </c-resource-list>
   </b-container>
@@ -78,6 +92,11 @@ export default {
     return {
       id: 'applications',
 
+      filter: {
+        query: '',
+        deleted: 0,
+      },
+
       fields: [
         {
           key: 'name',
@@ -98,29 +117,14 @@ export default {
       ].map(c => ({
         ...c,
         // Generate column label translation key
-        label: this.$t(`list.columns.${c.key}`),
+        label: this.$t(`columns.${c.key}`),
       })),
     }
   },
 
   methods: {
-    items (ctx) {
-      // Push new router/params
-      this.$router.push({ query: this.params })
-
-      const params = {
-        query: this.params.query,
-        ...this.stdPagingParams(ctx),
-      }
-
-      return this.$SystemAPI.applicationList(params).then(({ set, filter } = {}) => {
-        // Update total items counter
-        this.totalItems = filter.count
-
-        return set
-      }).catch((error) => {
-        this.$store.dispatch('ui/appendAlert', error)
-      })
+    items () {
+      return this.procListResults(this.$SystemAPI.applicationList(this.encodeListParams()))
     },
   },
 }

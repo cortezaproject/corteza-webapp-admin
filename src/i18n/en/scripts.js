@@ -2,7 +2,7 @@ export default {
   label: 'Scripts',
 
   list: {
-    searchForm: {
+    filterForm: {
       query: {
         label: 'Filter scripts list',
         placeholder: 'Filter scripts by name',

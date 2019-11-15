@@ -8,7 +8,7 @@
       <b-button-group>
         <b-button
           variant="link"
-          :to="{ name: 'user.new' }"
+          :to="{ name: 'script.new' }"
         >
           New &blk14;
         </b-button>
@@ -38,7 +38,8 @@
       primary-key="scriptID"
       edit-route="script.edit"
       :loading-text="$t('loading')"
-      :params="params"
+      :paging="paging"
+      :sorting="sorting"
       :items="items"
       :fields="fields"
       :total-items="totalItems"
@@ -49,9 +50,9 @@
         >
           <b-input-group>
             <b-form-input
-              v-model.trim="params.query"
-              :placeholder="$t('list.searchForm.query.placeholder')"
-              @keyup="search"
+              v-model.trim="filter.query"
+              :placeholder="$t('list.filterForm.query.placeholder')"
+              @keyup="filterList"
             />
           </b-input-group>
         </b-form-group>
@@ -78,6 +79,10 @@ export default {
     return {
       id: 'automationScripts',
 
+      filter: {
+        query: '',
+      },
+
       fields: [
         {
           key: 'name',
@@ -103,23 +108,8 @@ export default {
   },
 
   methods: {
-    items (ctx) {
-      // Push new router/params
-      this.$router.push({ query: this.params })
-
-      const params = {
-        query: this.params.query,
-        ...this.stdPagingParams(ctx),
-      }
-
-      return this.$SystemAPI.automationScriptList(params).then(({ set, filter } = {}) => {
-        // Update total items counter
-        this.totalItems = filter.count
-
-        return set
-      }).catch((error) => {
-        this.$store.dispatch('ui/appendAlert', error)
-      })
+    items () {
+      return this.procListResults(this.$SystemAPI.automationScriptList(this.encodeListParams()))
     },
   },
 }

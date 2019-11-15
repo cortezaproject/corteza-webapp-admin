@@ -6,10 +6,30 @@ export default {
     loading: 'Loading roles',
     numFound: `{{0}} role(s) found`,
 
-    searchForm: {
+    filterForm: {
       query: {
         label: 'Filter roles list',
         placeholder: 'Filter roles by name',
+      },
+
+      excluded: {
+        label: 'Without',
+      },
+
+      inclusive: {
+        label: 'Including',
+      },
+
+      exclusive: {
+        label: 'Only',
+      },
+
+      archived: {
+        label: 'archived roles',
+      },
+
+      deleted: {
+        label: 'deleted roles',
       },
     },
 

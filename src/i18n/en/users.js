@@ -5,16 +5,30 @@ export default {
     loading: 'Loading users',
     numFound: `{{0}} user(s) found`,
 
-    searchForm: {
+    filterForm: {
       query: {
         label: 'Filter users list',
         placeholder: 'Filter users by name, email',
       },
-      incSuspended: {
-        label: 'Include suspended',
+
+      excluded: {
+        label: 'Without',
       },
-      incDeleted: {
-        label: 'Include deleted',
+
+      inclusive: {
+        label: 'Including',
+      },
+
+      exclusive: {
+        label: 'Only',
+      },
+
+      suspended: {
+        label: 'suspended users',
+      },
+
+      deleted: {
+        label: 'deleted users',
       },
     },
 

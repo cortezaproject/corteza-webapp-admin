@@ -1,11 +1,30 @@
 export default {
-  label: 'Applications',
 
   list: {
-    searchForm: {
+    title: 'Applications',
+    loading: 'Loading applications',
+    numFound: `{{0}} application(s) found`,
+
+    filterForm: {
       query: {
         label: 'Filter applications list',
         placeholder: 'Filter applications by name',
+      },
+
+      excluded: {
+        label: 'Without',
+      },
+
+      inclusive: {
+        label: 'Including',
+      },
+
+      exclusive: {
+        label: 'Only',
+      },
+
+      deleted: {
+        label: 'deleted applications',
       },
     },
 

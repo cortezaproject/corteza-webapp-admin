@@ -40,7 +40,8 @@
       edit-route="user.edit"
       :loading-text="$t('loading')"
       :total-text="$t('numFound', [ totalItems ])"
-      :params="params"
+      :paging="paging"
+      :sorting="sorting"
       :items="items"
       :fields="fields"
       :total-items="totalItems"
@@ -51,30 +52,32 @@
         >
           <b-input-group>
             <b-form-input
-              v-model.trim="params.query"
-              :placeholder="$t('searchForm.query.placeholder')"
-              @keyup="search"
+              v-model.trim="filter.query"
+              :placeholder="$t('filterForm.query.placeholder')"
+              @keyup="filterList"
             />
           </b-input-group>
         </b-form-group>
-        <b-form-group
-          class="mt-1"
+        <b-row
+          class="mt-2 mb-0 p-0"
         >
-          <b-form-checkbox
-            v-model="adtParams.incSuspended"
-            class="d-inline mr-2"
-            @change="search"
-          >
-            {{ $t('searchForm.incSuspended.label') }}
-          </b-form-checkbox>
-          <b-form-checkbox
-            v-model="adtParams.incDeleted"
-            class="d-inline mr-2"
-            @change="search"
-          >
-            {{ $t('searchForm.incDeleted.label') }}
-          </b-form-checkbox>
-        </b-form-group>
+          <c-resource-list-status-filter
+            v-model="filter.deleted"
+            :label="$t('filterForm.deleted.label')"
+            :excluded-label="$t('filterForm.excluded.label')"
+            :inclusive-label="$t('filterForm.inclusive.label')"
+            :exclusive-label="$t('filterForm.exclusive.label')"
+            @change="filterList"
+          />
+          <c-resource-list-status-filter
+            v-model="filter.suspended"
+            :label="$t('filterForm.suspended.label')"
+            :excluded-label="$t('filterForm.excluded.label')"
+            :inclusive-label="$t('filterForm.inclusive.label')"
+            :exclusive-label="$t('filterForm.exclusive.label')"
+            @change="filterList"
+          />
+        </b-row>
       </template>
     </c-resource-list>
   </b-container>
@@ -86,7 +89,6 @@ import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
 
 export default {
   name: 'UserList',
-
   mixins: [
     listHelpers,
   ],
@@ -100,9 +102,10 @@ export default {
     return {
       id: 'users',
 
-      adtParams: {
-        incSuspended: true,
-        incDeleted: false,
+      filter: {
+        query: '',
+        suspended: 0,
+        deleted: 0,
       },
 
       fields: [
@@ -129,31 +132,17 @@ export default {
           label: '',
           tdClass: 'text-right',
         },
-      ],
+      ].map(c => ({
+        ...c,
+        // Generate column label translation key
+        label: this.$t(`columns.${c.key}`),
+      })),
     }
   },
 
   methods: {
-    items (ctx) {
-      // Push new router/params
-      this.$router.push({ query: this.params })
-
-      const params = {
-        query: this.params.query,
-
-        ...this.adtParams,
-
-        ...this.stdPagingParams(ctx),
-      }
-
-      return this.$SystemAPI.userList(params).then(({ set, filter } = {}) => {
-        // Update total items counter
-        this.totalItems = filter.count
-
-        return set
-      }).catch((error) => {
-        this.$store.dispatch('ui/appendAlert', error)
-      })
+    items () {
+      return this.procListResults(this.$SystemAPI.userList(this.encodeListParams()))
     },
   },
 }
