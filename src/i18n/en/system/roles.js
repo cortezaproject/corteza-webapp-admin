@@ -49,6 +49,7 @@ export default {
 
     info: {
       title: 'Basic information',
+
       name: 'Role name',
       handle: 'Handle',
 

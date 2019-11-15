@@ -8,7 +8,7 @@
       <b-button-group>
         <b-button
           variant="link"
-          :to="{ name: 'system.user.new' }"
+          :to="{ name: 'system.application.new' }"
         >
           New &blk14;
         </b-button>
@@ -16,7 +16,7 @@
       <b-button-group>
         <permissions-button
           title="Users"
-          resource="system:users:*"
+          resource="system:application:*"
           button-variant="link"
         >
           Permissions &blk14;

@@ -18,6 +18,7 @@
       <b-form-group
         :label="$t('handle')"
         label-cols="2"
+        :class="{ 'mb-0': !role.roleID }"
       >
         <b-form-input
           v-model="role.handle"
@@ -50,24 +51,25 @@
       </b-form-group>
 
       <b-form-group
-        v-if="role.createdAt"
-        :label="$t('createdAt')"
-        label-cols="2"
-      >
-        <b-form-input
-          v-model="role.createdAt"
-          plaintext
-          disabled
-        />
-      </b-form-group>
-
-      <b-form-group
         v-if="role.deletedAt"
         :label="$t('deletedAt')"
         label-cols="2"
       >
         <b-form-input
           v-model="role.deletedAt"
+          plaintext
+          disabled
+        />
+      </b-form-group>
+
+      <b-form-group
+        v-if="role.createdAt"
+        :label="$t('createdAt')"
+        label-cols="2"
+        class="mb-0"
+      >
+        <b-form-input
+          v-model="role.createdAt"
           plaintext
           disabled
         />
@@ -113,7 +115,7 @@ import ConfirmationToggle from 'corteza-webapp-admin/src/components/Confirmation
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 
 export default {
-  name: 'CUserEditorInfo',
+  name: 'CRoleEditorInfo',
 
   i18nOptions: {
     namespaces: [ 'system.roles' ],

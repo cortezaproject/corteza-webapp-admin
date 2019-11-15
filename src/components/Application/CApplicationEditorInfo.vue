@@ -3,16 +3,17 @@
     class="shadow-sm m-2 p-0"
   >
     <b-form
-      @submit.prevent="$emit('submit', user)"
+      @submit.prevent="$emit('submit', application)"
     >
       <b-form-group
-        :label="$t('email')"
+        v-if="application.applicationID"
+        :label="$t('id')"
         label-cols="2"
       >
         <b-form-input
-          v-model="user.email"
-          required
-          type="email"
+          v-model="application.applicationID"
+          plaintext
+          disabled
         />
       </b-form-group>
 
@@ -21,7 +22,7 @@
         label-cols="2"
       >
         <b-form-input
-          v-model="user.name"
+          v-model="application.name"
           required
         />
 
@@ -36,59 +37,48 @@
       </b-form-group>
 
       <b-form-group
-        :label="$t('handle')"
         label-cols="2"
-        :class="{ 'mb-0': !user.userID }"
+        :class="{ 'mb-0': !application.applicationID }"
       >
-        <b-form-input
-          v-model="user.handle"
-        />
+        <b-form-checkbox
+          v-model="application.enabled"
+        >
+          {{ $t('enabled') }}
+        </b-form-checkbox>
       </b-form-group>
 
       <b-form-group
-        v-if="user.updatedAt"
+        v-if="application.updatedAt"
         :label="$t('updatedAt')"
         label-cols="2"
       >
         <b-form-input
-          v-model="user.updatedAt"
+          v-model="application.updatedAt"
           plaintext
           disabled
         />
       </b-form-group>
 
       <b-form-group
-        v-if="user.suspendedAt"
-        :label="$t('suspendedAt')"
-        label-cols="2"
-      >
-        <b-form-input
-          v-model="user.suspendedAt"
-          plaintext
-          disabled
-        />
-      </b-form-group>
-
-      <b-form-group
-        v-if="user.deletedAt"
+        v-if="application.deletedAt"
         :label="$t('deletedAt')"
         label-cols="2"
       >
         <b-form-input
-          v-model="user.deletedAt"
+          v-model="application.deletedAt"
           plaintext
           disabled
         />
       </b-form-group>
 
       <b-form-group
-        v-if="user.createdAt"
+        v-if="application.createdAt"
         :label="$t('createdAt')"
         label-cols="2"
         class="mb-0"
       >
         <b-form-input
-          v-model="user.createdAt"
+          v-model="application.createdAt"
           plaintext
           disabled
         />
@@ -106,23 +96,14 @@
         class="float-right"
         :processing="processing"
         :success="success"
-        @submit="$emit('submit', user)"
+        @submit="$emit('submit', application)"
       />
 
       <confirmation-toggle
-        v-if="user && user.userID"
+        v-if="application && application.applicationID"
         @confirmed="$emit('delete')"
       >
         {{ getDeleteStatus }}
-      </confirmation-toggle>
-
-      <confirmation-toggle
-        v-if="user && user.userID"
-        class="ml-2"
-        cta-class="secondary"
-        @confirmed="$emit('status')"
-      >
-        {{ getSuspendStatus }}
       </confirmation-toggle>
     </template>
   </b-card>
@@ -133,10 +114,10 @@ import ConfirmationToggle from 'corteza-webapp-admin/src/components/Confirmation
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 
 export default {
-  name: 'CUserEditorInfo',
+  name: 'CApplicationEditorInfo',
 
   i18nOptions: {
-    namespaces: [ 'system.users' ],
+    namespaces: [ 'system.applications' ],
     keyPrefix: 'editor.info',
   },
 
@@ -146,7 +127,7 @@ export default {
   },
 
   props: {
-    user: {
+    application: {
       type: Object,
       required: true,
     },
@@ -164,11 +145,7 @@ export default {
 
   computed: {
     getDeleteStatus () {
-      return this.user.deletedAt ? this.$t('undelete') : this.$t('delete')
-    },
-
-    getSuspendStatus () {
-      return this.user.suspendedAt ? this.$t('unsuspend') : this.$t('suspend')
+      return this.application.deletedAt ? this.$t('undelete') : this.$t('delete')
     },
   },
 }

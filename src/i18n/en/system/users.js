@@ -50,6 +50,7 @@ export default {
 
     info: {
       title: 'Basic information',
+
       email: 'Email',
       name: 'Full name',
       handle: 'Handle',

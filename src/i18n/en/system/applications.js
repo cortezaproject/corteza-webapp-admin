@@ -39,6 +39,51 @@ export default {
     },
   },
 
+  editor: {
+    title: 'Edit application',
+
+    info: {
+      title: 'Basic information',
+
+      id: 'ID',
+      name: 'Name',
+      enabled: 'Enabled',
+
+      delete: 'Delete',
+      undelete: 'Undelete',
+      deletedAt: 'Deleted at',
+
+      updatedAt: 'Updated at',
+      createdAt: 'Created at',
+
+      submit: 'Submit',
+    },
+
+    unify: {
+      title: 'Unify app selector',
+
+      icon: {
+        label: 'Icon',
+        description: 'Icon used in Unify tab',
+      },
+      logo: {
+        label: 'Logo',
+        description: 'Logo used in Unify application selector',
+      },
+      url: {
+        label: 'URL',
+        description: 'Application URL',
+      },
+      listed: 'Listed',
+      config: {
+        label: 'Configuration',
+        description: 'Application configuration (JSON)',
+      },
+
+      submit: 'Submit',
+    },
+  },
+
   ____legacy: {
     information: 'Application information',
     enabled: 'Enabled',
