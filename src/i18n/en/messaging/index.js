@@ -1,11 +1,13 @@
-import applications from './applications'
-import users from './users'
-import roles from './roles'
-import scripts from './scripts'
+import settings from './settings'
+import permissions from './permissions'
 
 export default {
-  'system.applications': applications,
-  'system.users': users,
-  'system.roles': roles,
-  'system.scripts': scripts,
+  messaging: {
+    navGroup: {
+      label: 'Messaging',
+    },
+  },
+
+  'messaging.settings': settings,
+  'messaging.permissions': permissions,
 }

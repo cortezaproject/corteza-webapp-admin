@@ -4,7 +4,7 @@
   >
     <b-list-group>
       <small class="ml-1 mt-3 font-weight-light text-uppercase">
-        System &blk14;
+        {{ $t('system:navGroup.label') }}
       </small>
       <c-main-nav-item
         :label="$t('system.stats:navItem.label')"
@@ -51,7 +51,7 @@
 
     <b-list-group>
       <small class="ml-1 mt-3 font-weight-light text-uppercase">
-        Compose &blk14;
+        {{ $t('compose:navGroup.label') }}
       </small>
 
       <c-main-nav-item
@@ -69,7 +69,7 @@
 
     <b-list-group>
       <small class="ml-1 mt-3 font-weight-light text-uppercase">
-        Messaging &blk14;
+        {{ $t('messaging:navGroup.label') }}
       </small>
 
       <c-main-nav-item
