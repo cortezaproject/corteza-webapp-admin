@@ -11,7 +11,9 @@
 
     <c-the-header />
 
+    <!-- do not show the main section if user is not authenticated -->
     <div
+      v-if="$auth.is()"
       class="d-flex flex-row overflow-hidden"
     >
       <c-the-main-nav />
@@ -31,6 +33,7 @@ import CTheAlertContainer from 'corteza-webapp-admin/src/components/CTheAlertCon
 import CTheHeader from 'corteza-webapp-admin/src/components/CTheHeader'
 import CTheMainNav from 'corteza-webapp-admin/src/components/CTheMainNav'
 import { PermissionsModal } from 'corteza-webapp-common/components'
+import { mapActions } from 'vuex'
 
 export default {
   components: {
@@ -40,11 +43,32 @@ export default {
     CTheMainNav,
   },
 
-  data () {
-    return {
+  computed: {
+    ...mapActions({
+      incLoader: 'ui/incLoader',
+      decLoader: 'ui/decLoader',
+    }),
+
+    frontendVersion () {
       /* eslint-disable no-undef */
-      frontendVersion: VERSION,
-    }
+      return VERSION
+    },
+  },
+
+  /**
+   * This is the base admin layout
+   *
+   * Redirect to /auth if user is not authenticated
+   */
+  beforeCreate () {
+    this.incLoader()
+    this.$auth.check(this.$SystemAPI).then(() => {
+      //
+    }).catch((e) => {
+      this.$auth.open()
+    }).finally(() => {
+      this.incLoader()
+    })
   },
 }
 </script>
