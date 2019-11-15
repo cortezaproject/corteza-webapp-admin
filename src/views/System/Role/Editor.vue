@@ -10,7 +10,7 @@
       >
         <b-button
           variant="link"
-          :to="{ name: 'role.new' }"
+          :to="{ name: 'system.role.new' }"
         >
           New &blk14;
         </b-button>
@@ -152,7 +152,7 @@ export default {
         this.$SystemAPI.roleCreate(role)
           .then(({ roleID }) => {
             this.animateSuccess('info')
-            this.$router.push({ name: 'role.edit', params: { roleID } })
+            this.$router.push({ name: 'system.role.edit', params: { roleID } })
           })
           .catch(this.stdReject)
           .finally(() => {

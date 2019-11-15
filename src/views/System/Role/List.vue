@@ -8,15 +8,15 @@
       <b-button-group>
         <b-button
           variant="link"
-          :to="{ name: 'user.new' }"
+          :to="{ name: 'system.role.new' }"
         >
           New &blk14;
         </b-button>
       </b-button-group>
       <b-button-group>
         <permissions-button
-          title="Users"
-          resource="system:users:*"
+          title="Roles"
+          resource="system:roles:*"
           button-variant="link"
         >
           Permissions &blk14;
@@ -35,8 +35,8 @@
       </b-dropdown>
     </c-content-header>
     <c-resource-list
-      primary-key="applicationID"
-      edit-route="application.edit"
+      primary-key="roleID"
+      edit-route="system.role.edit"
       :loading-text="$t('loading')"
       :total-text="$t('numFound', [ totalItems ])"
       :paging="paging"
@@ -45,9 +45,9 @@
       :fields="fields"
       :total-items="totalItems"
     >
-      <template v-slot:filter>
+      <template #filter>
         <b-form-group
-          class="p-0 m-0 col-6"
+          class="p-0 m-0"
         >
           <b-input-group>
             <b-form-input
@@ -63,6 +63,14 @@
           <c-resource-list-status-filter
             v-model="filter.deleted"
             :label="$t('filterForm.deleted.label')"
+            :excluded-label="$t('filterForm.excluded.label')"
+            :inclusive-label="$t('filterForm.inclusive.label')"
+            :exclusive-label="$t('filterForm.exclusive.label')"
+            @change="filterList"
+          />
+          <c-resource-list-status-filter
+            v-model="filter.archived"
+            :label="$t('filterForm.archived.label')"
             :excluded-label="$t('filterForm.excluded.label')"
             :inclusive-label="$t('filterForm.inclusive.label')"
             :exclusive-label="$t('filterForm.exclusive.label')"
@@ -84,16 +92,17 @@ export default {
   ],
 
   i18nOptions: {
-    namespaces: [ 'system.applications' ],
+    namespaces: [ 'system.roles' ],
     keyPrefix: 'list',
   },
 
   data () {
     return {
-      id: 'applications',
+      id: 'roles',
 
       filter: {
         query: '',
+        archived: 0,
         deleted: 0,
       },
 
@@ -103,15 +112,18 @@ export default {
           sortable: true,
         },
         {
-          key: 'enabled',
+          key: 'handle',
+          sortable: true,
         },
         {
           key: 'createdAt',
+          label: 'Created',
           sortable: true,
           formatter: (v) => moment(v).fromNow(),
         },
         {
           key: 'actions',
+          label: '',
           tdClass: 'text-right',
         },
       ].map(c => ({
@@ -124,7 +136,7 @@ export default {
 
   methods: {
     items () {
-      return this.procListResults(this.$SystemAPI.applicationList(this.encodeListParams()))
+      return this.procListResults(this.$SystemAPI.roleList(this.encodeListParams()))
     },
   },
 }

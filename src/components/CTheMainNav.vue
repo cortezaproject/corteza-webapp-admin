@@ -8,43 +8,43 @@
       </small>
       <c-main-nav-item
         :label="$t('system.stats:navItem.label')"
-        :to="{ name: 'stats' }"
+        :to="{ name: 'system.stats' }"
         :icon="['fas', 'th-large']"
       />
 
       <c-main-nav-item
         :label="$t('system.users:navItem.label')"
-        :to="{ name: 'user.list' }"
+        :to="{ name: 'system.user' }"
         :icon="['fas', 'users']"
       />
 
       <c-main-nav-item
         :label="$t('system.roles:navItem.label')"
-        :to="{ name: 'role.list' }"
+        :to="{ name: 'system.role' }"
         :icon="['fas', 'hat-cowboy']"
       />
 
       <c-main-nav-item
         :label="$t('system.applications:navItem.label')"
-        :to="{ name: 'application.list' }"
+        :to="{ name: 'system.application' }"
         :icon="['fas', 'th-large']"
       />
 
       <c-main-nav-item
         :label="$t('system.scripts:navItem.label')"
-        :to="{ name: 'script.list' }"
+        :to="{ name: 'system.script' }"
         :icon="['fas', 'magic']"
       />
 
       <c-main-nav-item
-        :label="$t('system-settings:navItem.label')"
-        :to="{ name: 'settings' }"
+        :label="$t('system.settings:navItem.label')"
+        :to="{ name: 'system.settings' }"
         :icon="['fas', 'cogs']"
       />
 
       <c-main-nav-item
-        :label="$t('system-permissions:navItem.label')"
-        :to="{ name: 'permissions' }"
+        :label="$t('system.permissions:navItem.label')"
+        :to="{ name: 'system.permissions' }"
         :icon="['fas', 'lock']"
       />
     </b-list-group>

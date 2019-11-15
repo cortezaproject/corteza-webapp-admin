@@ -38,6 +38,7 @@ export default {
     columns: {
       name: 'Name',
       createdAt: 'Created',
+      handle: 'Handle',
       enabled: 'Enabled',
       actions: '',
     },

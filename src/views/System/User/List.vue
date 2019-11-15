@@ -8,15 +8,15 @@
       <b-button-group>
         <b-button
           variant="link"
-          :to="{ name: 'role.new' }"
+          :to="{ name: 'system.user.new' }"
         >
           New &blk14;
         </b-button>
       </b-button-group>
       <b-button-group>
         <permissions-button
-          title="Roles"
-          resource="system:roles:*"
+          title="Users"
+          resource="system:users:*"
           button-variant="link"
         >
           Permissions &blk14;
@@ -34,9 +34,10 @@
         </b-dropdown-item-button>
       </b-dropdown>
     </c-content-header>
+
     <c-resource-list
-      primary-key="roleID"
-      edit-route="role.edit"
+      primary-key="userID"
+      edit-route="system.user.edit"
       :loading-text="$t('loading')"
       :total-text="$t('numFound', [ totalItems ])"
       :paging="paging"
@@ -69,8 +70,8 @@
             @change="filterList"
           />
           <c-resource-list-status-filter
-            v-model="filter.archived"
-            :label="$t('filterForm.archived.label')"
+            v-model="filter.suspended"
+            :label="$t('filterForm.suspended.label')"
             :excluded-label="$t('filterForm.excluded.label')"
             :inclusive-label="$t('filterForm.inclusive.label')"
             :exclusive-label="$t('filterForm.exclusive.label')"
@@ -87,28 +88,33 @@ import * as moment from 'moment'
 import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
 
 export default {
+  name: 'UserList',
   mixins: [
     listHelpers,
   ],
 
   i18nOptions: {
-    namespaces: [ 'system.roles' ],
+    namespaces: [ 'system.users' ],
     keyPrefix: 'list',
   },
 
   data () {
     return {
-      id: 'roles',
+      id: 'users',
 
       filter: {
         query: '',
-        archived: 0,
+        suspended: 0,
         deleted: 0,
       },
 
       fields: [
         {
           key: 'name',
+          sortable: true,
+        },
+        {
+          key: 'email',
           sortable: true,
         },
         {
@@ -136,7 +142,7 @@ export default {
 
   methods: {
     items () {
-      return this.procListResults(this.$SystemAPI.roleList(this.encodeListParams()))
+      return this.procListResults(this.$SystemAPI.userList(this.encodeListParams()))
     },
   },
 }

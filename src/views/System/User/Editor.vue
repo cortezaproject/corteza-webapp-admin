@@ -10,7 +10,7 @@
       >
         <b-button
           variant="link"
-          :to="{ name: 'user.new' }"
+          :to="{ name: 'system.user.new' }"
         >
           New &blk14;
         </b-button>
@@ -185,7 +185,7 @@ export default {
         this.$SystemAPI.userCreate(payload)
           .then(({ userID }) => {
             this.animateSuccess('info')
-            this.$router.push({ name: 'user.edit', params: { userID } })
+            this.$router.push({ name: 'system.user.edit', params: { userID } })
           })
           .catch(this.stdReject)
           .finally(() => {

@@ -8,7 +8,7 @@
       <b-button-group>
         <b-button
           variant="link"
-          :to="{ name: 'user.new' }"
+          :to="{ name: 'system.script.new' }"
         >
           New &blk14;
         </b-button>
@@ -34,12 +34,10 @@
         </b-dropdown-item-button>
       </b-dropdown>
     </c-content-header>
-
     <c-resource-list
-      primary-key="userID"
-      edit-route="user.edit"
+      primary-key="scriptID"
+      edit-route="system.script.edit"
       :loading-text="$t('loading')"
-      :total-text="$t('numFound', [ totalItems ])"
       :paging="paging"
       :sorting="sorting"
       :items="items"
@@ -48,7 +46,7 @@
     >
       <template #filter>
         <b-form-group
-          class="p-0 m-0"
+          class="p-0 m-0 col-6"
         >
           <b-input-group>
             <b-form-input
@@ -58,26 +56,6 @@
             />
           </b-input-group>
         </b-form-group>
-        <b-row
-          class="mt-2 mb-0 p-0"
-        >
-          <c-resource-list-status-filter
-            v-model="filter.deleted"
-            :label="$t('filterForm.deleted.label')"
-            :excluded-label="$t('filterForm.excluded.label')"
-            :inclusive-label="$t('filterForm.inclusive.label')"
-            :exclusive-label="$t('filterForm.exclusive.label')"
-            @change="filterList"
-          />
-          <c-resource-list-status-filter
-            v-model="filter.suspended"
-            :label="$t('filterForm.suspended.label')"
-            :excluded-label="$t('filterForm.excluded.label')"
-            :inclusive-label="$t('filterForm.inclusive.label')"
-            :exclusive-label="$t('filterForm.exclusive.label')"
-            @change="filterList"
-          />
-        </b-row>
       </template>
     </c-resource-list>
   </b-container>
@@ -88,24 +66,21 @@ import * as moment from 'moment'
 import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
 
 export default {
-  name: 'UserList',
   mixins: [
     listHelpers,
   ],
 
   i18nOptions: {
-    namespaces: [ 'system.users' ],
+    namespaces: [ 'system.scripts' ],
     keyPrefix: 'list',
   },
 
   data () {
     return {
-      id: 'users',
+      id: 'automationScripts',
 
       filter: {
         query: '',
-        suspended: 0,
-        deleted: 0,
       },
 
       fields: [
@@ -114,16 +89,11 @@ export default {
           sortable: true,
         },
         {
-          key: 'email',
-          sortable: true,
-        },
-        {
           key: 'handle',
           sortable: true,
         },
         {
           key: 'createdAt',
-          label: 'Created',
           sortable: true,
           formatter: (v) => moment(v).fromNow(),
         },
@@ -142,7 +112,7 @@ export default {
 
   methods: {
     items () {
-      return this.procListResults(this.$SystemAPI.userList(this.encodeListParams()))
+      return this.procListResults(this.$SystemAPI.automationScriptList(this.encodeListParams()))
     },
   },
 }

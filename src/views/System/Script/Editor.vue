@@ -8,7 +8,7 @@
       <b-button-group>
         <b-button
           variant="link"
-          :to="{ name: 'user.new' }"
+          :to="{ name: 'system.user.new' }"
         >
           New &blk14;
         </b-button>
