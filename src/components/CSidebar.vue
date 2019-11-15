@@ -59,6 +59,7 @@ export default {
   transition: all 0.3s ease;
 
   .switcher {
+    z-index: 9999;
     bottom: 0;
     cursor: pointer;
   }

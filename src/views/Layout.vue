@@ -2,12 +2,11 @@
   <div
     class="d-flex flex-column vh-100 bg-light"
   >
-    <span
-      class="p-1 position-fixed text-black text-sm"
-      style="bottom: 0px; right: 0px; z-index: 0; opacity: .3"
+    <small
+      class="p-1 text-secondary position-absolute version"
     >
       {{ frontendVersion }}
-    </span>
+    </small>
 
     <c-the-header />
 
@@ -72,3 +71,9 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+  .version {
+    bottom: 0;
+    right: 0;
+  }
+</style>

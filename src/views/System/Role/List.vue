@@ -58,10 +58,12 @@
           </b-input-group>
         </b-form-group>
         <b-row
-          class="mt-2 mb-0 p-0"
+          no-gutters
+          class="mt-2"
         >
           <c-resource-list-status-filter
             v-model="filter.deleted"
+            class="mb-1 mb-lg-0"
             :label="$t('filterForm.deleted.label')"
             :excluded-label="$t('filterForm.excluded.label')"
             :inclusive-label="$t('filterForm.inclusive.label')"
@@ -70,6 +72,7 @@
           />
           <c-resource-list-status-filter
             v-model="filter.archived"
+            class="col-12 col-lg-6"
             :label="$t('filterForm.archived.label')"
             :excluded-label="$t('filterForm.excluded.label')"
             :inclusive-label="$t('filterForm.inclusive.label')"

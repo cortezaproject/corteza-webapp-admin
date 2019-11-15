@@ -46,7 +46,7 @@
     >
       <template #filter>
         <b-form-group
-          class="p-0 m-0 col-6"
+          class="p-0 m-0"
         >
           <b-input-group>
             <b-form-input
