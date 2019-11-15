@@ -85,28 +85,28 @@ export default [
       combo('system', 'application'),
       combo('system', 'script'),
 
-      r('system.settings', 'settings', 'System/Settings'),
+      r('system.settings', 'settings', 'System/Settings/Index'),
       r('system.settings.auth', 'settings/auth', 'System/Settings/Auth'),
       r('system.settings.external-auth', 'settings/external-auth', 'System/Settings/ExternalAuth'),
       r('system.settings.email', 'settings/email', 'System/Settings/Email'),
 
-      r('system.permissions', 'permissions', 'System/Permissions'),
+      r('system.permissions', 'permissions', 'System/Permissions/Index'),
     ],
   },
 
   {
     ...wrap(`compose`, `/compose`),
     children: [
-      r('compose.settings', 'settings', 'Compose/Settings'),
-      r('compose.permissions', 'permissions', 'Compose/Permissions'),
+      r('compose.settings', 'settings', 'Compose/Settings/Index'),
+      r('compose.permissions', 'permissions', 'Compose/Permissions/Index'),
     ],
   },
 
   {
     ...wrap(`messaging`, `/messaging`),
     children: [
-      r('messaging.settings', 'settings', 'Messaging/Settings'),
-      r('messaging.permissions', 'permissions', 'Messaging/Permissions'),
+      r('messaging.settings', 'settings', 'Messaging/Settings/Index'),
+      r('messaging.permissions', 'permissions', 'Messaging/Permissions/Index'),
     ],
   },
 

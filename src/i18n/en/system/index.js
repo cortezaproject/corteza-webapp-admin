@@ -22,4 +22,3 @@ export default {
   'system.settings': settings,
   'system.permissions': permissions,
 }
-

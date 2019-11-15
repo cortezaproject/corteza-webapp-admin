@@ -87,8 +87,8 @@
   </c-sidebar>
 </template>
 <script>
-import CMainNavItem from '../components/CMainNavItem'
-import CSidebar from '../components/CSidebar'
+import CMainNavItem from 'corteza-webapp-admin/src/components/CMainNavItem'
+import CSidebar from 'corteza-webapp-admin/src/components/CSidebar'
 
 export default {
   components: {

@@ -27,9 +27,9 @@
   </div>
 </template>
 <script>
-import CTheAlertContainer from '../components/CTheAlertContainer'
-import CTheHeader from '../components/CTheHeader'
-import CTheMainNav from '../components/CTheMainNav'
+import CTheAlertContainer from 'corteza-webapp-admin/src/components/CTheAlertContainer'
+import CTheHeader from 'corteza-webapp-admin/src/components/CTheHeader'
+import CTheMainNav from 'corteza-webapp-admin/src/components/CTheMainNav'
 import { PermissionsModal } from 'corteza-webapp-common/components'
 
 export default {
