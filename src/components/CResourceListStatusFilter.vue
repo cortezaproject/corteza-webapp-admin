@@ -4,9 +4,9 @@
       v-model="$attrs.value"
       v-bind="$attrs"
       :options="[
-        { value: 0, text: $attrs.excludedLabel || 'excluded' },
-        { value: 1, text: $attrs.inclusiveLabel || 'inclusive' },
-        { value: 2, text: $attrs.exclusiveLabel || 'exclusive' }
+        { value: 0, text: $attrs['excluded-label'] || 'excluded' },
+        { value: 1, text: $attrs['inclusive-label'] || 'inclusive' },
+        { value: 2, text: $attrs['exclusive-label'] || 'exclusive' }
       ]"
       buttons
       button-variant="outline-secondary"
