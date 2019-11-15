@@ -20,7 +20,7 @@
         :items="items"
         :fields="fields"
       >
-        <template v-slot:table-busy>
+        <template #table-busy>
           <div class="text-center m-5">
             <div>
               <b-spinner
@@ -33,7 +33,7 @@
         </template>
         >
 
-        <template v-slot:cell(actions)="row">
+        <template #cell(actions)="row">
           <b-button
             size="sm"
             variant="link"
@@ -50,7 +50,7 @@
     <!--
       Card header
     -->
-    <template v-slot:header>
+    <template #header>
       <b-container
         class="p-0"
         fluid
@@ -77,7 +77,7 @@
     <!--
       Card footer
     -->
-    <template v-slot:footer>
+    <template #footer>
       <b-pagination-nav
         v-model="paging.page"
         use-router
