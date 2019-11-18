@@ -12,6 +12,7 @@ import {
   faAngleDoubleRight,
   faPowerOff,
   faCheck,
+  faTachometerAlt,
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
@@ -26,5 +27,6 @@ library.add(
   faAngleDoubleLeft,
   faAngleDoubleRight,
   faPowerOff,
-  faCheck
+  faCheck,
+  faTachometerAlt,
 )

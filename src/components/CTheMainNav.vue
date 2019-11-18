@@ -1,16 +1,19 @@
 <template>
   <c-sidebar
-    class="overflow-auto"
+    class="overflow-auto pt-5"
   >
+    <b-list-group>
+      <c-main-nav-item
+        :label="$t('dashboard:navItem.label')"
+        :to="{ name: 'dashboard' }"
+        :icon="['fas', 'tachometer-alt']"
+      />
+    </b-list-group>
+
     <b-list-group>
       <small class="ml-1 mt-3 font-weight-light text-uppercase">
         {{ $t('system:navGroup.label') }}
       </small>
-      <c-main-nav-item
-        :label="$t('system.stats:navItem.label')"
-        :to="{ name: 'system.stats' }"
-        :icon="['fas', 'th-large']"
-      />
 
       <c-main-nav-item
         :label="$t('system.users:navItem.label')"

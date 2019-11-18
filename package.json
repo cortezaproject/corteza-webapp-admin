@@ -23,6 +23,7 @@
     "@panter/vue-i18next": "^0.15.0",
     "axios": "^0.18.1",
     "bootstrap-vue": "^2.0.0-rc.20",
+    "chart.js": "^2.9.3",
     "corteza-webapp-common": "cortezaproject/corteza-webapp-common.git#master",
     "flush-promises": "^1.0.2",
     "fstream": "^1.0.12",

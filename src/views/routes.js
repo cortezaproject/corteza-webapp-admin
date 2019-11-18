@@ -76,41 +76,45 @@ export default [
     name: 'layout',
     path: '/',
     component: () => import(`./Layout.vue`),
-    children: [{
-      ...wrap(`system`, `/system`),
+    redirect: 'dashboard',
+    children: [
+      r('dashboard', 'dashboard', 'Dashboard'),
+      {
+        ...wrap(`system`, `/system`),
 
-      children: [
-        r('system.stats', 'stats', 'System/Stats'),
+        children: [
+          r('system.stats', 'stats', 'System/Stats'),
 
-        combo('system', 'user'),
-        combo('system', 'role'),
-        combo('system', 'application'),
-        combo('system', 'script'),
+          combo('system', 'user'),
+          combo('system', 'role'),
+          combo('system', 'application'),
+          combo('system', 'script'),
 
-        r('system.settings', 'settings', 'System/Settings/Index'),
-        r('system.settings.auth', 'settings/auth', 'System/Settings/Auth'),
-        r('system.settings.external-auth', 'settings/external-auth', 'System/Settings/ExternalAuth'),
-        r('system.settings.email', 'settings/email', 'System/Settings/Email'),
+          r('system.settings', 'settings', 'System/Settings/Index'),
+          r('system.settings.auth', 'settings/auth', 'System/Settings/Auth'),
+          r('system.settings.external-auth', 'settings/external-auth', 'System/Settings/ExternalAuth'),
+          r('system.settings.email', 'settings/email', 'System/Settings/Email'),
 
-        r('system.permissions', 'permissions', 'System/Permissions/Index'),
-      ],
-    },
+          r('system.permissions', 'permissions', 'System/Permissions/Index'),
+        ],
+      },
 
-    {
-      ...wrap(`compose`, `/compose`),
-      children: [
-        r('compose.settings', 'settings', 'Compose/Settings/Index'),
-        r('compose.permissions', 'permissions', 'Compose/Permissions/Index'),
-      ],
-    },
+      {
+        ...wrap(`compose`, `/compose`),
+        children: [
+          r('compose.settings', 'settings', 'Compose/Settings/Index'),
+          r('compose.permissions', 'permissions', 'Compose/Permissions/Index'),
+        ],
+      },
 
-    {
-      ...wrap(`messaging`, `/messaging`),
-      children: [
-        r('messaging.settings', 'settings', 'Messaging/Settings/Index'),
-        r('messaging.permissions', 'permissions', 'Messaging/Permissions/Index'),
-      ],
-    }],
+      {
+        ...wrap(`messaging`, `/messaging`),
+        children: [
+          r('messaging.settings', 'settings', 'Messaging/Settings/Index'),
+          r('messaging.permissions', 'permissions', 'Messaging/Permissions/Index'),
+        ],
+      },
+    ],
   },
 
   r('auth', '/auth', 'Auth'),
