@@ -1,12 +1,4 @@
 export default {
-  navigation: {
-    stats: 'Statistics',
-    users: 'Users',
-    roles: 'Roles',
-    permissions: 'Permissions',
-    automation: 'Automation',
-    settings: 'Settings',
-  },
 
   permission: {
     clearFilter: 'Clear filter',
