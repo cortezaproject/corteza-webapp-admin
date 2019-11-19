@@ -9,7 +9,10 @@
         :label="$t('ui.title')"
         label-size="lg"
       >
-        <b-form-group label-cols="2">
+        <b-form-group
+          label-cols="2"
+          class="mb-0"
+        >
           <b-form-checkbox
             v-model="basic['ui.namespace-switcher.enabled']"
             :value="true"
@@ -35,6 +38,7 @@
       <b-form-group
         :label="$t('attachments.page')"
         label-size="lg"
+        class="mb-0"
       >
         <b-form-group
           :label="$t('attachments.max-size')"
@@ -51,8 +55,9 @@
           :label="$t('attachments.type.whitelist')"
           :description="$t('attachments.type.description')"
           label-cols="2"
+          class="mb-0"
         >
-          <b-input-group class="m-0">
+          <b-input-group>
             <b-form-input v-model="pageAttachmentWhitelist" />
           </b-input-group>
         </b-form-group>
@@ -63,6 +68,7 @@
       <b-form-group
         :label="$t('attachments.record')"
         label-size="lg"
+        class="mb-0"
       >
         <b-form-group
           :label="$t('attachments.max-size')"
@@ -79,6 +85,7 @@
           :label="$t('attachments.type.whitelist')"
           :description="$t('attachments.type.description')"
           label-cols="2"
+          class="mb-0"
         >
           <b-input-group class="m-0">
             <b-form-input v-model="recordAttachmentWhitelist" />
@@ -139,7 +146,7 @@ export default {
   computed: {
     pageAttachmentWhitelist: {
       get () {
-        return (this.basic['page.attachments.mimetypes'] || []).join(', ')
+        return (this.basic['page.attachments.mimetypes'] || []).join(',')
       },
 
       set (value) {
@@ -149,7 +156,7 @@ export default {
 
     recordAttachmentWhitelist: {
       get () {
-        return (this.basic['record.attachments.mimetypes'] || []).join(', ')
+        return (this.basic['record.attachments.mimetypes'] || []).join(',')
       },
 
       set (value) {

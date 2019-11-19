@@ -11,7 +11,9 @@ export default {
 
       ui: {
         title: 'User Interface',
-        'namespace-switcher': 'Enable namespace switcher',
+        'namespace-switcher': {
+          title: 'Enable namespace switcher',
+        },
       },
       attachments: {
         page: 'Page attachments',
