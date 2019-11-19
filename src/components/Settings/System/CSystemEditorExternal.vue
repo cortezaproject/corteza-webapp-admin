@@ -76,8 +76,8 @@
 
 <script>
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
-import OidcExternal from 'corteza-webapp-admin/src/components/settings/system/auth/ExternalOIDC'
-import StandardExternal from 'corteza-webapp-admin/src/components/settings/system/auth/ExternalStd'
+import OidcExternal from 'corteza-webapp-admin/src/components/Settings/System/Auth/ExternalOIDC'
+import StandardExternal from 'corteza-webapp-admin/src/components/Settings/System/Auth/ExternalStd'
 
 export default {
   name: 'CSystemEditorExternal',

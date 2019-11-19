@@ -30,9 +30,9 @@
 </template>
 <script>
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
-import CSystemEditorAuth from 'corteza-webapp-admin/src/components/settings/system/CSystemEditorAuth'
-import CSystemEditorEmail from 'corteza-webapp-admin/src/components/settings/system/CSystemEditorEmail'
-import CSystemEditorExternal from 'corteza-webapp-admin/src/components/settings/system/CSystemEditorExternal'
+import CSystemEditorAuth from 'corteza-webapp-admin/src/components/Settings/System/CSystemEditorAuth'
+import CSystemEditorEmail from 'corteza-webapp-admin/src/components/Settings/System/CSystemEditorEmail'
+import CSystemEditorExternal from 'corteza-webapp-admin/src/components/Settings/System/CSystemEditorExternal'
 
 export default {
   i18nOptions: {

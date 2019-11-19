@@ -17,7 +17,7 @@
 
 <script>
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
-import CComposeEditorBasic from 'corteza-webapp-admin/src/components/settings/compose/CComposeEditorBasic'
+import CComposeEditorBasic from 'corteza-webapp-admin/src/components/Settings/Compose/CComposeEditorBasic'
 
 export default {
   i18nOptions: {

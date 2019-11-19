@@ -17,7 +17,7 @@
 
 <script>
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
-import CMessagingEditorBasic from 'corteza-webapp-admin/src/components/settings/messaging/CMessagingEditorBasic'
+import CMessagingEditorBasic from 'corteza-webapp-admin/src/components/Settings/Messaging/CMessagingEditorBasic'
 
 export default {
   i18nOptions: {
