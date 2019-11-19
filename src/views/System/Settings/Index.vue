@@ -125,7 +125,7 @@ export default {
       })
 
       this.$SystemAPI.settingsUpdate({ values })
-        .then(settings => {
+        .then(() => {
           this.animateSuccess('auth')
         })
         .catch(this.stdReject)
@@ -142,7 +142,7 @@ export default {
       })
 
       this.$SystemAPI.settingsUpdate({ values })
-        .then(settings => {
+        .then(() => {
           this.animateSuccess('email')
         })
         .catch(this.stdReject)
@@ -155,7 +155,7 @@ export default {
       this.external.processing = true
 
       this.$SystemAPI.settingsUpdate({ values: external })
-        .then(settings => {
+        .then(() => {
           this.animateSuccess('external')
         })
         .catch(this.stdReject)
