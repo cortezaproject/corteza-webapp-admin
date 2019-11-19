@@ -1,6 +1,7 @@
 <template>
   <b-form-group
-    :label="title"
+    v-if="value.enabled"
+    :label="`${title}: ${value.handle}`"
     label-size="lg"
   >
     <b-form-group label-cols="2">
@@ -9,12 +10,33 @@
         :value="true"
         :unchecked-value="false"
       >
-        {{ $t('settings.system.auth.external-providers.provider-enabled') }}
+        {{ $t('provider-enabled') }}
       </b-form-checkbox>
     </b-form-group>
     <b-form-group
       v-if="value.enabled"
-      :label="$t('settings.system.auth.external-providers.client-key')"
+      :label="$t('handle')"
+      label-cols="2"
+    >
+      <b-input-group>
+        <b-form-input
+          v-model="value.handle"
+          :formatter="alphanum"
+        />
+      </b-input-group>
+    </b-form-group>
+    <b-form-group
+      v-if="value.enabled"
+      :label="$t('issuer')"
+      label-cols="2"
+    >
+      <b-input-group>
+        <b-form-input v-model="value.issuer" />
+      </b-input-group>
+    </b-form-group>
+    <b-form-group
+      v-if="value.enabled"
+      :label="$t('key')"
       label-cols="2"
     >
       <b-input-group>
@@ -23,7 +45,7 @@
     </b-form-group>
     <b-form-group
       v-if="value.enabled"
-      :label="$t('settings.system.auth.external-providers.secret')"
+      :label="$t('secret')"
       label-cols="2"
     >
       <b-input-group>
@@ -32,10 +54,10 @@
     </b-form-group>
   </b-form-group>
 </template>
-
 <script>
+
 export default {
-  name: 'StandardExternalAuthProvider',
+  name: 'OIDCExternalAuthProvider',
 
   props: {
     title: {
@@ -46,7 +68,12 @@ export default {
     value: {
       type: Object,
       required: true,
-      default: () => ({}),
+    },
+  },
+
+  methods: {
+    alphanum (v) {
+      return v.replace(/[^a-zA-Z0-9\-_]+/, '')
     },
   },
 }
