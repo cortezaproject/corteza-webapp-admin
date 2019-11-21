@@ -41,14 +41,14 @@
         >
           <b-col
             cols="3"
-            class="border-bottom py-2 text-left font-weight-bold"
+            class="py-2 text-left font-weight-bold"
           >
             {{ getTranslation(resource) }}
           </b-col>
           <b-col
             v-for="role in roles"
             :key="role.roleID"
-            class="border-bottom border-left py-2 not-allowed"
+            class="py-2 not-allowed"
           />
         </b-row>
         <b-row
@@ -63,18 +63,18 @@
             {{ getTranslation(resource, operation) }}
           </b-col>
           <b-col
-            v-for="role in rolePermissions"
+            v-for="role in roles"
             :key="role.roleID"
             class="border-bottom border-left py-2 pointer active-cell"
-            @click="ruleChange($event, role, `${resource}${operation}`)"
+            @click="ruleChange($event, role.roleID, `${resource}${operation}`)"
           >
             <font-awesome-icon
-              v-if="role.rules[`${resource}${operation}`] === 'allow'"
+              v-if="checkRule(role.roleID, `${resource}${operation}`, 'allow')"
               :icon="['fas', 'check']"
               class="text-success"
             />
             <font-awesome-icon
-              v-else-if="role.rules[`${resource}${operation}`] === 'deny'"
+              v-if="checkRule(role.roleID, `${resource}${operation}`, 'deny')"
               :icon="['fas', 'times']"
               class="text-danger"
             />
@@ -182,8 +182,12 @@ export default {
   },
 
   methods: {
-    ruleChange (event, role, permission) {
-      let rule = role.rules[permission]
+    checkRule (roleID, permission, access) {
+      return this.rolePermissions.find(r => r.roleID === roleID).rules[permission] === access
+    },
+
+    ruleChange (event, roleID, permission) {
+      let rule = this.rolePermissions.find(r => r.roleID === roleID).rules[permission]
 
       if (event.altKey) {
         if (rule === 'deny') {
@@ -199,7 +203,7 @@ export default {
         }
       }
 
-      this.$set(this.rolePermissions.find(r => role.roleID === r.roleID).rules, permission, rule)
+      this.$set(this.rolePermissions.find(r => r.roleID === roleID).rules, permission, rule)
     },
 
     getTranslation (resource, operation = '') {
