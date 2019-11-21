@@ -13,6 +13,7 @@ import {
   faPowerOff,
   faCheck,
   faTachometerAlt,
+  faTimes,
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
@@ -29,4 +30,5 @@ library.add(
   faPowerOff,
   faCheck,
   faTachometerAlt,
+  faTimes,
 )
