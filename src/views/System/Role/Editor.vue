@@ -127,7 +127,7 @@ export default {
       this.$SystemAPI.roleDelete({ roleID: this.roleID })
         .then(this.handler)
         .then(() => {
-          this.$router.push({ name: 'roles' })
+          this.fetchRole()
         })
         .catch(this.stdReject)
         .finally(() => {
