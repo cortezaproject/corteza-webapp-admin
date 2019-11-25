@@ -1,151 +1,183 @@
 <template>
-  <b-card
-    class="shadow-sm m-0"
-    body-class="py-0 px-3"
-  >
-    <div
-      v-if="loaded"
+  <div>
+    <b-card
+      class="shadow-sm m-0"
+      body-class="py-0 px-3"
     >
-      <b-row
-        class="bg-light text-center"
-      >
-        <b-col
-          class="border-bottom py-2"
-          cols="3"
-        />
-        <b-col
-          v-for="role in roles"
-          :key="role.roleID"
-          class="border-bottom border-left py-2 overflow-hidden text-nowrap"
-        >
-          <div
-            class="text-truncate"
-          >
-            {{ role.name }}
-          </div>
-        </b-col>
-        <!--
-        <b-col
-          class="border-bottom border-left py-2 bg-light"
-        >
-          Effective
-        </b-col>
-        -->
-      </b-row>
       <div
-        v-for="(operations, resource) in permissions"
-        :key="resource"
+        v-if="loaded"
       >
         <b-row
-          class="bg-secondary"
+          class="bg-light text-center"
         >
           <b-col
+            class="border-bottom py-2"
             cols="3"
-            class="py-2 text-left font-weight-bold"
-          >
-            {{ getTranslation(resource) }}
-          </b-col>
-          <b-col
-            v-for="role in roles"
-            :key="role.roleID"
-            class="py-2 not-allowed"
           />
-        </b-row>
-        <b-row
-          v-for="operation in operations"
-          :key="operation"
-          class="text-center"
-        >
-          <b-col
-            class="border-bottom text-left py-2"
-            cols="3"
-          >
-            {{ getTranslation(resource, operation) }}
-          </b-col>
           <b-col
             v-for="role in roles"
             :key="role.roleID"
-            class="border-bottom border-left py-2 pointer active-cell"
-            @click="ruleChange($event, role.roleID, `${resource}${operation}`)"
+            class="border-bottom border-left py-2 overflow-hidden text-nowrap"
           >
-            <font-awesome-icon
-              v-if="checkRule(role.roleID, `${resource}${operation}`, 'allow')"
-              :icon="['fas', 'check']"
-              class="text-success"
-            />
-            <font-awesome-icon
-              v-if="checkRule(role.roleID, `${resource}${operation}`, 'deny')"
-              :icon="['fas', 'times']"
-              class="text-danger"
-            />
+            <div
+              v-if="!role.roleID.includes('-')"
+              class="text-truncate"
+            >
+              {{ role.name }}
+            </div>
+            <div
+              v-else
+              v-b-modal.addRole
+              class="text-primary text-truncate pointer"
+            >
+              {{ $t('rules.add') }}
+              <font-awesome-icon
+                :icon="['fas', 'plus']"
+              />
+            </div>
           </b-col>
           <!--
           <b-col
-            class="border-bottom border-left py-2 bg-light not-allowed"
+            class="border-bottom border-left py-2 bg-light"
           >
-            <font-awesome-icon
-              v-if="effective[permission]"
-              :icon="['fas', 'check']"
-              class="text-success"
-            />
-            <font-awesome-icon
-              v-else-if="effective[permission] === false"
-              :icon="['fas', 'times']"
-              class="text-danger"
-            />
+            Effective
           </b-col>
           -->
         </b-row>
+        <div
+          v-for="(operations, resource) in permissions"
+          :key="resource"
+        >
+          <b-row
+            class="bg-secondary"
+          >
+            <b-col
+              cols="3"
+              class="py-2 text-left font-weight-bold"
+            >
+              {{ getTranslation(resource) }}
+            </b-col>
+            <b-col
+              v-for="role in roles"
+              :key="role.roleID"
+              class="py-2 not-allowed"
+            />
+          </b-row>
+          <b-row
+            v-for="operation in operations"
+            :key="operation"
+            class="text-center"
+          >
+            <b-col
+              class="border-bottom text-left py-2"
+              cols="3"
+            >
+              {{ getTranslation(resource, operation) }}
+            </b-col>
+            <b-col
+              v-for="role in roles"
+              :key="role.roleID"
+              class="border-bottom border-left py-2 pointer active-cell"
+              :class="{
+                'not-allowed bg-light': role.roleID.includes('-'),
+                'bg-warning': checkChange(role.roleID, `${resource}${operation}`)
+              }"
+              @click="ruleChange($event, role.roleID, `${resource}${operation}`)"
+            >
+              <font-awesome-icon
+                v-if="checkRule(role.roleID, `${resource}${operation}`, 'allow')"
+                :icon="['fas', 'check']"
+                class="text-success"
+              />
+              <font-awesome-icon
+                v-if="checkRule(role.roleID, `${resource}${operation}`, 'deny')"
+                :icon="['fas', 'times']"
+                class="text-danger"
+              />
+            </b-col>
+            <!--
+            <b-col
+              class="border-bottom border-left py-2 bg-light not-allowed"
+            >
+              <font-awesome-icon
+                v-if="effective[permission]"
+                :icon="['fas', 'check']"
+                class="text-success"
+              />
+              <font-awesome-icon
+                v-else-if="effective[permission] === false"
+                :icon="['fas', 'times']"
+                class="text-danger"
+              />
+            </b-col>
+            -->
+          </b-row>
+        </div>
       </div>
-    </div>
 
-    <div
-      v-else
-      class="text-center m-5"
-    >
-      <div>
-        <b-spinner
-          small
-          class="align-middle m-2"
-        />
-      </div>
-      <div>{{ $t('rules.loading') }}</div>
-    </div>
-
-    <template #header>
-      <span class="h3 m-0">
-        {{ $t('rules.title') }}
-      </span>
-      <small class="float-right text-primary">
-        Click on permission/role cell to allow a specific operation.
-        <br>
-        Use Alt-Click to set explicit deny on operation.
-      </small>
-    </template>
-
-    <template #footer>
-      <c-submit-button
-        class="float-right"
-        :processing="processing"
-        :success="success"
-        @submit="$emit('submit', rolePermissions)"
+      <div
+        v-else
+        class="text-center m-5"
       >
-        {{ $t('rules.submit') }}
-      </c-submit-button>
-    </template>
-  </b-card>
+        <div>
+          <b-spinner
+            small
+            class="align-middle m-2"
+          />
+        </div>
+        <div>{{ $t('rules.loading') }}</div>
+      </div>
+
+      <template #footer>
+        <small class="float-left text-primary">
+          {{ $t('rules.tip1') }}
+          <br>
+          {{ $t('rules.tip2') }}
+        </small>
+        <c-submit-button
+          class="float-right"
+          :processing="processing"
+          :success="success"
+          @submit="onSubmit"
+        >
+          {{ $t('rules.submit') }}
+        </c-submit-button>
+      </template>
+    </b-card>
+
+    <b-modal
+      id="addRole"
+      :title="$t('rules.addRole')"
+      @ok="onAddRole"
+    >
+      <vue-select
+        key="roleID"
+        v-model="newRoleID"
+        :options="rolesExcluded"
+        label="name"
+        :placeholder="$t('rules.noRole')"
+      />
+    </b-modal>
+  </div>
 </template>
 
 <script>
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
+import { VueSelect } from 'vue-select'
 
 export default {
   components: {
     CSubmitButton,
+    VueSelect,
   },
 
   props: {
     roles: {
+      type: Array,
+      required: true,
+    },
+
+    rolesExcluded: {
       type: Array,
       required: true,
     },
@@ -181,29 +213,63 @@ export default {
     },
   },
 
+  data () {
+    return {
+      newRoleID: null,
+      permissionChanges: [],
+    }
+  },
+
   methods: {
     checkRule (roleID, permission, access) {
-      return this.rolePermissions.find(r => r.roleID === roleID).rules[permission] === access
+      if (!roleID.includes('-')) {
+        return (this.rolePermissions.find(r => r.roleID === roleID) || { rules: {} }).rules[permission] === access
+      }
+    },
+
+    checkChange (roleID, permission) {
+      if (!roleID.includes('-')) {
+        const current = (this.rolePermissions.find(r => r.roleID === roleID) || { rules: {} }).rules[permission]
+        const initial = (this.permissionChanges.find(r => r.roleID === roleID) || { rules: {} }).rules[permission]
+
+        if (initial) {
+          return current !== initial
+        } else {
+          return false
+        }
+      }
     },
 
     ruleChange (event, roleID, permission) {
-      let rule = this.rolePermissions.find(r => r.roleID === roleID).rules[permission]
+      if (!roleID.includes('-') && this.loaded) {
+        let access = (this.rolePermissions.find(r => r.roleID === roleID) || { rules: {} }).rules[permission]
 
-      if (event.altKey) {
-        if (rule === 'deny') {
-          rule = 'inherit'
-        } else {
-          rule = 'deny'
+        // Keep track of permission changes, record initial value before it changes
+        if (!(this.permissionChanges.find(r => r.roleID === roleID) || { rules: {} }).rules[permission]) {
+          this.permissionChanges.push({ roleID, rules: { } })
+
+          if (!access) {
+            access = 'inherit'
+          }
+          this.$set(this.permissionChanges.find(r => r.roleID === roleID).rules, permission, access)
         }
-      } else {
-        if (rule === 'allow') {
-          rule = 'inherit'
+
+        if (event.altKey) {
+          if (access === 'deny') {
+            access = 'inherit'
+          } else {
+            access = 'deny'
+          }
         } else {
-          rule = 'allow'
+          if (access === 'allow') {
+            access = 'inherit'
+          } else {
+            access = 'allow'
+          }
         }
+
+        this.$set(this.rolePermissions.find(r => r.roleID === roleID).rules, permission, access)
       }
-
-      this.$set(this.rolePermissions.find(r => r.roleID === roleID).rules, permission, rule)
     },
 
     getTranslation (resource, operation = '') {
@@ -216,6 +282,16 @@ export default {
       } else {
         return this.$t(`rules.${resource}title`)
       }
+    },
+
+    onSubmit () {
+      this.$emit('submit', this.rolePermissions)
+      this.permissionChanges = []
+    },
+
+    onAddRole ({ roleID }) {
+      this.$emit('add', this.newRoleID)
+      this.newRoleID = null
     },
   },
 }

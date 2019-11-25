@@ -7,14 +7,22 @@ export default {
 
   data () {
     return {
+      // Array of roleID's included in the permission list
+      rolesIncluded: ['1', '2'],
+      // Array of roleID's not included in the permission list
+      rolesExcluded: [],
+
       roles: [],
       rolePermissions: [],
       permissions: {},
       effective: {},
 
       api: this.$SystemAPI,
-      // Set loaded to 3 if fetchEffective is user, 2 otherwise
-      loaded: 2,
+      loaded: {
+        roles: false,
+        permissions: false,
+        effective: false,
+      },
       permission: {
         processing: false,
         success: false,
@@ -24,7 +32,8 @@ export default {
 
   computed: {
     isLoaded () {
-      return this.loaded <= 0
+      const { roles, permissions } = this.loaded
+      return roles && permissions
     },
   },
 
@@ -35,31 +44,54 @@ export default {
       this.$SystemAPI.roleList()
         .then(({ set }) => {
           this.roles = set
+          this.rolePermissions = []
+          this.rolesExcluded = []
+          Promise.all(set.map(role => {
+            const { roleID } = role
 
-          this.roles.forEach(({ roleID }) => {
-            this.incLoader()
-            this.loaded++
-
-            this.api.permissionsRead({ roleID })
+            return this.api.permissionsRead({ roleID })
               .then(rolePermissions => {
-                rolePermissions = rolePermissions
-                  .reduce((map, { resource, operation, access }) => {
-                    map[`${resource}/${operation}`] = access
-                    return map
-                  }, {})
+                let push = false
+                if ((rolePermissions.length > 0 || this.rolesIncluded.includes(roleID)) && this.rolesIncluded.length < 8) {
+                  rolePermissions = rolePermissions
+                    .reduce((map, { resource, operation, access }) => {
+                      if (access !== 'inherit') {
+                        push = true
+                      }
+                      map[`${resource}/${operation}`] = access
+                      return map
+                    }, {})
 
-                this.rolePermissions.push({ roleID, rules: rolePermissions })
+                  /**
+                   * If the role is 'Everyone', 'Administrator' or has permissions.
+                   * It will be shown in the permissions list
+                   */
+                  this.rolePermissions.push({ roleID, rules: rolePermissions })
+                  if (!this.rolesIncluded.includes(roleID)) {
+                    if (push) {
+                      this.rolesIncluded.push(roleID)
+                    } else {
+                      this.rolesExcluded.push(role)
+                    }
+                  }
+                } else {
+                  // Keep track of excluded roles that can be added to the list
+                  this.rolesExcluded.push(role)
+                }
               })
-              .catch(this.stdReject)
-              .finally(() => {
-                this.loaded--
-                this.decLoader()
-              })
-          })
+          }))
+            .catch(this.stdReject)
+            .finally(() => {
+              this.roles = this.roles.filter(r => this.rolesIncluded.includes(r.roleID))
+
+              // Add new role column
+              this.roles.push({ roleID: `-2` })
+              this.decLoader()
+            })
         })
         .catch(this.stdReject)
         .finally(() => {
-          this.loaded--
+          this.loaded.roles = true
           this.decLoader()
         })
     },
@@ -87,7 +119,7 @@ export default {
         })
         .catch(this.stdReject)
         .finally(() => {
-          this.loaded--
+          this.loaded.permissions = true
           this.decLoader()
         })
     },
@@ -105,7 +137,7 @@ export default {
         })
         .catch(this.stdReject)
         .finally(() => {
-          this.loaded--
+          this.loaded.effective = true
           this.decLoader()
         })
     },
@@ -128,6 +160,13 @@ export default {
         .finally(() => {
           this.permission.processing = false
         })
+    },
+
+    addRole ({ roleID }) {
+      this.loaded.roles = false
+      this.rolesIncluded.push(roleID)
+      this.rolesExcluded = []
+      this.fetchRoles()
     },
   },
 }

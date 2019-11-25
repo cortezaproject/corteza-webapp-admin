@@ -8,12 +8,14 @@
 
     <c-permission-list
       :roles="roles"
+      :roles-excluded="rolesExcluded"
       :permissions="permissions"
       :role-permissions="rolePermissions"
       :loaded="isLoaded"
       :processing="permission.processing"
       :success="permission.success"
       @submit="onSubmit"
+      @add="addRole"
     />
   </b-container>
 </template>
