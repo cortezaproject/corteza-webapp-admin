@@ -1,19 +1,12 @@
 import Vue from 'vue'
 import { createLocalVue, shallowMount as sm } from '@vue/test-utils'
 import sinon from 'sinon'
-import CContentHeader from 'corteza-webapp-admin/src/components/CContentHeader'
-import CResourceList from 'corteza-webapp-admin/src/components/CResourceList'
-import CResourceListStatusFilter from 'corteza-webapp-admin/src/components/CResourceListStatusFilter'
 
 Vue.config.ignoredElements = [
   'font-awesome-icon',
   // Ignore all bootstrap elements
   /^b-/,
 ]
-
-Vue.component('c-content-header', CContentHeader)
-Vue.component('c-resource-list', CResourceList)
-Vue.component('c-resource-list-status-filter', CResourceListStatusFilter)
 
 export const writeableWindowLocation = ({ path: value = '/' } = {}) => Object.defineProperty(window, 'location', { writable: true, value })
 

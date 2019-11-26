@@ -138,8 +138,8 @@ export default {
       handler () {
         const query = this.filter
         this.$SystemAPI.userList({ query, incSuspended: true, incDeleted: true })
-          .then(({ set = [] }) => {
-            this.users = set
+          .then(({ set: items = [] }) => {
+            this.users = items
           }).catch(({ message }) => {
             this.$store.dispatch('ui/appendAlert', message)
           })
@@ -151,8 +151,8 @@ export default {
     const userID = this.members
     if (userID.length > 0) {
       this.$SystemAPI.userList({ userID, incSuspended: true, incDeleted: true })
-        .then(({ set = [] }) => {
-          this.memberUsers = set
+        .then(({ set: items = [] }) => {
+          this.memberUsers = items
         }).catch(({ message }) => {
           this.$store.dispatch('ui/appendAlert', message)
         })

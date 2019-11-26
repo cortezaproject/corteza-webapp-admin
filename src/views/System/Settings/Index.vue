@@ -90,7 +90,8 @@ export default {
       if (this.settings.length > 0) {
         return this.settings.reduce((map, obj) => {
           const { name, value } = obj
-          if (name.split('.')[0] === 'general.mail') {
+          const split = name.split('.')
+          if (split[0] === 'general' && split[1] === 'mail') {
             map[name] = value
           }
           return map

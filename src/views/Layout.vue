@@ -32,7 +32,6 @@ import CTheAlertContainer from 'corteza-webapp-admin/src/components/CTheAlertCon
 import CTheHeader from 'corteza-webapp-admin/src/components/CTheHeader'
 import CTheMainNav from 'corteza-webapp-admin/src/components/CTheMainNav'
 import { PermissionsModal } from 'corteza-webapp-common/components'
-import { mapActions } from 'vuex'
 
 export default {
   components: {
@@ -43,11 +42,6 @@ export default {
   },
 
   computed: {
-    ...mapActions({
-      incLoader: 'ui/incLoader',
-      decLoader: 'ui/decLoader',
-    }),
-
     frontendVersion () {
       /* eslint-disable no-undef */
       return VERSION
@@ -60,14 +54,16 @@ export default {
    * Redirect to /auth if user is not authenticated
    */
   beforeCreate () {
-    this.incLoader()
-    this.$auth.check(this.$SystemAPI).then(() => {
-      //
-    }).catch((e) => {
-      this.$auth.open()
-    }).finally(() => {
-      this.incLoader()
-    })
+    this.$store.dispatch('ui/incLoader')
+
+    this.$auth.check(this.$SystemAPI)
+      .then(() => {
+        //
+      }).catch((e) => {
+        this.$auth.open()
+      }).finally(() => {
+        this.$store.dispatch('ui/incLoader')
+      })
   },
 }
 </script>
