@@ -20,13 +20,16 @@
             class="border-bottom border-left py-2 overflow-hidden text-nowrap"
           >
             <div
-              v-if="!role.roleID.includes('-')"
               class="text-truncate"
             >
               {{ role.name }}
             </div>
+          </b-col>
+          <b-col
+            v-if="roles.length < 9"
+            class="border-bottom border-left py-2 overflow-hidden text-nowrap"
+          >
             <div
-              v-else-if="role.roleID === '-2'"
               v-b-modal.addRole
               class="text-primary text-truncate pointer"
             >
@@ -95,6 +98,10 @@
                 class="text-danger"
               />
             </b-col>
+            <b-col
+              v-if="roles.length < 9"
+              class="border-bottom border-left py-2 not-allowed bg-light"
+            />
             <!--
             <b-col
               class="border-bottom border-left py-2 bg-light not-allowed"
@@ -148,11 +155,13 @@
     <b-modal
       id="addRole"
       :title="$t('rules.addRole')"
+      :ok-only="true"
+      :ok-title="$t('rules.add')"
       @ok="onAddRole"
     >
       <vue-select
         key="roleID"
-        v-model="newRoleID"
+        v-model="newRole"
         :options="rolesExcluded"
         label="name"
         :placeholder="$t('rules.noRole')"
@@ -215,61 +224,55 @@ export default {
 
   data () {
     return {
-      newRoleID: null,
+      newRole: null,
       permissionChanges: [],
     }
   },
 
   methods: {
     checkRule (roleID, permission, access) {
-      if (!roleID.includes('-')) {
-        return (this.rolePermissions.find(r => r.roleID === roleID) || { rules: {} }).rules[permission] === access
-      }
+      return (this.rolePermissions.find(r => r.roleID === roleID) || { rules: {} }).rules[permission] === access
     },
 
     checkChange (roleID, permission) {
-      if (!roleID.includes('-')) {
-        const current = (this.rolePermissions.find(r => r.roleID === roleID) || { rules: {} }).rules[permission]
-        const initial = (this.permissionChanges.find(r => r.roleID === roleID) || { rules: {} }).rules[permission]
+      const current = (this.rolePermissions.find(r => r.roleID === roleID) || { rules: {} }).rules[permission]
+      const initial = (this.permissionChanges.find(r => r.roleID === roleID) || { rules: {} }).rules[permission]
 
-        if (initial) {
-          return current !== initial
-        } else {
-          return false
-        }
+      if (initial) {
+        return current !== initial
+      } else {
+        return false
       }
     },
 
     ruleChange (event, roleID, permission) {
-      if (!roleID.includes('-') && this.loaded) {
-        let access = (this.rolePermissions.find(r => r.roleID === roleID) || { rules: {} }).rules[permission]
+      let access = (this.rolePermissions.find(r => r.roleID === roleID) || { rules: {} }).rules[permission]
 
-        // Keep track of permission changes, record initial value before it changes
-        if (!(this.permissionChanges.find(r => r.roleID === roleID) || { rules: {} }).rules[permission]) {
-          this.permissionChanges.push({ roleID, rules: { } })
+      // Keep track of permission changes, record initial value before it changes
+      if (!(this.permissionChanges.find(r => r.roleID === roleID) || { rules: {} }).rules[permission]) {
+        this.permissionChanges.push({ roleID, rules: { } })
 
-          if (!access) {
-            access = 'inherit'
-          }
-          this.$set(this.permissionChanges.find(r => r.roleID === roleID).rules, permission, access)
+        if (!access) {
+          access = 'inherit'
         }
-
-        if (event.altKey) {
-          if (access === 'deny') {
-            access = 'inherit'
-          } else {
-            access = 'deny'
-          }
-        } else {
-          if (access === 'allow') {
-            access = 'inherit'
-          } else {
-            access = 'allow'
-          }
-        }
-
-        this.$set(this.rolePermissions.find(r => r.roleID === roleID).rules, permission, access)
+        this.$set(this.permissionChanges.find(r => r.roleID === roleID).rules, permission, access)
       }
+
+      if (event.altKey) {
+        if (access === 'deny') {
+          access = 'inherit'
+        } else {
+          access = 'deny'
+        }
+      } else {
+        if (access === 'allow') {
+          access = 'inherit'
+        } else {
+          access = 'allow'
+        }
+      }
+
+      this.$set(this.rolePermissions.find(r => r.roleID === roleID).rules, permission, access)
     },
 
     getTranslation (resource, operation = '') {
@@ -289,10 +292,12 @@ export default {
       this.permissionChanges = []
     },
 
-    onAddRole ({ roleID }) {
-      this.$emit('add', this.newRoleID)
-      this.newRoleID = null
-      this.permissionChanges = []
+    onAddRole () {
+      const { roleID } = this.newRole
+      if (roleID) {
+        this.$emit('add', this.newRole)
+      }
+      this.newRole = null
     },
   },
 }

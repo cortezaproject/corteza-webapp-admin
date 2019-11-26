@@ -71,10 +71,6 @@ export default {
             .finally(() => {
               this.roles = this.roles.filter(r => this.rolesIncluded.includes(r.roleID))
 
-              // Add new role column
-              if (this.roles.length < 9) {
-                this.roles.push({ roleID: `-2` })
-              }
               this.loaded.roles = true
               this.decLoader()
             })
@@ -148,11 +144,30 @@ export default {
         })
     },
 
-    addRole ({ roleID }) {
+    addRole (role) {
       this.loaded.roles = false
+      const { roleID } = role
       this.rolesIncluded.push(roleID)
-      this.rolesExcluded = []
-      this.fetchRoles()
+      this.rolesExcluded = this.rolesExcluded.filter(r => r.roleID !== roleID)
+
+      this.api.permissionsRead({ roleID })
+        .then(rolePermissions => {
+          rolePermissions = rolePermissions
+            .reduce((map, { resource, operation, access }) => {
+              map[`${resource}/${operation}`] = access
+              return map
+            }, {})
+
+          this.rolePermissions.push({ roleID, rules: rolePermissions })
+
+          // Add new role
+          this.roles.push(role)
+          this.loaded.roles = true
+        })
+        .catch(this.stdReject)
+        .finally(() => {
+          this.loaded.roles = true
+        })
     },
   },
 }
