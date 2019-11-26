@@ -46,7 +46,9 @@ export default {
           this.roles = set
           this.rolePermissions = []
           this.rolesExcluded = []
-          Promise.all(set.map(role => {
+
+          // We read permissions for included roles
+          Promise.all(this.roles.map(role => {
             const { roleID } = role
 
             return this.api.permissionsRead({ roleID })
@@ -58,14 +60,7 @@ export default {
                       return map
                     }, {})
 
-                  /**
-                   * If the role is 'Everyone', 'Administrator' or has permissions.
-                   * It will be shown in the permissions list
-                   */
                   this.rolePermissions.push({ roleID, rules: rolePermissions })
-                  if (!this.rolesIncluded.includes(roleID)) {
-                    this.rolesIncluded.push(roleID)
-                  }
                 } else {
                   // Keep track of excluded roles that can be added to the list
                   this.rolesExcluded.push(role)
