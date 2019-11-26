@@ -33,11 +33,13 @@
         :icon="['fas', 'th-large']"
       />
 
+      <!--
       <c-main-nav-item
         :label="$t('system.scripts:navItem.label')"
         :to="{ name: 'system.script' }"
         :icon="['fas', 'magic']"
       />
+      -->
 
       <c-main-nav-item
         :label="$t('system.settings:navItem.label')"
