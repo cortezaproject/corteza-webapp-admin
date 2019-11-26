@@ -51,13 +51,9 @@ export default {
 
             return this.api.permissionsRead({ roleID })
               .then(rolePermissions => {
-                let push = false
-                if ((rolePermissions.length > 0 || this.rolesIncluded.includes(roleID)) && this.rolesIncluded.length < 8) {
+                if (this.rolesIncluded.includes(roleID)) {
                   rolePermissions = rolePermissions
                     .reduce((map, { resource, operation, access }) => {
-                      if (access !== 'inherit') {
-                        push = true
-                      }
                       map[`${resource}/${operation}`] = access
                       return map
                     }, {})
@@ -68,11 +64,7 @@ export default {
                    */
                   this.rolePermissions.push({ roleID, rules: rolePermissions })
                   if (!this.rolesIncluded.includes(roleID)) {
-                    if (push) {
-                      this.rolesIncluded.push(roleID)
-                    } else {
-                      this.rolesExcluded.push(role)
-                    }
+                    this.rolesIncluded.push(roleID)
                   }
                 } else {
                   // Keep track of excluded roles that can be added to the list
@@ -85,15 +77,14 @@ export default {
               this.roles = this.roles.filter(r => this.rolesIncluded.includes(r.roleID))
 
               // Add new role column
-              this.roles.push({ roleID: `-2` })
+              if (this.roles.length < 9) {
+                this.roles.push({ roleID: `-2` })
+              }
+              this.loaded.roles = true
               this.decLoader()
             })
         })
         .catch(this.stdReject)
-        .finally(() => {
-          this.loaded.roles = true
-          this.decLoader()
-        })
     },
 
     fetchPermissions () {

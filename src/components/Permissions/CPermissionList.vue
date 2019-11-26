@@ -26,7 +26,7 @@
               {{ role.name }}
             </div>
             <div
-              v-else
+              v-else-if="role.roleID === '-2'"
               v-b-modal.addRole
               class="text-primary text-truncate pointer"
             >
@@ -292,6 +292,7 @@ export default {
     onAddRole ({ roleID }) {
       this.$emit('add', this.newRoleID)
       this.newRoleID = null
+      this.permissionChanges = []
     },
   },
 }
