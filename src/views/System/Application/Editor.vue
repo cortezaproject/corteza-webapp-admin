@@ -157,17 +157,27 @@ export default {
     },
 
     onDelete () {
-      // TODO UNDELETE
       this.incLoader()
 
-      this.$SystemAPI.applicationDelete({ applicationID: this.applicationID })
-        .then(() => {
-          this.fetchApplication()
-        })
-        .catch(this.stdReject)
-        .finally(() => {
-          this.decLoader()
-        })
+      if (this.application.deletedAt) {
+        this.$SystemAPI.applicationUndelete({ applicationID: this.applicationID })
+          .then(() => {
+            this.fetchApplication()
+          })
+          .catch(this.stdReject)
+          .finally(() => {
+            this.decLoader()
+          })
+      } else {
+        this.$SystemAPI.applicationDelete({ applicationID: this.applicationID })
+          .then(() => {
+            this.fetchApplication()
+          })
+          .catch(this.stdReject)
+          .finally(() => {
+            this.decLoader()
+          })
+      }
     },
 
     prepare (application = {}) {

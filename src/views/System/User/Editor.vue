@@ -199,17 +199,27 @@ export default {
      * and handles response & errors
      */
     onDelete () {
-      // TODO UNDELETE
       this.incLoader()
 
-      this.$SystemAPI.userDelete({ userID: this.userID })
-        .then(() => {
-          this.fetchUser()
-        })
-        .catch(this.stdReject)
-        .finally(() => {
-          this.decLoader()
-        })
+      if (this.user.deletedAt) {
+        this.$SystemAPI.userUndelete({ userID: this.userID })
+          .then(() => {
+            this.fetchUser()
+          })
+          .catch(this.stdReject)
+          .finally(() => {
+            this.decLoader()
+          })
+      } else {
+        this.$SystemAPI.userDelete({ userID: this.userID })
+          .then(() => {
+            this.fetchUser()
+          })
+          .catch(this.stdReject)
+          .finally(() => {
+            this.decLoader()
+          })
+      }
     },
 
     /**

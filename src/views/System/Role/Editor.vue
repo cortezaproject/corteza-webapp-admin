@@ -121,18 +121,27 @@ export default {
     },
 
     onDelete () {
-      // TODO UNDELETE
       this.incLoader()
 
-      this.$SystemAPI.roleDelete({ roleID: this.roleID })
-        .then(this.handler)
-        .then(() => {
-          this.fetchRole()
-        })
-        .catch(this.stdReject)
-        .finally(() => {
-          this.decLoader()
-        })
+      if (this.role.deletedAt) {
+        this.$SystemAPI.roleUndelete({ roleID: this.roleID })
+          .then(() => {
+            this.fetchRole()
+          })
+          .catch(this.stdReject)
+          .finally(() => {
+            this.decLoader()
+          })
+      } else {
+        this.$SystemAPI.roleDelete({ roleID: this.roleID })
+          .then(() => {
+            this.fetchRole()
+          })
+          .catch(this.stdReject)
+          .finally(() => {
+            this.decLoader()
+          })
+      }
     },
 
     onInfoSubmit (role) {
