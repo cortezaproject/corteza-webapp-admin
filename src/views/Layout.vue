@@ -62,7 +62,7 @@ export default {
       }).catch((e) => {
         this.$auth.open()
       }).finally(() => {
-        this.$store.dispatch('ui/incLoader')
+        this.$store.dispatch('ui/decLoader')
       })
   },
 }
