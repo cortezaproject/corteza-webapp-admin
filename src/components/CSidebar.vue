@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="sidebar bv-d-sm-down-none"
+    class="sidebar bv-d-sm-down-none overflow-x-hidden"
     :class="mainStyleClasses"
   >
     <b-list-group>
