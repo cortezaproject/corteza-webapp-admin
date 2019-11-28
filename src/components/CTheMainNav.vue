@@ -42,48 +42,58 @@
       -->
 
       <c-main-nav-item
+        v-if="canReadSettings.system"
         :label="$t('system.settings:navItem.label')"
         :to="{ name: 'system.settings' }"
         :icon="['fas', 'cogs']"
       />
 
       <c-main-nav-item
+        v-if="canGrant.system"
         :label="$t('system.permissions:navItem.label')"
         :to="{ name: 'system.permissions' }"
         :icon="['fas', 'lock']"
       />
     </b-list-group>
 
-    <b-list-group>
+    <b-list-group
+      v-if="canGrant.compose || canReadSettings.compose"
+    >
       <small class="ml-1 mt-3 font-weight-light text-uppercase">
         {{ $t('compose:navGroup.label') }}
       </small>
 
       <c-main-nav-item
+        v-if="canReadSettings.compose"
         :label="$t('compose.settings:navItem.label')"
         :to="{ name: 'compose.settings' }"
         :icon="['fas', 'cogs']"
       />
 
       <c-main-nav-item
+        v-if="canGrant.compose"
         :label="$t('compose.permissions:navItem.label')"
         :to="{ name: 'compose.permissions' }"
         :icon="['fas', 'lock']"
       />
     </b-list-group>
 
-    <b-list-group>
+    <b-list-group
+      v-if="canGrant.messaging || canReadSettings.messaging"
+    >
       <small class="ml-1 mt-3 font-weight-light text-uppercase">
         {{ $t('messaging:navGroup.label') }}
       </small>
 
       <c-main-nav-item
+        v-if="canReadSettings.messaging"
         :label="$t('messaging.settings:navItem.label')"
         :to="{ name: 'messaging.settings' }"
         :icon="['fas', 'cogs']"
       />
 
       <c-main-nav-item
+        v-if="canGrant.messaging"
         :label="$t('messaging.permissions:navItem.label')"
         :to="{ name: 'messaging.permissions' }"
         :icon="['fas', 'lock']"
@@ -99,6 +109,40 @@ export default {
   components: {
     CSidebar,
     CMainNavItem,
+  },
+
+  props: {
+    access: {
+      type: Array,
+      required: true,
+    },
+  },
+
+  data () {
+    return {
+      canGrant: {
+        system: false,
+        compose: false,
+        messaging: false,
+      },
+      canReadSettings: {
+        system: false,
+        compose: false,
+        messaging: false,
+      },
+    }
+  },
+
+  watch: {
+    access: {
+      immediate: true,
+      handler () {
+        ['system', 'compose', 'messaging'].forEach(res => {
+          this.canGrant[res] = (this.access.find(({ resource, operation }) => resource === res && operation === 'grant') || {}).allow
+          this.canReadSettings[res] = (this.access.find(({ resource, operation }) => resource === res && operation === 'settings.read') || {}).allow
+        })
+      },
+    },
   },
 }
 </script>

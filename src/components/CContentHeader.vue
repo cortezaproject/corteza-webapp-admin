@@ -5,8 +5,7 @@
       v-html="title"
     />
     <b-button-toolbar
-      v-if="hasButtons"
-      class="col-lg-8 col-sm-12 px-1 justify-content-lg-end"
+      class="col-lg-8 col-sm-12 px-2 justify-content-end"
     >
       <slot />
     </b-button-toolbar>
@@ -21,12 +20,6 @@ export default {
     title: {
       type: String,
       required: true,
-    },
-  },
-
-  computed: {
-    hasButtons () {
-      return !!this.$slots['default']
     },
   },
 }

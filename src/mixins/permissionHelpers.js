@@ -51,9 +51,9 @@ export default {
           Promise.all(this.roles.map(role => {
             const { roleID } = role
 
-            return this.api.permissionsRead({ roleID })
-              .then(rolePermissions => {
-                if (this.rolesIncluded.includes(roleID)) {
+            if (this.rolesIncluded.includes(roleID)) {
+              return this.api.permissionsRead({ roleID })
+                .then(rolePermissions => {
                   rolePermissions = rolePermissions
                     .reduce((map, { resource, operation, access }) => {
                       map[`${resource}/${operation}`] = access
@@ -61,11 +61,11 @@ export default {
                     }, {})
 
                   this.rolePermissions.push({ roleID, rules: rolePermissions })
-                } else {
-                  // Keep track of excluded roles that can be added to the list
-                  this.rolesExcluded.push(role)
-                }
-              })
+                })
+            } else {
+              // Keep track of excluded roles that can be added to the list
+              this.rolesExcluded.push(role)
+            }
           }))
             .catch(this.stdReject)
             .finally(() => {

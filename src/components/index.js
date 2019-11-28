@@ -7,7 +7,6 @@ import CResourceListStatusFilter from './CResourceListStatusFilter'
 
 Vue.component('permissions-button', () => import('corteza-webapp-common/src/components/Permissions/Button'))
 Vue.component('font-awesome-icon', FontAwesomeIcon)
-Vue.component('c-header', CContentHeader) // @todo <-- remove!!
 Vue.component('c-content-header', CContentHeader)
 Vue.component('c-resource-list', CResourceList)
 Vue.component('c-resource-list-status-filter', CResourceListStatusFilter)

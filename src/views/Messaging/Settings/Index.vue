@@ -10,6 +10,7 @@
       :basic="settings"
       :processing="basic.processing"
       :success="basic.success"
+      :can-manage="canManage"
       @submit="onBasicSubmit"
     />
   </b-container>
@@ -37,6 +38,8 @@ export default {
     return {
       settings: {},
 
+      canManage: false,
+
       basic: {
         processing: false,
         success: false,
@@ -49,6 +52,26 @@ export default {
   },
 
   methods: {
+    fetchSettings () {
+      this.incLoader()
+
+      this.$MessagingAPI.settingsList()
+        .then(settings => {
+          settings.forEach(({ name, value }) => {
+            this.$set(this.settings, name, value)
+          })
+
+          this.$MessagingAPI.permissionsEffective()
+            .then(rules => {
+              this.canManage = rules.find(({ resource, operation, allow }) => resource === 'messaging' && operation === 'settings.manage').allow
+            })
+        })
+        .catch(this.stdReject)
+        .finally(() => {
+          this.decLoader()
+        })
+    },
+
     onBasicSubmit (basic) {
       this.basic.processing = true
 
@@ -63,20 +86,6 @@ export default {
         .catch(this.stdReject)
         .finally(() => {
           this.basic.processing = false
-        })
-    },
-
-    fetchSettings () {
-      this.incLoader()
-
-      this.$MessagingAPI.settingsList().then(settings => {
-        settings.forEach(({ name, value }) => {
-          this.$set(this.settings, name, value)
-        })
-      })
-        .catch(this.stdReject)
-        .finally(() => {
-          this.decLoader()
         })
     },
   },

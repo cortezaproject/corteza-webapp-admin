@@ -10,6 +10,7 @@
       :basic="settings"
       :processing="basic.processing"
       :success="basic.success"
+      :can-manage="canManage"
       @submit="onBasicSubmit"
     />
   </b-container>
@@ -36,6 +37,8 @@ export default {
   data () {
     return {
       settings: {},
+
+      canManage: false,
 
       basic: {
         processing: false,
@@ -69,11 +72,17 @@ export default {
     fetchSettings () {
       this.incLoader()
 
-      this.$ComposeAPI.settingsList().then(settings => {
-        settings.forEach(({ name, value }) => {
-          this.$set(this.settings, name, value)
+      this.$ComposeAPI.settingsList()
+        .then(settings => {
+          settings.forEach(({ name, value }) => {
+            this.$set(this.settings, name, value)
+          })
+
+          this.$ComposeAPI.permissionsEffective()
+            .then(rules => {
+              this.canManage = rules.find(({ resource, operation, allow }) => resource === 'compose' && operation === 'settings.manage').allow
+            })
         })
-      })
         .catch(this.stdReject)
         .finally(() => {
           this.decLoader()

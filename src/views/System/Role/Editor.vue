@@ -6,24 +6,24 @@
       :title="$t('title')"
     >
       <b-button-group
-        v-if="roleID"
+        v-if="roleID && canCreate"
       >
         <b-button
           variant="link"
           :to="{ name: 'system.role.new' }"
         >
-          New &blk14;
+          {{ $t('new') }}
         </b-button>
       </b-button-group>
       <b-button-group
-        v-if="roleID"
+        v-if="roleID && canGrant"
       >
         <permissions-button
           :title="role.name"
           :resource="'system:role:'+roleID"
           button-variant="link"
         >
-          Permissions &blk14;
+          {{ $t('permissions') }}
         </permissions-button>
       </b-button-group>
     </c-content-header>
@@ -32,6 +32,7 @@
       :role="role"
       :processing="info.processing"
       :success="info.success"
+      :can-create="canCreate"
       @submit="onInfoSubmit"
       @delete="onDelete"
       @status="onStatusChange"
@@ -39,6 +40,7 @@
 
     <c-role-editor-members
       v-if="role && role.roleID && roleMembers"
+      class="mt-3"
       :processing="members.processing"
       :success="members.success"
       :current-members.sync="roleMembers"
@@ -80,6 +82,9 @@ export default {
       role: {},
       roleMembers: null,
 
+      canCreate: false,
+      canGrant: false,
+
       info: {
         processing: false,
         success: false,
@@ -95,6 +100,7 @@ export default {
     roleID: {
       immediate: true,
       handler () {
+        this.fetchEffective()
         if (this.roleID) {
           this.fetchRole()
         } else {
@@ -114,6 +120,20 @@ export default {
           return this.$SystemAPI.roleMemberList(r)
         })
         .then((mm = []) => { this.roleMembers = mm })
+        .catch(this.stdReject)
+        .finally(() => {
+          this.decLoader()
+        })
+    },
+
+    fetchEffective () {
+      this.incLoader()
+
+      this.$SystemAPI.permissionsEffective()
+        .then(rules => {
+          this.canCreate = rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'role.create').allow
+          this.canGrant = rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'grant').allow
+        })
         .catch(this.stdReject)
         .finally(() => {
           this.decLoader()

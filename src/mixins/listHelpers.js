@@ -107,5 +107,9 @@ export default {
         this.decLoader()
       })
     },
+
+    stdReject (error) {
+      this.$store.dispatch('ui/appendAlert', error)
+    },
   },
 }

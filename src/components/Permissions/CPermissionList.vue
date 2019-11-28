@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-card
-      class="shadow-sm m-0"
+      class="shadow-sm"
       body-class="py-0 px-3"
     >
       <div

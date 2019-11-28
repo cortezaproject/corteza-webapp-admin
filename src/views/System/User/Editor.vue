@@ -12,18 +12,18 @@
           variant="link"
           :to="{ name: 'system.user.new' }"
         >
-          New &blk14;
+          {{ $t('new') }}
         </b-button>
       </b-button-group>
       <b-button-group
         v-if="userID"
       >
         <permissions-button
-          title="Users"
-          :resource="'system:users:'+userID"
+          :title="user.name || user.handle || user.email"
+          :resource="'system:user:'+userID"
           button-variant="link"
         >
-          Permissions &blk14;
+          {{ $t('permissions') }}
         </permissions-button>
       </b-button-group>
     </c-content-header>
@@ -36,14 +36,18 @@
       @delete="onDelete"
       @status="onStatusChange"
     />
+
     <c-user-editor-password
       v-if="user && user.userID"
+      class="mt-3"
       :processing="password.processing"
       :success="password.success"
       @submit="onPasswordSubmit"
     />
+
     <c-user-editor-roles
       v-if="user && user.userID"
+      class="mt-3"
       :processing="roles.processing"
       :success="roles.success"
       :current-roles.sync="userRoles"

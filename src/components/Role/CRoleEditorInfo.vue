@@ -1,6 +1,6 @@
 <template>
   <b-card
-    class="shadow-sm m-2 p-0"
+    class="shadow-sm"
   >
     <b-form
       @submit="$emit('submit', role)"
@@ -87,7 +87,7 @@
         class="float-right"
         :processing="processing"
         :success="success"
-        :disabled="disabled"
+        :disabled="disabled || !canCreate"
         @submit="$emit('submit', role)"
       />
 
@@ -141,6 +141,11 @@ export default {
     success: {
       type: Boolean,
       value: false,
+    },
+
+    canCreate: {
+      type: Boolean,
+      required: true,
     },
   },
 

@@ -15,7 +15,9 @@
       v-if="$auth.is()"
       class="d-flex flex-row overflow-hidden"
     >
-      <c-the-main-nav />
+      <c-the-main-nav
+        :access="access"
+      />
 
       <main
         class="flex-fill overflow-auto pb-5"
@@ -24,6 +26,17 @@
         <router-view />
         <permissions-modal />
       </main>
+    </div>
+    <div
+      v-else
+      class="loader"
+    >
+      <div
+        v-if="error"
+        class="error text-danger h1 text-center vw-100"
+      >
+        {{ error }}
+      </div>
     </div>
   </div>
 </template>
@@ -39,6 +52,13 @@ export default {
     CTheAlertContainer,
     CTheHeader,
     CTheMainNav,
+  },
+
+  data () {
+    return {
+      error: null,
+      access: [],
+    }
   },
 
   computed: {
@@ -58,7 +78,21 @@ export default {
 
     this.$auth.check(this.$SystemAPI)
       .then(() => {
-        //
+        this.$SystemAPI.permissionsEffective()
+          .then(rules => {
+            this.access = rules
+            if (!rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'access' && allow)) {
+              this.error = this.$t('auth.noAccess')
+            }
+            this.$ComposeAPI.permissionsEffective()
+              .then(rules => {
+                this.access = this.access.concat(rules)
+                this.$MessagingAPI.permissionsEffective()
+                  .then(rules => {
+                    this.access = this.access.concat(rules)
+                  })
+              })
+          })
       }).catch((e) => {
         this.$auth.open()
       }).finally(() => {
@@ -68,8 +102,12 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .version {
-    bottom: 0;
-    right: 0;
-  }
+.version {
+  bottom: 0;
+  right: 0;
+}
+.error {
+  position: absolute;
+  top: 50vh;
+}
 </style>

@@ -5,21 +5,25 @@
     <c-content-header
       :title="$t('title')"
     >
-      <b-button-group>
+      <b-button-group
+        v-if="canCreate"
+      >
         <b-button
           variant="link"
           :to="{ name: 'system.application.new' }"
         >
-          New &blk14;
+          {{ $t('new') }}
         </b-button>
       </b-button-group>
-      <b-button-group>
+      <b-button-group
+        v-if="canGrant"
+      >
         <permissions-button
-          title="Users"
+          :title="$t('title')"
           resource="system:application:*"
           button-variant="link"
         >
-          Permissions &blk14;
+          {{ $t('permissions') }}
         </permissions-button>
       </b-button-group>
       <b-dropdown
@@ -30,7 +34,7 @@
         text="Export"
       >
         <b-dropdown-item-button variant="link">
-          YAML  &blk14;
+          {{ $t('yaml') }}
         </b-dropdown-item-button>
       </b-dropdown>
     </c-content-header>
@@ -59,7 +63,7 @@
         </b-form-group>
         <b-row
           no-gutters
-          class="mt-2"
+          class="mt-3"
         >
           <c-resource-list-status-filter
             v-model="filter.deleted"
@@ -94,6 +98,9 @@ export default {
     return {
       id: 'applications',
 
+      canCreate: false,
+      canGrant: false,
+
       filter: {
         query: '',
         deleted: 0,
@@ -124,9 +131,27 @@ export default {
     }
   },
 
+  created () {
+    this.fetchEffective()
+  },
+
   methods: {
     items () {
       return this.procListResults(this.$SystemAPI.applicationList(this.encodeListParams()))
+    },
+
+    fetchEffective () {
+      this.incLoader()
+
+      this.$SystemAPI.permissionsEffective()
+        .then(rules => {
+          this.canCreate = rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'application.create').allow
+          this.canGrant = rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'grant').allow
+        })
+        .catch(this.stdReject)
+        .finally(() => {
+          this.decLoader()
+        })
     },
   },
 }

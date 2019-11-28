@@ -5,6 +5,9 @@ export default {
 
   list: {
     title: 'Users',
+    new: 'New',
+    permissions: 'Permissions',
+    yaml: 'YAML',
     loading: 'Loading users',
     numFound: `{{0}} user(s) found`,
 
@@ -47,6 +50,8 @@ export default {
 
   editor: {
     title: 'Edit user',
+    new: 'New',
+    permissions: 'Permissions',
 
     info: {
       title: 'Basic information',

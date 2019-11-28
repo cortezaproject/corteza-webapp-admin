@@ -1,6 +1,6 @@
 <template>
   <b-card
-    class="shadow-sm m-2 p-0"
+    class="shadow-sm"
   >
     <b-form
       @submit.prevent="$emit('submit', email)"
@@ -42,6 +42,7 @@
     <template #footer>
       <c-submit-button
         class="float-right"
+        :disabled="!canManage"
         :processing="processing"
         :success="success"
         @submit="$emit('submit', email)"
@@ -79,6 +80,11 @@ export default {
     success: {
       type: Boolean,
       value: false,
+    },
+
+    canManage: {
+      type: Boolean,
+      required: true,
     },
   },
 }

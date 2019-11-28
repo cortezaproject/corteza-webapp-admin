@@ -10,20 +10,25 @@
       :auth="getAuth"
       :processing="auth.processing"
       :success="auth.success"
+      :can-manage="canManage"
       @submit="onAuthSubmit"
     />
 
     <c-system-editor-email
+      class="mt-3"
       :email="getEmail"
       :processing="email.processing"
       :success="email.success"
+      :can-manage="canManage"
       @submit="onEmailSubmit"
     />
 
     <c-system-editor-external
+      class="mt-3"
       :external="settings"
       :processing="external.processing"
       :success="external.success"
+      :can-manage="canManage"
       @submit="onExternalSubmit"
     />
   </b-container>
@@ -53,6 +58,8 @@ export default {
   data () {
     return {
       settings: [],
+
+      canManage: false,
 
       auth: {
         processing: false,
@@ -109,9 +116,15 @@ export default {
     fetchSettings () {
       this.incLoader()
 
-      this.$SystemAPI.settingsList().then(settings => {
-        this.settings = settings
-      })
+      this.$SystemAPI.settingsList()
+        .then(settings => {
+          this.settings = settings
+
+          this.$SystemAPI.permissionsEffective()
+            .then(rules => {
+              this.canManage = rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'settings.manage').allow
+            })
+        })
         .catch(this.stdReject)
         .finally(() => {
           this.decLoader()

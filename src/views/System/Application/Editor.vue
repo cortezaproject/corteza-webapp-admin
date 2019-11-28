@@ -6,24 +6,24 @@
       :title="$t('title')"
     >
       <b-button-group
-        v-if="applicationID"
+        v-if="applicationID && canCreate"
       >
         <b-button
           variant="link"
           :to="{ name: 'system.application.new' }"
         >
-          New &blk14;
+          {{ $t('new') }}
         </b-button>
       </b-button-group>
       <b-button-group
-        v-if="applicationID"
+        v-if="applicationID && canGrant"
       >
         <permissions-button
-          title="Users"
-          :resource="'system:applications:'+applicationID"
+          :title="application.name"
+          :resource="'system:application:'+applicationID"
           button-variant="link"
         >
-          Permissions &blk14;
+          {{ $t('permissions') }}
         </permissions-button>
       </b-button-group>
     </c-content-header>
@@ -32,12 +32,14 @@
       :application="application"
       :processing="info.processing"
       :success="info.success"
+      :can-create="canCreate"
       @submit="onInfoSubmit"
       @delete="onDelete"
     />
 
     <c-application-editor-unify
       v-if="application.unify && application.applicationID"
+      class="mt-3"
       :unify="application.unify"
       :processing="unify.processing"
       :success="unify.success"
@@ -78,6 +80,9 @@ export default {
     return {
       application: {},
 
+      canCreate: false,
+      canGrant: false,
+
       info: {
         processing: false,
         success: false,
@@ -93,6 +98,7 @@ export default {
     applicationID: {
       immediate: true,
       handler () {
+        this.fetchEffective()
         if (this.applicationID) {
           this.fetchApplication()
         } else {
@@ -108,6 +114,20 @@ export default {
 
       this.$SystemAPI.applicationRead({ applicationID: this.applicationID })
         .then(this.prepare)
+        .catch(this.stdReject)
+        .finally(() => {
+          this.decLoader()
+        })
+    },
+
+    fetchEffective () {
+      this.incLoader()
+
+      this.$SystemAPI.permissionsEffective()
+        .then(rules => {
+          this.canCreate = rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'application.create').allow
+          this.canGrant = rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'grant').allow
+        })
         .catch(this.stdReject)
         .finally(() => {
           this.decLoader()

@@ -5,6 +5,9 @@ export default {
 
   list: {
     title: 'Roles',
+    new: 'New',
+    permissions: 'Permissions',
+    yaml: 'YAML',
     loading: 'Loading roles',
     numFound: `{{0}} role(s) found`,
 
@@ -46,6 +49,8 @@ export default {
 
   editor: {
     title: 'Edit role',
+    new: 'New',
+    permissions: 'Permissions',
 
     info: {
       title: 'Basic information',

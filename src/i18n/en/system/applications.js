@@ -5,6 +5,9 @@ export default {
 
   list: {
     title: 'Applications',
+    new: 'New',
+    permissions: 'Permissions',
+    yaml: 'YAML',
     loading: 'Loading applications',
     numFound: `{{0}} application(s) found`,
 
@@ -41,6 +44,8 @@ export default {
 
   editor: {
     title: 'Edit application',
+    new: 'New',
+    permissions: 'Permissions',
 
     info: {
       title: 'Basic information',

@@ -10,16 +10,16 @@
           variant="link"
           :to="{ name: 'system.user.new' }"
         >
-          New &blk14;
+          {{ $t('new') }}
         </b-button>
       </b-button-group>
       <b-button-group>
         <permissions-button
-          title="Users"
-          resource="system:users:*"
+          :title="$t('title')"
+          resource="system:user:*"
           button-variant="link"
         >
-          Permissions &blk14;
+          {{ $t('permissions') }}
         </permissions-button>
       </b-button-group>
       <b-dropdown
@@ -30,7 +30,7 @@
         text="Export"
       >
         <b-dropdown-item-button variant="link">
-          YAML  &blk14;
+          {{ $t('yaml') }}
         </b-dropdown-item-button>
       </b-dropdown>
     </c-content-header>
@@ -60,7 +60,7 @@
         </b-form-group>
         <b-row
           no-gutters
-          class="mt-2"
+          class="mt-3"
         >
           <c-resource-list-status-filter
             v-model="filter.deleted"
