@@ -4,7 +4,7 @@ export default {
   },
 
   list: {
-    title: 'System permissions',
+    title: 'Messaging permissions',
 
     rules: {
       title: 'List of rules',
