@@ -666,9 +666,12 @@ export default {
     },
     compose: {
       title: 'Compose',
-      panel: {
-        title: 'Panel',
-        'namespace-switcher': 'Enable namespace switcher',
+      ui: {
+        title: 'User interface',
+        'namespace-switcher': {
+          enabled: 'Enable namespace switcher',
+          defaultOpen: 'Namespace switcher opened by default',
+        },
       },
       file: {
         title: 'File',

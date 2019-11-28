@@ -26,16 +26,26 @@
 
     <main>
       <b-form-group
-        :label="$t('settings.compose.panel.title')"
+        :label="$t('settings.compose.ui.title')"
         label-size="lg"
       >
         <b-form-group label-cols="2">
           <b-form-checkbox
-            v-model="settings['panel.namespace-switcher']"
+            v-model="settings['ui.namespace-switcher.enabled']"
             :value="true"
             :unchecked-value="false"
           >
-            {{ $t('settings.compose.panel.namespace-switcher') }}
+            {{ $t('settings.compose.ui.namespace-switcher.enabled') }}
+          </b-form-checkbox>
+        </b-form-group>
+
+        <b-form-group label-cols="2">
+          <b-form-checkbox
+            v-model="settings['ui.namespace-switcher.defaultOpen']"
+            :value="true"
+            :unchecked-value="false"
+          >
+            {{ $t('settings.compose.ui.namespace-switcher.defaultOpen') }}
           </b-form-checkbox>
         </b-form-group>
       </b-form-group>
