@@ -15,8 +15,7 @@ export default (options = {}) => {
   options = {
     el: '#app',
     name: 'admin',
-    template: '<div id="admin" class="crust"><router-view/></div>',
-
+    template: '<router-view/>',
     router,
     store,
     i18n: i18n(),

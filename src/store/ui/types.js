@@ -1,0 +1,6 @@
+export const LOADER_INC = 'loader.increment'
+export const LOADER_DEC = 'loader.decrement'
+export const LOADER_HIDE = 'loader.hide'
+export const ALERTS_APPEND = 'alerts.append'
+export const ALERTS_REMOVE = 'alerts.remove'
+export const ALERTS_CLEAR = 'alerts.clear'

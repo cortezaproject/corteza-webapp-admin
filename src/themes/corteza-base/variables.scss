@@ -2,14 +2,18 @@ $logo: '/images/logo.png' !default;
 
 // Paths
 $fonts_dir : './fonts/' !default;
-$icomoon-font-path: $fonts_dir + 'icomoon' !default;
-$icomoon-font-family: "icomoon" !default;
 
 // Typography
 $regular: 'nunito_sansregular' !default;
 $bold: 'nunito_sansbold' !default;
 $semibold: 'nunito_sanssemibold' !default;
 $font-size-base: 0.85rem !default;
+$h1-font-size: $font-size-base * 1.50 !default;
+$h2-font-size: $font-size-base * 1.30 !default;
+$h3-font-size: $font-size-base * 1.20 !default;
+$h4-font-size: $font-size-base * 1.10 !default;
+$h5-font-size: $font-size-base * 1.05 !default;
+$h6-font-size: $font-size-base * 1.00 !default;
 
 $font-family-base:      $regular !default;
 $headings-font-family:  $semibold !default;
@@ -25,11 +29,13 @@ $danger:        #E85568 !default;
 $light:         #F3F3F5 !default;
 $dark:          #1e2224 !default;
 
+$sidebar-width: 200px !default;
+
 // Options
 $enable-rounded:   false !default;
 
 // Forms
-$input-font-size: $font-size-base !default;
+$input-font-size:              $font-size-base !default;
 $input-btn-focus-width:        0 !default;
 $input-focus-box-shadow:       none !default;
 $input-focus-border-color:     $primary !default;

@@ -1,54 +1,8 @@
 export default {
-  navigation: {
-    app: 'Applications',
-    user: 'Users',
-    role: 'Roles',
-    permission: 'Permissions',
-    manageApps: 'Manage applications',
-    automation: 'Automation',
-    settings: 'Settings',
-  },
-  application: {
-    information: 'Application information',
-    enabled: 'Enabled',
-    listed: 'Listed',
-    'manage-id-permissions': 'Manage permissions for this application',
-    'manage-wc-permissions': 'Manage permissions for all applications',
-    add: 'Add Application',
-    'delete': 'Delete application',
-    id: {
-      label: 'ID',
-    },
-    name: {
-      label: 'Name',
-      description: 'As an alternative to application name',
-    },
-    appSelector: {
-      label: 'Unify app selector',
-    },
-    icon: {
-      label: 'Icon',
-      description: 'Icon used in Unify tab',
-    },
-    logo: {
-      label: 'Logo',
-      description: 'Logo used in Unify application selector',
-    },
-    url: {
-      label: 'URL',
-      description: 'Application URL',
-    },
-    config: {
-      label: 'Configuration',
-      description: 'Application configuration (JSON)',
-    },
-    lastUpdate: {
-      label: 'Last update',
-    },
-    created: {
-      label: 'Created',
-    },
-  },
+  /**
+   * Permission translations are also in their respective permission translation files
+   * They are duplicated for the permissionsButton component
+   */
   permission: {
     clearFilter: 'Clear filter',
     setOnAllFiltered: 'Set on all filtered ({{count}})',
@@ -464,45 +418,8 @@ export default {
       },
     },
   },
-  role: {
-    information: 'Role Information',
-    'delete': 'Delete role',
-    add: 'Add Role',
-    handle: 'Handle',
-    members: 'Members {{count}}',
-    unnamed: 'Unnamed role',
-    'manage-id-permissions': 'Manage permissions for this role',
-    'manage-wc-permissions': 'Manage permissions for all roles',
-  },
-  user: {
-    information: 'User Information',
-    'delete': 'Delete user',
-    add: 'Add user',
-    email: 'Email',
-    submit: 'Submit',
-    fullName: 'Full name',
-    handle: 'Handle (name, username)',
-    status: 'User status',
-    statusChange: 'Change status',
-    suspend: 'Suspend user',
-    activate: 'Activate user',
-    suspendedAt: 'Suspended at',
-    active: 'Active',
-    kind: 'Kind/Type',
-    manage: 'Manage users ({{count}})',
-    roles: {
-      count: 'Roles ({{count}})',
-      manage: 'Manage user\'s roles',
-    },
-    password: {
-      'new': 'New password',
-      change: 'Change password',
-      confirm: 'Confirm password',
-      missmatch: 'The passwords must match !',
-    },
-    'manage-id-permissions': 'Manage permissions for this user',
-    'manage-wc-permissions': 'Manage permissions for all users',
-  },
+
+  // Leaving this here incase it is needed in the future
   automation: {
     title: 'List of automation script',
     newLabel: 'Create a new script',
@@ -604,141 +521,11 @@ export default {
       warning: '',
     },
   },
-  auth: {
-    notSignedIn: 'You\'re not signed in',
-    noAccess: 'Not allowed to access Crust Admin',
-  },
-  settings: {
-    system: {
-      auth: {
-        title: 'Authentication',
-        'external-providers': {
-          title: 'External Authentication Providers',
-          external: 'External',
-          enabled: 'Enable external authentication',
-          handle: 'Handle',
-          'client-key': 'Client key',
-          secret: 'Secret',
-          issuer: 'OIDC Issuer URL',
-          'provider-enabled': 'Enable this external authentication provider',
-          oidc: 'OpenID Connect',
-          gplus: 'Google',
-          facebook: 'Facebook',
-          github: 'GitHub',
-          linkedin: 'LinkedIn',
-        },
-        internal: {
-          title: 'Internal',
-          enabled: 'Internal authentication enabled',
-          'password-reset': {
-            enabled: 'Password reset enabled',
-          },
-          signup: {
-            enabled: 'Signup enabled',
-          },
-          'signup-email-confirmation-required': 'Signup email confirmation required',
-        },
-        frontend: {
-          title: 'Frontend',
-          url: {
-            base: 'Base',
-            'email-confirmation': 'Email confirmation',
-            'password-reset': 'Password reset',
-            redirect: 'Redirect',
-          },
-        },
-        mail: {
-          title: 'Mail',
-          'from-address': 'Sender address',
-          'from-name': 'Sender name',
-          emailConfirmation: {
-            title: 'Email Confirmation',
-            subject: 'Subject',
-            body: 'Body',
-          },
-          passwordReset: {
-            title: 'Password Reset',
-            subject: 'Subject',
-            body: 'Body',
-          },
-        },
-      },
-    },
-    compose: {
-      title: 'Compose',
-      ui: {
-        title: 'User interface',
-        'namespace-switcher': {
-          enabled: 'Enable namespace switcher',
-          defaultOpen: 'Namespace switcher opened by default',
-        },
-      },
-      file: {
-        title: 'File',
-        'max-size': 'Max size (MB)',
-        type: {
-          whitelist: 'File type whitelist',
-          description: 'MIME types, sepparated with ",". Example: "text/plain,text/csv"',
-        },
-      },
-    },
-    messaging: {
-      title: 'Messaging',
-      emoji: {
-        title: 'Emoji',
-        enabled: 'Enable emoji',
-      },
-      message: {
-        attachment: {
-          title: 'Attachments',
-          enabled: 'Enable attachments',
-          'max-size': 'Max size (MB)',
-          source: {
-            gallery: {
-              enabled: 'Enable attchment upload from gallery',
-            },
-            camera: {
-              enabled: 'Enable attachment upload from camera',
-            },
-          },
-          type: {
-            whitelist: 'File type whitelist',
-            description: 'MIME types, sepparated with ",". Example: "text/plain,text/csv"',
-          },
-        },
-      },
-      notification: {
-        title: 'Notifications',
-        enabled: 'Enable notifications',
-        header: {
-          template: 'Template for notification header',
-          // eslint-disable-next-line
-          description: 'Use ${user}/${channel} in place of user and channel names',
-        },
-        message: {
-          'max-length': 'Number of characters shown in the notification',
-        },
-      },
-    },
-    mail: {
-      title: 'Email',
-      header: 'Header (EmailHeaderEn):',
-      footer: 'Footer (EmailFooterEn):',
-    },
-  },
+
   general: {
     label: {
-      submit: 'Submit',
-      add: 'Add',
-      remove: 'Remove',
-      search: 'Search',
-      searchUsers: 'Search users',
-      searchRoles: 'Search roles',
       yes: 'Yes',
       no: 'No',
-      name: 'Name',
-      lastUpdate: 'Last update',
-      created: 'Created',
     },
   },
 }

@@ -1,17 +1,6 @@
-/* Import bootstrap styles from npm package */
-@import "variables.scss";
-
 @import "~vue-select/dist/vue-select.css";
+@import "variables.scss";
 @import '~bootstrap/scss/bootstrap';
-@import 'btns';
-@import 'forms';
-@import 'menu-layer';
-
-// nunito global font
-@import "nunito";
-
-// icomoon font
-@import "icons";
-
+@import '~bootstrap-vue/src/index.scss';
 @import "custom";
-
+@import "./nunito.scss";
