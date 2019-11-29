@@ -521,4 +521,11 @@ export default {
       warning: '',
     },
   },
+
+  general: {
+    label: {
+      yes: 'Yes',
+      no: 'No',
+    },
+  },
 }
