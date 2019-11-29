@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 import sinon from 'sinon'
-import RoleMembers from 'corteza-webapp-admin/src/components/RoleMembers'
+import CRoleEditorMembers from 'corteza-webapp-admin/src/components/Role/CRoleEditorMembers'
 import { shallowMount } from 'corteza-webapp-admin/tests/lib/helpers'
 import fp from 'flush-promises'
 
-describe('components/RoleMembers.vue', () => {
+describe('components/CRoleEditorMembers.vue', () => {
   afterEach(() => {
     sinon.restore()
   })
@@ -20,30 +20,32 @@ describe('components/RoleMembers.vue', () => {
     }
   })
 
-  const mountRM = (opt) => shallowMount(RoleMembers, {
+  const mountRM = (opt) => shallowMount(CRoleEditorMembers, {
     mocks: { $SystemAPI },
     propsData,
     ...opt,
   })
 
   it('provide user objects for members', async () => {
+    $SystemAPI.userList = sinon.stub().resolves({ set: [ { userID: 'ID1', name: 'user1' } ] })
     const wrap = mountRM()
 
     await fp()
-    expect(wrap.vm.filteredMembers).to.deep.eq([{ userID: 'ID1', name: 'user1' }])
+    expect(wrap.vm.memberUsers).to.deep.eq([{ userID: 'ID1', name: 'user1' }])
   })
 
   it('filter users over a query', async () => {
+    $SystemAPI.userList = sinon.stub().resolves({ set: [ { userID: 'ID1', name: 'user1' }, { userID: 'ID2', name: 'user2' } ] })
     const wrap = mountRM()
     wrap.setData({ filter: 'user' })
 
     await fp()
-    expect(wrap.vm.filtered).to.deep.eq([ { userID: 'ID1', name: 'user1' }, { userID: 'ID2', name: 'user2' } ])
+    expect(wrap.vm.filtered).to.deep.eq([ { userID: 'ID2', name: 'user2' } ])
   })
 
   describe('add member', () => {
     beforeEach(() => {
-      sinon.stub(RoleMembers, 'created')
+      sinon.stub(CRoleEditorMembers, 'mounted')
     })
 
     it('existing', () => {
@@ -64,7 +66,7 @@ describe('components/RoleMembers.vue', () => {
 
   describe('remove member', () => {
     beforeEach(() => {
-      sinon.stub(RoleMembers, 'created')
+      sinon.stub(CRoleEditorMembers, 'mounted')
     })
 
     it('existing', () => {

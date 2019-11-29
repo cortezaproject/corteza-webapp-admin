@@ -1,15 +1,15 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
-import UserRoles from 'corteza-webapp-admin/src/components/UserRoles'
+import CUserEditorRoles from 'corteza-webapp-admin/src/components/User/CUserEditorRoles'
 import { shallowMount } from 'corteza-webapp-admin/tests/lib/helpers'
 
-describe('components/UserRoles.vue', () => {
+describe('components/CUserEditorRoles.vue', () => {
   let propsData
   beforeEach(() => {
     propsData = { currentRoles: [ { dirty: false }, { dirty: true } ] }
   })
 
-  const mountUR = (opt) => shallowMount(UserRoles, {
+  const mountUR = (opt) => shallowMount(CUserEditorRoles, {
     propsData,
     ...opt,
   })
@@ -26,7 +26,4 @@ describe('components/UserRoles.vue', () => {
 
     expect(wrap.vm.filtered).to.deep.eq([{ dirty: false, name: 'filter' }])
   })
-
-  it('can set role')
-  it('can remove role')
 })
