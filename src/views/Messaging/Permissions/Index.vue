@@ -41,7 +41,6 @@ export default {
   created () {
     this.api = this.$MessagingAPI
 
-    this.fetchRoles()
     this.fetchPermissions()
   },
 }

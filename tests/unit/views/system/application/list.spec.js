@@ -13,6 +13,7 @@ describe('views/Application/List.vue', () => {
   beforeEach(() => {
     $SystemAPI = {
       applicationList: sinon.stub().resolves(),
+      permissionsEffective: sinon.stub().resolves(),
     }
     $router = {
       push: sinon.fake(),

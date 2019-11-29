@@ -41,7 +41,6 @@ export default {
   created () {
     this.api = this.$SystemAPI
 
-    this.fetchRoles()
     this.fetchPermissions()
   },
 }

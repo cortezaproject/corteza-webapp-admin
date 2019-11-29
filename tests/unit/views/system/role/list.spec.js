@@ -13,6 +13,7 @@ describe('views/Role/List.vue', () => {
   beforeEach(() => {
     $SystemAPI = {
       roleList: sinon.stub().resolves({ set: [{ roleID: 'ID1' }, { roleID: 'ID2' }] }),
+      permissionsEffective: sinon.stub().resolves(),
     }
     $router = {
       push: sinon.fake(),

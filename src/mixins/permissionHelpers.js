@@ -43,12 +43,12 @@ export default {
 
       this.$SystemAPI.roleList()
         .then(({ set }) => {
-          this.roles = set
+          this.roles = set.filter(r => this.rolesIncluded.includes(r.roleID))
           this.rolePermissions = []
           this.rolesExcluded = []
 
           // We read permissions for included roles
-          Promise.all(this.roles.map(role => {
+          Promise.all(set.map(role => {
             const { roleID } = role
 
             if (this.rolesIncluded.includes(roleID)) {
@@ -56,7 +56,9 @@ export default {
                 .then(rolePermissions => {
                   rolePermissions = rolePermissions
                     .reduce((map, { resource, operation, access }) => {
-                      map[`${resource}/${operation}`] = access
+                      if ((this.permissions[`${resource}/`] || []).find(op => operation === op)) {
+                        map[`${resource}/${operation}`] = access
+                      }
                       return map
                     }, {})
 
@@ -69,8 +71,6 @@ export default {
           }))
             .catch(this.stdReject)
             .finally(() => {
-              this.roles = this.roles.filter(r => this.rolesIncluded.includes(r.roleID))
-
               this.loaded.roles = true
               this.decLoader()
             })
@@ -98,6 +98,8 @@ export default {
               map[resource].push(operation)
               return map
             }, {})
+
+          this.fetchRoles()
         })
         .catch(this.stdReject)
         .finally(() => {
@@ -154,7 +156,9 @@ export default {
         .then(rolePermissions => {
           rolePermissions = rolePermissions
             .reduce((map, { resource, operation, access }) => {
-              map[`${resource}/${operation}`] = access
+              if ((this.permissions[`${resource}/`] || []).find(op => operation === op)) {
+                map[`${resource}/${operation}`] = access
+              }
               return map
             }, {})
 
