@@ -9,7 +9,8 @@ export default {
     permissions: 'Permissions',
     yaml: 'YAML',
     loading: 'Loading applications',
-    numFound: `{{0}} application(s) found`,
+    numFound: `{{count}} application found`,
+    numFound_plural: `{{count}} applications found`,
 
     filterForm: {
       query: {

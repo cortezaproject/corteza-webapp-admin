@@ -39,7 +39,7 @@
       primary-key="userID"
       edit-route="system.user.edit"
       :loading-text="$t('loading')"
-      :total-text="$t('numFound', [ totalItems ])"
+      :total-text="$t('numFound', { count: totalItems })"
       :paging="paging"
       :sorting="sorting"
       :items="items"

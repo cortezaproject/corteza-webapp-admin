@@ -9,7 +9,8 @@ export default {
     permissions: 'Permissions',
     yaml: 'YAML',
     loading: 'Loading users',
-    numFound: `{{0}} user(s) found`,
+    numFound: `{{count}} user found`,
+    numFound_plural: `{{count}} users found`,
 
     filterForm: {
       query: {

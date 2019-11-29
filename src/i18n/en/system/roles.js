@@ -9,7 +9,8 @@ export default {
     permissions: 'Permissions',
     yaml: 'YAML',
     loading: 'Loading roles',
-    numFound: `{{0}} role(s) found`,
+    numFound: `{{count}} role found`,
+    numFound_plural: `{{count}} roles found`,
 
     filterForm: {
       query: {

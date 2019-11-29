@@ -42,7 +42,7 @@
       primary-key="roleID"
       edit-route="system.role.edit"
       :loading-text="$t('loading')"
-      :total-text="$t('numFound', [ totalItems ])"
+      :total-text="$t('numFound', { count: totalItems })"
       :paging="paging"
       :sorting="sorting"
       :items="items"
