@@ -23,20 +23,21 @@ export default {
     }
   },
 
+  watch: {
+    /**
+     * When fullPath for this component changes, we most likely should update our
+     * filters.
+     * @todo make this.filter reactive
+     */
+    '$route.fullPath': {
+      handler: function () {
+        this.handleQueryParams()
+      },
+    },
+  },
+
   created () {
-    let qp = { ...this.$route.query }
-
-    this.paging.page = parseInt(qp.page) || this.paging.page
-    this.paging.perPage = parseInt(qp.perPage) || this.paging.perPage
-
-    this.sorting.sortBy = qp.sortBy || this.sorting.sortBy
-    this.sorting.sortDesc = qp.sortDesc === 'false'
-
-    for (let k in qp) {
-      if (this.filter[k] !== undefined) {
-        this.filter[k] = qp[k]
-      }
-    }
+    this.handleQueryParams()
   },
 
   methods: {
@@ -44,6 +45,22 @@ export default {
       incLoader: 'ui/incLoader',
       decLoader: 'ui/decLoader',
     }),
+
+    /**
+     * Parses query params into list filtering params.
+     */
+    handleQueryParams () {
+      // Paging
+      const { perPage = this.paging.perPage, page = this.paging.page, ...r1 } = this.$route.query
+      this.paging = { perPage, page }
+
+      // Sorting
+      const { sortBy = this.sorting.sortBy, sortDesc = this.sorting.sortDesc, ...r2 } = r1
+      this.sorting = { sortBy, sortDesc: sortDesc === true || sortDesc === 'true' }
+
+      // Filtering
+      this.filter = { ...this.filter, ...r2 }
+    },
 
     filterList: debounce(function () {
       // reset paging when filtering changes
