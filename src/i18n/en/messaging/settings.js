@@ -29,7 +29,7 @@ export default {
       },
 
       message: {
-        attachment: {
+        attachments: {
           title: 'Attachments',
           enabled: 'Enable attachments',
           'max-size': 'Max size (MB)',
