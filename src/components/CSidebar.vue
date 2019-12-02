@@ -64,12 +64,16 @@ export default {
     cursor: pointer;
   }
 
+  a, small {
+    opacity: 1;
+    transition: all 0.5s ease;
+  }
+
   &.minified {
     width: 35px;
     min-width: 35px;
 
-    /deep/ .label,
-    small {
+    a, small {
       opacity: 0;
       transition: all 0.5s ease;
     }

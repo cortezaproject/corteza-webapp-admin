@@ -1,11 +1,11 @@
 <template>
   <b-row class="mb-2">
     <h2
-      class="col-lg-4 col-sm-12"
+      class="col-4"
       v-html="title"
     />
     <b-button-toolbar
-      class="col-lg-8 col-sm-12 px-2 justify-content-end"
+      class="col-8 px-2 justify-content-end"
     >
       <slot />
     </b-button-toolbar>
