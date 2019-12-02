@@ -3,6 +3,8 @@
     <b-card
       class="shadow-sm"
       body-class="py-0 px-3"
+      header-bg-variant="white"
+      footer-bg-variant="white"
     >
       <div
         v-if="loaded"

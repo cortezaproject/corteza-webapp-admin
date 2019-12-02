@@ -13,7 +13,7 @@ export default {
         title: 'User Interface',
         'namespace-switcher': {
           enabled: 'Enable namespace switcher',
-          defaultOpen: 'Open by default',
+          defaultOpen: 'Namespace switcher open by default',
         },
       },
       attachments: {

@@ -1,6 +1,8 @@
 <template>
   <b-card
     class="shadow-sm"
+    header-bg-variant="white"
+    footer-bg-variant="white"
   >
     <b-form
       @submit.prevent="onPasswordSubmit"
