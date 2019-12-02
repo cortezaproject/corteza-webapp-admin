@@ -7,9 +7,13 @@
     />
 
     <b-row>
-      <b-col cols="8">
+      <b-col
+        cols="12"
+        lg="7"
+        xl="8"
+      >
         <b-card
-          class="shadow-sm"
+          class="shadow-sm mb-3"
         >
           <b-card-title>
             <router-link
@@ -28,7 +32,9 @@
 
           <b-container class="mt-3">
             <b-row>
-              <b-col cols="4">
+              <b-col
+                cols="4"
+              >
                 <router-link
                   :to="{ name: 'system.user.list', query: { deleted: 1, suspended: 1 } }"
                 >
@@ -73,7 +79,11 @@
           </b-container>
         </b-card>
       </b-col>
-      <b-col cols="4">
+      <b-col
+        cols="12"
+        lg="5"
+        xl="4"
+      >
         <b-card
           class="shadow-sm"
         >
