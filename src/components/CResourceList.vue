@@ -21,6 +21,7 @@
         :current-page.sync="paging.page"
         :items="items"
         :fields="fields"
+        no-sort-reset
       >
         <template #table-busy>
           <div class="text-center m-5">
