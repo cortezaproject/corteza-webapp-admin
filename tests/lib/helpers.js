@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { createLocalVue, shallowMount as sm } from '@vue/test-utils'
+import { createLocalVue, shallowMount as sm, mount as rm } from '@vue/test-utils'
 import sinon from 'sinon'
 import CContentHeader from 'corteza-webapp-admin/src/components/CContentHeader'
 import CResourceList from 'corteza-webapp-admin/src/components/CResourceList'
@@ -31,10 +31,8 @@ export const stdAuth = (mocks = {}) => ({
   ...mocks,
 })
 
-export const shallowMount = (component, { mocks = {}, stubs = [], $auth = stdAuth(), ...options } = {}) => {
-  let localVue = createLocalVue()
-
-  return sm(component, {
+const mounter = (component, { localVue = createLocalVue(), $auth = {}, mocks = {}, stubs = [], ...options } = {}, mount) => {
+  return mount(component, {
     localVue,
     stubs: ['router-view', 'router-link', 'confirmation-toggle', 'user-roles', 'permissions-button', ...stubs],
     mocks: {
@@ -46,6 +44,14 @@ export const shallowMount = (component, { mocks = {}, stubs = [], $auth = stdAut
     },
     ...options,
   })
+}
+
+export const shallowMount = (...e) => {
+  return mounter(...e, sm)
+}
+
+export const fullMount = (...e) => {
+  return mounter(...e, rm)
 }
 
 export default shallowMount
