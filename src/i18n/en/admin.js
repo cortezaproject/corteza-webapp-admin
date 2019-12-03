@@ -62,6 +62,11 @@ export default {
         title: 'Manage all settings',
         description: 'Default: deny',
       },
+      service: {
+        NoPermissions: 'You don’t have permission for this action',
+        UserHandleNotUnique: 'Handle is already used',
+        RoleHandleNotUnique: 'Handle is already used',
+      },
       'automation-script-create': {
         title: 'Create automation scripts',
         description: 'Default: allow',
