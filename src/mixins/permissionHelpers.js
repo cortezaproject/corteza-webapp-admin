@@ -1,5 +1,26 @@
 import editorHelpers from './editorHelpers'
 
+const systemRoles = ['1', '2']
+const lsKey = 'permissionList.roles'
+
+/**
+ * Determines what roles should be included in the table
+ * @returns {Array<String>}
+ */
+function getIncludedRoles () {
+  const udRoles = JSON.parse(localStorage.getItem(lsKey) || '[]')
+  return systemRoles.concat(udRoles)
+}
+
+/**
+ * Filters out system roles and stores to localStorage
+ * @param {Array<String>} roles Roles to store
+ */
+function setIncludedRoles (roles = []) {
+  roles = roles.filter(r => !systemRoles.includes(r))
+  localStorage.setItem(lsKey, JSON.stringify(roles))
+}
+
 export default {
   mixins: [
     editorHelpers,
@@ -8,7 +29,7 @@ export default {
   data () {
     return {
       // Array of roleID's included in the permission list
-      rolesIncluded: ['1', '2'],
+      rolesIncluded: getIncludedRoles(),
       // Array of roleID's not included in the permission list
       rolesExcluded: [],
 
@@ -151,6 +172,9 @@ export default {
       const { roleID } = role
       this.rolesIncluded.push(roleID)
       this.rolesExcluded = this.rolesExcluded.filter(r => r.roleID !== roleID)
+
+      // Store for next time
+      setIncludedRoles(this.rolesIncluded)
 
       this.api.permissionsRead({ roleID })
         .then(rolePermissions => {
