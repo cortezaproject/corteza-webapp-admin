@@ -198,7 +198,7 @@ export default {
       return (value || '').split(',').map(v => {
         return v.replace(/ /g, '')
       }).filter(v => {
-        if (v.match(/^[-\w.]+\/[-\w/+.]+$/g)) {
+        if (v.match(/^[\w*]+\/[\w*]+$/g)) {
           return v
         }
       })
