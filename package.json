@@ -34,7 +34,7 @@
     "moment": "^2.24.0",
     "resolve-url-loader": "^3.1.0",
     "sinon": "^7.3.2",
-    "stylelint": "^9.1“0.1",
+    "stylelint": "^9.10.1",
     "stylelint-config-standard": "^18.2.0",
     "stylelint-scss": "3.9.3",
     "stylelint-webpack-plugin": "^0.10.5",
