@@ -11,7 +11,7 @@ describe('views/Layout.vue', () => {
     sinon.restore()
   })
 
-  let $auth, $store
+  let $auth, $store, $SystemAPI
 
   beforeEach(() => {
     $auth = {
@@ -19,13 +19,20 @@ describe('views/Layout.vue', () => {
       check: sinon.stub().resolves(),
       open: sinon.stub().resolves(),
     }
+
+    $SystemAPI = {
+      permissionsEffective: sinon.stub().resolves([
+        { resource: 'system', operation: 'access', allow: true },
+      ]),
+    }
+
     $store = {
       dispatch: sinon.fake(),
     }
   })
 
   const mountLayout = (opt) => shallowMount(Layout, {
-    mocks: { $auth, $store },
+    mocks: { $auth, $store, $SystemAPI },
     ...opt,
   })
 

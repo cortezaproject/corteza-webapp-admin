@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="$auth.is() && hasAccess"
     class="d-flex flex-column vh-100 bg-light"
   >
     <small
@@ -10,9 +11,7 @@
 
     <c-the-header />
 
-    <!-- do not show the main section if user is not authenticated -->
     <div
-      v-if="$auth.is()"
       class="d-flex flex-row overflow-hidden"
     >
       <c-the-main-nav
@@ -27,18 +26,13 @@
         <permissions-modal />
       </main>
     </div>
-    <div
-      v-else
-      class="loader"
-    >
-      <div
-        v-if="error"
-        class="error text-danger h1 text-center vw-100"
-      >
-        {{ error }}
-      </div>
-    </div>
   </div>
+  <!--
+    Show this when
+  -->
+  <c-the-alert-container
+    v-else
+  />
 </template>
 <script>
 import CTheAlertContainer from 'corteza-webapp-admin/src/components/CTheAlertContainer'
@@ -66,6 +60,10 @@ export default {
       /* eslint-disable no-undef */
       return VERSION
     },
+
+    hasAccess () {
+      return !!this.access.find(({ resource, operation, allow }) => resource === 'system' && operation === 'access' && allow)
+    },
   },
 
   /**
@@ -76,28 +74,50 @@ export default {
   beforeCreate () {
     this.$store.dispatch('ui/incLoader')
 
-    this.$auth.check(this.$SystemAPI)
-      .then(() => {
-        this.$SystemAPI.permissionsEffective()
-          .then(rules => {
-            this.access = rules
-            if (!rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'access' && allow)) {
-              this.error = this.$t('auth.noAccess')
-            }
-            this.$ComposeAPI.permissionsEffective()
-              .then(rules => {
-                this.access = this.access.concat(rules)
-                this.$MessagingAPI.permissionsEffective()
-                  .then(rules => {
-                    this.access = this.access.concat(rules)
-                  })
-              })
-          })
-      }).catch((e) => {
-        this.$auth.open()
-      }).finally(() => {
-        this.$store.dispatch('ui/decLoader')
+    this.access = []
+
+    this.$auth
+      // First, check if we're authenticated
+      .check(this.$SystemAPI)
+      .then(async () => {
+        await this.loadPermissions()
       })
+      .catch((e) => {
+        this.$auth.open()
+      })
+  },
+
+  methods: {
+    async loadPermissions () {
+      // Load effective System permissions
+      return this.$SystemAPI.permissionsEffective()
+        .then(rules => {
+          this.access = rules
+
+          if (!this.hasAccess) {
+            // Open auth if we do not have admin (system) access
+            throw new Error(this.$t('general.noAccess'))
+          }
+
+          // Load effective Compose permissions
+          return this.$ComposeAPI.permissionsEffective()
+        })
+        .then(rules => {
+          this.access = this.access.concat(rules)
+
+          // Load effective Messaging permissions
+          return this.$MessagingAPI.permissionsEffective()
+        })
+        .then(rules => {
+          this.access = this.access.concat(rules)
+        })
+        .catch(({ message }) => {
+          this.$store.dispatch('ui/appendAlert', message)
+        })
+        .finally(() => {
+          this.$store.dispatch('ui/decLoader')
+        })
+    },
   },
 }
 </script>
@@ -105,9 +125,5 @@ export default {
 .version {
   bottom: 0;
   right: 0;
-}
-.error {
-  position: absolute;
-  top: 50vh;
 }
 </style>
