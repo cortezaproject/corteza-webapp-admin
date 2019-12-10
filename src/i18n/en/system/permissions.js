@@ -31,7 +31,7 @@ export default {
           title: 'Roles',
 
           create: 'Create new role',
-          read: 'Access any role',
+          read: 'Read any role',
           update: 'Update any role',
           delete: 'Delete any role',
           members: {
@@ -42,7 +42,7 @@ export default {
           title: 'Users',
 
           create: 'Create new user',
-          read: 'Access any user',
+          read: 'Read any user',
           update: 'Update any user',
           delete: 'Delete any user',
           suspend: 'Suspend any user',

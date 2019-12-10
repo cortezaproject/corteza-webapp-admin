@@ -25,7 +25,7 @@ export default {
           title: 'Namespaces',
 
           create: 'Create namespaces',
-          read: 'Read-access any namespace',
+          read: 'Access any namespace',
           manage: 'Manage any namespace',
           update: 'Update any namespace',
           delete: 'Delete any namespace',

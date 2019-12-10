@@ -78,8 +78,8 @@ export default {
     },
     'system-role': {
       read: {
-        title: 'Access any role',
-        specific: 'Access {{target}}',
+        title: 'Read any role',
+        specific: 'Read {{target}}',
         description: 'Default: allow',
       },
       update: {
@@ -100,8 +100,8 @@ export default {
     },
     'system-user': {
       read: {
-        title: 'Access any user',
-        specific: 'Access {{target}}',
+        title: 'Read any user',
+        specific: 'Read {{target}}',
         description: 'Default: allow',
       },
       update: {
@@ -127,8 +127,8 @@ export default {
     },
     'system-application': {
       read: {
-        title: 'Access any application',
-        specific: 'Access {{target}}',
+        title: 'Read any application',
+        specific: 'Read {{target}}',
         description: 'Default: allow',
       },
       update: {
@@ -350,7 +350,7 @@ export default {
     },
     'compose-namespace': {
       read: {
-        title: 'Read-access any namespace',
+        title: 'Access any namespace',
         description: 'Default: deny',
       },
       update: {
