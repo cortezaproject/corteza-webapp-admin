@@ -13,14 +13,14 @@ export default {
   },
 
   roles: {
-    title: 'Active roles(s)',
+    title: 'Active role(s)',
     total: 'Total',
     archived: 'Archived',
     deleted: 'Deleted',
   },
 
   applications: {
-    title: 'Active applications(s)',
+    title: 'Active application(s)',
     total: 'Total',
     deleted: 'Deleted',
   },
