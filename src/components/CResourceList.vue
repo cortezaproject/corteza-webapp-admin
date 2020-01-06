@@ -34,8 +34,6 @@
             <div>{{ loadingText }}</div>
           </div>
         </template>
-        >
-
         <template #cell(actions)="row">
           <b-button
             size="sm"
