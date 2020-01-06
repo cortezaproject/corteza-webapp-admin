@@ -8,44 +8,46 @@
     <b-card-body
       class="p-0"
     >
-      <b-table
-        id="resource-list"
-        hover
-        responsive
-        class="mb-0"
-        head-variant="light"
-        :primary-key="primaryKey"
-        :sort-by.sync="sorting.sortBy"
-        :sort-desc.sync="sorting.sortDesc"
-        :per-page="paging.perPage"
-        :current-page.sync="paging.page"
-        :items="items"
-        :fields="fields"
-        no-sort-reset
-      >
-        <template #table-busy>
-          <div class="text-center m-5">
-            <div>
-              <b-spinner
-                small
-                class="align-middle m-2"
-              />
+      <template #body>
+        <b-table
+          id="resource-list"
+          hover
+          responsive
+          class="mb-0"
+          head-variant="light"
+          :primary-key="primaryKey"
+          :sort-by.sync="sorting.sortBy"
+          :sort-desc.sync="sorting.sortDesc"
+          :per-page="paging.perPage"
+          :current-page.sync="paging.page"
+          :items="items"
+          :fields="fields"
+          no-sort-reset
+        >
+          <template #table-busy>
+            <div class="text-center m-5">
+              <div>
+                <b-spinner
+                  small
+                  class="align-middle m-2"
+                />
+              </div>
+              <div>{{ loadingText }}</div>
             </div>
-            <div>{{ loadingText }}</div>
-          </div>
-        </template>
-        <template #cell(actions)="row">
-          <b-button
-            size="sm"
-            variant="link"
-            :to="{ name: editRoute, params: { [primaryKey]: row.item[primaryKey] } }"
-          >
-            <font-awesome-icon
-              :icon="['fas', 'pen']"
-            />
-          </b-button>
-        </template>
-      </b-table>
+          </template>
+          <template #cell(actions)="row">
+            <b-button
+              size="sm"
+              variant="link"
+              :to="{ name: editRoute, params: { [primaryKey]: row.item[primaryKey] } }"
+            >
+              <font-awesome-icon
+                :icon="['fas', 'pen']"
+              />
+            </b-button>
+          </template>
+        </b-table>
+      </template>
     </b-card-body>
 
     <!--

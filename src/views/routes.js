@@ -96,6 +96,7 @@ export default [
           r('system.settings.email', 'settings/email', 'System/Settings/Email'),
 
           r('system.permissions', 'permissions', 'System/Permissions/Index'),
+          r('system.automation', 'automation', 'System/Automation/Index'),
         ],
       },
 
@@ -104,6 +105,7 @@ export default [
         children: [
           r('compose.settings', 'settings', 'Compose/Settings/Index'),
           r('compose.permissions', 'permissions', 'Compose/Permissions/Index'),
+          r('compose.automation', 'automation', 'Compose/Automation/Index'),
         ],
       },
 
