@@ -4,16 +4,13 @@ import BootstrapVue from 'bootstrap-vue'
 import Router from 'vue-router'
 import Vuex from 'vuex'
 
-import system from 'corteza-webapp-common/src/plugins/system'
-import compose from 'corteza-webapp-common/src/plugins/compose'
-import messaging from 'corteza-webapp-common/src/plugins/messaging'
-import auth from 'corteza-webapp-common/src/plugins/auth'
+import { plugins } from 'corteza-vue'
 
 Vue.use(BootstrapVue)
 Vue.use(Router)
 Vue.use(Vuex)
 
-Vue.use(system)
-Vue.use(compose)
-Vue.use(messaging)
-Vue.use(auth)
+Vue.use(plugins.CortezaAPI('compose'))
+Vue.use(plugins.CortezaAPI('system'))
+Vue.use(plugins.CortezaAPI('messaging'))
+Vue.use(plugins.Auth(Vue.prototype.$SystemAPI))

@@ -44,6 +44,11 @@ module.exports = ({ appFlavour, appName, appLabel, version, theme, packageAlias,
 
     configureWebpack: {
       // other webpack options to merge in ...
+
+      // Make sure webpack is not too nosy
+      // and tries to tinker around linked packages
+      resolve: { symlinks: false },
+
       plugins: [
         new webpack.DefinePlugin({
           FLAVOUR: JSON.stringify(appFlavour),
@@ -52,6 +57,13 @@ module.exports = ({ appFlavour, appName, appLabel, version, theme, packageAlias,
           BUILD_TIME: JSON.stringify((new Date()).toISOString()),
         }),
       ],
+
+      watchOptions: {
+        ignored: [
+          /node_modules([\\]+|\/)+(?!corteza-)/,
+          /\scorteza-([\\]+|\/)node_modules/,
+        ],
+      },
 
       optimization,
     },

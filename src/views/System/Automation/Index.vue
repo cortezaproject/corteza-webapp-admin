@@ -4,8 +4,7 @@
   >
     <c-content-header
       :title="$t('title')"
-    >
-    </c-content-header>
+    />
     <b-card
       no-body
       class="shadow-sm"

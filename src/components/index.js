@@ -4,8 +4,9 @@ import './faIcons'
 import CContentHeader from './CContentHeader'
 import CResourceList from './CResourceList'
 import CResourceListStatusFilter from './CResourceListStatusFilter'
+import { components } from 'corteza-vue'
 
-Vue.component('permissions-button', () => import('corteza-webapp-common/src/components/Permissions/Button'))
+Vue.component('permissions-button', components.PermissionsButton)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('c-content-header', CContentHeader)
 Vue.component('c-resource-list', CResourceList)

@@ -38,11 +38,11 @@
 import CTheAlertContainer from 'corteza-webapp-admin/src/components/CTheAlertContainer'
 import CTheHeader from 'corteza-webapp-admin/src/components/CTheHeader'
 import CTheMainNav from 'corteza-webapp-admin/src/components/CTheMainNav'
-import { PermissionsModal } from 'corteza-webapp-common/components'
+import { components } from 'corteza-vue'
 
 export default {
   components: {
-    PermissionsModal,
+    PermissionsModal: components.PermissionsModal,
     CTheAlertContainer,
     CTheHeader,
     CTheMainNav,
@@ -78,7 +78,7 @@ export default {
 
     this.$auth
       // First, check if we're authenticated
-      .check(this.$SystemAPI)
+      .check()
       .then(async () => {
         await this.loadPermissions()
       })

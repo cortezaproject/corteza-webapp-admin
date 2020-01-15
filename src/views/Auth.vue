@@ -124,7 +124,7 @@ export default {
     check () {
       this.newJWT = this.newJWT.replace(/["']+/, '')
       this.checkRsp = `  ... verifying JWT`
-      this.$auth.check(this.$SystemAPI, this.newJWT).then((user) => {
+      this.$auth.check(this.newJWT).then((user) => {
         let countdown = 5
         let h = setInterval(() => {
           this.checkRsp = ` &check; Valid JWT, redirecting in ${countdown} seconds`
@@ -134,8 +134,9 @@ export default {
           }
           countdown--
         }, 1000)
-      }).catch(({ message }) => {
-        this.checkRsp = message
+      }).catch((e) => {
+        console.error(e)
+        this.checkRsp = e
       })
     },
   },
