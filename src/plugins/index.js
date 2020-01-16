@@ -4,7 +4,7 @@ import BootstrapVue from 'bootstrap-vue'
 import Router from 'vue-router'
 import Vuex from 'vuex'
 
-import { plugins } from 'corteza-vue'
+import { plugins } from '@cortezaproject/corteza-vue'
 
 Vue.use(BootstrapVue)
 Vue.use(Router)

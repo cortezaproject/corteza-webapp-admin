@@ -38,7 +38,7 @@
 import CTheAlertContainer from 'corteza-webapp-admin/src/components/CTheAlertContainer'
 import CTheHeader from 'corteza-webapp-admin/src/components/CTheHeader'
 import CTheMainNav from 'corteza-webapp-admin/src/components/CTheMainNav'
-import { components } from 'corteza-vue'
+import { components } from '@cortezaproject/corteza-vue'
 
 export default {
   components: {
