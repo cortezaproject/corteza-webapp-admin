@@ -97,7 +97,7 @@ export default {
         return ee
       }
 
-      tt.forEach(({ events }) => ee.push(...events))
+      tt.forEach(({ events }) => ee.push(...(events || [])))
       return ee.filter((v, i) => ee.indexOf(v) === i)
     },
   },
