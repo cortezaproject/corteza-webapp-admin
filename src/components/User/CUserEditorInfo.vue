@@ -53,7 +53,7 @@
         label-cols="2"
       >
         <b-form-input
-          v-model="user.updatedAt"
+          :value="user.updatedAt | locLongDate"
           plaintext
           disabled
         />
@@ -65,7 +65,7 @@
         label-cols="2"
       >
         <b-form-input
-          v-model="user.suspendedAt"
+          :value="user.suspendedAt | locLongDate"
           plaintext
           disabled
         />
@@ -77,7 +77,7 @@
         label-cols="2"
       >
         <b-form-input
-          v-model="user.deletedAt"
+          :value="user.deletedAt | locLongDate"
           plaintext
           disabled
         />
@@ -90,7 +90,7 @@
         class="mb-0"
       >
         <b-form-input
-          v-model="user.createdAt"
+          :value="user.createdAt | locLongDate"
           plaintext
           disabled
         />
@@ -120,12 +120,21 @@
 
       <confirmation-toggle
         v-if="user && user.userID"
-        class="ml-2"
+        class="ml-1"
         cta-class="secondary"
         @confirmed="$emit('status')"
       >
         {{ getSuspendStatus }}
       </confirmation-toggle>
+
+      <c-corredor-manual-buttons
+        ui-page="user/editor"
+        ui-slot="infoFooter"
+        resource-type="system:user"
+        default-variant="secondary"
+        class="ml-2"
+        @click="dispatchCortezaSystemUserEvent($event, { user })"
+      />
     </template>
   </b-card>
 </template>

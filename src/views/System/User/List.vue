@@ -33,6 +33,13 @@
           {{ $t('yaml') }}
         </b-dropdown-item-button>
       </b-dropdown>
+      <c-corredor-manual-buttons
+        ui-page="user/list"
+        ui-slot="toolbar"
+        resource-type="system"
+        class="mr-1"
+        @click="dispatchCortezaSystemEvent($event)"
+      />
     </c-content-header>
 
     <c-resource-list
@@ -87,7 +94,8 @@
 </template>
 
 <script>
-import * as moment from 'moment'
+import { system } from '@cortezaproject/corteza-js'
+import moment from 'moment'
 import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
 
 export default {
@@ -144,6 +152,10 @@ export default {
   },
 
   methods: {
+    makeEvent () {
+      return system.SystemEvent()
+    },
+
     items () {
       return this.procListResults(this.$SystemAPI.userList(this.encodeListParams()))
     },

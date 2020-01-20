@@ -52,6 +52,13 @@
         :disabled="!passwordState || !confirmPasswordState"
         @submit="onPasswordSubmit"
       />
+
+      <c-corredor-manual-buttons
+        ui-page="user/editor"
+        ui-slot="passwordFooter"
+        default-variant="secondary"
+        @click="dispatchCortezaSystemEvent($event)"
+      />
     </template>
   </b-card>
 </template>

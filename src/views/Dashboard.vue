@@ -4,8 +4,15 @@
   >
     <c-content-header
       :title="$t('title')"
-    />
-
+    >
+      <c-corredor-manual-buttons
+        ui-page="dashboard"
+        ui-slot="toolbar"
+        resource-type="system'"
+        class="mr-1"
+        @click="dispatchCortezaSystemEvent($event)"
+      />
+    </c-content-header>
     <b-row>
       <b-col
         cols="12"
@@ -261,6 +268,26 @@ export default {
       this.applications = applications
 
       this.initUserChart()
+    })
+  },
+
+  mounted () {
+    this.$nextTick(() => {
+      this.$EventBus.WaitFor({
+        resourceType: 'ui:admin:dashboard',
+        eventType: 'afterMount',
+        args: { data: this.$data, $el: this.$el },
+      })
+    })
+  },
+
+  updated () {
+    this.$nextTick(() => {
+      this.$EventBus.WaitFor({
+        resourceType: 'ui:admin:dashboard',
+        eventType: 'afterUpdate',
+        args: { data: this.users, $el: this.$el },
+      })
     })
   },
 

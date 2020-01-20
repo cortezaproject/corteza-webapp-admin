@@ -26,6 +26,15 @@
           {{ $t('permissions') }}
         </permissions-button>
       </b-button-group>
+
+      <c-corredor-manual-buttons
+        ui-page="role/editor"
+        ui-slot="toolbar"
+        resource-type="system:role"
+        default-variant="link"
+        class="mr-1"
+        @click="dispatchCortezaSystemRoleEvent($event, { role })"
+      />
     </c-content-header>
 
     <c-role-editor-info

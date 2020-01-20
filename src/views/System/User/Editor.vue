@@ -26,6 +26,14 @@
           {{ $t('permissions') }}
         </permissions-button>
       </b-button-group>
+      <c-corredor-manual-buttons
+        ui-page="user/editor"
+        ui-slot="toolbar"
+        resource-type="system:user"
+        default-variant="link"
+        class="mr-1"
+        @click="dispatchCortezaSystemUserEvent($event, { user })"
+      />
     </c-content-header>
 
     <c-user-editor-info
@@ -57,6 +65,7 @@
 </template>
 
 <script>
+import { system } from '@cortezaproject/corteza-js'
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CUserEditorInfo from 'corteza-webapp-admin/src/components/User/CUserEditorInfo'
 import CUserEditorPassword from 'corteza-webapp-admin/src/components/User/CUserEditorPassword'
@@ -122,12 +131,16 @@ export default {
   },
 
   methods: {
+    makeEvent (res) {
+      return system.UserEvent(res)
+    },
+
     fetchUser () {
       this.incLoader()
 
       this.$SystemAPI.userRead({ userID: this.userID })
         .then(user => {
-          this.user = user
+          this.user = new system.User(user)
         })
         .catch(this.stdReject)
         .finally(() => {
