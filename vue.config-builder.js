@@ -38,10 +38,6 @@ module.exports = ({ appFlavour, appName, appLabel, version, theme, packageAlias,
     lintOnSave: true,
     runtimeCompiler: true,
 
-    transpileDependencies: [
-      /^[\\/]node_modules[\\/]corteza-webapp-/,
-    ],
-
     configureWebpack: {
       // other webpack options to merge in ...
 
@@ -57,13 +53,6 @@ module.exports = ({ appFlavour, appName, appLabel, version, theme, packageAlias,
           BUILD_TIME: JSON.stringify((new Date()).toISOString()),
         }),
       ],
-
-      watchOptions: {
-        ignored: [
-          /node_modules([\\]+|\/)+(?!corteza-)/,
-          /\scorteza-([\\]+|\/)node_modules/,
-        ],
-      },
 
       optimization,
     },
@@ -102,9 +91,19 @@ module.exports = ({ appFlavour, appName, appLabel, version, theme, packageAlias,
     },
 
     devServer: {
-      host: '0.0.0.0',
+      host: '127.0.0.1',
       hot: true,
       disableHostCheck: true,
+
+      watchOptions: {
+        ignored: [
+          // Do not watch for changes under node_modules
+          // (exception is node_modules/@cortezaproject)
+          /node_modules([\\]+|\/)+(?!@cortezaproject)/,
+        ],
+        aggregateTimeout: 200,
+        poll: 1000,
+      },
     },
 
     css: {
