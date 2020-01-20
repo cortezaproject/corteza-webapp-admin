@@ -273,7 +273,7 @@ export default {
 
   mounted () {
     this.$nextTick(() => {
-      this.$EventBus.WaitFor({
+      this.$EventBus.Dispatch({
         resourceType: 'ui:admin:dashboard',
         eventType: 'afterMount',
         args: { data: this.$data, $el: this.$el },
@@ -283,7 +283,7 @@ export default {
 
   updated () {
     this.$nextTick(() => {
-      this.$EventBus.WaitFor({
+      this.$EventBus.Dispatch({
         resourceType: 'ui:admin:dashboard',
         eventType: 'afterUpdate',
         args: { data: this.users, $el: this.$el },

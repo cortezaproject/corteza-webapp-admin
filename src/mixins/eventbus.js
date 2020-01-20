@@ -14,15 +14,15 @@ function fix (ev, resourceType, args) {
 Vue.mixin({
   methods: {
     dispatchCortezaSystemEvent ({ script, resourceType }, args = {}) {
-      this.$EventBus.WaitFor(fix(system.UserEvent(), resourceType, args), script)
+      this.$EventBus.Dispatch(fix(system.UserEvent(), resourceType, args), script)
     },
 
     dispatchCortezaSystemUserEvent ({ script, resourceType }, args) {
-      this.$EventBus.WaitFor(fix(system.UserEvent(args.user), resourceType, args), script)
+      this.$EventBus.Dispatch(fix(system.UserEvent(args.user), resourceType, args), script)
     },
 
     dispatchCortezaSystemRoleEvent ({ script, resourceType }, args) {
-      this.$EventBus.WaitFor(fix(system.RoleEvent(args.role), resourceType, args), script)
+      this.$EventBus.Dispatch(fix(system.RoleEvent(args.role), resourceType, args), script)
     },
   },
 })
