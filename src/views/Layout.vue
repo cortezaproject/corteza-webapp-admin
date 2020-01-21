@@ -88,7 +88,7 @@ export default {
       .catch((e) => {
         this.$auth.open()
       })
-      .then(this.loadAutomation)
+      .then(() => this.loadAutomation())
       .finally(() => {
         this.$store.dispatch('ui/decLoader')
       })

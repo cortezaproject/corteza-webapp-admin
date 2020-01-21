@@ -272,23 +272,23 @@ export default {
   },
 
   mounted () {
-    this.$nextTick(() => {
-      this.$EventBus.Dispatch({
-        resourceType: 'ui:admin:dashboard',
-        eventType: 'afterMount',
-        args: { data: this.$data, $el: this.$el },
-      })
-    })
+    // this.$nextTick(() => {
+    //   this.$EventBus.Dispatch({
+    //     resourceType: 'ui:admin:dashboard',
+    //     eventType: 'afterMount',
+    //     args: { data: this.$data, $el: this.$el },
+    //   })
+    // })
   },
 
   updated () {
-    this.$nextTick(() => {
-      this.$EventBus.Dispatch({
-        resourceType: 'ui:admin:dashboard',
-        eventType: 'afterUpdate',
-        args: { data: this.users, $el: this.$el },
-      })
-    })
+    // this.$nextTick(() => {
+    //   this.$EventBus.Dispatch({
+    //     resourceType: 'ui:admin:dashboard',
+    //     eventType: 'afterUpdate',
+    //     args: { data: this.users, $el: this.$el },
+    //   })
+    // })
   },
 
   methods: {
