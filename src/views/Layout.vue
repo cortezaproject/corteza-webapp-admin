@@ -97,7 +97,7 @@ export default {
   methods: {
     async loadAutomation () {
       return this.$SystemAPI.automationList()
-        .then(this.makeAutomationScriptsRegistrator(system.TriggerServerScriptOnManual))
+        .then(this.makeAutomationScriptsRegistrator(this.$SystemAPI, system.TriggerServerScriptOnManual))
     },
 
     async loadPermissions () {
