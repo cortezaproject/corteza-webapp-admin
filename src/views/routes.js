@@ -1,3 +1,5 @@
+import { components } from '@cortezaproject/corteza-vue'
+
 /**
  * Simple route generator
  *
@@ -119,5 +121,9 @@ export default [
     ],
   },
 
-  r('auth', '/auth', 'Auth'),
+  {
+    name: 'auth',
+    path: '/auth',
+    component: components.CDevAuth,
+  },
 ]
