@@ -6,9 +6,12 @@ import CResourceList from './CResourceList'
 import CResourceListStatusFilter from './CResourceListStatusFilter'
 import { components } from '@cortezaproject/corteza-vue'
 
-Vue.component('c-permissions-button', components.CPermissionsButton)
+const { CCorredorManualButtons, CDevAuth, CPermissionsButton } = components
+
+Vue.component('c-corredor-manual-buttons', CCorredorManualButtons)
+Vue.component('c-dev-auth', CDevAuth)
+Vue.component('c-permissions-button', CPermissionsButton)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('c-content-header', CContentHeader)
 Vue.component('c-resource-list', CResourceList)
 Vue.component('c-resource-list-status-filter', CResourceListStatusFilter)
-Vue.component('c-corredor-manual-buttons', components.CCorredorManualButtons)
