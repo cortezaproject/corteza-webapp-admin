@@ -14,13 +14,13 @@
         </b-button>
       </b-button-group>
       <b-button-group>
-        <permissions-button
+        <c-permissions-button
           :title="$t('title')"
           resource="system:user:*"
           button-variant="link"
         >
           {{ $t('permissions') }}
-        </permissions-button>
+        </c-permissions-button>
       </b-button-group>
       <b-dropdown
         v-if="false"

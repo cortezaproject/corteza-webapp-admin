@@ -32,7 +32,7 @@
                   class="align-middle m-2"
                 />
               </div>
-              <div>{{ loadingText }}</div>
+              <div>{{ $t('loading') }}</div>
             </div>
           </template>
           <template #cell(events)="row">

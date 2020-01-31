@@ -18,13 +18,13 @@
       <b-button-group
         v-if="userID"
       >
-        <permissions-button
+        <c-permissions-button
           :title="user.name || user.handle || user.email"
           :resource="'system:user:'+userID"
           button-variant="link"
         >
           {{ $t('permissions') }}
-        </permissions-button>
+        </c-permissions-button>
       </b-button-group>
       <c-corredor-manual-buttons
         ui-page="user/editor"

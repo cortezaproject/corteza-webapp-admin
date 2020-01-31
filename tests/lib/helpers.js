@@ -34,7 +34,7 @@ export const stdAuth = (mocks = {}) => ({
 const mounter = (component, { localVue = createLocalVue(), $auth = {}, mocks = {}, stubs = [], ...options } = {}, mount) => {
   return mount(component, {
     localVue,
-    stubs: ['router-view', 'router-link', 'confirmation-toggle', 'user-roles', 'permissions-button', ...stubs],
+    stubs: ['router-view', 'router-link', 'confirmation-toggle', 'user-roles', 'c-permissions-button', ...stubs],
     mocks: {
       $t: (e) => e,
       $SystemAPI: {},

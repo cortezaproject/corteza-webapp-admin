@@ -18,13 +18,13 @@
       <b-button-group
         v-if="canGrant"
       >
-        <permissions-button
+        <c-permissions-button
           :title="$t('title')"
           resource="system:role:*"
           button-variant="link"
         >
           {{ $t('permissions') }}
-        </permissions-button>
+        </c-permissions-button>
       </b-button-group>
       <b-dropdown
         v-if="false"

@@ -18,13 +18,13 @@
       <b-button-group
         v-if="roleID && canGrant"
       >
-        <permissions-button
+        <c-permissions-button
           :title="role.name"
           :resource="'system:role:'+roleID"
           button-variant="link"
         >
           {{ $t('permissions') }}
-        </permissions-button>
+        </c-permissions-button>
       </b-button-group>
 
       <c-corredor-manual-buttons

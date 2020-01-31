@@ -23,7 +23,7 @@
       >
         <c-the-alert-container />
         <router-view />
-        <permissions-modal />
+        <c-permissions-modal />
       </main>
     </div>
   </div>
@@ -43,7 +43,7 @@ import { system } from '@cortezaproject/corteza-js'
 
 export default {
   components: {
-    PermissionsModal: components.PermissionsModal,
+    CPermissionsModal: components.CPermissionsModal,
     CTheAlertContainer,
     CTheHeader,
     CTheMainNav,
