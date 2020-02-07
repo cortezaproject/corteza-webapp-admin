@@ -23,7 +23,7 @@
       >
         <c-the-alert-container />
         <router-view />
-        <permissions-modal />
+        <c-permissions-modal />
       </main>
     </div>
   </div>
@@ -38,15 +38,20 @@
 import CTheAlertContainer from 'corteza-webapp-admin/src/components/CTheAlertContainer'
 import CTheHeader from 'corteza-webapp-admin/src/components/CTheHeader'
 import CTheMainNav from 'corteza-webapp-admin/src/components/CTheMainNav'
-import { PermissionsModal } from 'corteza-webapp-common/components'
+import { components, mixins } from '@cortezaproject/corteza-vue'
+import { system } from '@cortezaproject/corteza-js'
 
 export default {
   components: {
-    PermissionsModal,
+    CPermissionsModal: components.CPermissionsModal,
     CTheAlertContainer,
     CTheHeader,
     CTheMainNav,
   },
+
+  mixins: [
+    mixins.corredor,
+  ],
 
   data () {
     return {
@@ -78,16 +83,23 @@ export default {
 
     this.$auth
       // First, check if we're authenticated
-      .check(this.$SystemAPI)
-      .then(async () => {
-        await this.loadPermissions()
-      })
+      .check()
+      .then(() => this.loadPermissions())
       .catch((e) => {
         this.$auth.open()
+      })
+      .then(() => this.loadAutomation())
+      .finally(() => {
+        this.$store.dispatch('ui/decLoader')
       })
   },
 
   methods: {
+    async loadAutomation () {
+      return this.$SystemAPI.automationList()
+        .then(this.makeAutomationScriptsRegistrator(this.$SystemAPI, system.TriggerServerScriptOnManual))
+    },
+
     async loadPermissions () {
       // Load effective System permissions
       return this.$SystemAPI.permissionsEffective()
@@ -113,9 +125,6 @@ export default {
         })
         .catch(({ message }) => {
           this.$store.dispatch('ui/appendAlert', message)
-        })
-        .finally(() => {
-          this.$store.dispatch('ui/decLoader')
         })
     },
   },

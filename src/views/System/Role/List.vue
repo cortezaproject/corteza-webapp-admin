@@ -18,13 +18,13 @@
       <b-button-group
         v-if="canGrant"
       >
-        <permissions-button
+        <c-permissions-button
           :title="$t('title')"
           resource="system:role:*"
           button-variant="link"
         >
           {{ $t('permissions') }}
-        </permissions-button>
+        </c-permissions-button>
       </b-button-group>
       <b-dropdown
         v-if="false"
@@ -37,6 +37,14 @@
           {{ $t('yaml') }}
         </b-dropdown-item-button>
       </b-dropdown>
+      <c-corredor-manual-buttons
+        ui-page="role/list"
+        ui-slot="toolbar"
+        resource-type="system"
+        default-variant="link"
+        class="mr-1"
+        @click="dispatchCortezaSystemEvent($event)"
+      />
     </c-content-header>
     <c-resource-list
       primary-key="roleID"

@@ -54,6 +54,13 @@
         :to="{ name: 'system.permissions' }"
         :icon="['fas', 'lock']"
       />
+
+      <c-main-nav-item
+        v-if="canGrant.system"
+        :label="$t('system.automation:navItem.label')"
+        :to="{ name: 'system.automation' }"
+        :icon="['fas', 'cogs']"
+      />
     </b-list-group>
 
     <b-list-group
@@ -75,6 +82,13 @@
         :label="$t('compose.permissions:navItem.label')"
         :to="{ name: 'compose.permissions' }"
         :icon="['fas', 'lock']"
+      />
+
+      <c-main-nav-item
+        v-if="canGrant.compose"
+        :label="$t('compose.automation:navItem.label')"
+        :to="{ name: 'compose.automation' }"
+        :icon="['fas', 'cogs']"
       />
     </b-list-group>
 

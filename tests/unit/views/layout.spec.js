@@ -24,6 +24,10 @@ describe('views/Layout.vue', () => {
       permissionsEffective: sinon.stub().resolves([
         { resource: 'system', operation: 'access', allow: true },
       ]),
+
+      automationList: sinon.stub().resolves([
+        {},
+      ]),
     }
 
     $store = {

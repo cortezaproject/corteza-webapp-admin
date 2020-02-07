@@ -6,6 +6,7 @@ import './console-splash'
 import './plugins'
 import './mixins'
 import './components'
+import './filters'
 
 import i18n from './i18n'
 import store from './store'

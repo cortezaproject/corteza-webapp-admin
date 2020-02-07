@@ -1,1 +1,1 @@
-// placeholder
+import './eventbus'

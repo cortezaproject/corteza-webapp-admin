@@ -18,13 +18,13 @@
       <b-button-group
         v-if="applicationID && canGrant"
       >
-        <permissions-button
+        <c-permissions-button
           :title="application.name"
           :resource="'system:application:'+applicationID"
           button-variant="link"
         >
           {{ $t('permissions') }}
-        </permissions-button>
+        </c-permissions-button>
       </b-button-group>
     </c-content-header>
 

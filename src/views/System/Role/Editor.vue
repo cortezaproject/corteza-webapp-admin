@@ -18,14 +18,23 @@
       <b-button-group
         v-if="roleID && canGrant"
       >
-        <permissions-button
+        <c-permissions-button
           :title="role.name"
           :resource="'system:role:'+roleID"
           button-variant="link"
         >
           {{ $t('permissions') }}
-        </permissions-button>
+        </c-permissions-button>
       </b-button-group>
+
+      <c-corredor-manual-buttons
+        ui-page="role/editor"
+        ui-slot="toolbar"
+        resource-type="system:role"
+        default-variant="link"
+        class="mr-1"
+        @click="dispatchCortezaSystemRoleEvent($event, { role })"
+      />
     </c-content-header>
 
     <c-role-editor-info
