@@ -1,16 +1,22 @@
 import Vue from 'vue'
 import { createLocalVue, shallowMount as sm, mount as rm } from '@vue/test-utils'
 import sinon from 'sinon'
+import BootstrapVue from 'bootstrap-vue'
 import CContentHeader from 'corteza-webapp-admin/src/components/CContentHeader'
 import CResourceList from 'corteza-webapp-admin/src/components/CResourceList'
 import CResourceListStatusFilter from 'corteza-webapp-admin/src/components/CResourceListStatusFilter'
+import { components } from '@cortezaproject/corteza-vue'
+const { CCorredorManualButtons, CDevAuth, CPermissionsButton } = components
 
 Vue.config.ignoredElements = [
   'font-awesome-icon',
-  // Ignore all bootstrap elements
-  /^b-/,
 ]
 
+Vue.use(BootstrapVue)
+
+Vue.component('c-corredor-manual-buttons', CCorredorManualButtons)
+Vue.component('c-dev-auth', CDevAuth)
+Vue.component('c-permissions-button', CPermissionsButton)
 Vue.component('c-content-header', CContentHeader)
 Vue.component('c-resource-list', CResourceList)
 Vue.component('c-resource-list-status-filter', CResourceListStatusFilter)
@@ -34,7 +40,14 @@ export const stdAuth = (mocks = {}) => ({
 const mounter = (component, { localVue = createLocalVue(), $auth = {}, mocks = {}, stubs = [], ...options } = {}, mount) => {
   return mount(component, {
     localVue,
-    stubs: ['router-view', 'router-link', 'confirmation-toggle', 'user-roles', 'c-permissions-button', ...stubs],
+    stubs: [
+      'router-view',
+      'router-link',
+      'confirmation-toggle',
+      'user-roles',
+      'c-permissions-button',
+      ...stubs,
+    ],
     mocks: {
       $t: (e) => e,
       $SystemAPI: {},

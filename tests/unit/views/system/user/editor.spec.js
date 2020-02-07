@@ -14,13 +14,13 @@ describe('views/User/Editor.vue', () => {
   beforeEach(() => {
     $auth = { is: sinon.stub().returns(true), check: sinon.stub().resolves() }
     $SystemAPI = {
-      userRead: sinon.stub().resolves({ userID: 'userID' }),
+      userRead: sinon.stub().resolves({ userID: '42' }),
       roleList: sinon.stub().resolves(),
       userMembershipList: sinon.stub().resolves(),
       userDelete: sinon.stub().resolves(),
       userUndelete: sinon.stub().resolves(),
-      userUpdate: sinon.stub().resolves({ userID: 'userID' }),
-      userCreate: sinon.stub().resolves({ userID: 'userID' }),
+      userUpdate: sinon.stub().resolves({ userID: '42' }),
+      userCreate: sinon.stub().resolves({ userID: '42' }),
       userMembershipAdd: sinon.stub().resolves(),
       userMembershipRemove: sinon.stub().resolves(),
       userUnsuspend: sinon.stub().resolves(),
