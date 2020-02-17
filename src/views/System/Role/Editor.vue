@@ -123,6 +123,11 @@ export default {
     fetchRole () {
       this.incLoader()
 
+      if (this.roleID === '1') {
+        // Do not show editor for role everyone
+        this.$router.push({ name: 'system.role.list' })
+      }
+
       this.$SystemAPI.roleRead({ roleID: this.roleID })
         .then(r => {
           this.role = r
