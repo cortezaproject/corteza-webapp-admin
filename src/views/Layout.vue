@@ -39,7 +39,6 @@ import CTheAlertContainer from 'corteza-webapp-admin/src/components/CTheAlertCon
 import CTheHeader from 'corteza-webapp-admin/src/components/CTheHeader'
 import CTheMainNav from 'corteza-webapp-admin/src/components/CTheMainNav'
 import { components, mixins } from '@cortezaproject/corteza-vue'
-import { system } from '@cortezaproject/corteza-js'
 
 export default {
   components: {
@@ -88,18 +87,12 @@ export default {
       .catch((e) => {
         this.$auth.open()
       })
-      .then(() => this.loadAutomation())
       .finally(() => {
         this.$store.dispatch('ui/decLoader')
       })
   },
 
   methods: {
-    async loadAutomation () {
-      return this.$SystemAPI.automationList()
-        .then(this.makeAutomationScriptsRegistrator(this.$SystemAPI, system.TriggerServerScriptOnManual))
-    },
-
     async loadPermissions () {
       // Load effective System permissions
       return this.$SystemAPI.permissionsEffective()
