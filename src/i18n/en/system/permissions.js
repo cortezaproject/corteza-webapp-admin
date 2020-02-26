@@ -47,6 +47,10 @@ export default {
           delete: 'Delete any user',
           suspend: 'Suspend any user',
           unsuspend: 'Unsuspend any user',
+          unmask: {
+            email: 'Show email details',
+            name: 'Show name details',
+          },
         },
         application: {
           title: 'Applications',
