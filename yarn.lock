@@ -772,10 +772,10 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@cortezaproject/corteza-js@>2020.3.0-alpha", "@cortezaproject/corteza-js@^2020.3.0-rc":
-  version "2020.3.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2020.3.0-rc.1.tgz#77730d2fd25b672a63ec1b552d5773b8babb4809"
-  integrity sha512-LhY4IaN5eHzt3GsCkpZf8kM6NIrtCGc46+fm+5s9KKjRg8Oy69c1vVi3G5CLUSVe7mp57OC8GTzQCz+hkq65Sw==
+"@cortezaproject/corteza-js@^2020.3.0-rc.5":
+  version "2020.3.0-rc.5"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2020.3.0-rc.5.tgz#aedbff6f8df9d9ea7267b888fe24a3ba7f08b470"
+  integrity sha512-YoM+Kyt92OpZBzziKpCuW7XOYrfy+wOSE5BItkgjNnpRJsCASVI07muZ+RL0eXH74+wSIcp57vmuxmvP53DyXw==
   dependencies:
     axios "^0.19.1"
     hex-rgb "^4.1.0"
@@ -786,18 +786,19 @@
     pino "^5.16.0"
     ts-sinon "^1.0.25"
 
-"@cortezaproject/corteza-vue@>2020.3.0-alpha":
-  version "2020.3.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2020.3.0-rc.1.tgz#f09a848cacc338880e7f18314c3383d1f696d4a1"
-  integrity sha512-skt8iv+j+fzA9l7rwPlR9YaV/ho/W2OK8FjJ2IYBm6QIS+4ijmEsZrkUu0qISgEnIskTu0NVoUlTmHHcSETfQw==
+"@cortezaproject/corteza-vue@^2020.3.0-rc.7":
+  version "2020.3.0-rc.7"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2020.3.0-rc.7.tgz#4e0fb76aecce32bb4e726327d17d0224105ace0b"
+  integrity sha512-TL11loAFlHgetTcW/0w0FnC7rjFaQMxIKz8Z1b+v+WyRcSS9ZfH2aTJ73HBKMeyrEeJ1/1w3wUiOar0kJqi+Bg==
   dependencies:
-    "@cortezaproject/corteza-js" "^2020.3.0-rc"
+    "@cortezaproject/corteza-js" "^2020.3.0-rc.5"
     "@fortawesome/fontawesome-svg-core" "^1.2.26"
     "@fortawesome/free-solid-svg-icons" "^5.12.0"
     "@fortawesome/vue-fontawesome" "^0.1.9"
     bootstrap-vue "2.2.2"
     moment "^2.24.0"
     pdfjs-dist "^2.2.228"
+    pino "^5.16.0"
     qs "^6.9.1"
     v-photoswipe "^1.0.3-1"
     vue "^2.6.11"
