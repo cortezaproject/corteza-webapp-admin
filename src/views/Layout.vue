@@ -83,7 +83,15 @@ export default {
     this.$auth
       // First, check if we're authenticated
       .check()
-      .then(() => this.loadPermissions())
+      .then((user) => {
+        if (!user) {
+          // check performed: no error & no user,
+          // redirect to auth
+          throw new Error()
+        }
+
+        return this.loadPermissions()
+      })
       .catch((e) => {
         this.$auth.open()
       })

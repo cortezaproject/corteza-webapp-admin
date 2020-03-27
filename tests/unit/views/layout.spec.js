@@ -16,7 +16,7 @@ describe('views/Layout.vue', () => {
   beforeEach(() => {
     $auth = {
       is: sinon.stub().returns(true),
-      check: sinon.stub().resolves(),
+      check: sinon.stub().resolves({ user: 'authenticated' }),
       open: sinon.stub().resolves(),
     }
 
