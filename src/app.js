@@ -54,7 +54,7 @@ export default (options = {}) => {
           .then(this.makeAutomationScriptsRegistrator(
             // compose specific handler that routes  onManual events for server-scripts
             // to the proper endpoint on the API
-            system.TriggerServerScriptOnManual(this.$SystemAPI),
+            system.TriggerSystemServerScriptOnManual(this.$SystemAPI),
           ))
           .then(() => {
             this.loaded = true

@@ -126,4 +126,7 @@ export default [
     path: '/auth',
     component: components.CDevAuth,
   },
+
+  // When everything else fails, go to dashboard
+  { path: '*', redirect: { name: 'dashboard' } },
 ]
