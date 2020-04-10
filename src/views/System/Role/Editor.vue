@@ -20,6 +20,7 @@
       >
         <c-permissions-button
           :title="role.name"
+          :target="role.name"
           :resource="'system:role:'+roleID"
           button-variant="link"
         >

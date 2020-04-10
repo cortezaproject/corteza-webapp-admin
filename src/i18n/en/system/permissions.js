@@ -48,7 +48,7 @@ export default {
           suspend: 'Suspend any user',
           unsuspend: 'Unsuspend any user',
           unmask: {
-            email: 'Show email details',
+            email: 'Show email detailsx',
             name: 'Show name details',
           },
         },
@@ -63,19 +63,6 @@ export default {
         settings: {
           read: 'Access all settings',
           manage: 'Manage all settings',
-        },
-        'automation-script': {
-          title: 'Automation scripts',
-
-          create: 'Create automation scripts',
-          read: 'Read any script',
-          update: 'Update any script',
-          delete: 'Delete any script',
-        },
-        'automation-trigger': {
-          title: 'Automation triggers',
-
-          run: 'Run any trigger (on any script)',
         },
         reminder: {
           assign: 'Allow reminder assignment',

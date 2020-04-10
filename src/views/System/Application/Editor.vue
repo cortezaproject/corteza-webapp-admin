@@ -20,6 +20,7 @@
       >
         <c-permissions-button
           :title="application.name"
+          :target="application.name"
           :resource="'system:application:'+applicationID"
           button-variant="link"
         >

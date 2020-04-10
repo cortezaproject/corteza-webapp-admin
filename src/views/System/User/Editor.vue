@@ -20,6 +20,7 @@
       >
         <c-permissions-button
           :title="user.name || user.handle || user.email"
+          :target="user.name || user.handle || user.email"
           :resource="'system:user:'+userID"
           button-variant="link"
         >

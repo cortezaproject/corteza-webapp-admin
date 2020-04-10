@@ -86,18 +86,6 @@ export default {
           update: 'Update any chart',
           delete: 'Delete any chart',
         },
-        'automation-script': {
-          title: 'Automation scripts',
-
-          read: 'Read any automation script',
-          update: 'Update any automation script',
-          delete: 'Delete any automation script',
-        },
-        'automation-trigger': {
-          title: 'Automation triggers',
-
-          run: 'Run any automation trigger',
-        },
       },
     },
   },

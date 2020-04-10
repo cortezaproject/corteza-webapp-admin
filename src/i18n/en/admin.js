@@ -4,11 +4,7 @@ export default {
    * They are duplicated for the permissionsButton component
    */
   permission: {
-    clearFilter: 'Clear filter',
-    setOnAllFiltered: 'Set on all filtered ({{count}})',
-    search: 'Search/filter permissions',
     resetBack: 'Reset back to "{{current}}"',
-    managePermissions: 'Set base permissions',
     setFor: 'Set permissions for {{target}}',
     saveChanges: 'Save changes',
     base: {
@@ -16,6 +12,7 @@ export default {
       compose: 'Compose',
       messaging: 'Messaging',
     },
+
     role: {
       all: 'all roles',
       specific: 'role "{{target}}"',
@@ -124,6 +121,16 @@ export default {
         specific: 'Unsuspend {{target}}',
         description: 'Default: allow',
       },
+      'unmask-name': {
+        title: 'Show name details for any user',
+        specific: 'Show name details for {{target}}',
+        description: 'Default: deny',
+      },
+      'unmask-email': {
+        title: 'Show email details for any user',
+        specific: 'Show email details for {{target}}',
+        description: 'Default: deny',
+      },
     },
     'system-application': {
       read: {
@@ -170,256 +177,6 @@ export default {
         title: 'Run any trigger (on any script)',
         specific: 'Can run this trigger',
         description: 'Controls ability to run scripts through manual (or user-invoked) triggers either explicitly or implicitly through browser (Scripts, runnable in User-Agent). Other kinds of automation scripts and triggers that run implicitly on the backend are always executed. Default: allow',
-      },
-    },
-    messaging: {
-      title: 'Messaging service',
-      access: {
-        title: 'Access to messaging',
-        description: 'Default: deny',
-      },
-      grant: {
-        title: 'Grant permissions on messaging service',
-        description: 'Default: deny',
-      },
-      'channel-public-create': {
-        title: 'Create public channels',
-        description: 'Default: allow',
-      },
-      'channel-private-create': {
-        title: 'Create private channels',
-        description: 'Default: allow',
-      },
-      'channel-group-create': {
-        title: 'Create direct messages and group channels',
-        description: 'Default: allow',
-      },
-      'webhook-create': {
-        title: 'Create webhooks',
-        description: 'Default: deny',
-      },
-      'webhook-manage-all': {
-        title: 'Manage all webhooks',
-        description: 'Default: deny',
-      },
-      'webhook-manage-own': {
-        title: 'Manage own webhooks',
-        description: 'Default: deny',
-      },
-      'settings-read': {
-        title: 'Access all settings',
-        description: 'Default: deny',
-      },
-      'settings-manage': {
-        title: 'Manage all settings',
-        description: 'Default: deny',
-      },
-    },
-    'messaging-channel': {
-      read: {
-        title: 'View any channel',
-        description: 'Default: allow for public channels or channels you are member of',
-      },
-      join: {
-        title: 'Join any channel',
-        description: 'Default: allow for public channels or channels you are member of',
-      },
-      leave: {
-        title: 'Leave any channel',
-        description: 'Default: allow',
-      },
-      update: {
-        title: 'Update any channel',
-        description: 'Default: allow for public channels or channels you are member of',
-      },
-      'delete': {
-        title: 'Delete any channel',
-        description: 'Default: allow for public channels',
-      },
-      undelete: {
-        title: 'Undelete any channel',
-        description: 'Default: allow for public channels or channels you are member of',
-      },
-      archive: {
-        title: 'Archive any channel',
-        description: 'Default: allow if you are owner of the channel, otherwise deny',
-      },
-      unarchive: {
-        title: 'Unarchive any channel',
-        description: 'Default: allow if you are owner of the channel, otherwise deny',
-      },
-      'members-manage': {
-        title: 'Manage members on any channel',
-        description: 'Default: allow if you are owner of the channel, otherwise deny',
-      },
-      'webhooks-manage': {
-        title: 'Manage webhooks on any channel',
-        description: 'Default: deny',
-      },
-      'attachments-manage': {
-        title: 'Manage attachments on any channel',
-        description: 'Default: deny',
-      },
-      'message-send': {
-        title: 'Message sending on any channel',
-        description: 'Default: allow',
-      },
-      'message-embed': {
-        title: 'Embedding in messages on any channel ',
-        description: 'Default: allow',
-      },
-      'message-attach': {
-        title: 'File attaching on any channel',
-        description: 'Default: allow',
-      },
-      'message-update-own': {
-        title: 'Update own messages on any channel',
-        description: 'Default: allow',
-      },
-      'message-update-all': {
-        title: 'Update any message on any channel',
-        description: 'Default: deny',
-      },
-      'message-delete-own': {
-        title: 'Delete own messages on any channel',
-        description: 'Default: allow',
-      },
-      'message-delete-all': {
-        title: 'Delete any message on any channel',
-        description: 'Default: deny',
-      },
-      'message-reply': {
-        title: 'Reply to messages on any channel',
-        description: 'Default: allow',
-      },
-      'message-react': {
-        title: 'React on messages on any channel',
-        description: 'Default: allow',
-      },
-    },
-    compose: {
-      title: 'Compose service',
-      access: {
-        title: 'Access to compose',
-        description: 'Default: deny',
-      },
-      grant: {
-        title: 'Grant permissions on compose service',
-        description: 'Default: deny',
-      },
-      'namespace-create': {
-        title: 'Create namespaces',
-        description: 'Default: deny',
-      },
-      'settings-read': {
-        title: 'Access all settings',
-        description: 'Default: deny',
-      },
-      'settings-manage': {
-        title: 'Manage all settings',
-        description: 'Default: deny',
-      },
-    },
-    'compose-page': {
-      read: {
-        title: 'Read any page',
-        description: 'Default: deny',
-      },
-      update: {
-        title: 'Update any page',
-        description: 'Default: deny',
-      },
-      'delete': {
-        title: 'Delete any page',
-        description: 'Default: deny',
-      },
-    },
-    'compose-trigger': {
-      read: {
-        title: 'Read any trigger',
-        description: 'Default: deny',
-      },
-      update: {
-        title: 'Update any trigger',
-        description: 'Default: deny',
-      },
-      'delete': {
-        title: 'Delete any trigger',
-        description: 'Default: deny',
-      },
-    },
-    'compose-namespace': {
-      read: {
-        title: 'Access any namespace',
-        description: 'Default: deny',
-      },
-      update: {
-        title: 'Update any namespace',
-        description: 'Default: deny',
-      },
-      'delete': {
-        title: 'Delete any namespace',
-        description: 'Default: deny',
-      },
-      'module-create': {
-        title: 'Create modules under any namespace',
-        description: 'Default: deny',
-      },
-      'chart-create': {
-        title: 'Create charts under any namespace',
-        description: 'Default: deny',
-      },
-      'trigger-create': {
-        title: 'Create triggers under any namespace',
-        description: 'Default: deny',
-      },
-      'page-create': {
-        title: 'Create pages under any namespace',
-        description: 'Default: deny',
-      },
-    },
-    'compose-module': {
-      read: {
-        title: 'Read any module',
-        description: 'Default: deny',
-      },
-      update: {
-        title: 'Update any module',
-        description: 'Default: deny',
-      },
-      'delete': {
-        title: 'Delete any module',
-        description: 'Default: deny',
-      },
-      'record-create': {
-        title: 'Create record under any module',
-        description: 'Default: deny',
-      },
-      'record-read': {
-        title: 'Read records under any module',
-        description: 'Default: deny',
-      },
-      'record-update': {
-        title: 'Update records under any module',
-        description: 'Default: deny',
-      },
-      'record-delete': {
-        title: 'Delete records under any module',
-        description: 'Default: deny',
-      },
-    },
-    'compose-chart': {
-      read: {
-        title: 'Read any chart',
-        description: 'Default: deny',
-      },
-      update: {
-        title: 'Update any chart',
-        description: 'Default: deny',
-      },
-      'delete': {
-        title: 'Delete any chart',
-        description: 'Default: deny',
       },
     },
   },
