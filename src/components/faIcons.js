@@ -15,6 +15,7 @@ import {
   faTachometerAlt,
   faTimes,
   faPlus,
+  faSlidersH,
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
@@ -33,4 +34,5 @@ library.add(
   faTachometerAlt,
   faTimes,
   faPlus,
+  faSlidersH,
 )

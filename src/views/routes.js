@@ -118,6 +118,13 @@ export default [
           r('messaging.permissions', 'permissions', 'Messaging/Permissions/Index'),
         ],
       },
+
+      {
+        ...wrap(`one`, `/one`),
+        children: [
+          r('one.settings', 'settings', 'One/Settings/Index'),
+        ],
+      },
     ],
   },
 

@@ -3,6 +3,7 @@ import system from './system'
 import compose from './compose'
 import messaging from './messaging'
 import dashboard from './dashboard'
+import ui from './ui'
 
 export default {
   admin,
@@ -10,4 +11,5 @@ export default {
   ...system,
   ...compose,
   ...messaging,
+  ...ui,
 }

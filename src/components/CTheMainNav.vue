@@ -45,7 +45,7 @@
         v-if="canReadSettings.system"
         :label="$t('system.settings:navItem.label')"
         :to="{ name: 'system.settings' }"
-        :icon="['fas', 'cogs']"
+        :icon="['fas', 'sliders-h']"
       />
 
       <c-main-nav-item
@@ -74,7 +74,7 @@
         v-if="canReadSettings.compose"
         :label="$t('compose.settings:navItem.label')"
         :to="{ name: 'compose.settings' }"
-        :icon="['fas', 'cogs']"
+        :icon="['fas', 'sliders-h']"
       />
 
       <c-main-nav-item
@@ -103,7 +103,7 @@
         v-if="canReadSettings.messaging"
         :label="$t('messaging.settings:navItem.label')"
         :to="{ name: 'messaging.settings' }"
-        :icon="['fas', 'cogs']"
+        :icon="['fas', 'sliders-h']"
       />
 
       <c-main-nav-item
@@ -111,6 +111,21 @@
         :label="$t('messaging.permissions:navItem.label')"
         :to="{ name: 'messaging.permissions' }"
         :icon="['fas', 'lock']"
+      />
+    </b-list-group>
+
+    <b-list-group
+      v-if="canReadSettings.system"
+    >
+      <small class="ml-1 mt-3 font-weight-light text-uppercase">
+        {{ $t('ui.one:navGroup.label') }}
+      </small>
+
+      <c-main-nav-item
+        v-if="canReadSettings.system"
+        :label="$t('ui.one.settings:navItem.label')"
+        :to="{ name: 'one.settings' }"
+        :icon="['fas', 'sliders-h']"
       />
     </b-list-group>
   </c-sidebar>
