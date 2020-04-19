@@ -6,6 +6,16 @@ export default {
   editor: {
     title: 'Corteza One Settings',
 
+    logo: {
+      title: 'Logo',
+
+      general: {
+        label: {
+          dropFiles: 'Click or drop files here to upload',
+        },
+      },
+    },
+
     panels: {
       label: 'Panel #{{ index }}',
       sticky: { label: 'Tabs in this panel can not be removed, added or reordered' },
@@ -26,5 +36,6 @@ export default {
       title: 'Panels',
       submit: 'Save changes',
     },
+
   },
 }

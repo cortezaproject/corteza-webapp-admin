@@ -6,6 +6,15 @@
       :title="$t('title')"
     />
 
+    <c-one-logo
+      v-model="settings.logo"
+      :processing="basic.processing"
+      :success="basic.success"
+      :can-manage="canManage"
+      class="mb-3"
+      @submit="onPanelsSubmit"
+    />
+
     <c-one-editor-panels
       v-model="settings.panels"
       :processing="basic.processing"
@@ -19,9 +28,9 @@
 <script>
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import COneEditorPanels from 'corteza-webapp-admin/src/components/Settings/One/COneEditorPanels'
+import COneLogo from 'corteza-webapp-admin/src/components/Settings/One/COneLogo'
 
 const prefix = 'ui.one.'
-
 
 export default {
   i18nOptions: {
@@ -31,6 +40,7 @@ export default {
 
   components: {
     COneEditorPanels,
+    COneLogo,
   },
 
   mixins: [
