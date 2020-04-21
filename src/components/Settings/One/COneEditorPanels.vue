@@ -181,8 +181,8 @@ import { pick } from 'lodash'
 const tabDefaults = {
   title: 'Untitled',
   url: '',
-  logo: '/applications/crust.jpg',
-  icon: '/applications/crust_favicon.png',
+  logo: '/applications/default_logo.jpg',
+  icon: '/applications/default_icon.png',
   sticky: false,
 }
 
