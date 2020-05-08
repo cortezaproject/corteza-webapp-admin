@@ -50,7 +50,8 @@ export default {
   data () {
     return {
       settings: {
-        panels: [],
+        logo: '',
+        panels: [{}, {}, {}, {}],
       },
 
       canManage: false,
@@ -76,9 +77,9 @@ export default {
         })
         .then(() => this.$SystemAPI.settingsList({ prefix }))
         .then(settings => {
-          settings.forEach(({ name, value }) => {
+          (settings || []).forEach(({ name, value } = {}) => {
             name = name.substring(prefix.length)
-            this.$set(this.settings, name, value)
+            if (name) this.$set(this.settings, name, value)
           })
         })
         .catch(this.stdReject)
