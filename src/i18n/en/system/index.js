@@ -6,6 +6,7 @@ import scripts from './scripts'
 import settings from './settings'
 import permissions from './permissions'
 import automation from './automation'
+import actionlog from './actionlog'
 
 export default {
   system: {
@@ -23,4 +24,5 @@ export default {
   'system.settings': settings,
   'system.permissions': permissions,
   'system.automation': automation,
+  'system.actionlog': actionlog,
 }
