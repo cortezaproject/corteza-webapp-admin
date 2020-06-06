@@ -16,6 +16,7 @@ import {
   faTimes,
   faPlus,
   faSlidersH,
+  faGlasses,
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
@@ -35,4 +36,5 @@ library.add(
   faTimes,
   faPlus,
   faSlidersH,
+  faGlasses,
 )

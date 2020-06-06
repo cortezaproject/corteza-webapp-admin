@@ -772,26 +772,28 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@cortezaproject/corteza-js@^2020.3.0-rc.17":
-  version "2020.3.0-rc.17"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2020.3.0-rc.17.tgz#94983c0f6bdb03b1e7912fa204b2f717113754c6"
-  integrity sha512-di10GXVZN6VE86u4wlDZtEVksbOs6aip5Ah/jS0bxddVqZEoJ2yyizhuCYCwuPtORqGbXN2J0jp3/q0En4YBTw==
+"@cortezaproject/corteza-js@^2020.3.0-rc.34":
+  version "2020.3.0-rc.34"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2020.3.0-rc.34.tgz#b4fcc94d0aaf9606f76585430c0b95e1f8c8ba35"
+  integrity sha512-eFwrMuHx7phhLC+unX04FV01LxgJlHMUYs+7nB50wrrXBBhmEWkKNYBxma+zLxkU+O2b7mwwP6+uMO+yVym3wA==
   dependencies:
     axios "^0.19.1"
+    chart.js "^2.7.3"
     hex-rgb "^4.1.0"
     lodash "^4.17.15"
+    minimalist "^1.0.0"
     minimatch "^3.0.4"
     moment "^2.24.0"
     numeral "^2.0.6"
     pino "^5.16.0"
     ts-sinon "^1.0.25"
 
-"@cortezaproject/corteza-vue@^2020.3.0-rc.17":
-  version "2020.3.0-rc.17"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2020.3.0-rc.17.tgz#e9e31f7cb6a551db8f2870f3e2630bac87095d06"
-  integrity sha512-RxdLJmS5pFiPupe4Zdy+A54ZfUpooBlz4HD5MFSSyzkJA03LIsTx5K/cdKfS7Nd/5rbpVcIvTMaSbITVlyt9Qg==
+"@cortezaproject/corteza-vue@^2020.3.0-rc.24":
+  version "2020.3.0-rc.24"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2020.3.0-rc.24.tgz#f10aa552e073cd55814b479653e8d267b2615adf"
+  integrity sha512-ALjH1lbDOHXk6HnuPJsyK03iPKW+nwrBb+h2+63UcusUwxGLZSTUyy6cp7owbrRM9eRVOLiLOfixnidaj7e+AA==
   dependencies:
-    "@cortezaproject/corteza-js" "^2020.3.0-rc.17"
+    "@cortezaproject/corteza-js" "^2020.3.0-rc.34"
     "@fortawesome/fontawesome-svg-core" "^1.2.26"
     "@fortawesome/free-solid-svg-icons" "^5.12.0"
     "@fortawesome/vue-fontawesome" "^0.1.9"
@@ -2149,13 +2151,13 @@ bootstrap-vue@2.2.2:
     portal-vue "^2.1.7"
     vue-functional-data-merge "^3.1.0"
 
-bootstrap-vue@2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/bootstrap-vue/-/bootstrap-vue-2.4.0.tgz#5a6ec3f6fe56df264020ad4aa3dc91c3368c6a64"
-  integrity sha512-mRhqlhJscUY4O+R2X4IRVZReWPj/2KBOTzsB6sPgLcp6s/VHf1L6VS5Etw6HREFPAu8U6Czh+jJAq/KPH/zUdA==
+bootstrap-vue@^2.15.0:
+  version "2.15.0"
+  resolved "https://registry.yarnpkg.com/bootstrap-vue/-/bootstrap-vue-2.15.0.tgz#0dfc12c054496c0f10efed510da1def41697cf3c"
+  integrity sha512-ncxWkDG0mKFVot314wWKJELi+ESO7k6ngV//qvJFs9iVzlFI8Hx3rBVbpcPW2vrJ+0vitH8N2SOwn4fdQ3frMQ==
   dependencies:
     "@nuxt/opencollective" "^0.3.0"
-    bootstrap ">=4.4.1 <5.0.0"
+    bootstrap ">=4.5.0 <5.0.0"
     popper.js "^1.16.1"
     portal-vue "^2.1.7"
     vue-functional-data-merge "^3.1.0"
@@ -2164,6 +2166,11 @@ bootstrap-vue@2.4.0:
   version "4.4.1"
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.4.1.tgz#8582960eea0c5cd2bede84d8b0baf3789c3e8b01"
   integrity sha512-tbx5cHubwE6e2ZG7nqM3g/FZ5PQEDMWmMGNrCUBVRPHXTJaH7CBDdsLeu3eCh3B1tzAxTnAbtmrzvWEvT2NNEA==
+
+"bootstrap@>=4.5.0 <5.0.0":
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.5.0.tgz#97d9dbcb5a8972f8722c9962483543b907d9b9ec"
+  integrity sha512-Z93QoXvodoVslA+PWNdk23Hze4RBYIkpb5h8I2HY2Tu2h7A0LpAgLcyrhrSUyo2/Oxm2l1fRZPs1e5hnxnliXA==
 
 brace-expansion@^1.1.7:
   version "1.1.11"
@@ -2609,7 +2616,7 @@ chardet@^0.7.0:
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
   integrity sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==
 
-chart.js@^2.9.3:
+chart.js@^2.7.3, chart.js@^2.9.3:
   version "2.9.3"
   resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-2.9.3.tgz#ae3884114dafd381bc600f5b35a189138aac1ef7"
   integrity sha512-+2jlOobSk52c1VU6fzkh3UwqHMdSlgH1xFv9FKMqHiNCpXsGPQa/+81AFa+i3jZ253Mq9aAycPwDjnn1XbRNNw==

@@ -66,7 +66,7 @@
         v-if="canGrant.system"
         :label="$t('system.actionlog:navItem.label')"
         :to="{ name: 'system.actionlog' }"
-        :icon="['fas', 'cogs']"
+        :icon="['fas', 'glasses']"
       />
     </b-list-group>
 
