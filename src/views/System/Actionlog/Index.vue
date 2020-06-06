@@ -63,7 +63,7 @@
         </b-form-group>
         <b-form-group
           label-cols-lg="2"
-          :label="$t('filter.from')"
+          :label="$t('filter.to')"
         >
           <b-form-input
             v-model="filter.to"
