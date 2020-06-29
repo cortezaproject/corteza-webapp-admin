@@ -772,10 +772,10 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@cortezaproject/corteza-js@^2020.3.0-rc.34":
-  version "2020.3.0-rc.34"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2020.3.0-rc.34.tgz#b4fcc94d0aaf9606f76585430c0b95e1f8c8ba35"
-  integrity sha512-eFwrMuHx7phhLC+unX04FV01LxgJlHMUYs+7nB50wrrXBBhmEWkKNYBxma+zLxkU+O2b7mwwP6+uMO+yVym3wA==
+"@cortezaproject/corteza-js@^2020.6.1":
+  version "2020.6.1"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2020.6.1.tgz#1775054bfe5622a0e57dc9c729854ee4a9aa90b1"
+  integrity sha512-64nMYRkh5g3dvTbZxE2EOBjw8GCtugG+ZWvK33mDc35sdrg87XH3P7RZik49f/Kn7HIWezTy/lVvJDboW8EQdQ==
   dependencies:
     axios "^0.19.1"
     chart.js "^2.7.3"
@@ -788,22 +788,26 @@
     pino "^5.16.0"
     ts-sinon "^1.0.25"
 
-"@cortezaproject/corteza-vue@^2020.3.0-rc.24":
-  version "2020.3.0-rc.24"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2020.3.0-rc.24.tgz#f10aa552e073cd55814b479653e8d267b2615adf"
-  integrity sha512-ALjH1lbDOHXk6HnuPJsyK03iPKW+nwrBb+h2+63UcusUwxGLZSTUyy6cp7owbrRM9eRVOLiLOfixnidaj7e+AA==
+"@cortezaproject/corteza-vue@^2020.6.1":
+  version "2020.6.1"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2020.6.1.tgz#61bd278abdae3255ab6066cf0d92808491244b0c"
+  integrity sha512-RxSrXo3s2lQ/333inICEcTDErB3KQfvAxt8zpJ69qWd3He79KIjv/yYXw6p2TYuLJ+KhPJdAIDLHWm/XbwiYgg==
   dependencies:
-    "@cortezaproject/corteza-js" "^2020.3.0-rc.34"
+    "@cortezaproject/corteza-js" "^2020.6.1"
     "@fortawesome/fontawesome-svg-core" "^1.2.26"
     "@fortawesome/free-solid-svg-icons" "^5.12.0"
     "@fortawesome/vue-fontawesome" "^0.1.9"
+    acorn "^7.3.1"
     bootstrap-vue "2.2.2"
+    kind-of "^6.0.3"
+    minimist "^1.2.5"
     moment "^2.24.0"
     pdfjs-dist "^2.2.228"
     pino "^5.16.0"
     qs "^6.9.1"
     v-photoswipe "^1.0.3-1"
     vue "^2.6.11"
+    websocket-extensions "^0.1.4"
 
 "@fortawesome/fontawesome-common-types@^0.2.27":
   version "0.2.27"
@@ -1532,6 +1536,11 @@ acorn@^6.4.1:
   version "6.4.1"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-6.4.1.tgz#531e58ba3f51b9dacb9a6646ca4debf5b14ca474"
   integrity sha512-ZVA9k326Nwrj3Cj9jlh3wGFutC2ZornPNARZwsNYqQYgN0EsV2d53w5RN/co65Ohn4sUAUtb1rSUAOD6XN9idA==
+
+acorn@^7.3.1:
+  version "7.3.1"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-7.3.1.tgz#85010754db53c3fbaf3b9ea3e083aa5c5d147ffd"
+  integrity sha512-tLc0wSnatxAQHVHUapaHdz72pi9KUyHjq5KyHjGg9Y8Ifdc79pTh2XvI6I1/chZbnM7QtNKzh66ooDogPZSleA==
 
 address@^1.0.3:
   version "1.1.0"
@@ -11188,6 +11197,11 @@ websocket-extensions@>=0.1.1:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/websocket-extensions/-/websocket-extensions-0.1.3.tgz#5d2ff22977003ec687a4b87073dfbbac146ccf29"
   integrity sha512-nqHUnMXmBzT0w570r2JpJxfiSD1IzoI+HGVdd3aZ0yNi3ngvQ4jv1dtHt5VGxfI2yj5yqImPhOK4vmIh2xMbGg==
+
+websocket-extensions@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/websocket-extensions/-/websocket-extensions-0.1.4.tgz#7f8473bc839dfd87608adb95d7eb075211578a42"
+  integrity sha512-OqedPIGOfsDlo31UNwYbCFMSaO9m9G/0faIHj5/dZFDMFqPTcx6UwqyOy3COEaEOg/9VsGIpdqn62W5KhoKSpg==
 
 whatwg-encoding@^1.0.1, whatwg-encoding@^1.0.5:
   version "1.0.5"
