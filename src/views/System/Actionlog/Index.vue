@@ -315,7 +315,7 @@
       </b-card-body>
       <b-card-footer class="p-3 text-center">
         <button
-          @click="load"
+          @click.stop="load"
         >
           {{ $t('loadOlder') }}
         </button>
@@ -420,7 +420,7 @@ export default {
 
   watch: {
     $route (to, from) {
-      this.load()
+      // this.load()
     },
   },
 
@@ -439,7 +439,7 @@ export default {
       this.procListResults(this.$SystemAPI.actionlogList(this.encodeListParams()))
         .then(rr => {
           this.items.push(...rr)
-          this.page++
+          this.paging.page++
         })
     },
 
