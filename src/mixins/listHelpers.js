@@ -59,6 +59,13 @@ export default {
       this.sorting = { sortBy, sortDesc: sortDesc === true || sortDesc === 'true' }
 
       // Filtering
+      // make sure filter fields are of the right type
+      for (const key in r2) {
+        if (typeof this.filter[key] === 'boolean') {
+          r2[key] = r2[key] === 'true'
+        }
+      }
+
       this.filter = { ...this.filter, ...r2 }
     },
 

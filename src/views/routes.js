@@ -108,7 +108,6 @@ export default [
         children: [
           r('compose.settings', 'settings', 'Compose/Settings/Index'),
           r('compose.permissions', 'permissions', 'Compose/Permissions/Index'),
-          r('compose.automation', 'automation', 'Compose/Automation/Index'),
         ],
       },
 

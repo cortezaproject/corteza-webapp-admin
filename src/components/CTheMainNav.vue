@@ -90,13 +90,6 @@
         :to="{ name: 'compose.permissions' }"
         :icon="['fas', 'lock']"
       />
-
-      <c-main-nav-item
-        v-if="canGrant.compose"
-        :label="$t('compose.automation:navItem.label')"
-        :to="{ name: 'compose.automation' }"
-        :icon="['fas', 'cogs']"
-      />
     </b-list-group>
 
     <b-list-group
