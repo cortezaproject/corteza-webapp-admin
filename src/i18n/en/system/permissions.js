@@ -48,9 +48,10 @@ export default {
           suspend: 'Suspend any user',
           unsuspend: 'Unsuspend any user',
           unmask: {
-            email: 'Show email detailsx',
+            email: 'Show email details',
             name: 'Show name details',
           },
+          impersonate: 'Impersonate any user',
         },
         application: {
           title: 'Applications',

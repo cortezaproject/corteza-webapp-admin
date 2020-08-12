@@ -131,6 +131,11 @@ export default {
         specific: 'Show email details for {{target}}',
         description: 'Default: deny',
       },
+      impersonate: {
+        title: 'Impersonate any user',
+        specific: 'Impersonate this user {{target}}',
+        description: 'Default: deny',
+      },
     },
     'system-application': {
       read: {
