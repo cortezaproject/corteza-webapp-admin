@@ -38,7 +38,7 @@
     "minimist": "^1.2.3",
     "moment": "^2.24.0",
     "resolve-url-loader": "3.1.1",
-    "serialize-javascript": "^2.1.1",
+    "serialize-javascript": "^3.1.0",
     "set-value": "^2.0.1",
     "sinon": "^7.3.2",
     "stylelint": "^9.10.1",
