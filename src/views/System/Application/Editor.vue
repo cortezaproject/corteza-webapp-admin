@@ -42,6 +42,7 @@
       v-if="application.unify && application.applicationID"
       class="mt-3"
       :unify="application.unify"
+      :application="application"
       :processing="unify.processing"
       :success="unify.success"
       @submit="onUnifySubmit"

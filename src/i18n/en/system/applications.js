@@ -68,6 +68,10 @@ export default {
     unify: {
       title: 'Unify app selector',
 
+      name: {
+        label: 'Name',
+        description: 'Name used in the application selector',
+      },
       icon: {
         label: 'Icon',
         description: 'Icon used in Unify tab',

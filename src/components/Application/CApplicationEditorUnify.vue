@@ -8,6 +8,13 @@
       @submit.prevent="$emit('submit', unify)"
     >
       <b-form-group
+        :label="$t('name.label')"
+        :description="$t('name.description')"
+        label-cols="2"
+      >
+        <b-form-input v-model="unify.name" />
+      </b-form-group>
+      <b-form-group
         :label="$t('icon.label')"
         :description="$t('icon.description')"
         label-cols="2"
@@ -93,6 +100,11 @@ export default {
       required: true,
     },
 
+    application: {
+      type: Object,
+      required: true,
+    },
+
     processing: {
       type: Boolean,
       value: false,
@@ -131,6 +143,10 @@ export default {
         return this.validConfig
       }
     },
+  },
+
+  created () {
+    this.unify.name = this.unify.name ? this.unify.name : this.application.name
   },
 }
 </script>
