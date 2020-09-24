@@ -56,6 +56,12 @@
       />
 
       <c-main-nav-item
+        :label="$t('system.federation:navItem.label')"
+        :to="{ name: 'system.federation' }"
+        :icon="['fas', 'share-alt']"
+      />
+
+      <c-main-nav-item
         v-if="canGrant.system"
         :label="$t('system.automation:navItem.label')"
         :to="{ name: 'system.automation' }"

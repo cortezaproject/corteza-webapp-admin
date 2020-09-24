@@ -2,6 +2,7 @@ import stats from './stats'
 import applications from './applications'
 import users from './users'
 import roles from './roles'
+import federation from './federation'
 import scripts from './scripts'
 import settings from './settings'
 import permissions from './permissions'
@@ -20,6 +21,7 @@ export default {
   'system.users': users,
   'system.roles': roles,
   'system.scripts': scripts,
+  'system.federation': federation,
 
   'system.settings': settings,
   'system.permissions': permissions,

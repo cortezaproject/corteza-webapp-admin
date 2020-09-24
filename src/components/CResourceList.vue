@@ -32,7 +32,33 @@
             <div>{{ loadingText }}</div>
           </div>
         </template>
+        <template #cell(tags)="row">
+          <div
+            class="d-flex flex-wrap h3"
+          >
+            <b-badge
+              v-for="(t, index) in row.item.tags"
+              :key="index"
+              variant="warning"
+              class="rounded mr-1 py-1 px-2"
+            >
+              {{ t }}
+            </b-badge>
+          </div>
+        </template>
         <template #cell(actions)="row">
+          <b-button
+            v-if="row.item.federationID && row.item.status.toLowerCase() === 'pending'"
+            size="sm"
+            variant="link"
+            class="p-0 pr-1"
+            @click="$emit('confirm-pending', row.item.federationID)"
+          >
+            <font-awesome-icon
+              :icon="['fas', 'exclamation-triangle']"
+              class="text-danger"
+            />
+          </b-button>
           <b-button
             size="sm"
             variant="link"
