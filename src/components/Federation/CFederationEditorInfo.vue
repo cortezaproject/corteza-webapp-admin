@@ -5,14 +5,14 @@
     footer-bg-variant="white"
   >
     <b-form
-      @submit.prevent="$emit('submit', federation)"
+      @submit.prevent="$emit('submit', node)"
     >
       <b-form-group
         :label="$t('name')"
         label-cols="2"
       >
         <b-form-input
-          v-model="federation.name"
+          v-model="node.name"
           required
         />
 
@@ -31,7 +31,7 @@
         label-cols="2"
       >
         <b-form-input
-          v-model="federation.url"
+          v-model="node.url"
           required
           type="url"
         />
@@ -42,7 +42,7 @@
         label-cols="2"
       >
         <b-form-input
-          v-model="federation.email"
+          v-model="node.email"
           required
           type="email"
         />
@@ -53,7 +53,7 @@
         label-cols="2"
       >
         <b-form-tags
-          v-model="federation.tags"
+          v-model="node.tags"
           tag-variant="warning"
           tag-class="rounded"
           input-class="h4"
@@ -64,12 +64,12 @@
       </b-form-group>
 
       <b-form-group
-        v-if="federation.status"
+        v-if="node.status"
         :label="$t('status')"
         label-cols="2"
       >
         <b-form-input
-          v-model="federation.status"
+          v-model="node.status"
           plaintext
           disabled
         />
@@ -77,47 +77,47 @@
 
       <b-form-group
         label-cols="2"
-        :class="{ 'mb-0': !federation.federationID }"
+        :class="{ 'mb-0': !node.nodeID }"
       >
         <b-form-checkbox
-          v-model="federation.enabled"
+          v-model="node.enabled"
         >
           {{ $t('enabled') }}
         </b-form-checkbox>
       </b-form-group>
 
       <b-form-group
-        v-if="federation.updatedAt"
+        v-if="node.updatedAt"
         :label="$t('updatedAt')"
         label-cols="2"
       >
         <b-form-input
-          :value="federation.updatedAt | locLongDate"
+          :value="node.updatedAt | locLongDate"
           plaintext
           disabled
         />
       </b-form-group>
 
       <b-form-group
-        v-if="federation.deletedAt"
+        v-if="node.deletedAt"
         :label="$t('deletedAt')"
         label-cols="2"
       >
         <b-form-input
-          :value="federation.deletedAt | locLongDate"
+          :value="node.deletedAt | locLongDate"
           plaintext
           disabled
         />
       </b-form-group>
 
       <b-form-group
-        v-if="federation.createdAt"
+        v-if="node.createdAt"
         :label="$t('createdAt')"
         label-cols="2"
         class="mb-0"
       >
         <b-form-input
-          :value="federation.createdAt | locLongDate"
+          :value="node.createdAt | locLongDate"
           plaintext
           disabled
         />
@@ -135,11 +135,11 @@
         class="float-right"
         :processing="processing"
         :success="success"
-        @submit="$emit('submit', federation)"
+        @submit="$emit('submit', node)"
       />
 
       <confirmation-toggle
-        v-if="federation && federation.federationID"
+        v-if="node && node.nodeID"
         @confirmed="$emit('delete')"
       >
         {{ getDeleteStatus }}
@@ -166,7 +166,7 @@ export default {
   },
 
   props: {
-    federation: {
+    node: {
       type: Object,
       required: true,
     },
@@ -184,7 +184,7 @@ export default {
 
   computed: {
     getDeleteStatus () {
-      return this.federation.deletedAt ? this.$t('undelete') : this.$t('delete')
+      return this.node.deletedAt ? this.$t('undelete') : this.$t('delete')
     },
   },
 }

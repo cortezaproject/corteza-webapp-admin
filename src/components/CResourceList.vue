@@ -48,11 +48,11 @@
         </template>
         <template #cell(actions)="row">
           <b-button
-            v-if="row.item.federationID && row.item.status.toLowerCase() === 'pending'"
+            v-if="row.item.nodeID && row.item.status.toLowerCase() === 'pending'"
             size="sm"
             variant="link"
             class="p-0 pr-1"
-            @click="$emit('confirm-pending', row.item.federationID)"
+            @click="$emit('confirm-pending', row.item.nodeID)"
           >
             <font-awesome-icon
               :icon="['fas', 'exclamation-triangle']"

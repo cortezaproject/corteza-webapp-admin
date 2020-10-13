@@ -8,7 +8,7 @@
       <b-button-group>
         <b-button
           variant="link"
-          @click="generate.modal = true"
+          :to="{ name: 'system.federation.new' }"
         >
           {{ $t('new') }}
         </b-button>
@@ -24,7 +24,8 @@
     </c-content-header>
 
     <c-resource-list
-      primary-key="federationID"
+      :key="refreshList"
+      primary-key="nodeID"
       edit-route="system.federation.edit"
       :loading-text="$t('loading')"
       :total-text="$t('numFound', { count: totalItems })"
@@ -51,95 +52,6 @@
     </c-resource-list>
 
     <b-modal
-      v-model="generate.modal"
-      hide-header
-      hide-footer
-      centered
-      size="lg"
-      body-class="px-5"
-    >
-      <div
-        class="text-center px-5"
-      >
-        <font-awesome-icon
-          size="7x"
-          :icon="['fas', 'share-alt']"
-          class="text-light mb-2"
-        />
-        <h2>
-          {{ $t('generate.description') }}
-        </h2>
-      </div>
-
-      <b-input-group
-        size="xl"
-        class="mt-5"
-      >
-        <b-form-input
-          v-model="generate.email"
-          type="email"
-          placeholder="email@example.com"
-        />
-        <b-input-group-append>
-          <b-button
-            variant="outline-primary"
-            class="px-4"
-          >
-            {{ $t('generate.sendEmail') }}
-          </b-button>
-        </b-input-group-append>
-      </b-input-group>
-
-      <div
-        class="mt-3"
-      >
-        <p>
-          {{ $t('generate.subject') }} <strong>{{ $t('generate.invitation') }}</strong>
-        </p>
-
-        <p
-          class="mt-4"
-        >
-          {{ $t('generate.hello') }}
-        </p>
-
-        <p>
-          {{ $t('generate.body', { userLabel }) }}
-        </p>
-
-        <p
-          class="text-center"
-        >
-          <i>
-            {{ generatedUrl }}
-          </i>
-        </p>
-
-        <p>
-          {{ $t('generate.kindRegards') }}
-        </p>
-      </div>
-
-      <hr
-        class="my-3"
-      >
-
-      <b-button
-        variant="link"
-        size="sm"
-        :to="{}"
-        class="p-1"
-        @click="copyUrl()"
-      >
-        <font-awesome-icon
-          :icon="['far', 'copy']"
-          class="text-secondary pointer"
-        />
-      </b-button>
-      {{ generatedUrl }}
-    </b-modal>
-
-    <b-modal
       v-model="pair.modal"
       hide-header
       hide-footer
@@ -159,7 +71,7 @@
             class="text-light mb-2"
           />
           <h2>
-            {{ $t('pair.undefined.description') }}
+            {{ $t('pair.status.none.description') }}
           </h2>
         </div>
 
@@ -170,16 +82,20 @@
           <b-form-input
             v-model="pair.url"
             type="url"
-            placeholder="corteza://federation:12345678@corteza.com"
+            placeholder=""
           />
           <b-input-group-append>
-            <b-button
+            <c-submit-button
+              button-class="px-4"
               variant="outline-primary"
-              class="px-4"
-              @click="pairNode()"
+              icon-variant="text-primary"
+              :disabled="!pair.url"
+              :processing="pair.processing"
+              :success="pair.success"
+              @submit="pairNode()"
             >
-              Confirm
-            </b-button>
+              {{ $t('pair.confirm') }}
+            </c-submit-button>
           </b-input-group-append>
         </b-input-group>
 
@@ -191,7 +107,7 @@
       </div>
 
       <div
-        v-else-if="pair.status === 'pending'"
+        v-else-if="pair.status === 'pair-successful'"
       >
         <div
           class="text-center px-5"
@@ -202,7 +118,7 @@
             class="text-light mb-4"
           />
           <h2>
-            {{ $t('pair.pending.description') }}
+            {{ $t('pair.status.pending.description') }}
           </h2>
         </div>
       </div>
@@ -220,16 +136,19 @@
             class="text-light mb-4"
           />
           <h2>
-            {{ $t('pair.confirmPending.description', { email: 'james.doe@crust.tech', name: 'Community Server' }) }}
+            {{ $t('pair.status.confirmPending.description', { email: 'joze.fortun@crust.tech', name: 'Community Server' }) }}
           </h2>
         </div>
-        <b-button
+        <c-submit-button
+          button-class="px-5 mt-4"
           variant="outline-primary"
-          class="px-5 mt-4"
-          @click="confirmPending()"
+          icon-variant="text-primary"
+          :processing="pair.processing"
+          :success="pair.success"
+          @submit="confirmPending()"
         >
-          Confirm
-        </b-button>
+          {{ $t('pair.confirm') }}
+        </c-submit-button>
       </div>
     </b-modal>
   </b-container>
@@ -238,32 +157,36 @@
 <script>
 import moment from 'moment'
 import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
+import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 
 export default {
   name: 'FederationList',
-  mixins: [
-    listHelpers,
-  ],
 
   i18nOptions: {
     namespaces: [ 'system.federation' ],
     keyPrefix: 'list',
   },
 
+  components: {
+    CSubmitButton,
+  },
+
+  mixins: [
+    listHelpers,
+  ],
+
   data () {
     return {
       id: 'federation',
 
-      generate: {
-        modal: false,
-        email: '',
-      },
-
       pair: {
         modal: false,
+        processing: false,
+        success: false,
+
         url: '',
         status: undefined,
-        confirmID: '',
+        nodeID: '',
       },
 
       filter: {
@@ -271,6 +194,8 @@ export default {
         suspended: 0,
         deleted: 0,
       },
+
+      refreshList: 0,
 
       fields: [
         {
@@ -314,23 +239,9 @@ export default {
     }
   },
 
-  computed: {
-    userLabel () {
-      return this.$auth.user.name || this.$auth.user.handle
-    },
-
-    generatedUrl () {
-      return 'corteza://federation:428fw77rg@latest.cortezaproject.org?name=Community%20Server'
-    },
-  },
-
   methods: {
     items () {
-      // return this.procListResults(this.$SystemAPI.userList(this.encodeListParams()))
-      return [
-        { federationID: '0', name: 'Bromley High School', enabled: 'True', status: 'Paired', tags: ['Education', 'HR'], createdAt: new Date() },
-        { federationID: '1', name: 'Northwood College for Girls', enabled: 'True', status: 'Pending', tags: ['Education'], createdAt: new Date() },
-      ]
+      return this.procListResults(this.$FederationAPI.nodeSearch(this.encodeListParams()))
     },
 
     openPairModal () {
@@ -338,24 +249,52 @@ export default {
       this.pair.modal = true
     },
 
-    pairNode () {
-      this.pair.status = 'pending'
-      this.pair.url = ''
+    async pairNode () {
+      this.pair.processing = true
+
+      await this.$FederationAPI.nodeCreate({ pairingURI: this.pair.url })
+        .then(node => {
+          this.pair.url = ''
+          this.pair.status = 'pair-successful'
+
+          // Refetch list
+          this.refreshList += 1
+        })
+        .catch(this.stdReject)
+        .finally(() => {
+          this.pair.processing = false
+        })
     },
 
-    openConfirmPending (federationID) {
+    openConfirmPending (nodeID) {
       this.pair.status = 'confirm-pending'
-      this.pair.confirmID = federationID
+      this.pair.nodeID = nodeID
       this.pair.modal = true
     },
 
-    confirmPending () {
-      // Update federation status
-      this.pair.modal = false
-    },
+    async confirmPending () {
+      this.pair.processing = true
 
-    copyUrl () {
-      navigator.clipboard.writeText(this.generatedUrl)
+      await this.$FederationAPI.nodeHandshakeConfirm({ nodeID: this.pair.nodeID })
+        .then(() => {
+          this.pair.success = true
+
+          // Refetch node list via component key change
+          this.refreshList += 1
+
+          setTimeout(() => {
+            this.pair.success = false
+          }, 2000)
+
+          setTimeout(() => {
+            this.pair.nodeID = ''
+            this.pair.modal = false
+          }, 1000)
+        })
+        .catch(this.stdReject)
+        .finally(() => {
+          this.pair.processing = false
+        })
     },
   },
 }
