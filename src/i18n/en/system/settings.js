@@ -10,8 +10,6 @@ export default {
     auth: {
       title: 'Authentication',
 
-      submit: 'Submit',
-
       internal: {
         title: 'Internal',
         enabled: 'Internal authentication enabled',
@@ -56,8 +54,6 @@ export default {
 
       header: 'Header (EmailHeaderEn)',
       footer: 'Footer (EmailFooterEn)',
-
-      submit: 'Submit',
     },
 
     external: {
@@ -75,8 +71,6 @@ export default {
       facebook: 'Facebook',
       github: 'GitHub',
       linkedin: 'LinkedIn',
-
-      submit: 'Submit',
     },
   },
 }

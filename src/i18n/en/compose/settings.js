@@ -27,8 +27,6 @@ export default {
           description: 'MIME types, sepparated with ",". Example: "text/plain,text/csv"',
         },
       },
-
-      submit: 'Submit',
     },
   },
 }

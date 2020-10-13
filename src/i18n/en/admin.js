@@ -299,6 +299,7 @@ export default {
     },
 
     label: {
+      submit: 'Submit',
       yes: 'Yes',
       no: 'No',
     },

@@ -71,8 +71,6 @@ export default {
 
       updatedAt: 'Updated at',
       createdAt: 'Created at',
-
-      submit: 'Submit',
     },
 
     password: {
@@ -82,8 +80,6 @@ export default {
       confirm: 'Confirm password',
       missmatch: 'The passwords must match !',
       length: 'The passwords must be at least {{length}} characters long!',
-
-      submit: 'Submit',
     },
 
     roles: {
@@ -95,8 +91,6 @@ export default {
       add: 'Add',
       remove: 'Remove',
       searchRoles: 'Search roles',
-
-      submit: 'Submit',
     },
   },
 }

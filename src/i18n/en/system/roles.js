@@ -69,8 +69,6 @@ export default {
 
       updatedAt: 'Updated at',
       createdAt: 'Created at',
-
-      submit: 'Submit',
     },
 
     members: {
@@ -82,8 +80,6 @@ export default {
       add: 'Add',
       remove: 'Remove',
       searchUsers: 'Search users',
-
-      submit: 'Submit',
     },
   },
 

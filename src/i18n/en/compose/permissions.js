@@ -9,7 +9,6 @@ export default {
     rules: {
       title: 'List of rules',
       loading: 'Loading permissions',
-      submit: 'Submit',
       add: 'Add role',
       addRole: 'Add new role',
       noRole: 'No role selected',
