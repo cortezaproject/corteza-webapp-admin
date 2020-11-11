@@ -315,7 +315,7 @@
       </b-card-body>
       <b-card-footer class="p-3 text-center">
         <button
-          @click.stop="load"
+          @click.stop="load()"
         >
           {{ $t('loadOlder') }}
         </button>
@@ -377,8 +377,7 @@ export default {
       },
 
       paging: {
-        page: 1,
-        perPage: 100,
+        limit: 5,
       },
 
       fields: [
@@ -430,16 +429,19 @@ export default {
 
   methods: {
     search () {
-      this.items.length = 0
-      this.filter.page = 1
-      return this.load()
+      this.load(true)
     },
 
-    load () {
+    load (reset = false) {
+      this.paging.beforeActionID = (this.items[this.items.length - 1] || {}).ID
+
       this.procListResults(this.$SystemAPI.actionlogList(this.encodeListParams()))
         .then(rr => {
-          this.items.push(...rr)
-          this.paging.page++
+          if (reset) {
+            this.items = rr
+          } else {
+            this.items.push(...rr)
+          }
         })
     },
 
@@ -469,7 +471,6 @@ export default {
         query: {
           ...this.$route.query,
           ...query,
-          page: 1,
           sort: undefined,
         },
       }

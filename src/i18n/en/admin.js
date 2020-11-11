@@ -292,6 +292,12 @@ export default {
   general: {
     noAccess: 'You do not have permissions to access Admin panel',
 
+    pagination: {
+      first: '<<',
+      prev: 'Prev',
+      next: 'Next',
+    },
+
     label: {
       yes: 'Yes',
       no: 'No',

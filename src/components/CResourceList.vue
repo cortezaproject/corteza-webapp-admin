@@ -17,8 +17,6 @@
         :primary-key="primaryKey"
         :sort-by.sync="sorting.sortBy"
         :sort-desc.sync="sorting.sortDesc"
-        :per-page="paging.perPage"
-        :current-page.sync="paging.page"
         :items="items"
         :fields="fields"
         no-sort-reset
@@ -66,11 +64,6 @@
               name="filter"
             />
           </b-col>
-          <b-col
-            lg="3"
-            class="text-right align-text-bottom text-secondary"
-            v-html="totalText"
-          />
         </b-row>
       </b-container>
     </template>
@@ -79,16 +72,30 @@
       Card footer
     -->
     <template #footer>
-      <b-pagination-nav
-        v-model="paging.page"
-        use-router
-        align="right"
-        aria-controls="resource-list"
-        class="m-0 overflow-auto"
-        :number-of-pages="numberOfPages"
-        :link-gen="paginationLinkGenerator"
-        :disabled="paginationDisabled"
-      />
+      <b-button-group
+        size="sm"
+        class="float-right"
+      >
+        <b-button
+          variant="outline-secondary"
+          :disabled="hasPrevPage"
+          @click="goToPage()"
+        >
+          {{ $t('pagination.first') }}
+        </b-button>
+        <b-button
+          :disabled="hasPrevPage"
+          @click="goToPage('prevPage')"
+        >
+          {{ $t('pagination.prev') }}
+        </b-button>
+        <b-button
+          :disabled="hasNextPage"
+          @click="goToPage('nextPage')"
+        >
+          {{ $t('pagination.next') }}
+        </b-button>
+      </b-button-group>
     </template>
   </b-card>
 </template>
@@ -101,11 +108,6 @@ export default {
     loadingText: {
       type: String,
       default: 'Loading',
-    },
-
-    totalText: {
-      type: String,
-      default: '',
     },
 
     editRoute: {
@@ -133,58 +135,30 @@ export default {
       required: true,
     },
 
-    totalItems: {
-      type: Number,
-      required: true,
-    },
-
-    bottomPaginationMinItems: {
-      type: Number,
-      default: 5,
-    },
-
     items: {
       type: Function,
       required: true,
     },
   },
 
+  i18nOptions: {
+    keyPrefix: 'general',
+  },
+
   computed: {
-    /**
-     * Disable pagination when there we have less items than we show per-page
-     *
-     * @returns {boolean}
-     */
-    paginationDisabled () {
-      return this.totalItems < this.paging.perPage
+    hasPrevPage () {
+      return !this.paging.prevPage
     },
 
-    /**
-     * Calculate number of pages
-     *
-     * Never returns value lower than 1
-     *
-     * @returns {number}
-     */
-    numberOfPages () {
-      const n = Math.ceil(this.totalItems / this.paging.perPage)
-      return n > 0 ? n : 1
+    hasNextPage () {
+      return !this.paging.nextPage
     },
   },
 
   methods: {
-    /**
-     * Returns (partial) router params, combined with existing query parameters
-     * @param page
-     * @returns {{query: {page: *}}}
-     */
-    paginationLinkGenerator (page) {
-      return {
-        query: {
-          ...this.$route.query,
-          page,
-        },
-      }
+    goToPage (page) {
+      let pageCursor = this.paging[page] || ''
+      this.$router.push({ path: this.$route.path, query: { ...this.$route.query, pageCursor } })
     },
   },
 }
