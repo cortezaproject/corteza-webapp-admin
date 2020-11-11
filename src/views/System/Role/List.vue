@@ -50,12 +50,10 @@
       primary-key="roleID"
       edit-route="system.role.edit"
       :loading-text="$t('loading')"
-      :total-text="$t('numFound', { count: totalItems })"
       :paging="paging"
       :sorting="sorting"
       :items="items"
       :fields="fields"
-      :total-items="totalItems"
     >
       <template #filter>
         <b-form-group
@@ -75,7 +73,7 @@
         >
           <c-resource-list-status-filter
             v-model="filter.deleted"
-            class="mb-1 mb-lg-0"
+            class="col-12 col-lg-6 mb-1 mb-lg-0"
             :label="$t('filterForm.deleted.label')"
             :excluded-label="$t('filterForm.excluded.label')"
             :inclusive-label="$t('filterForm.inclusive.label')"

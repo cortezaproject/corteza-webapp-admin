@@ -4,22 +4,19 @@ import { mapActions } from 'vuex'
 export default {
   data () {
     return {
-      totalItems: 0,
-
       /**
        * Placeholder, if component does not define own filter
        */
       filter: {},
 
       paging: {
-        perPage: 30,
-        page: 1,
+        limit: 10,
+        pageCursor: undefined,
+        prevPage: '',
+        nextPage: '',
       },
 
-      sorting: {
-        sortBy: 'id',
-        sortDesc: true,
-      },
+      sorting: {},
     }
   },
 
@@ -37,7 +34,7 @@ export default {
   },
 
   created () {
-    this.handleQueryParams()
+    this.handleQueryParams(true)
   },
 
   methods: {
@@ -48,14 +45,29 @@ export default {
 
     /**
      * Parses query params into list filtering params.
+     * @param initial {Boolean} - used to determine it this is the initial fetch
      */
-    handleQueryParams () {
+    handleQueryParams (initial = false) {
       // Paging
-      const { perPage = this.paging.perPage, page = this.paging.page, ...r1 } = this.$route.query
-      this.paging = { perPage, page }
+      const {
+        limit = this.paging.limit,
+        pageCursor = this.paging.pageCursor,
+        prevPage = this.paging.prevCursor,
+        nextPage = this.paging.nextCursor,
+        ...r1
+      } = this.$route.query
+
+      /// To prevent extra list fetch, check if pageCursor is defined (not first page)
+      const refresh = this.$route.query.pageCursor !== this.paging.pageCursor
+      this.paging = { limit, pageCursor, prevPage, nextPage }
 
       // Sorting
       const { sortBy = this.sorting.sortBy, sortDesc = this.sorting.sortDesc, ...r2 } = r1
+
+      // Reset pageCursor when sort changes, except on first fetch (so we use the pageCursor from url)
+      if (!initial && (sortBy !== this.sorting.sortBy || sortDesc !== this.sorting.sortDesc)) {
+        this.paging.pageCursor = ''
+      }
       this.sorting = { sortBy, sortDesc: sortDesc === true || sortDesc === 'true' }
 
       // Filtering
@@ -67,6 +79,11 @@ export default {
       }
 
       this.filter = { ...this.filter, ...r2 }
+
+      // Only refresh if pageCursor actually changed,
+      if (refresh) {
+        this.$root.$emit('bv::refresh::table', 'resource-list')
+      }
     },
 
     filterList: debounce(function () {
@@ -74,7 +91,7 @@ export default {
       //
       // we want to prevent situations with page is preset to a number that
       // exceeds the number of pages of a filtered results
-      this.paging.page = 1
+      this.paging.pageCursor = ''
 
       // notify b-table about the change
       //
@@ -89,10 +106,13 @@ export default {
     encodeListParams () {
       const { sortBy, sortDesc } = this.sorting
 
+      const sort = sortBy ? `${sortBy} ${sortDesc ? 'DESC' : 'ASC'}` : undefined
+
       return {
         ...this.filter,
         ...this.paging,
-        sort: sortBy ? `${sortBy} ${sortDesc ? 'DESC' : 'ASC'}` : undefined,
+        ...{ nextPage: undefined, prevPage: undefined },
+        sort: this.paging.pageCursor ? undefined : sort,
       }
     },
 
@@ -120,10 +140,10 @@ export default {
       // he needs to land on the same page with the same parameters
       this.$router.push(this.encodeRouteParams())
 
-      //
       return p.then(({ set, filter } = {}) => {
-        // Update total items counter
-        this.totalItems = filter.count
+        this.paging.pageCursor = undefined
+        this.paging.nextPage = filter.nextPage
+        this.paging.prevPage = filter.prevPage
         return set
       }).catch((error) => {
         this.$store.dispatch('ui/appendAlert', error)

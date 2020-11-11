@@ -42,12 +42,10 @@
       primary-key="applicationID"
       edit-route="system.application.edit"
       :loading-text="$t('loading')"
-      :total-text="$t('numFound', { count: totalItems })"
       :paging="paging"
       :sorting="sorting"
       :items="items"
       :fields="fields"
-      :total-items="totalItems"
     >
       <template #filter>
         <b-form-group
