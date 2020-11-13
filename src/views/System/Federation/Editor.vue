@@ -202,7 +202,7 @@ export default {
     fetchNode () {
       this.incLoader()
 
-      this.$SystemAPI.nodeRead({ nodeID: this.nodeID })
+      this.$FederationAPI.nodeRead({ nodeID: this.nodeID })
         .then(node => {
           this.node = node // new federation.Node(node)
         })
@@ -225,7 +225,7 @@ export default {
 
       if (payload.nodeID) {
         // On update, reset the node obj
-        this.$SystemAPI.nodeUpdate(payload)
+        this.$FederationAPI.nodeUpdate(payload)
           .then(node => {
             this.animateSuccess('info')
             this.node = node
@@ -236,7 +236,7 @@ export default {
           })
       } else {
         // On creation, redirect to edit page
-        this.$SystemAPI.nodeCreate(payload)
+        this.$FederationAPI.nodeCreate(payload)
           .then(({ nodeID }) => {
             this.animateSuccess('info')
             this.$router.push({ name: 'system.federation.edit', params: { nodeID } })
@@ -256,7 +256,7 @@ export default {
       this.incLoader()
 
       if (this.node.deletedAt) {
-        this.$SystemAPI.nodeUndelete({ nodeID: this.nodeID })
+        this.$FederationAPI.nodeUndelete({ nodeID: this.nodeID })
           .then(() => {
             this.fetchNode()
           })
@@ -265,7 +265,7 @@ export default {
             this.decLoader()
           })
       } else {
-        this.$SystemAPI.nodeDelete({ nodeID: this.nodeID })
+        this.$FederationAPI.nodeDelete({ nodeID: this.nodeID })
           .then(() => {
             this.fetchNode()
           })
@@ -282,7 +282,7 @@ export default {
       const values = {
         to: [this.generate.email],
         content: {
-          html: '', // TODO
+          html: `${this.generate.url}`, // TODO proper email
         },
       }
       await this.$ComposeAPI.notificationEmailSend(values)

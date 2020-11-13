@@ -31,7 +31,7 @@
         label-cols="2"
       >
         <b-form-input
-          v-model="node.url"
+          v-model="node.baseURL"
           required
           type="url"
         />
