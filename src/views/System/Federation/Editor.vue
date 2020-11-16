@@ -88,7 +88,7 @@
         </p>
 
         <p
-          class="text-center"
+          class="text-center text-break"
         >
           <i>
             {{ generate.url || $t('generate.notGenerated') }}
@@ -116,7 +116,11 @@
           class="text-secondary pointer"
         />
       </b-button>
-      {{ generate.url || $t('generate.notGenerated') }}
+      <span
+        class="text-break"
+      >
+        {{ generate.url || $t('generate.notGenerated') }}
+      </span>
     </b-modal>
   </b-container>
 </template>
@@ -181,21 +185,12 @@ export default {
       handler () {
         if (this.nodeID) {
           this.fetchNode()
+          this.fetchGeneratedUrl()
         } else {
           this.node = {}
         }
       },
     },
-  },
-
-  mounted () {
-    if (this.nodeID && this.node.status !== 'paired') {
-      this.$FederationAPI.nodeGenerateUri({ nodeID: this.nodeID })
-        .then(url => {
-          this.generate.url = url
-        })
-        .catch(this.stdReject)
-    }
   },
 
   methods: {
@@ -205,6 +200,19 @@ export default {
       this.$FederationAPI.nodeRead({ nodeID: this.nodeID })
         .then(node => {
           this.node = node // new federation.Node(node)
+        })
+        .catch(this.stdReject)
+        .finally(() => {
+          this.decLoader()
+        })
+    },
+
+    fetchGeneratedUrl () {
+      this.incLoader()
+
+      this.$FederationAPI.nodeGenerateUri({ nodeID: this.nodeID })
+        .then(url => {
+          this.generate.url = url
         })
         .catch(this.stdReject)
         .finally(() => {
