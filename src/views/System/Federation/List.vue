@@ -24,7 +24,6 @@
     </c-content-header>
 
     <c-resource-list
-      :key="refreshList"
       primary-key="nodeID"
       edit-route="system.federation.edit"
       :loading-text="$t('loading')"
@@ -195,8 +194,6 @@ export default {
         deleted: 0,
       },
 
-      refreshList: 0,
-
       fields: [
         {
           key: 'name',
@@ -253,12 +250,13 @@ export default {
       this.pair.processing = true
 
       await this.$FederationAPI.nodeCreate({ pairingURI: this.pair.url })
-        .then(node => {
+        .then(async ({ nodeID }) => {
+          await this.$FederationAPI.nodePair({ nodeID })
           this.pair.url = ''
           this.pair.status = 'pair-successful'
 
           // Refetch list
-          this.refreshList += 1
+          this.$root.$emit('bv::refresh::table', 'resource-list')
         })
         .catch(this.stdReject)
         .finally(() => {
@@ -279,8 +277,8 @@ export default {
         .then(() => {
           this.pair.success = true
 
-          // Refetch node list via component key change
-          this.refreshList += 1
+          // Refetch list
+          this.$root.$emit('bv::refresh::table', 'resource-list')
 
           setTimeout(() => {
             this.pair.success = false
