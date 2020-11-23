@@ -193,7 +193,7 @@ export default {
     },
   },
 
-  mounted() {
+  created () {
     // faking FederationAPI base url for now
     this.$FederationAPI.baseURL = window.ComposeAPI.replace('/compose', '/federation')
   },
