@@ -133,6 +133,7 @@
     <template #footer>
       <c-submit-button
         class="float-right"
+        :disabled="!node.baseURL"
         :processing="processing"
         :success="success"
         @submit="$emit('submit', node)"
