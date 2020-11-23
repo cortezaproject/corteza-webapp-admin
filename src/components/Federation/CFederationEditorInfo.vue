@@ -13,7 +13,7 @@
       >
         <b-form-input
           v-model="node.name"
-          required
+          :state="!!node.name"
         />
 
         <!--
@@ -23,6 +23,7 @@
         <input
           type="submit"
           class="d-none"
+          :disabled="!isValid"
         >
       </b-form-group>
 
@@ -32,8 +33,9 @@
       >
         <b-form-input
           v-model="node.baseURL"
-          required
+          placeholder="https://example.com/federation"
           type="url"
+          :state="isValidURL"
         />
       </b-form-group>
 
@@ -43,7 +45,7 @@
       >
         <b-form-input
           v-model="node.email"
-          required
+          placeholder="email@example.com"
           type="email"
         />
       </b-form-group>
@@ -133,7 +135,7 @@
     <template #footer>
       <c-submit-button
         class="float-right"
-        :disabled="!node.baseURL"
+        :disabled="!isValid"
         :processing="processing"
         :success="success"
         @submit="$emit('submit', node)"
@@ -186,6 +188,14 @@ export default {
   computed: {
     getDeleteStatus () {
       return this.node.deletedAt ? this.$t('undelete') : this.$t('delete')
+    },
+
+    isValid () {
+      return !!this.node.name && this.isValidURL
+    },
+
+    isValidURL () {
+      return /https:\/\/*.*\/federation/gm.test(this.node.baseURL || '')
     },
   },
 }
