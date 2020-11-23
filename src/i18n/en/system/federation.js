@@ -43,7 +43,8 @@ export default {
         },
 
         confirmPending: {
-          description: '{{ email }} accepted the invitation to join “{{ name }}” Federated Network. Click on “Confirm” to start sharing the data.',
+          description: '{{ email }} accepted the invitation to join “{{ name }}” Federated Network.\n Click on “Confirm” to start sharing the data.',
+          descriptionNoMail: 'Admin of “{{ name }}” accepted the invitation to join the Federated Network.\n Click on “Confirm” to start sharing the data',
         },
       },
     },
@@ -58,7 +59,7 @@ export default {
 
       name: 'Server name',
       url: 'Server URL',
-      email: 'Admin Contact',
+      email: 'Admin Email',
       tags: {
         label: 'Tags',
         placeholder: '+Add',

@@ -135,7 +135,7 @@
             class="text-light mb-4"
           />
           <h2>
-            {{ $t('pair.status.confirmPending.description', { email: 'joze.fortun@crust.tech', name: 'Community Server' }) }}
+            {{ $t(pair.node.email ? 'pair.status.confirmPending.description' : 'pair.status.confirmPending.descriptionNoMail', pair.node) }}
           </h2>
         </div>
         <c-submit-button
@@ -185,7 +185,7 @@ export default {
 
         url: '',
         status: undefined,
-        nodeID: '',
+        node: undefined,
       },
 
       filter: {
@@ -250,10 +250,11 @@ export default {
       this.pair.processing = true
 
       await this.$FederationAPI.nodeCreate({ pairingURI: this.pair.url })
-        .then(async ({ nodeID }) => {
-          await this.$FederationAPI.nodePair({ nodeID })
+        .then(async node => {
+          await this.$FederationAPI.nodePair(node)
           this.pair.url = ''
           this.pair.status = 'pair-successful'
+          this.pair.node = node
 
           // Refetch list
           this.$root.$emit('bv::refresh::table', 'resource-list')
@@ -264,16 +265,16 @@ export default {
         })
     },
 
-    openConfirmPending (nodeID) {
+    openConfirmPending (node) {
+      this.pair.node = node
       this.pair.status = 'confirm-pending'
-      this.pair.nodeID = nodeID
       this.pair.modal = true
     },
 
     async confirmPending () {
       this.pair.processing = true
 
-      await this.$FederationAPI.nodeHandshakeConfirm({ nodeID: this.pair.nodeID })
+      await this.$FederationAPI.nodeHandshakeConfirm({ nodeID: this.pair.node.nodeID })
         .then(() => {
           this.pair.success = true
 
@@ -285,7 +286,7 @@ export default {
           }, 2000)
 
           setTimeout(() => {
-            this.pair.nodeID = ''
+            this.pair.node = undefined
             this.pair.modal = false
           }, 1000)
         })

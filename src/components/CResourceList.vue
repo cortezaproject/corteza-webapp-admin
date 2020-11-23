@@ -52,7 +52,7 @@
             size="sm"
             variant="link"
             class="p-0 pr-1"
-            @click="$emit('confirm-pending', row.item.nodeID)"
+            @click="$emit('confirm-pending', row.item)"
           >
             <font-awesome-icon
               :icon="['fas', 'exclamation-triangle']"
