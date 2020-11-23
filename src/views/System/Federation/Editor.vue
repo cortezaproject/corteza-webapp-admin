@@ -193,6 +193,11 @@ export default {
     },
   },
 
+  mounted() {
+    // faking FederationAPI base url for now
+    this.$FederationAPI.baseURL = window.ComposeAPI.replace('/compose', '/federation')
+  },
+
   methods: {
     fetchNode () {
       this.incLoader()
