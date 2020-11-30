@@ -71,6 +71,9 @@
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "2.6.11"
   },
+  "resolutions": {
+    "**/**/node-forge": "^0.10.0"
+  },
   "stylelint": {
     "plugins": [
       "stylelint-scss"
