@@ -153,17 +153,17 @@ export default {
 
   computed: {
     disabled () {
-      return !(this.checkHandle === null && this.checkName === null)
+      return !this.checkHandle || !this.checkName
     },
 
     // At least 1 character
     checkName () {
-      return /^.+$/.test(this.role.name || '') ? null : false
+      return this.role.name ? /^.+$/.test(this.role.name) : null
     },
 
     // 2+ alpha-numeric + _
     checkHandle () {
-      return /^\w{2,}$/.test(this.role.handle || '') ? null : false
+      return this.role.handle ? /^\w{2,}$/.test(this.role.handle) : null
     },
 
     getDeleteStatus () {
