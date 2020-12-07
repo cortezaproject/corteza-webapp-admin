@@ -12,7 +12,7 @@ function r (name, path, component) {
   return {
     path,
     name,
-    component: () => import(`./${component}.vue`),
+    component: () => import('./' + component + '.vue'),
     props: true,
     // canReuse: false,
   }
@@ -77,7 +77,7 @@ export default [
   {
     name: 'layout',
     path: '/',
-    component: () => import(`./Layout.vue`),
+    component: () => import('./Layout.vue'),
     redirect: 'dashboard',
     children: [
       r('dashboard', 'dashboard', 'Dashboard'),
