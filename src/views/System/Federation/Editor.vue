@@ -175,7 +175,7 @@ export default {
 
   computed: {
     userLabel () {
-      return this.$auth.user.name || this.$auth.user.handle
+      return this.$auth.user.name || this.$auth.user.email
     },
   },
 
@@ -287,10 +287,21 @@ export default {
     async sendEmail () {
       this.generate.processing = true
 
+      const html = `
+        <p class="mt-4">Hello,</p>
+        <p>${this.userLabel} is sending you an invitation for Corteza Federated Network.</p>
+        <p>To start sharing data between organizations, go to the admin panel of your Corteza application, click on &ldquo;Federation&rdquo; and select &ldquo;Pair Federation Network&rdquo; on top right corner.<br />Copy the link below and await confirmation from another administrator.</p>
+        <blockquote>
+        <p class="text-center text-break"><em>${this.generate.url}</em></p>
+        </blockquote>
+        <p>Kind regards, Corteza team.</p>
+      `
+
       const values = {
         to: [this.generate.email],
+        subject: this.$t('generate.invitation'),
         content: {
-          html: `${this.generate.url}`, // TODO proper email
+          html,
         },
       }
       await this.$ComposeAPI.notificationEmailSend(values)
