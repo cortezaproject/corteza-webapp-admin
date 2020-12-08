@@ -73,7 +73,8 @@
   },
   "resolutions": {
     "**/**/node-forge": "^0.10.0",
-    "**/**/yargs-parser": "^13.1.2"
+    "**/**/yargs-parser": "^13.1.2",
+    "**/**/pdfjs-dist": "2.2.228"
   },
   "stylelint": {
     "plugins": [
