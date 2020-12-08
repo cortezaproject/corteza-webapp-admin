@@ -118,6 +118,12 @@ export default {
         .then(rules => {
           this.access = this.access.concat(rules)
 
+          // Load effective Federation permissions
+          return this.$FederationAPI.permissionsEffective()
+        })
+        .then(rules => {
+          this.access = this.access.concat(rules)
+
           // Load effective Messaging permissions
           return this.$MessagingAPI.permissionsEffective()
         })

@@ -8,7 +8,7 @@
       <b-button-group>
         <b-button
           variant="link"
-          :to="{ name: 'system.federation.new' }"
+          :to="{ name: 'federation.nodes.new' }"
         >
           {{ $t('new') }}
         </b-button>
@@ -25,7 +25,7 @@
 
     <c-resource-list
       primary-key="nodeID"
-      edit-route="system.federation.edit"
+      edit-route="federation.nodes.edit"
       :loading-text="$t('loading')"
       :total-text="$t('numFound', { count: totalItems })"
       :paging="paging"
@@ -162,7 +162,7 @@ export default {
   name: 'FederationList',
 
   i18nOptions: {
-    namespaces: [ 'system.federation' ],
+    namespaces: [ 'federation.nodes' ],
     keyPrefix: 'list',
   },
 
@@ -234,11 +234,6 @@ export default {
         label: this.$t(`columns.${c.key}`),
       })),
     }
-  },
-
-  created () {
-    // faking FederationAPI base url for now
-    this.$FederationAPI.baseURL = window.ComposeAPI.replace('/compose', '/federation')
   },
 
   methods: {

@@ -159,7 +159,7 @@ export default {
   name: 'CFederationEditorInfo',
 
   i18nOptions: {
-    namespaces: [ 'system.federation' ],
+    namespaces: [ 'federation.nodes' ],
     keyPrefix: 'editor.info',
   },
 
@@ -195,7 +195,7 @@ export default {
     },
 
     isValidURL () {
-      return /https:\/\/*.*\/federation/gm.test(this.node.baseURL || '')
+      return /https?:\/\/*.*\/federation/gm.test(this.node.baseURL || '')
     },
   },
 }

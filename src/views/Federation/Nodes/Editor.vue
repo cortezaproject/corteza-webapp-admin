@@ -132,7 +132,7 @@ import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 
 export default {
   i18nOptions: {
-    namespaces: [ 'system.federation' ],
+    namespaces: [ 'federation.nodes' ],
     keyPrefix: 'editor',
   },
 
@@ -193,11 +193,6 @@ export default {
     },
   },
 
-  created () {
-    // faking FederationAPI base url for now
-    this.$FederationAPI.baseURL = window.ComposeAPI.replace('/compose', '/federation')
-  },
-
   methods: {
     fetchNode () {
       this.incLoader()
@@ -252,7 +247,7 @@ export default {
         this.$FederationAPI.nodeCreate(payload)
           .then(({ nodeID }) => {
             this.animateSuccess('info')
-            this.$router.push({ name: 'system.federation.edit', params: { nodeID } })
+            this.$router.push({ name: 'federation.nodes.edit', params: { nodeID } })
           })
           .catch(this.stdReject)
           .finally(() => {

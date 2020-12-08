@@ -91,7 +91,6 @@ export default [
           combo('system', 'role'),
           combo('system', 'application'),
           combo('system', 'script'),
-          combo('system', 'federation', { pkey: 'nodeID' }),
 
           r('system.settings', 'settings', 'System/Settings/Index'),
           r('system.settings.auth', 'settings/auth', 'System/Settings/Auth'),
@@ -109,6 +108,14 @@ export default [
         children: [
           r('compose.settings', 'settings', 'Compose/Settings/Index'),
           r('compose.permissions', 'permissions', 'Compose/Permissions/Index'),
+        ],
+      },
+
+      {
+        ...wrap(`federation`, `/federation`),
+        children: [
+          combo('federation', 'nodes', { pkey: 'nodeID' }),
+          r('federation.permissions', 'permissions', 'Federation/Permissions/Index'),
         ],
       },
 
