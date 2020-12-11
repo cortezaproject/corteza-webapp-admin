@@ -265,7 +265,7 @@ export default {
 
   created () {
     this.procListResults(this.$SystemAPI.automationList(this.encodeListParams()))
-      .then(set => { this.items = set })
+      .then(set => { this.items = set || [] })
   },
 
   methods: {
