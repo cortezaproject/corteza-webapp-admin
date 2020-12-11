@@ -17,8 +17,8 @@
     "pre-commit": "yarn lint"
   },
   "dependencies": {
-    "@cortezaproject/corteza-js": "^2020.12.0-rc.1",
-    "@cortezaproject/corteza-vue": "^2020.12.0-rc.1",
+    "@cortezaproject/corteza-js": "^2020.12.0-rc.2",
+    "@cortezaproject/corteza-vue": "^2020.12.0-rc.2",
     "@fortawesome/fontawesome-svg-core": "1.2.27",
     "@fortawesome/free-solid-svg-icons": "5.12.1",
     "@fortawesome/vue-fontawesome": "0.1.9",
@@ -36,7 +36,7 @@
     "lodash": "^4.17.19",
     "minimalist": "^1.0.0",
     "minimist": "^1.2.3",
-    "moment": "^2.24.0",
+    "moment": "2.25.3",
     "resolve-url-loader": "^3.1.2",
     "serialize-javascript": "^3.1.0",
     "set-value": "^2.0.1",
@@ -74,6 +74,7 @@
   "resolutions": {
     "**/**/node-forge": "^0.10.0",
     "**/**/yargs-parser": "^13.1.2",
+    "**/**/moment": "2.25.3",
     "**/**/pdfjs-dist": "2.2.228"
   },
   "stylelint": {
