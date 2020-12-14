@@ -14,6 +14,7 @@ export default {
       noRole: 'No role selected',
       tip1: 'Click on permission/role cell to allow a specific operation',
       tip2: 'Use Alt-Click to set explicit deny on operation',
+      submit: 'Submit',
 
       messaging: {
         title: 'Messaging service',
