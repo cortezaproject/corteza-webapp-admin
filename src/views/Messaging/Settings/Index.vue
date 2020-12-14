@@ -20,6 +20,8 @@
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CMessagingEditorBasic from 'corteza-webapp-admin/src/components/Settings/Messaging/CMessagingEditorBasic'
 
+const prefix = 'messaging.'
+
 export default {
   i18nOptions: {
     namespaces: [ 'messaging.settings' ],
@@ -55,7 +57,7 @@ export default {
     fetchSettings () {
       this.incLoader()
 
-      this.$MessagingAPI.settingsList()
+      this.$SystemAPI.settingsList({ prefix })
         .then(settings => {
           settings.forEach(({ name, value }) => {
             this.$set(this.settings, name, value)
@@ -79,7 +81,7 @@ export default {
         return { name, value }
       })
 
-      this.$MessagingAPI.settingsUpdate({ values })
+      this.$SystemAPI.settingsUpdate({ values })
         .then(() => {
           this.animateSuccess('basic')
         })
