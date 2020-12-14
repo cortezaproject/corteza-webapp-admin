@@ -14,7 +14,7 @@
       >
         <b-form-group label-cols="2">
           <b-form-checkbox
-            v-model="basic['ui.emoji.enabled']"
+            v-model="basic['messaging.ui.emoji.enabled']"
             :value="true"
             :unchecked-value="false"
           >
@@ -24,10 +24,10 @@
 
         <b-form-group
           label-cols="2"
-          :class="{ 'mb-0': !basic['ui.browser-notifications.enabled'] }"
+          :class="{ 'mb-0': !basic['messaging.ui.browser-notifications.enabled'] }"
         >
           <b-form-checkbox
-            v-model="basic['ui.browser-notifications.enabled']"
+            v-model="basic['messaging.ui.browser-notifications.enabled']"
             :value="true"
             :unchecked-value="false"
           >
@@ -35,23 +35,23 @@
           </b-form-checkbox>
         </b-form-group>
         <b-form-group
-          v-if="basic['ui.browser-notifications.enabled']"
+          v-if="basic['messaging.ui.browser-notifications.enabled']"
           :label="$t('ui.browser-notifications.header.title')"
           :description="$t('ui.browser-notifications.header.description')"
           label-cols="2"
         >
           <b-input-group class="m-0">
-            <b-form-input v-model="basic['ui.browser-notifications.header']" />
+            <b-form-input v-model="basic['messaging.ui.browser-notifications.header']" />
           </b-input-group>
         </b-form-group>
         <b-form-group
-          v-if="basic['ui.browser-notifications.enabled']"
+          v-if="basic['messaging.ui.browser-notifications.enabled']"
           :label="$t('ui.browser-notifications.message-trim')"
           label-cols="2"
         >
           <b-input-group>
             <b-form-input
-              v-model="basic['ui.browser-notifications.message-trim']"
+              v-model="basic['messaging.ui.browser-notifications.message-trim']"
               type="number"
             />
           </b-input-group>
@@ -67,10 +67,10 @@
       >
         <b-form-group
           label-cols="2"
-          :class="{ 'mb-0': !basic['message.attachments.enabled'] }"
+          :class="{ 'mb-0': !basic['messaging.message.attachments.enabled'] }"
         >
           <b-form-checkbox
-            v-model="basic['message.attachments.enabled']"
+            v-model="basic['messaging.message.attachments.enabled']"
             :value="true"
             :unchecked-value="false"
           >
@@ -78,11 +78,11 @@
           </b-form-checkbox>
         </b-form-group>
         <b-form-group
-          v-if="basic['message.attachments.enabled']"
+          v-if="basic['messaging.message.attachments.enabled']"
           label-cols="2"
         >
           <b-form-checkbox
-            v-model="basic['message.attachments.source.gallery.enabled']"
+            v-model="basic['messaging.message.attachments.source.gallery.enabled']"
             :value="true"
             :unchecked-value="false"
           >
@@ -90,11 +90,11 @@
           </b-form-checkbox>
         </b-form-group>
         <b-form-group
-          v-if="basic['message.attachments.enabled']"
+          v-if="basic['messaging.message.attachments.enabled']"
           label-cols="2"
         >
           <b-form-checkbox
-            v-model="basic['message.attachments.source.camera.enabled']"
+            v-model="basic['messaging.message.attachments.source.camera.enabled']"
             :value="true"
             :unchecked-value="false"
           >
@@ -102,19 +102,19 @@
           </b-form-checkbox>
         </b-form-group>
         <b-form-group
-          v-if="basic['message.attachments.enabled']"
+          v-if="basic['messaging.message.attachments.enabled']"
           :label="$t('message.attachments.max-size')"
           label-cols="2"
         >
           <b-input-group>
             <b-form-input
-              v-model="basic['message.attachments.max-size']"
+              v-model="basic['messaging.message.attachments.max-size']"
               type="number"
             />
           </b-input-group>
         </b-form-group>
         <b-form-group
-          v-if="basic['message.attachments.enabled']"
+          v-if="basic['messaging.message.attachments.enabled']"
           :label="$t('message.attachments.type.whitelist')"
           :description="$t('message.attachments.type.description')"
           label-cols="2"
@@ -184,11 +184,11 @@ export default {
   computed: {
     attachmentsWhitelist: {
       get () {
-        return (this.basic['message.attachments.mimetypes'] || []).join(',')
+        return (this.basic['messaging.message.attachments.mimetypes'] || []).join(',')
       },
 
       set (value) {
-        this.basic['message.attachments.mimetypes'] = this.convertToExternal(value)
+        this.basic['messaging.message.attachments.mimetypes'] = this.convertToExternal(value)
       },
     },
   },

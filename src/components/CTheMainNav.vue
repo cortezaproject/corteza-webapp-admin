@@ -93,6 +93,28 @@
     </b-list-group>
 
     <b-list-group
+      v-if="canGrant.federation || canPairNodes()"
+    >
+      <small class="ml-1 mt-3 font-weight-light text-uppercase">
+        {{ $t('federation:navGroup.label') }}
+      </small>
+
+      <c-main-nav-item
+        v-if="canPairNodes()"
+        :label="$t('federation.nodes:navItem.label')"
+        :to="{ name: 'federation.nodes' }"
+        :icon="['fas', 'share-alt']"
+      />
+
+      <c-main-nav-item
+        v-if="canGrant.federation"
+        :label="$t('federation.permissions:navItem.label')"
+        :to="{ name: 'federation.permissions' }"
+        :icon="['fas', 'lock']"
+      />
+    </b-list-group>
+
+    <b-list-group
       v-if="canGrant.messaging || canReadSettings.messaging"
     >
       <small class="ml-1 mt-3 font-weight-light text-uppercase">
@@ -133,12 +155,17 @@
 <script>
 import CMainNavItem from 'corteza-webapp-admin/src/components/CMainNavItem'
 import CSidebar from 'corteza-webapp-admin/src/components/CSidebar'
+import federationMixin from 'corteza-webapp-admin/src/mixins/federation'
 
 export default {
   components: {
     CSidebar,
     CMainNavItem,
   },
+
+  mixins: [
+    federationMixin,
+  ],
 
   props: {
     access: {
@@ -153,11 +180,13 @@ export default {
         system: false,
         compose: false,
         messaging: false,
+        federation: false,
       },
       canReadSettings: {
         system: false,
         compose: false,
         messaging: false,
+        federation: false,
       },
     }
   },
@@ -166,7 +195,7 @@ export default {
     access: {
       immediate: true,
       handler () {
-        ['system', 'compose', 'messaging'].forEach(res => {
+        ['system', 'compose', 'messaging', 'federation'].forEach(res => {
           this.canGrant[res] = (this.access.find(({ resource, operation }) => resource === res && operation === 'grant') || {}).allow
           this.canReadSettings[res] = (this.access.find(({ resource, operation }) => resource === res && operation === 'settings.read') || {}).allow
         })

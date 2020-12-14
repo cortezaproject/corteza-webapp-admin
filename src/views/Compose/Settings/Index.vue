@@ -20,6 +20,8 @@
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CComposeEditorBasic from 'corteza-webapp-admin/src/components/Settings/Compose/CComposeEditorBasic'
 
+const prefix = 'compose.'
+
 export default {
   i18nOptions: {
     namespaces: [ 'compose.settings' ],
@@ -59,7 +61,7 @@ export default {
         return { name, value }
       })
 
-      this.$ComposeAPI.settingsUpdate({ values })
+      this.$SystemAPI.settingsUpdate({ values })
         .then(() => {
           this.animateSuccess('basic')
         })
@@ -72,7 +74,7 @@ export default {
     fetchSettings () {
       this.incLoader()
 
-      this.$ComposeAPI.settingsList()
+      this.$SystemAPI.settingsList({ prefix })
         .then(settings => {
           settings.forEach(({ name, value }) => {
             this.$set(this.settings, name, value)

@@ -15,6 +15,7 @@ Vue.use(Vuex)
 Vue.use(plugins.CortezaAPI('compose'))
 Vue.use(plugins.CortezaAPI('system'))
 Vue.use(plugins.CortezaAPI('messaging'))
+Vue.use(plugins.CortezaAPI('federation'))
 
 const notProduction = (process.env.NODE_ENV !== 'production')
 

@@ -10,10 +10,10 @@ describe('views/Messaging/Settings/Index.vue', () => {
     sinon.restore()
   })
 
-  let $MessagingAPI, propsData, $router, $store, stdReject
+  let $SystemAPI, propsData, $router, $store, stdReject
 
   beforeEach(() => {
-    $MessagingAPI = {
+    $SystemAPI = {
       settingsUpdate: sinon.stub().resolves(),
       settingsList: sinon.stub().resolves(),
     }
@@ -26,7 +26,7 @@ describe('views/Messaging/Settings/Index.vue', () => {
   })
 
   const mountSettings = (opt) => shallowMount(Settings, {
-    mocks: { $MessagingAPI, $router, $store },
+    mocks: { $SystemAPI, $router, $store },
     methods: { stdReject },
     propsData,
     ...opt,
@@ -38,22 +38,22 @@ describe('views/Messaging/Settings/Index.vue', () => {
         { name: 'messaging.settings.enabled', value: true },
       ]
 
-      $MessagingAPI.settingsList = sinon.stub().resolves(settings)
+      $SystemAPI.settingsList = sinon.stub().resolves(settings)
       const wrap = mountSettings()
       wrap.vm.fetchSettings()
 
       await fp()
       expect(wrap.vm.settings).to.deep.eq({ 'messaging.settings.enabled': true })
-      sinon.assert.calledOnce($MessagingAPI.settingsList)
+      sinon.assert.calledOnce($SystemAPI.settingsList)
     })
 
     it('on error - set error flag', async () => {
-      $MessagingAPI.settingsList = sinon.stub().rejects()
+      $SystemAPI.settingsList = sinon.stub().rejects()
       const wrap = mountSettings()
       wrap.vm.fetchSettings()
 
       await fp()
-      sinon.assert.calledOnce($MessagingAPI.settingsList)
+      sinon.assert.calledOnce($SystemAPI.settingsList)
       sinon.assert.calledOnce(stdReject)
     })
   })
@@ -64,17 +64,17 @@ describe('views/Messaging/Settings/Index.vue', () => {
       wrap.vm.onBasicSubmit({ 'messaging.settings.enabled': true })
 
       await fp()
-      sinon.assert.calledOnce($MessagingAPI.settingsUpdate)
+      sinon.assert.calledOnce($SystemAPI.settingsUpdate)
       expect(wrap.vm.basic.processing).to.be.false
     })
 
     it('on error - set error flag', async () => {
-      $MessagingAPI.settingsUpdate = sinon.stub().rejects()
+      $SystemAPI.settingsUpdate = sinon.stub().rejects()
       const wrap = mountSettings()
       wrap.vm.onBasicSubmit({ 'messaging.settings.enabled': true })
 
       await fp()
-      sinon.assert.calledOnce($MessagingAPI.settingsUpdate)
+      sinon.assert.calledOnce($SystemAPI.settingsUpdate)
       sinon.assert.calledOnce(stdReject)
       expect(wrap.vm.basic.processing).to.be.false
     })

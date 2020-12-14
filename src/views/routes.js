@@ -112,6 +112,14 @@ export default [
       },
 
       {
+        ...wrap(`federation`, `/federation`),
+        children: [
+          combo('federation', 'nodes', { pkey: 'nodeID' }),
+          r('federation.permissions', 'permissions', 'Federation/Permissions/Index'),
+        ],
+      },
+
+      {
         ...wrap(`messaging`, `/messaging`),
         children: [
           r('messaging.settings', 'settings', 'Messaging/Settings/Index'),

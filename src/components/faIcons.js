@@ -17,7 +17,14 @@ import {
   faPlus,
   faSlidersH,
   faGlasses,
+  faShareAlt,
+  faExclamationTriangle,
 } from '@fortawesome/free-solid-svg-icons'
+
+import {
+  faCopy,
+  faCheckCircle,
+} from '@fortawesome/free-regular-svg-icons'
 
 library.add(
   faUserCog,
@@ -37,4 +44,8 @@ library.add(
   faPlus,
   faSlidersH,
   faGlasses,
+  faShareAlt,
+  faCopy,
+  faCheckCircle,
+  faExclamationTriangle,
 )

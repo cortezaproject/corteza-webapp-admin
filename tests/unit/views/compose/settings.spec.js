@@ -10,10 +10,10 @@ describe('views/Compose/Settings/Index.vue', () => {
     sinon.restore()
   })
 
-  let $ComposeAPI, propsData, $router, $store, stdReject
+  let $SystemAPI, propsData, $router, $store, stdReject
 
   beforeEach(() => {
-    $ComposeAPI = {
+    $SystemAPI = {
       settingsUpdate: sinon.stub().resolves(),
       settingsList: sinon.stub().resolves(),
     }
@@ -26,7 +26,7 @@ describe('views/Compose/Settings/Index.vue', () => {
   })
 
   const mountSettings = (opt) => shallowMount(Settings, {
-    mocks: { $ComposeAPI, $router, $store },
+    mocks: { $SystemAPI, $router, $store },
     methods: { stdReject },
     propsData,
     ...opt,
@@ -38,22 +38,22 @@ describe('views/Compose/Settings/Index.vue', () => {
         { name: 'compose.settings.enabled', value: true },
       ]
 
-      $ComposeAPI.settingsList = sinon.stub().resolves(settings)
+      $SystemAPI.settingsList = sinon.stub().resolves(settings)
       const wrap = mountSettings()
       wrap.vm.fetchSettings()
 
       await fp()
       expect(wrap.vm.settings).to.deep.eq({ 'compose.settings.enabled': true })
-      sinon.assert.calledOnce($ComposeAPI.settingsList)
+      sinon.assert.calledOnce($SystemAPI.settingsList)
     })
 
     it('on error - set error flag', async () => {
-      $ComposeAPI.settingsList = sinon.stub().rejects()
+      $SystemAPI.settingsList = sinon.stub().rejects()
       const wrap = mountSettings()
       wrap.vm.fetchSettings()
 
       await fp()
-      sinon.assert.calledOnce($ComposeAPI.settingsList)
+      sinon.assert.calledOnce($SystemAPI.settingsList)
       sinon.assert.calledOnce(stdReject)
     })
   })
@@ -64,17 +64,17 @@ describe('views/Compose/Settings/Index.vue', () => {
       wrap.vm.onBasicSubmit({ 'compose.settings.enabled': true })
 
       await fp()
-      sinon.assert.calledOnce($ComposeAPI.settingsUpdate)
+      sinon.assert.calledOnce($SystemAPI.settingsUpdate)
       expect(wrap.vm.basic.processing).to.be.false
     })
 
     it('on error - set error flag', async () => {
-      $ComposeAPI.settingsUpdate = sinon.stub().rejects()
+      $SystemAPI.settingsUpdate = sinon.stub().rejects()
       const wrap = mountSettings()
       wrap.vm.onBasicSubmit({ 'compose.settings.enabled': true })
 
       await fp()
-      sinon.assert.calledOnce($ComposeAPI.settingsUpdate)
+      sinon.assert.calledOnce($SystemAPI.settingsUpdate)
       sinon.assert.calledOnce(stdReject)
       expect(wrap.vm.basic.processing).to.be.false
     })

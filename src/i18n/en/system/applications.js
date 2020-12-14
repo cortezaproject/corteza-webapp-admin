@@ -61,8 +61,6 @@ export default {
 
       updatedAt: 'Updated at',
       createdAt: 'Created at',
-
-      submit: 'Submit',
     },
 
     unify: {
@@ -89,8 +87,6 @@ export default {
         label: 'Configuration',
         description: 'Application configuration (JSON)',
       },
-
-      submit: 'Submit',
     },
   },
 

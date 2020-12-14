@@ -16,7 +16,7 @@
           class="mb-0"
         >
           <b-form-checkbox
-            v-model="basic['ui.namespace-switcher.enabled']"
+            v-model="basic['compose.ui.namespace-switcher.enabled']"
             :value="true"
             :unchecked-value="false"
           >
@@ -26,7 +26,7 @@
 
         <b-form-group label-cols="2">
           <b-form-checkbox
-            v-model="basic['ui.namespace-switcher.defaultOpen']"
+            v-model="basic['compose.ui.namespace-switcher.defaultOpen']"
             :value="true"
             :unchecked-value="false"
           >
@@ -48,7 +48,7 @@
         >
           <b-input-group>
             <b-form-input
-              v-model="basic['page.attachments.max-size']"
+              v-model="basic['compose.page.attachments.max-size']"
               type="number"
             />
           </b-input-group>
@@ -78,7 +78,7 @@
         >
           <b-input-group>
             <b-form-input
-              v-model="basic['record.attachments.max-size']"
+              v-model="basic['compose.record.attachments.max-size']"
               type="number"
             />
           </b-input-group>
@@ -154,21 +154,21 @@ export default {
   computed: {
     pageAttachmentWhitelist: {
       get () {
-        return (this.basic['page.attachments.mimetypes'] || []).join(',')
+        return (this.basic['compose.page.attachments.mimetypes'] || []).join(',')
       },
 
       set (value) {
-        this.basic['page.attachments.mimetypes'] = this.convertToExternal(value)
+        this.basic['compose.page.attachments.mimetypes'] = this.convertToExternal(value)
       },
     },
 
     recordAttachmentWhitelist: {
       get () {
-        return (this.basic['record.attachments.mimetypes'] || []).join(',')
+        return (this.basic['compose.record.attachments.mimetypes'] || []).join(',')
       },
 
       set (value) {
-        this.basic['record.attachments.mimetypes'] = this.convertToExternal(value)
+        this.basic['compose.record.attachments.mimetypes'] = this.convertToExternal(value)
       },
     },
   },
