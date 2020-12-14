@@ -44,13 +44,13 @@
         label-cols="2"
       >
         <b-form-input
-          v-model="node.email"
+          v-model="node.contact"
           placeholder="email@example.com"
           type="email"
         />
       </b-form-group>
 
-      <b-form-group
+      <!-- <b-form-group
         :label="$t('tags.label')"
         label-cols="2"
       >
@@ -63,7 +63,7 @@
           size="lg"
           class="py-1 px-2"
         />
-      </b-form-group>
+      </b-form-group> -->
 
       <b-form-group
         v-if="node.status"
@@ -77,7 +77,7 @@
         />
       </b-form-group>
 
-      <b-form-group
+      <!-- <b-form-group
         label-cols="2"
         :class="{ 'mb-0': !node.nodeID }"
       >
@@ -86,7 +86,7 @@
         >
           {{ $t('enabled') }}
         </b-form-checkbox>
-      </b-form-group>
+      </b-form-group> -->
 
       <b-form-group
         v-if="node.updatedAt"

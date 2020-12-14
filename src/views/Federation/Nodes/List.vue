@@ -27,12 +27,10 @@
       primary-key="nodeID"
       edit-route="federation.nodes.edit"
       :loading-text="$t('loading')"
-      :total-text="$t('numFound', { count: totalItems })"
       :paging="paging"
       :sorting="sorting"
       :items="items"
       :fields="fields"
-      :total-items="totalItems"
       @confirm-pending="openConfirmPending($event)"
     >
       <template #filter>
@@ -199,8 +197,12 @@ export default {
           key: 'name',
           sortable: true,
         },
+        // {
+        //   key: 'enabled',
+        //   sortable: true,
+        // },
         {
-          key: 'enabled',
+          key: 'status',
           sortable: true,
         },
         {
@@ -209,20 +211,12 @@ export default {
           sortable: true,
           formatter: (v) => moment(v).fromNow(),
         },
-        {
-          key: 'enabled',
-          sortable: true,
-        },
-        {
-          key: 'status',
-          sortable: true,
-        },
-        {
-          key: 'tags',
-          label: '',
-          sortable: false,
-          tdClass: 'w-25',
-        },
+        // {
+        //   key: 'tags',
+        //   label: '',
+        //   sortable: false,
+        //   tdClass: 'w-25',
+        // },
         {
           key: 'actions',
           label: '',
