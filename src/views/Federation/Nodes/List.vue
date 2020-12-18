@@ -281,6 +281,7 @@ export default {
 
           setTimeout(() => {
             this.pair.node = undefined
+            this.pair.status = undefined
             this.pair.modal = false
           }, 1000)
         })
