@@ -60,6 +60,7 @@
             />
           </b-button>
           <b-button
+            v-if="row.item.roleID !== '1'"
             size="sm"
             variant="link"
             :to="{ name: editRoute, params: { [primaryKey]: row.item[primaryKey] } }"
