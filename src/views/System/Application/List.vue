@@ -111,6 +111,7 @@ export default {
         },
         {
           key: 'enabled',
+          formatter: (v) => v ? 'Yes' : 'No',
         },
         {
           key: 'createdAt',
