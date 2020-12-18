@@ -369,15 +369,15 @@ export default {
       id: 'actionlog',
 
       filter: {
-        'from': undefined,
-        'to': undefined,
+        from: undefined,
+        to: undefined,
         actorID: undefined,
         resource: undefined,
         action: undefined,
       },
 
       paging: {
-        limit: 5,
+        limit: 100,
       },
 
       fields: [
@@ -433,9 +433,9 @@ export default {
     },
 
     load (reset = false) {
-      this.paging.beforeActionID = (this.items[this.items.length - 1] || {}).ID
+      this.paging.beforeActionID = (this.items[this.items.length - 1] || {}).ID || 0
 
-      this.procListResults(this.$SystemAPI.actionlogList(this.encodeListParams()))
+      this.procListResults(this.$SystemAPI.actionlogList(this.encodeListParams()), false)
         .then(rr => {
           if (reset) {
             this.items = rr

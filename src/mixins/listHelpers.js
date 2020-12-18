@@ -131,14 +131,16 @@ export default {
      * @param p {Promise}
      * @returns {Promise}
      */
-    procListResults (p) {
+    procListResults (p, updateQuery = true) {
       this.incLoader()
 
       // Push new router/params to cause URL change
       //
       // We want this because in case when user refreshes or shares URL
       // he needs to land on the same page with the same parameters
-      this.$router.push(this.encodeRouteParams())
+      if (updateQuery) {
+        this.$router.push(this.encodeRouteParams())
+      }
 
       return p.then(({ set, filter } = {}) => {
         this.paging.pageCursor = undefined
