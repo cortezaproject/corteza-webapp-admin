@@ -295,7 +295,7 @@ export default {
     },
 
     onAddRole () {
-      const { roleID } = this.newRole
+      const { roleID } = (this.newRole || {})
       if (roleID) {
         this.$emit('add', this.newRole)
       }
