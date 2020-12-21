@@ -39,3 +39,11 @@ $input-font-size:              $font-size-base !default;
 $input-btn-focus-width:        0 !default;
 $input-focus-box-shadow:       none !default;
 $input-focus-border-color:     $primary !default;
+
+/* stylelint-disable */
+:export {
+  primary: $primary;
+  danger: $danger;
+  secondary: $secondary;
+}
+/* stylelint-enable */
