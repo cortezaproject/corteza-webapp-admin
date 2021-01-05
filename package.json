@@ -24,7 +24,7 @@
     "@fortawesome/vue-fontawesome": "0.1.9",
     "@panter/vue-i18next": "0.15.1",
     "acorn": "^6.4.1",
-    "axios": "0.19.1",
+    "axios": "0.21.1",
     "bootstrap-vue": "^2.15.0",
     "chart.js": "^2.9.3",
     "flush-promises": "^1.0.2",
