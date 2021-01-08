@@ -449,7 +449,6 @@ export default {
         }
       }
 
-      console.log({ ...this.filter, ...this.paging })
       this.procListResults(this.$SystemAPI.actionlogList({ ...this.filter, ...this.paging }), false)
         .then(rr => {
           this.items.push(...rr)
