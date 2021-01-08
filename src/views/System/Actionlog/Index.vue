@@ -208,6 +208,14 @@
               <b-card :header="$t('details.header')">
                 <b-row>
                   <b-col cols="4">
+                    ID
+                  </b-col>
+                  <b-col cols="8">
+                    {{ a.actionID }}
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <b-col cols="4">
                     {{ $t('details.timestamp') }}
                   </b-col>
                   <b-col cols="8">
@@ -369,15 +377,14 @@ export default {
       id: 'actionlog',
 
       filter: {
-        from: undefined,
-        to: undefined,
+        beforeActionID: undefined,
         actorID: undefined,
         resource: undefined,
         action: undefined,
       },
 
       paging: {
-        limit: 100,
+        limit: 10,
       },
 
       fields: [
@@ -433,15 +440,19 @@ export default {
     },
 
     load (reset = false) {
-      this.paging.beforeActionID = (this.items[this.items.length - 1] || {}).ID || 0
+      if (reset) {
+        this.items.length = 0
+      } else {
+        const len = this.items.length
+        if (len > 0) {
+          this.paging.beforeActionID = (this.items[len - 1] || {}).actionID
+        }
+      }
 
-      this.procListResults(this.$SystemAPI.actionlogList(this.encodeListParams()), false)
+      console.log({ ...this.filter, ...this.paging })
+      this.procListResults(this.$SystemAPI.actionlogList({ ...this.filter, ...this.paging }), false)
         .then(rr => {
-          if (reset) {
-            this.items = rr
-          } else {
-            this.items.push(...rr)
-          }
+          this.items.push(...rr)
         })
     },
 
