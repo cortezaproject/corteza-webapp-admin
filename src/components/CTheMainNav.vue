@@ -106,6 +106,18 @@
       />
     </b-list-group>
 
+    <b-list-group>
+      <small class="ml-1 mt-3 font-weight-light text-uppercase">
+        {{ $t('automation:navGroup.label') }}
+      </small>
+
+      <c-main-nav-item
+        :label="$t('automation.permissions:navItem.label')"
+        :to="{ name: 'automation.permissions' }"
+        :icon="['fas', 'lock']"
+      />
+    </b-list-group>
+
     <b-list-group
       v-if="canGrant.federation || canPairNodes()"
     >
@@ -172,11 +184,13 @@ export default {
         system: false,
         compose: false,
         federation: false,
+        automation: false,
       },
       canReadSettings: {
         system: false,
         compose: false,
         federation: false,
+        automation: false,
       },
     }
   },
@@ -185,7 +199,7 @@ export default {
     access: {
       immediate: true,
       handler () {
-        ['system', 'compose', 'federation'].forEach(res => {
+        ['system', 'compose', 'federation', 'automation'].forEach(res => {
           this.canGrant[res] = (this.access.find(({ resource, operation }) => resource === res && operation === 'grant') || {}).allow
           this.canReadSettings[res] = (this.access.find(({ resource, operation }) => resource === res && operation === 'settings.read') || {}).allow
         })
