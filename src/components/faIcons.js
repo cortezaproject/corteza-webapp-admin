@@ -19,6 +19,7 @@ import {
   faGlasses,
   faShareAlt,
   faExclamationTriangle,
+  faFolder,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -48,4 +49,5 @@ library.add(
   faCopy,
   faCheckCircle,
   faExclamationTriangle,
+  faFolder,
 )

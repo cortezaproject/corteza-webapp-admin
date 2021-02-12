@@ -91,6 +91,7 @@ export default [
           combo('system', 'role'),
           combo('system', 'application'),
           combo('system', 'script'),
+          combo('system', 'template'),
 
           r('system.settings', 'settings', 'System/Settings/Index'),
           r('system.settings.auth', 'settings/auth', 'System/Settings/Auth'),

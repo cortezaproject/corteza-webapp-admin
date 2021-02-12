@@ -41,6 +41,13 @@
       />
       -->
 
+      <!-- v-if="canReadSettings.system" -->
+      <c-main-nav-item
+        :label="$t('system.templates:navItem.label')"
+        :to="{ name: 'system.template' }"
+        :icon="['fas', 'folder']"
+      />
+
       <c-main-nav-item
         v-if="canReadSettings.system"
         :label="$t('system.settings:navItem.label')"

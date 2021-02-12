@@ -17,6 +17,10 @@ export default {
       all: 'all roles',
       specific: 'role "{{target}}"',
     },
+    template: {
+      all: 'all templates',
+      specific: 'template "{{target}}"',
+    },
     user: {
       all: 'all users',
       specific: 'user "{{target}}"',
@@ -93,6 +97,28 @@ export default {
         title: 'Manage members for any role',
         specific: 'Manage members for {{target}}',
         description: 'Default: allow',
+      },
+    },
+    'system-template': {
+      read: {
+        title: 'Read any template',
+        specific: 'Read {{target}}',
+        description: 'Default: allow',
+      },
+      update: {
+        title: 'Update any template',
+        specific: 'Update {{target}}',
+        description: 'Default: deny',
+      },
+      render: {
+        title: 'Render any template',
+        specific: 'Render {{target}}',
+        description: 'Default: allow',
+      },
+      'delete': {
+        title: 'Delete any template',
+        specific: 'Delete {{target}}',
+        description: 'Default: deny',
       },
     },
     'system-user': {
