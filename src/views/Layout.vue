@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="$auth.is() && hasAccess"
+    v-if="$auth.is()"
     class="d-flex flex-column vh-100 bg-light"
   >
     <small
@@ -83,16 +83,10 @@ export default {
     this.$auth
       // First, check if we're authenticated
       .check()
-      .then((user) => {
-        if (!user) {
-          // check performed: no error & no user,
-          // redirect to auth
-          throw new Error()
-        }
-
+      .then(() => {
         return this.loadPermissions()
       })
-      .catch((e) => {
+      .catch(() => {
         this.$auth.open()
       })
       .finally(() => {

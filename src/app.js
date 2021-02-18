@@ -31,50 +31,77 @@ export default (options = {}) => {
     mounted () {
       this.$Progress.finish()
     },
-    created () {
-      if (this.$auth.is()) {
-        // Setup the progress bar
-        this.$Progress.start()
-        this.$router.beforeEach((to, from, next) => {
-          this.$Progress.start()
-          next()
-        })
-        this.$router.afterEach((to, from) => {
-          this.$Progress.finish()
-        })
+    async created () {
+      const urlParams = new URLSearchParams(window.location.search)
+      const code = urlParams.getAll('code')[0]
 
-        // ref to vue is needed inside compose helper
-        // load and register bundle and list of client/server scripts
-
-        const bundleLoaderOpt = {
-          // Name of the bundle to load
-          bundle: 'admin',
-
-          // Debug logging
-          verbose: notProduction,
-
-          // Context for exec function (client scripts only!)
-          //
-          // Extended with additional helpers
-          ctx: new corredor.WebappCtx({
-            $invoker: this.$auth.user,
-            authToken: this.$auth.JWT,
-          }),
-        }
-
-        this.loadBundle(bundleLoaderOpt)
-          .then(() => this.$SystemAPI.automationList({ excludeInvalid: true }))
-          .then(this.makeAutomationScriptsRegistrator(
-            // compose specific handler that routes  onManual events for server-scripts
-            // to the proper endpoint on the API
-            system.TriggerSystemServerScriptOnManual(this.$SystemAPI),
-          ))
+      if (code) {
+        await this.$auth.useCode(code)
           .then(() => {
-            this.loaded = true
+            // In case the api client jwt hasn't been set yet
+            this.$SystemAPI.setJWT(this.$auth.JWT)
+            this.$ComposeAPI.setJWT(this.$auth.JWT)
+            this.$FederationAPI.setJWT(this.$auth.JWT)
+            this.$MessagingAPI.setJWT(this.$auth.JWT)
           })
-      } else {
-        this.loaded = true
+          .catch(() => {
+            this.$auth.open()
+          })
       }
+
+      await this.$auth.check()
+        .then(() => {
+          if (!code) {
+            return this.$auth.refresh()
+          }
+        })
+        .catch(() => {
+          this.$auth.open()
+        })
+
+      // Setup the progress bar
+      this.$Progress.start()
+      this.$router.beforeEach((to, from, next) => {
+        this.$Progress.start()
+        next()
+      })
+      this.$router.afterEach((to, from) => {
+        this.$Progress.finish()
+      })
+
+      // ref to vue is needed inside compose helper
+      // load and register bundle and list of client/server scripts
+
+      const bundleLoaderOpt = {
+        // Name of the bundle to load
+        bundle: 'admin',
+
+        // Debug logging
+        verbose: notProduction,
+
+        // Context for exec function (client scripts only!)
+        //
+        // Extended with additional helpers
+        ctx: new corredor.WebappCtx({
+          $invoker: this.$auth.user,
+          authToken: this.$auth.JWT,
+        }),
+      }
+
+      this.loadBundle(bundleLoaderOpt)
+        .then(() => this.$SystemAPI.automationList({ excludeInvalid: true }))
+        .then(this.makeAutomationScriptsRegistrator(
+          // compose specific handler that routes  onManual events for server-scripts
+          // to the proper endpoint on the API
+          system.TriggerSystemServerScriptOnManual(this.$SystemAPI),
+        ))
+        .then(() => {
+          this.loaded = true
+          console.log(code)
+          if (code) {
+            this.$router.push({ name: 'dashboard' })
+          }
+        })
     },
     router,
     store,

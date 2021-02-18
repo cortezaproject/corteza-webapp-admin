@@ -24,8 +24,9 @@
         {{ userLabel }}
       </p>
       <a
-        href="/auth/logout"
+        href="#"
         class="text-white ml-3 h5"
+        @click="$auth.logout()"
       >
         <font-awesome-icon
           :icon="['fas', 'power-off']"

@@ -38,5 +38,6 @@ Vue.use(plugins.UIHooks(), {
 })
 
 Vue.use(plugins.Auth(), {
-  api: Vue.prototype.$SystemAPI,
+  baseURL: window.authURL,
+  redirectURI: `${window.location.origin}/admin/auth`,
 })
