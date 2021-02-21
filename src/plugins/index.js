@@ -10,6 +10,12 @@ import { plugins } from '@cortezaproject/corteza-vue'
 
 import pairs from './eventbus-pairs'
 
+const notProduction = (process.env.NODE_ENV !== 'production')
+const verboseUIHooks = window.location.search.includes('verboseUIHooks')
+const verboseEventbus = window.location.search.includes('verboseEventbus')
+
+Vue.use(plugins.Auth(), { app: 'admin' })
+
 Vue.use(BootstrapVue)
 Vue.use(Router)
 Vue.use(Vuex)
@@ -24,20 +30,13 @@ Vue.use(plugins.CortezaAPI('system'))
 Vue.use(plugins.CortezaAPI('messaging'))
 Vue.use(plugins.CortezaAPI('federation'))
 
-const notProduction = (process.env.NODE_ENV !== 'production')
-
 Vue.use(plugins.EventBus(), {
   strict: notProduction,
-  verbose: notProduction,
+  verbose: verboseEventbus,
   pairs,
 })
 
 Vue.use(plugins.UIHooks(), {
-  app: 'compose',
-  verbose: notProduction,
-})
-
-Vue.use(plugins.Auth(), {
-  baseURL: window.authURL,
-  redirectURI: `${window.location.origin}/admin/auth`,
+  app: 'admin',
+  verbose: verboseUIHooks,
 })

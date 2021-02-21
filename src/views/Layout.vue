@@ -1,6 +1,5 @@
 <template>
   <div
-    v-if="$auth.is()"
     class="d-flex flex-column vh-100 bg-light"
   >
     <small
@@ -27,12 +26,6 @@
       </main>
     </div>
   </div>
-  <!--
-    Show this when
-  -->
-  <c-the-alert-container
-    v-else
-  />
 </template>
 <script>
 import CTheAlertContainer from 'corteza-webapp-admin/src/components/CTheAlertContainer'
@@ -66,7 +59,7 @@ export default {
     },
 
     hasAccess () {
-      return !!this.access.find(({ resource, operation, allow }) => resource === 'system' && operation === 'access' && allow)
+      return this.access.filter(({ allow }) => allow).length > 0
     },
   },
 
@@ -75,19 +68,17 @@ export default {
    *
    * Redirect to /auth if user is not authenticated
    */
-  beforeCreate () {
+  created () {
     this.$store.dispatch('ui/incLoader')
 
     this.access = []
 
-    this.$auth
-      // First, check if we're authenticated
-      .check()
-      .then(() => {
-        return this.loadPermissions()
-      })
-      .catch(() => {
-        this.$auth.open()
+    this.loadPermissions()
+      .catch((err) => {
+        console.log(err)
+        if (err && err.message) {
+          this.$store.dispatch('ui/appendAlert', err.message)
+        }
       })
       .finally(() => {
         this.$store.dispatch('ui/decLoader')
@@ -123,9 +114,6 @@ export default {
         })
         .then(rules => {
           this.access = this.access.concat(rules)
-        })
-        .catch(({ message }) => {
-          this.$store.dispatch('ui/appendAlert', message)
         })
     },
   },
