@@ -138,18 +138,21 @@
         label-cols="2"
         :description="$t('validFrom.description')"
       >
-        <b-input-group
-          class="w-50"
-        >
+        <b-input-group>
           <b-form-datepicker
-            v-model="authclient.validFrom"
-            value-as-date
+            v-model="validFrom.date"
+            locale="en"
+          />
+
+          <b-form-timepicker
+            v-model="validFrom.time"
+            locale="en"
           />
 
           <b-button
             class="ml-1"
             variant="outline-danger"
-            @click="authclient.validFrom = undefined"
+            @click="resetDateTime('validFrom')"
           >
             <font-awesome-icon
               :icon="['fas', 'times']"
@@ -164,18 +167,21 @@
         label-cols="2"
         :description="$t('expiresAt.description')"
       >
-        <b-input-group
-          class="w-50"
-        >
+        <b-input-group>
           <b-form-datepicker
-            v-model="authclient.expiresAt"
-            value-as-date
+            v-model="expiresAt.date"
+            locale="en"
+          />
+
+          <b-form-timepicker
+            v-model="expiresAt.time"
+            locale="en"
           />
 
           <b-button
             class="ml-1"
             variant="outline-danger"
-            @click="authclient.expiresAt = undefined"
+            @click="resetDateTime('expiresAt')"
           >
             <font-awesome-icon
               :icon="['fas', 'times']"
@@ -353,6 +359,16 @@ export default {
         value: '',
       },
 
+      validFrom: {
+        date: undefined,
+        time: undefined,
+      },
+
+      expiresAt: {
+        date: undefined,
+        time: undefined,
+      },
+
       allowedRoles: [],
       deniedRoles: [],
       forcedRoles: [],
@@ -388,6 +404,16 @@ export default {
           }
         }
 
+        if (this.authclient.validFrom) {
+          this.validFrom.date = new Date(this.authclient.validFrom).toISOString()
+          this.validFrom.time = new Date(this.authclient.validFrom).toTimeString().split(' ')[0]
+        }
+
+        if (this.authclient.expiresAt) {
+          this.expiresAt.date = new Date(this.authclient.expiresAt).toISOString()
+          this.expiresAt.time = new Date(this.authclient.expiresAt).toTimeString().split(' ')[0]
+        }
+
         this.allowedRoles = this.transformRoles(this.authclient.security.allowedRoles)
         this.deniedRoles = this.transformRoles(this.authclient.security.deniedRoles)
         this.forcedRoles = this.transformRoles(this.authclient.security.forcedRoles)
@@ -403,6 +429,18 @@ export default {
 
   methods: {
     submit () {
+      if (this.validFrom.date && this.validFrom.time) {
+        this.authclient.validFrom = new Date(`${this.validFrom.date} ${this.validFrom.time}`).toISOString()
+      } else {
+        this.authclient.validFrom = undefined
+      }
+
+      if (this.expiresAt.date && this.expiresAt.time) {
+        this.authclient.expiresAt = new Date(`${this.expiresAt.date} ${this.expiresAt.time}`).toISOString()
+      } else {
+        this.authclient.expiresAt = undefined
+      }
+
       this.authclient.security.allowedRoles = this.allowedRoles
         .filter(({ current, dirty }) => {
           return dirty !== current && dirty
@@ -464,6 +502,13 @@ export default {
       })
 
       return transformedRoles
+    },
+
+    resetDateTime (target) {
+      if (target) {
+        this[target].date = undefined
+        this[target].time = undefined
+      }
     },
   },
 }
