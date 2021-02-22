@@ -96,6 +96,8 @@ export default [
           r('system.settings.external-auth', 'settings/external-auth', 'System/Settings/ExternalAuth'),
           r('system.settings.email', 'settings/email', 'System/Settings/Email'),
 
+          combo('system', 'authclient', { pkey: 'authClientID' }),
+
           r('system.permissions', 'permissions', 'System/Permissions/Index'),
           r('system.automation', 'automation', 'System/Automation/Index'),
           r('system.actionlog', 'actionlog', 'System/Actionlog/Index'),

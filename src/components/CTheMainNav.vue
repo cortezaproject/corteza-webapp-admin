@@ -63,6 +63,13 @@
       />
 
       <c-main-nav-item
+        v-if="true"
+        :label="$t('system.authclients:navItem.label')"
+        :to="{ name: 'system.authclient' }"
+        :icon="['fas', 'lock']"
+      />
+
+      <c-main-nav-item
         v-if="canGrant.system"
         :label="$t('system.automation:navItem.label')"
         :to="{ name: 'system.automation' }"

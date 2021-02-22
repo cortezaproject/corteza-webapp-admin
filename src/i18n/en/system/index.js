@@ -5,6 +5,7 @@ import roles from './roles'
 import templates from './templates'
 import scripts from './scripts'
 import settings from './settings'
+import authclients from './authclients'
 import permissions from './permissions'
 import automation from './automation'
 import actionlog from './actionlog'
@@ -24,6 +25,7 @@ export default {
   'system.scripts': scripts,
 
   'system.settings': settings,
+  'system.authclients': authclients,
   'system.permissions': permissions,
   'system.automation': automation,
   'system.actionlog': actionlog,

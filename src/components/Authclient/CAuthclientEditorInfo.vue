@@ -1,0 +1,470 @@
+<template>
+  <b-card
+    class="shadow-sm"
+    header-bg-variant="white"
+    footer-bg-variant="white"
+  >
+    <b-form
+      @submit.prevent="submit"
+    >
+      <b-form-group
+        :label="$t('handle')"
+        label-cols="2"
+      >
+        <b-form-input
+          v-model="authclient.handle"
+          :state="!!authclient.handle"
+        />
+
+        <!--
+          include hidden input to enable
+          trigger submit event w/ ENTER
+        -->
+        <input
+          type="submit"
+          class="d-none"
+          :disabled="!isValid"
+        >
+      </b-form-group>
+
+      <b-form-group>
+        <template #label>
+          <b-row
+            no-gutters
+          >
+            <b-col
+              cols="2"
+            >
+              {{ $t('redirectURI') }}
+            </b-col>
+            <b-col>
+              <b-button
+                variant="link"
+                class="align-top border-0 p-0"
+                @click="redirectURI.push('')"
+              >
+                + {{ $t('add') }}
+              </b-button>
+            </b-col>
+          </b-row>
+        </template>
+
+        <b-form-group
+          v-if="redirectURI.length"
+          label-cols="2"
+          class="mb-0"
+        >
+          <b-input-group
+            v-for="(value, index) in redirectURI"
+            :key="index"
+            class="mb-2"
+          >
+            <b-form-input
+              v-model="redirectURI[index]"
+              placeholder="URI"
+            />
+
+            <b-button
+              class="ml-1"
+              variant="outline-danger"
+              @click="redirectURI.splice(index, 1)"
+            >
+              <font-awesome-icon
+                :icon="['fas', 'times']"
+                class="fa-w-16"
+              />
+            </b-button>
+          </b-input-group>
+        </b-form-group>
+      </b-form-group>
+
+      <b-form-group
+        v-if="authclient.authClientID"
+        :label="$t('secret')"
+        label-cols="2"
+        class="mb-3"
+      >
+        <b-input-group>
+          <b-form-input
+            v-model="secret.value"
+            disabled
+            placeholder="****************************************************************"
+          />
+
+          <b-button
+            v-if="!secret.show"
+            class="ml-1"
+            variant="outline-primary"
+            @click="showSecret()"
+          >
+            <font-awesome-icon
+              :icon="['fas', 'eye']"
+            />
+          </b-button>
+
+          <b-button
+            v-else
+            class="ml-1"
+            variant="outline-primary"
+            @click="regenerateSecret()"
+          >
+            <font-awesome-icon
+              :icon="['fas', 'sync']"
+            />
+          </b-button>
+        </b-input-group>
+      </b-form-group>
+
+      <b-form-group
+        label-cols="2"
+      >
+        <b-form-radio
+          v-model="authclient.grant"
+          value="authorization_code"
+        >
+          {{ $t('grant.authorization_code') }}
+        </b-form-radio>
+
+        <b-form-radio
+          v-model="authclient.grant"
+          value="client_credentials"
+        >
+          {{ $t('grant.client_credentials') }}
+        </b-form-radio>
+      </b-form-group>
+
+      <b-form-group
+        :label="$t('validFrom.label')"
+        label-cols="2"
+        :description="$t('validFrom.description')"
+      >
+        <b-input-group
+          class="w-50"
+        >
+          <b-form-datepicker
+            v-model="authclient.validFrom"
+            value-as-date
+          />
+
+          <b-button
+            class="ml-1"
+            variant="outline-danger"
+            @click="authclient.validFrom = undefined"
+          >
+            <font-awesome-icon
+              :icon="['fas', 'times']"
+              class="fa-w-16"
+            />
+          </b-button>
+        </b-input-group>
+      </b-form-group>
+
+      <b-form-group
+        :label="$t('expiresAt.label')"
+        label-cols="2"
+        :description="$t('expiresAt.description')"
+      >
+        <b-input-group
+          class="w-50"
+        >
+          <b-form-datepicker
+            v-model="authclient.expiresAt"
+            value-as-date
+          />
+
+          <b-button
+            class="ml-1"
+            variant="outline-danger"
+            @click="authclient.expiresAt = undefined"
+          >
+            <font-awesome-icon
+              :icon="['fas', 'times']"
+              class="fa-w-16"
+            />
+          </b-button>
+        </b-input-group>
+      </b-form-group>
+
+      <b-form-group
+        label-cols="2"
+      >
+        <b-form-checkbox
+          :checked="(authclient.scope || []).includes('profile')"
+          @change="setScope($event, 'profile')"
+        >
+          {{ $t('profile') }}
+        </b-form-checkbox>
+        <b-form-checkbox
+          :checked="(authclient.scope || []).includes('api')"
+          @change="setScope($event, 'api')"
+        >
+          {{ $t('api') }}
+        </b-form-checkbox>
+      </b-form-group>
+
+      <b-form-group
+        label-cols="2"
+      >
+        <b-form-checkbox
+          v-model="authclient.trusted"
+        >
+          {{ $t('trusted') }}
+        </b-form-checkbox>
+      </b-form-group>
+
+      <b-form-group
+        label-cols="2"
+      >
+        <b-form-checkbox
+          v-model="authclient.enabled"
+        >
+          {{ $t('enabled') }}
+        </b-form-checkbox>
+      </b-form-group>
+
+      <c-role-picker
+        label="count.allowed"
+        :current-roles.sync="allowedRoles"
+        class="mb-3"
+      />
+
+      <c-role-picker
+        label="count.denied"
+        :current-roles.sync="deniedRoles"
+        class="mb-3"
+      />
+
+      <c-role-picker
+        label="count.forced"
+        :current-roles.sync="forcedRoles"
+        class="mb-3"
+      />
+
+      <b-form-group
+        v-if="authclient.createdAt"
+        :label="$t('createdAt')"
+        label-cols="2"
+        class="mb-0"
+      >
+        <b-form-input
+          :value="authclient.createdAt | locLongDate"
+          plaintext
+          disabled
+        />
+      </b-form-group>
+      <b-form-group
+        v-if="authclient.updatedAt"
+        :label="$t('updatedAt')"
+        label-cols="2"
+      >
+        <b-form-input
+          :value="authclient.updatedAt | locLongDate"
+          plaintext
+          disabled
+        />
+      </b-form-group>
+
+      <b-form-group
+        v-if="authclient.deletedAt"
+        :label="$t('deletedAt')"
+        label-cols="2"
+      >
+        <b-form-input
+          :value="authclient.deletedAt | locLongDate"
+          plaintext
+          disabled
+        />
+      </b-form-group>
+    </b-form>
+
+    <template #header>
+      <h3 class="m-0">
+        {{ $t('title') }}
+      </h3>
+    </template>
+
+    <template #footer>
+      <c-submit-button
+        class="float-right"
+        :disabled="!isValid"
+        :processing="processing"
+        :success="success"
+        @submit="submit"
+      />
+
+      <confirmation-toggle
+        v-if="authclient && authclient.authClientID"
+        @confirmed="$emit('delete')"
+      >
+        {{ getDeleteStatus }}
+      </confirmation-toggle>
+    </template>
+  </b-card>
+</template>
+
+<script>
+import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
+import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
+import CRolePicker from 'corteza-webapp-admin/src/components/CRolePicker'
+
+export default {
+  name: 'CAuthclientEditorInfo',
+
+  i18nOptions: {
+    namespaces: [ 'system.authclients' ],
+    keyPrefix: 'editor.info',
+  },
+
+  components: {
+    ConfirmationToggle,
+    CSubmitButton,
+    CRolePicker,
+  },
+
+  props: {
+    authclient: {
+      type: Object,
+      required: true,
+    },
+
+    roles: {
+      type: Array,
+      required: true,
+      default: () => [],
+    },
+
+    processing: {
+      type: Boolean,
+      value: false,
+    },
+
+    success: {
+      type: Boolean,
+      value: false,
+    },
+  },
+
+  data () {
+    return {
+      redirectURI: [],
+
+      secret: {
+        show: false,
+        value: '',
+      },
+
+      allowedRoles: [],
+      deniedRoles: [],
+      forcedRoles: [],
+    }
+  },
+
+  computed: {
+    getDeleteStatus () {
+      return this.authclient.deletedAt ? this.$t('undelete') : this.$t('delete')
+    },
+
+    isValid () {
+      return !!this.authclient.handle
+    },
+  },
+
+  watch: {
+    'authclient.authClientID': {
+      immediate: true,
+      handler (authClientID) {
+        // New authclient
+        if (!authClientID) {
+          this.authclient.scope = 'profile api'
+          this.authclient.enabled = true
+          this.redirectURI = ['']
+          this.authclient.security = {}
+          this.authclient.grant = 'authorization_code'
+        } else {
+          if (this.authclient.redirectURI) {
+            this.redirectURI = this.authclient.redirectURI.split(' ')
+          } else {
+            this.redirectURI = []
+          }
+        }
+
+        this.allowedRoles = this.transformRoles(this.authclient.security.allowedRoles)
+        this.deniedRoles = this.transformRoles(this.authclient.security.deniedRoles)
+        this.forcedRoles = this.transformRoles(this.authclient.security.forcedRoles)
+      },
+    },
+
+    redirectURI: {
+      handler (redirectURI) {
+        this.authclient.redirectURI = redirectURI.filter(ru => ru).join(' ')
+      },
+    },
+  },
+
+  methods: {
+    submit () {
+      this.authclient.security.allowedRoles = this.allowedRoles
+        .filter(({ current, dirty }) => {
+          return dirty !== current && dirty
+        }).map(({ roleID }) => roleID)
+
+      this.authclient.security.deniedRoles = this.deniedRoles
+        .filter(({ current, dirty }) => {
+          return dirty !== current && dirty
+        }).map(({ roleID }) => roleID)
+
+      this.authclient.security.forcedRoles = this.forcedRoles
+        .filter(({ current, dirty }) => {
+          return dirty !== current && dirty
+        }).map(({ roleID }) => roleID)
+
+      this.$emit('submit', this.authclient)
+    },
+
+    setScope (value, target) {
+      let items = this.authclient.scope ? this.authclient.scope.split(' ') : []
+
+      if (value) {
+        items.push(target)
+      } else {
+        items = items.filter(i => i !== target)
+      }
+
+      this.authclient.scope = items.join(' ')
+    },
+
+    showSecret () {
+      this.$SystemAPI.authClientExposeSecret(({ clientID: this.authclient.authClientID }))
+        .then(secret => {
+          this.secret = {
+            show: true,
+            value: secret,
+          }
+        })
+    },
+
+    regenerateSecret () {
+      this.$SystemAPI.authClientRegenerateSecret(({ clientID: this.authclient.authClientID }))
+        .then(newSecret => {
+          this.secret.value = newSecret
+        })
+    },
+
+    transformRoles (currentRoles = []) {
+      let transformedRoles = []
+      this.roles.forEach(r => {
+        let { roleID } = r
+        if (roleID !== '1') {
+          let current = false
+          if (currentRoles.indexOf(roleID) > -1) {
+            current = true
+          }
+          transformedRoles.push({ ...r, current: current, dirty: current })
+        }
+      })
+
+      return transformedRoles
+    },
+  },
+}
+</script>

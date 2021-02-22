@@ -68,6 +68,13 @@ export default {
         reminder: {
           assign: 'Allow reminder assignment',
         },
+        'auth-client': {
+          title: 'Auth clients',
+
+          read: 'Read any client',
+          update: 'Update any client',
+          delete: 'Delete any client',
+        },
       },
     },
   },

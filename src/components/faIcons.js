@@ -20,6 +20,8 @@ import {
   faShareAlt,
   faExclamationTriangle,
   faFolder,
+  faSync,
+  faEye,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -50,4 +52,6 @@ library.add(
   faCheckCircle,
   faExclamationTriangle,
   faFolder,
+  faSync,
+  faEye,
 )
