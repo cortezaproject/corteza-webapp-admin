@@ -74,6 +74,7 @@ export default {
           read: 'Read any client',
           update: 'Update any client',
           delete: 'Delete any client',
+          authorize: 'Authorize any client',
         },
       },
     },

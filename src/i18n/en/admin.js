@@ -219,6 +219,11 @@ export default {
         specific: 'Delete client "{{target}}',
         description: 'Default: deny',
       },
+      authorize: {
+        title: 'Authorize any client',
+        specific: 'Authorize client "{{target}}',
+        description: 'User can authorize (use) this client. Default: deny',
+      },
     },
   },
 
