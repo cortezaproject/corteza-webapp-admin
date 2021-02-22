@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="hasAccess"
     class="d-flex flex-column vh-100 bg-light"
   >
     <small
