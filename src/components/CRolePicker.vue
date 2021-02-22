@@ -26,6 +26,9 @@
       </b-input-group-prepend>
       <b-form-input v-model.trim="filter" />
     </b-input-group>
+    <b-form-text v-if="description">
+      {{ description }}
+    </b-form-text>
     <table
       v-if="filter && filtered"
       class="w-100 m-0 p-0"
@@ -51,6 +54,11 @@ export default {
     label: {
       type: String,
       default: 'count',
+    },
+
+    description: {
+      type: String,
+      default: null,
     },
 
     currentRoles: {

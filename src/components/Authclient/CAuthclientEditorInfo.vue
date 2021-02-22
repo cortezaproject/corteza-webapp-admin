@@ -214,8 +214,9 @@
         <b-form-checkbox
           v-model="authclient.trusted"
         >
-          {{ $t('trusted') }}
+          {{ $t('trusted.label') }}
         </b-form-checkbox>
+        <b-form-text>{{ $t('trusted.description') }}</b-form-text>
       </b-form-group>
 
       <b-form-group
@@ -229,19 +230,22 @@
       </b-form-group>
 
       <c-role-picker
-        label="count.allowed"
-        :current-roles.sync="allowedRoles"
+        label="security.permittedRoles.label"
+        :description="$t('security.permittedRoles.description')"
+        :current-roles.sync="permittedRoles"
         class="mb-3"
       />
 
       <c-role-picker
-        label="count.denied"
-        :current-roles.sync="deniedRoles"
+        label="security.forbiddenRoles.label"
+        :description="$t('security.forbiddenRoles.description')"
+        :current-roles.sync="forbiddenRoles"
         class="mb-3"
       />
 
       <c-role-picker
-        label="count.forced"
+        label="security.forcedRoles.label"
+        :description="$t('security.forcedRoles.description')"
         :current-roles.sync="forcedRoles"
         class="mb-3"
       />
@@ -369,8 +373,8 @@ export default {
         time: undefined,
       },
 
-      allowedRoles: [],
-      deniedRoles: [],
+      permittedRoles: [],
+      forbiddenRoles: [],
       forcedRoles: [],
     }
   },
@@ -414,8 +418,8 @@ export default {
           this.expiresAt.time = new Date(this.authclient.expiresAt).toTimeString().split(' ')[0]
         }
 
-        this.allowedRoles = this.transformRoles(this.authclient.security.allowedRoles)
-        this.deniedRoles = this.transformRoles(this.authclient.security.deniedRoles)
+        this.permittedRoles = this.transformRoles(this.authclient.security.permittedRoles)
+        this.forbiddenRoles = this.transformRoles(this.authclient.security.forbiddenRoles)
         this.forcedRoles = this.transformRoles(this.authclient.security.forcedRoles)
       },
     },
@@ -441,12 +445,12 @@ export default {
         this.authclient.expiresAt = undefined
       }
 
-      this.authclient.security.allowedRoles = this.allowedRoles
+      this.authclient.security.permittedRoles = this.permittedRoles
         .filter(({ current, dirty }) => {
           return dirty !== current && dirty
         }).map(({ roleID }) => roleID)
 
-      this.authclient.security.deniedRoles = this.deniedRoles
+      this.authclient.security.forbiddenRoles = this.forbiddenRoles
         .filter(({ current, dirty }) => {
           return dirty !== current && dirty
         }).map(({ roleID }) => roleID)

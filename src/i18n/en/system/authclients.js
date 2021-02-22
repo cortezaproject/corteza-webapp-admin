@@ -1,10 +1,10 @@
 export default {
   navItem: {
-    label: 'OAuth2 Clients',
+    label: 'Auth Clients',
   },
 
   list: {
-    title: 'OAuth2 Clients',
+    title: 'Auth Clients',
     new: 'New',
     permissions: 'Permissions',
     yaml: 'YAML',
@@ -59,7 +59,10 @@ export default {
       profile: 'Allow client access to user\'s profile',
       api: 'Allow client access to Corteza API on behalf of user',
 
-      trusted: 'Trusted',
+      trusted: {
+        label: 'Trusted',
+        description: 'When client is trusted users do not see authorization step',
+      },
       enabled: 'Enabled',
 
       validFrom: {
@@ -71,25 +74,32 @@ export default {
         label: 'Expires at',
         description: 'If not defined the client has no expiration date',
       },
-      count: {
-        allowed: 'Allowed roles ({{count}})',
-        denied: 'Denied roles ({{count}})',
-        forced: 'Forced roles ({{count}})',
+
+      security: {
+        permittedRoles: {
+          label: 'Permitted roles ({{count}})',
+          description: 'Only roles in this list will be added into security context when user authorizes this client',
+        },
+        forbiddenRoles: {
+          label: 'Forbidden roles ({{count}})',
+          description: 'Roles from this list will be removed from security context when user authorizes this client',
+        },
+        forcedRoles: {
+          label: 'Forced roles ({{count}})',
+          description: 'Roles from this list will be always added to security context when user authorizes this client',
+        },
       },
+
       unnamed: 'Unnamed role',
 
       grant: {
-        authorization_code: 'Will be used to authenticate users',
-        client_credentials: 'Will be used to authenticate machines',
+        authorization_code: 'Will be used to authenticate users (grant type = authorization_code)',
+        client_credentials: 'Will be used to authenticate machines (grant type = client_credentials)',
       },
 
       add: 'Add',
       remove: 'Remove',
       searchRoles: 'Search roles',
-
-      suspend: 'Suspend',
-      unsuspend: 'Unsuspend',
-      suspendedAt: 'Suspended at',
 
       delete: 'Delete',
       undelete: 'Undelete',
