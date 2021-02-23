@@ -3,7 +3,6 @@
     no-body
     class="shadow-sm"
     header-bg-variant="white"
-    footer-bg-variant="white"
   >
     <b-card-body
       class="p-0"
@@ -99,28 +98,32 @@
       Card footer
     -->
     <template #footer>
-      <b-button-group
-        size="sm"
-        class="float-right"
-      >
+      <b-button-group class="float-right">
         <b-button
-          variant="outline-secondary"
           :disabled="hasPrevPage"
+          variant="link"
+          class="text-dark"
           @click="goToPage()"
         >
-          {{ $t('pagination.first') }}
+          <font-awesome-icon :icon="['fas', 'angle-double-left']" />
         </b-button>
         <b-button
           :disabled="hasPrevPage"
+          variant="link"
+          class="text-dark"
           @click="goToPage('prevPage')"
         >
+          <font-awesome-icon :icon="['fas', 'angle-left']" />
           {{ $t('pagination.prev') }}
         </b-button>
         <b-button
           :disabled="hasNextPage"
+          variant="link"
+          class="text-dark"
           @click="goToPage('nextPage')"
         >
           {{ $t('pagination.next') }}
+          <font-awesome-icon :icon="['fas', 'angle-right']" />
         </b-button>
       </b-button-group>
     </template>

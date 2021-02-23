@@ -13,8 +13,11 @@
       size="sm"
       name="radio-btn-outline"
       v-on="$listeners"
-    />
-    {{ $attrs.label }}
+    >
+      <span class="mt-1 ml-2">
+        {{ $attrs.label }}
+      </span>
+    </b-form-radio-group>
   </b-col>
 </template>
 

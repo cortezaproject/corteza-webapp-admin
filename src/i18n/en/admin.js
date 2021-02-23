@@ -334,7 +334,6 @@ export default {
     noAccess: 'You do not have permissions to access Admin panel',
 
     pagination: {
-      first: '<<',
       prev: 'Prev',
       next: 'Next',
     },

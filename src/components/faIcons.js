@@ -8,7 +8,6 @@ import {
   faCogs,
   faThLarge,
   faPen,
-  faAngleDoubleLeft,
   faAngleDoubleRight,
   faPowerOff,
   faCheck,
@@ -22,6 +21,9 @@ import {
   faFolder,
   faSync,
   faEye,
+  faAngleDoubleLeft,
+  faAngleRight,
+  faAngleLeft,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -54,4 +56,6 @@ library.add(
   faFolder,
   faSync,
   faEye,
+  faAngleRight,
+  faAngleLeft,
 )

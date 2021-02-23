@@ -7,3 +7,43 @@ html {
 .overflow-x-hidden {
   overflow-x: hidden!important;
 }
+
+button:disabled {
+  cursor: not-allowed;
+  pointer-events: all !important;
+}
+
+.btn-link {
+  &:focus {
+    text-decoration: none;
+  }
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+thead th,
+label,
+legend,
+strong,
+b,
+.font-weight-bold {
+  font-family: $bold;
+}
+
+th {
+  white-space: nowrap;
+}
+
+// Pagination
+.page-item {
+  &.disabled {
+    cursor: not-allowed;
+  }
+}
+
+// Typography
+.font-weight-normal {
+  font-family: $regular;
+}

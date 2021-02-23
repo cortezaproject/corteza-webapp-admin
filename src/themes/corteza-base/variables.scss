@@ -7,13 +7,7 @@ $fonts_dir : './fonts/' !default;
 $regular: 'nunito_sansregular' !default;
 $bold: 'nunito_sansbold' !default;
 $semibold: 'nunito_sanssemibold' !default;
-$font-size-base: 0.85rem !default;
-$h1-font-size: $font-size-base * 1.50 !default;
-$h2-font-size: $font-size-base * 1.30 !default;
-$h3-font-size: $font-size-base * 1.20 !default;
-$h4-font-size: $font-size-base * 1.10 !default;
-$h5-font-size: $font-size-base * 1.05 !default;
-$h6-font-size: $font-size-base * 1.00 !default;
+$font-size-base: 1rem !default;
 
 $font-family-base:      $regular !default;
 $headings-font-family:  $semibold !default;
@@ -21,24 +15,48 @@ $headings-font-family:  $semibold !default;
 // Color system
 $white:         #fff !default;
 $black:         #000 !default;
-$primary:       #568ba2 !default;
+$primary:       #4D7281 !default;
 $secondary:     #90A3B1 !default;
 $success:       #719430 !default;
 $warning:       #F5D380 !default;
 $danger:        #E85568 !default;
-$light:         #F3F3F5 !default;
+$light:         #E4E9EF !default;
 $dark:          #1e2224 !default;
+$background:     #F3F3F5;
 
 $sidebar-width: 200px !default;
 
 // Options
-$enable-rounded:   false !default;
+$enable-rounded:   true !default;
+$enable-responsive-font-sizes: true !default;
+
+// Body
+$body-bg: $background !default;
+
+// Card
+$card-border-radius: 1rem !default;
+$card-border-width:  0;
+$card-cap-bg:        $background;
+
+// Tables
+$table-head-bg:       $background;
+
+// Pagination
+$pagination-color:        $dark;
+$pagination-disabled-bg:  transparent;
+$pagination-bg:           transparent;
+$pagination-active-bg:    $dark;
+$pagination-border-width: 0;
 
 // Forms
-$input-font-size:              $font-size-base !default;
-$input-btn-focus-width:        0 !default;
-$input-focus-box-shadow:       none !default;
-$input-focus-border-color:     $primary !default;
+$input-font-size: $font-size-base !default;
+
+$input-border-color:  $light !default;
+$input-border-width:  2px !default;
+
+$input-btn-focus-width:     0 !default;
+$input-focus-box-shadow:    none !default;
+$input-focus-border-color:  $primary !default;
 
 /* stylelint-disable */
 :export {
