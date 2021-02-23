@@ -31,11 +31,11 @@
         </b-form-group>
         <b-form-group label-cols="2">
           <b-form-checkbox
-            v-model="auth['auth.internal.signup-email-confirmation-required']"
+            v-model="auth['auth.internal.signup.email-confirmation-required']"
             :value="true"
             :unchecked-value="false"
           >
-            {{ $t('internal.signup-email-confirmation-required') }}
+            {{ $t('internal.signup.email-confirmation-required') }}
           </b-form-checkbox>
         </b-form-group>
         <b-form-group label-cols="2">

@@ -18,8 +18,8 @@ export default {
         },
         signup: {
           enabled: 'Signup enabled',
+          'email-confirmation-required': 'Signup email confirmation required',
         },
-        'signup-email-confirmation-required': 'Signup email confirmation required',
       },
 
       frontend: {
@@ -67,7 +67,7 @@ export default {
       issuer: 'OIDC Issuer URL',
       'provider-enabled': 'Enable this external authentication provider',
       oidc: 'OpenID Connect',
-      gplus: 'Google',
+      google: 'Google',
       facebook: 'Facebook',
       github: 'GitHub',
       linkedin: 'LinkedIn',

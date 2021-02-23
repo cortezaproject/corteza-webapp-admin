@@ -33,8 +33,8 @@
         <hr>
 
         <standard-external
-          v-model="standard.gplus"
-          :title="$t('gplus')"
+          v-model="standard.google"
+          :title="$t('google')"
         />
 
         <hr>
@@ -124,7 +124,7 @@ export default {
       oidc: [],
 
       standard: {
-        gplus: {
+        google: {
           enabled: false,
           key: '',
           secret: '',

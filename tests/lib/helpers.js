@@ -6,7 +6,7 @@ import CContentHeader from 'corteza-webapp-admin/src/components/CContentHeader'
 import CResourceList from 'corteza-webapp-admin/src/components/CResourceList'
 import CResourceListStatusFilter from 'corteza-webapp-admin/src/components/CResourceListStatusFilter'
 import { components } from '@cortezaproject/corteza-vue'
-const { CCorredorManualButtons, CDevAuth, CPermissionsButton } = components
+const { CCorredorManualButtons, CPermissionsButton } = components
 
 Vue.config.ignoredElements = [
   'font-awesome-icon',
@@ -15,7 +15,6 @@ Vue.config.ignoredElements = [
 Vue.use(BootstrapVue)
 
 Vue.component('c-corredor-manual-buttons', CCorredorManualButtons)
-Vue.component('c-dev-auth', CDevAuth)
 Vue.component('c-permissions-button', CPermissionsButton)
 Vue.component('c-content-header', CContentHeader)
 Vue.component('c-resource-list', CResourceList)
