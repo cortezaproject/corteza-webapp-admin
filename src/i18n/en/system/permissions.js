@@ -71,6 +71,7 @@ export default {
         'auth-client': {
           title: 'Auth clients',
 
+          create: 'Create new auth client',
           read: 'Read any client',
           update: 'Update any client',
           delete: 'Delete any client',
