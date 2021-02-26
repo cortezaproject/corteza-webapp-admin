@@ -77,6 +77,9 @@ export default {
         reminder: {
           assign: 'Allow reminder assignment',
         },
+        'authClient': {
+          create: 'Create new auth client',
+        },
         'auth-client': {
           title: 'Auth clients',
 
