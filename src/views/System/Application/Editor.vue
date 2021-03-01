@@ -43,6 +43,7 @@
       class="mt-3"
       :unify="application.unify"
       :application="application"
+      :can-pin="canPin"
       :processing="unify.processing"
       :success="unify.success"
       @submit="onUnifySubmit"
@@ -84,6 +85,7 @@ export default {
 
       canCreate: false,
       canGrant: false,
+      canPin: false,
 
       info: {
         processing: false,
@@ -114,7 +116,7 @@ export default {
     fetchApplication () {
       this.incLoader()
 
-      this.$SystemAPI.applicationRead({ applicationID: this.applicationID })
+      this.$SystemAPI.applicationRead({ applicationID: this.applicationID, incFlags: 1 })
         .then(this.prepare)
         .catch(this.stdReject)
         .finally(() => {
@@ -129,6 +131,7 @@ export default {
         .then(rules => {
           this.canCreate = rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'application.create').allow
           this.canGrant = rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'grant').allow
+          this.canPin = rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'application.flag.global').allow
         })
         .catch(this.stdReject)
         .finally(() => {
@@ -141,9 +144,9 @@ export default {
 
       if (this.applicationID) {
         this.$SystemAPI.applicationUpdate(application)
-          .then(a => {
+          .then(() => {
             this.animateSuccess('info')
-            this.application = a
+            this.fetchApplication()
           })
           .catch(this.stdReject)
           .finally(() => {
@@ -162,14 +165,28 @@ export default {
       }
     },
 
-    onUnifySubmit (unify) {
+    async onUnifySubmit (unify) {
       this.unify.processing = true
 
       if (this.applicationID) {
-        this.$SystemAPI.applicationUpdate({ ...this.application, unify })
-          .then(a => {
+        const flagPayload = {
+          applicationID: this.applicationID,
+          flag: 'pinned',
+          ownedBy: '0',
+        }
+
+        if (unify.pinned) {
+          await this.$SystemAPI.applicationFlagCreate(flagPayload)
+            .catch(() => {})
+        } else {
+          await this.$SystemAPI.applicationFlagDelete(flagPayload)
+            .catch(() => {})
+        }
+
+        return this.$SystemAPI.applicationUpdate({ ...this.application, unify })
+          .then(() => {
             this.animateSuccess('unify')
-            this.application = a
+            this.fetchApplication()
           })
           .catch(this.stdReject)
           .finally(() => {
@@ -206,6 +223,7 @@ export default {
       if (!application.unify) {
         application.unify = {
           listed: true,
+          pinned: false,
           name: this.application.name,
           config: '',
           icon: '',
@@ -213,6 +231,8 @@ export default {
           url: '',
         }
       }
+
+      application.unify.pinned = (application.flags || []).includes('pinned')
 
       this.application = application
     },

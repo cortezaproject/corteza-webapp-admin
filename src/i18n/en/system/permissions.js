@@ -60,6 +60,11 @@ export default {
           read: 'Access any application',
           update: 'Update any application',
           delete: 'Delete any application',
+
+          flag: {
+            self: 'Can pin application for themselves',
+            global: 'Can pin application for everyone',
+          },
         },
         template: {
           title: 'Templates',

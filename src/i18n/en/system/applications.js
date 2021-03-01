@@ -83,6 +83,7 @@ export default {
         description: 'Application URL',
       },
       listed: 'Listed',
+      pinned: 'Pinned',
       config: {
         label: 'Configuration',
         description: 'Application configuration (JSON)',

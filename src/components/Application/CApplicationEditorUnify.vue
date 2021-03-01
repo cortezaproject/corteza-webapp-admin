@@ -49,6 +49,17 @@
       </b-form-group>
 
       <b-form-group
+        label-cols="2"
+      >
+        <b-form-checkbox
+          v-model="unify.pinned"
+          :disabled="!canPin"
+        >
+          {{ $t('pinned') }}
+        </b-form-checkbox>
+      </b-form-group>
+
+      <b-form-group
         :label="$t('config.label')"
         :description="$t('config.description')"
         class="mb-0"
@@ -102,6 +113,11 @@ export default {
 
     application: {
       type: Object,
+      required: true,
+    },
+
+    canPin: {
+      type: Boolean,
       required: true,
     },
 
