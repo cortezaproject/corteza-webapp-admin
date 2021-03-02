@@ -61,6 +61,15 @@ export default {
           update: 'Update any application',
           delete: 'Delete any application',
         },
+        template: {
+          title: 'Templates',
+
+          create: 'Create new template',
+          read: 'Read any template',
+          update: 'Update any template',
+          delete: 'Delete any template',
+          render: 'Render any template',
+        },
         settings: {
           read: 'Access all settings',
           manage: 'Manage all settings',
