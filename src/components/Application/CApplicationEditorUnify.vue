@@ -14,21 +14,90 @@
       >
         <b-form-input v-model="unify.name" />
       </b-form-group>
+
       <b-form-group
         :label="$t('icon.label')"
         :description="$t('icon.description')"
         label-cols="2"
       >
-        <b-form-input v-model="unify.icon" />
+        <template #label>
+          <div
+            class="d-flex"
+          >
+            {{ $t('icon.label') }}
+            <b-button
+              v-if="unify.icon"
+              v-b-modal.icon
+              variant="link"
+              class="d-flex align-items-center border-0 p-0 ml-2"
+            >
+              <font-awesome-icon
+                :icon="['fas', 'eye']"
+              />
+            </b-button>
+          </div>
+        </template>
+        <b-form-file
+          v-model="unifyAssets.icon"
+          accept="image/*"
+          :placeholder="$t('icon.placeholder')"
+        />
       </b-form-group>
+
+      <b-modal
+        id="icon"
+        hide-header
+        hide-footer
+        centered
+        body-class="p-1"
+      >
+        <b-img
+          :src="unify.icon"
+          fluid-grow
+        />
+      </b-modal>
 
       <b-form-group
         :label="$t('logo.label')"
         :description="$t('logo.description')"
         label-cols="2"
       >
-        <b-form-input v-model="unify.logo" />
+        <template #label>
+          <div
+            class="d-flex"
+          >
+            {{ $t('logo.label') }}
+            <b-button
+              v-if="unify.logo"
+              v-b-modal.logo
+              variant="link"
+              class="d-flex align-items-center border-0 p-0 ml-2"
+            >
+              <font-awesome-icon
+                :icon="['fas', 'eye']"
+              />
+            </b-button>
+          </div>
+        </template>
+        <b-form-file
+          v-model="unifyAssets.logo"
+          accept="image/*"
+          :placeholder="$t('logo.placeholder')"
+        />
       </b-form-group>
+
+      <b-modal
+        id="logo"
+        hide-header
+        hide-footer
+        centered
+        body-class="p-1"
+      >
+        <b-img
+          :src="unify.logo"
+          fluid-grow
+        />
+      </b-modal>
 
       <b-form-group
         :label="$t('url.label')"
@@ -84,7 +153,7 @@
         :processing="processing"
         :success="success"
         :disabled="disabled"
-        @submit="$emit('submit', unify)"
+        @submit="$emit('submit', { unify, unifyAssets })"
       />
     </template>
   </b-card>
@@ -130,6 +199,15 @@ export default {
       type: Boolean,
       value: false,
     },
+  },
+
+  data () {
+    return {
+      unifyAssets: {
+        icon: undefined,
+        logo: undefined,
+      },
+    }
   },
 
   computed: {

@@ -165,8 +165,20 @@ export default {
       }
     },
 
-    async onUnifySubmit (unify) {
+    async onUnifySubmit ({ unify, unifyAssets }) {
       this.unify.processing = true
+
+      // Firstly handle any new application assets
+      if (unifyAssets.logo || unifyAssets.icon) {
+        try {
+          const assets = await this.uploadAssets(unifyAssets)
+          unify = { ...unify, ...assets }
+        } catch (e) {
+          this.stdReject(e)
+          this.unify.processing = false
+          return
+        }
+      }
 
       if (this.applicationID) {
         const flagPayload = {
@@ -193,6 +205,45 @@ export default {
             this.unify.processing = false
           })
       }
+    },
+
+    async uploadAssets (assets) {
+      const rr = {}
+
+      const rq = async (file) => {
+        var formData = new FormData()
+        formData.append('upload', file)
+
+        const rsp = await this.$SystemAPI.api().request({
+          method: 'post',
+          url: this.$SystemAPI.applicationUploadEndpoint(),
+          data: formData,
+        })
+        if (rsp.data.error) {
+          throw new Error(rsp.data.error)
+        }
+        return rsp.data.response
+      }
+
+      const baseURL = this.$SystemAPI.baseURL
+
+      if (assets.logo) {
+        const rsp = await rq(assets.logo)
+        rr.logo = baseURL + rsp.url
+        rr.logoID = rsp.attachmentID
+
+        assets.logo = undefined
+      }
+
+      if (assets.icon) {
+        const rsp = await rq(assets.icon)
+        rr.icon = baseURL + rsp.url
+        rr.iconID = rsp.attachmentID
+
+        assets.icon = undefined
+      }
+
+      return rr
     },
 
     onDelete () {

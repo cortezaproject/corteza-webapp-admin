@@ -73,10 +73,12 @@ export default {
       icon: {
         label: 'Icon',
         description: 'Icon used in Unify tab',
+        placeholder: 'Choose an icon or drop it here...',
       },
       logo: {
         label: 'Logo',
         description: 'Logo used in Unify application selector',
+        placeholder: 'Choose a logo or drop it here...',
       },
       url: {
         label: 'URL',
