@@ -125,7 +125,10 @@ export default {
               this.canManage = rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'settings.manage').allow
             })
         })
-        .catch(this.stdReject)
+        .catch(err => {
+          this.stdReject(err)
+          this.$router.push({ name: 'dashboard' })
+        })
         .finally(() => {
           this.decLoader()
         })
