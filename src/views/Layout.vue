@@ -105,7 +105,8 @@ export default {
           this.access = this.access.concat(rules)
 
           // Load effective Federation permissions, make sure not to trigger error since federation endpoints are optional
-          return window.FederationAPI ? this.$FederationAPI.permissionsEffective() : []
+          return this.$FederationAPI.permissionsEffective()
+            .catch(() => [])
         })
         .then(rules => {
           this.access = this.access.concat(rules)

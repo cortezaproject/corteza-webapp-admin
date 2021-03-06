@@ -5,7 +5,7 @@
     footer-bg-variant="white"
   >
     <b-form
-      @submit.prevent="$emit('submit', auth)"
+      @submit.prevent="$emit('submit', settings)"
     >
       <b-form-group
         :label="$t('internal.title')"
@@ -13,7 +13,7 @@
       >
         <b-form-group label-cols="2">
           <b-form-checkbox
-            v-model="auth['auth.internal.enabled']"
+            v-model="settings['auth.internal.enabled']"
             :value="true"
             :unchecked-value="false"
           >
@@ -22,7 +22,7 @@
         </b-form-group>
         <b-form-group label-cols="2">
           <b-form-checkbox
-            v-model="auth['auth.internal.password-reset.enabled']"
+            v-model="settings['auth.internal.password-reset.enabled']"
             :value="true"
             :unchecked-value="false"
           >
@@ -31,7 +31,7 @@
         </b-form-group>
         <b-form-group label-cols="2">
           <b-form-checkbox
-            v-model="auth['auth.internal.signup.email-confirmation-required']"
+            v-model="settings['auth.internal.signup.email-confirmation-required']"
             :value="true"
             :unchecked-value="false"
           >
@@ -40,7 +40,7 @@
         </b-form-group>
         <b-form-group label-cols="2">
           <b-form-checkbox
-            v-model="auth['auth.internal.signup.enabled']"
+            v-model="settings['auth.internal.signup.enabled']"
             :value="true"
             :unchecked-value="false"
           >
@@ -52,41 +52,70 @@
       <hr>
 
       <b-form-group
-        :label="$t('frontend.title')"
+        :label="$t('mfa.title')"
         label-size="lg"
       >
-        <b-form-group
-          :label="$t('frontend.url.base')"
-          label-cols="2"
-        >
-          <b-input-group>
-            <b-form-input v-model="auth['auth.frontend.url.base']" />
-          </b-input-group>
+        <b-form-group label-cols="2">
+          <b-form-checkbox
+            v-model="settings['auth.multi-factor.email-otp.enabled']"
+            :value="true"
+            :unchecked-value="false"
+          >
+            {{ $t('mfa.emailOTP.enforced') }}
+          </b-form-checkbox>
+        </b-form-group>
+        <b-form-group label-cols="2">
+          <b-form-checkbox
+            v-model="settings['auth.multi-factor.email-otp.enforced']"
+            :value="true"
+            :unchecked-value="false"
+          >
+            {{ $t('mfa.emailOTP.enforced') }}
+          </b-form-checkbox>
         </b-form-group>
         <b-form-group
-          :label="$t('frontend.url.email-confirmation')"
+          :label="$t('mfa.emailOTP.expires.label')"
+          :description="$t('mfa.emailOTP.expires.description')"
           label-cols="2"
         >
-          <b-input-group>
-            <b-form-input v-model="auth['auth.frontend.url.email-confirmation']" />
+          <b-input-group append="seconds">
+            <b-form-input
+              v-model="settings['auth.multi-factor.email-otp.expires']"
+              type="number"
+              placeholder="60"
+            />
           </b-input-group>
         </b-form-group>
-        <b-form-group
-          :label="$t('frontend.url.password-reset')"
-          label-cols="2"
-        >
-          <b-input-group>
-            <b-form-input v-model="auth['auth.frontend.url.password-reset']" />
-          </b-input-group>
+        <b-form-group label-cols="2">
+          <b-form-checkbox
+            v-model="settings['auth.multi-factor.totp.enabled']"
+            :value="true"
+            :unchecked-value="false"
+          >
+            {{ $t('mfa.TOTP.enabled') }}
+          </b-form-checkbox>
         </b-form-group>
-        <b-form-group
-          :label="$t('frontend.url.redirect')"
-          label-cols="2"
-        >
-          <b-input-group>
-            <b-form-input v-model="auth['auth.frontend.url.redirect']" />
-          </b-input-group>
+        <b-form-group label-cols="2">
+          <b-form-checkbox
+            v-model="settings['auth.multi-factor.totp.enforced']"
+            :value="true"
+            :unchecked-value="false"
+          >
+            {{ $t('mfa.TOTP.enforced') }}
+          </b-form-checkbox>
         </b-form-group>
+      </b-form-group>
+      <b-form-group
+        :label="$t('mfa.TOTP.issuer.label')"
+        :description="$t('mfa.TOTP.issuer.description')"
+        label-cols="2"
+      >
+        <b-input-group>
+          <b-form-input
+            v-model="settings['auth.multi-factor.totp.issuer']"
+            placeholder="Corteza"
+          />
+        </b-input-group>
       </b-form-group>
 
       <hr>
@@ -100,7 +129,7 @@
           label-cols="2"
         >
           <b-input-group>
-            <b-form-input v-model="auth['auth.mail.from-address']" />
+            <b-form-input v-model="settings['auth.mail.from-address']" />
           </b-input-group>
         </b-form-group>
         <b-form-group
@@ -108,7 +137,7 @@
           label-cols="2"
         >
           <b-input-group>
-            <b-form-input v-model="auth['auth.mail.from-name']" />
+            <b-form-input v-model="settings['auth.mail.from-name']" />
           </b-input-group>
         </b-form-group>
       </b-form-group>
@@ -122,7 +151,7 @@
           label-cols="2"
         >
           <b-input-group>
-            <b-form-input v-model="auth['auth.mail.email-confirmation.subject.en']" />
+            <b-form-input v-model="settings['auth.mail.email-confirmation.subject.en']" />
           </b-input-group>
         </b-form-group>
 
@@ -132,7 +161,7 @@
         >
           <b-input-group>
             <b-form-textarea
-              v-model="auth['auth.mail.email-confirmation.body.en']"
+              v-model="settings['auth.mail.email-confirmation.body.en']"
               class="overflow-auto"
               max-rows="20"
             />
@@ -150,7 +179,7 @@
           label-cols="2"
         >
           <b-input-group>
-            <b-form-input v-model="auth['auth.mail.password-reset.subject.en']" />
+            <b-form-input v-model="settings['auth.mail.password-reset.subject.en']" />
           </b-input-group>
         </b-form-group>
 
@@ -161,7 +190,7 @@
         >
           <b-input-group>
             <b-form-textarea
-              v-model="auth['auth.mail.password-reset.body.en']"
+              v-model="settings['auth.mail.password-reset.body.en']"
               class="overflow-auto"
               max-rows="20"
             />
@@ -182,7 +211,7 @@
         :disabled="!canManage"
         :processing="processing"
         :success="success"
-        @submit="$emit('submit', auth)"
+        @submit="$emit('submit', settings)"
       />
     </template>
   </b-card>
@@ -204,7 +233,7 @@ export default {
   },
 
   props: {
-    auth: {
+    settings: {
       type: Object,
       required: true,
     },

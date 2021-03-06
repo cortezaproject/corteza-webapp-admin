@@ -7,7 +7,7 @@
     />
 
     <c-system-editor-auth
-      :auth="getAuth"
+      :settings="getAuth"
       :processing="auth.processing"
       :success="auth.success"
       :can-manage="canManage"

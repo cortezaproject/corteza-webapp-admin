@@ -22,13 +22,24 @@ export default {
         },
       },
 
-      frontend: {
-        title: 'Frontend',
-        url: {
-          base: 'Base',
-          'email-confirmation': 'Email confirmation',
-          'password-reset': 'Password reset',
-          redirect: 'Redirect',
+      mfa: {
+        title: 'Multi-factor authentication',
+        emailOTP: {
+          enabled: 'Allow users to use one-time-password over email',
+          enforced: 'Force users to use one-time-password over email',
+          expires: {
+            label: 'Valid for',
+            description: 'How long will password be valid before it expires.',
+          },
+        },
+
+        TOTP: {
+          enabled: 'Allow users to use time based one-time-password',
+          enforced: 'Force users to use one-time-password over email',
+          issuer: {
+            label: 'Issuer',
+            description: 'Issuer name will be send to authenticator app when user configures it.',
+          },
         },
       },
 
