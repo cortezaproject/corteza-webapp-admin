@@ -20,7 +20,7 @@
     >
       <b-input-group>
         <b-form-input
-          v-model="value.handle"
+          v-model.trim="value.handle"
           :formatter="alphanum"
         />
       </b-input-group>
@@ -31,7 +31,7 @@
       label-cols="2"
     >
       <b-input-group>
-        <b-form-input v-model="value.issuer" />
+        <b-form-input v-model.trim="value.issuer" />
       </b-input-group>
     </b-form-group>
     <b-form-group
@@ -40,7 +40,7 @@
       label-cols="2"
     >
       <b-input-group>
-        <b-form-input v-model="value.key" />
+        <b-form-input v-model.trim="value.key" />
       </b-input-group>
     </b-form-group>
     <b-form-group
@@ -49,7 +49,7 @@
       label-cols="2"
     >
       <b-input-group>
-        <b-form-input v-model="value.secret" />
+        <b-form-input v-model.trim="value.secret" />
       </b-input-group>
     </b-form-group>
   </b-form-group>
