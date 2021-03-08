@@ -127,6 +127,14 @@
         {{ getSuspendStatus }}
       </confirmation-toggle>
 
+      <b-button
+        v-if="!user.emailConfirmed"
+        variant="link"
+        @click="$emit('patch', '/emailConfirmed', true)"
+      >
+        {{ $t('confirmEmail') }}
+      </b-button>
+
       <c-corredor-manual-buttons
         ui-page="user/editor"
         ui-slot="infoFooter"

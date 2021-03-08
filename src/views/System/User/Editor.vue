@@ -44,14 +44,7 @@
       @submit="onInfoSubmit"
       @delete="onDelete"
       @status="onStatusChange"
-    />
-
-    <c-user-editor-password
-      v-if="user && user.userID"
-      class="mt-3"
-      :processing="password.processing"
-      :success="password.success"
-      @submit="onPasswordSubmit"
+      @patch="onPatch"
     />
 
     <c-user-editor-roles
@@ -62,6 +55,23 @@
       :current-roles.sync="userRoles"
       @submit="onRoleSubmit"
     />
+
+    <c-user-editor-mfa
+      v-if="user && user.userID"
+      class="mt-3"
+      :mfa="user.meta.securityPolicy.mfa"
+      :processing="mfa.processing"
+      :success="mfa.success"
+      @patch="onPatch"
+    />
+
+    <c-user-editor-password
+      v-if="user && user.userID"
+      class="mt-3"
+      :processing="password.processing"
+      :success="password.success"
+      @submit="onPasswordSubmit"
+    />
   </b-container>
 </template>
 
@@ -70,6 +80,7 @@ import { system } from '@cortezaproject/corteza-js'
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CUserEditorInfo from 'corteza-webapp-admin/src/components/User/CUserEditorInfo'
 import CUserEditorPassword from 'corteza-webapp-admin/src/components/User/CUserEditorPassword'
+import CUserEditorMfa from 'corteza-webapp-admin/src/components/User/CUserEditorMFA'
 import CUserEditorRoles from 'corteza-webapp-admin/src/components/User/CUserEditorRoles'
 
 export default {
@@ -77,6 +88,7 @@ export default {
     CUserEditorRoles,
     CUserEditorPassword,
     CUserEditorInfo,
+    CUserEditorMfa,
   },
 
   i18nOptions: {
@@ -107,6 +119,10 @@ export default {
         success: false,
       },
       password: {
+        processing: false,
+        success: false,
+      },
+      mfa: {
         processing: false,
         success: false,
       },
@@ -260,6 +276,30 @@ export default {
     },
 
     /**
+     * Handles user MFA submit event
+     *
+     */
+    onPatch (path, value) {
+      console.log(path, value)
+
+      const cfg = {
+        method: 'patch',
+        url: this.$SystemAPI.userPartialUpdateEndpoint({ userID: this.userID }),
+        data: [{ path, value, op: 'replace' }],
+      }
+
+      return this.$SystemAPI.api().request(cfg).then(response => {
+        if (response.data.error) {
+          return Promise.reject(response.data.error)
+        } else {
+          return response.data.response
+        }
+      }).then(user => {
+        this.user = user
+      })
+    },
+
+    /**
      * Handles user role submit event, calls membership add or remove API endpoint
      * and handles response & errors
      */
@@ -316,6 +356,19 @@ export default {
           })
       }
     },
+
+    onEnforceEmailOTP () {
+      this.incLoader()
+    },
+
+    onDisableEmailOTP () {
+      this.incLoader()
+    },
+
+    onRemoveTOTP () {
+      this.incLoader()
+    },
+
   },
 }
 </script>

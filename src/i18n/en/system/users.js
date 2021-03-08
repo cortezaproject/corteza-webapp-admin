@@ -61,6 +61,8 @@ export default {
       name: 'Full name',
       handle: 'Handle',
 
+      confirmEmail: 'Confirm email address',
+
       suspend: 'Suspend',
       unsuspend: 'Unsuspend',
       suspendedAt: 'Suspended at',
@@ -80,6 +82,38 @@ export default {
       confirm: 'Confirm password',
       missmatch: 'The passwords must match !',
       length: 'The passwords must be at least {{length}} characters long!',
+    },
+
+    mfa: {
+      title: 'Multi-factor authentication',
+
+      emailOTP: {
+        disabled: {
+          text: 'Email OTP protection is <b>disabled</b> for this user.<br />' +
+            'Email with the security code on each login will not be sent.',
+        },
+        disable: {
+          label: 'Disable',
+        },
+        enabled: {
+          text: 'Email OTP protection is <b>enabled</b> for this user.<br />\n' +
+            'User will receive email with the security code on each login.',
+        },
+        enable: {
+          label: 'Enable',
+        },
+      },
+      TOTP: {
+        disabled: {
+          text: 'User did not configure TOTP protection.',
+        },
+        remove: {
+          label: 'Remove',
+        },
+        enabled: {
+          text: 'User configured TOTP protection auth mobile app.',
+        },
+      },
     },
 
     roles: {
