@@ -110,12 +110,6 @@ export default {
         })
         .then(rules => {
           this.access = this.access.concat(rules)
-
-          // Load effective Messaging permissions
-          return this.$MessagingAPI.permissionsEffective()
-        })
-        .then(rules => {
-          this.access = this.access.concat(rules)
         })
     },
   },

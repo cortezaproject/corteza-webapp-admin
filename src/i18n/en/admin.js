@@ -10,7 +10,6 @@ export default {
     base: {
       system: 'System',
       compose: 'Compose',
-      messaging: 'Messaging',
     },
 
     role: {

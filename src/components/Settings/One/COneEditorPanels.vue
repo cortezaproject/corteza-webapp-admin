@@ -190,7 +190,7 @@ const tabDefaults = {
 const tabProps = Object.getOwnPropertyNames(tabDefaults)
 
 export default {
-  name: 'CMessagingEditorBasic',
+  name: 'COneEditorPanels',
 
   i18nOptions: {
     namespaces: [ 'ui.one.settings' ],

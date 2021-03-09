@@ -34,7 +34,7 @@
 import CUploader from 'corteza-webapp-admin/src/components/CUploader'
 
 export default {
-  name: 'CMessagingEditorBasic',
+  name: 'COneLogo',
 
   i18nOptions: {
     namespaces: [ 'ui.one.settings' ],

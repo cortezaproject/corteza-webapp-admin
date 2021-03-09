@@ -1,11 +1,11 @@
-# Messaging WebApp
+# Admin Console WebApp
 
-## Project setup
+## Prerequisites & project setup
 
 ### Commands :
 ```bash
 yarn global add @vue/cli
-yarn install
+yarn
 ```
 
 In `/public` folder, create a copy of `config.example.js` to `config.js` and modify it according to your needs.
@@ -13,11 +13,8 @@ In `/public` folder, create a copy of `config.example.js` to `config.js` and mod
 ### Compiles and hot-reloads for development
 
 ```bash
-yarn run serve
+yarn serve
 ```
-
-_If you are running multiple frontends (unify, messaging, ...) you
-can spin up each one on a different port with `--port <PORT>` option._
 
 ### Compiles and minifies for production
 ```bash

@@ -129,28 +129,6 @@
     </b-list-group>
 
     <b-list-group
-      v-if="canGrant.messaging || canReadSettings.messaging"
-    >
-      <small class="ml-1 mt-3 font-weight-light text-uppercase">
-        {{ $t('messaging:navGroup.label') }}
-      </small>
-
-      <c-main-nav-item
-        v-if="canReadSettings.messaging"
-        :label="$t('messaging.settings:navItem.label')"
-        :to="{ name: 'messaging.settings' }"
-        :icon="['fas', 'sliders-h']"
-      />
-
-      <c-main-nav-item
-        v-if="canGrant.messaging"
-        :label="$t('messaging.permissions:navItem.label')"
-        :to="{ name: 'messaging.permissions' }"
-        :icon="['fas', 'lock']"
-      />
-    </b-list-group>
-
-    <b-list-group
       v-if="canReadSettings.system"
     >
       <small class="ml-1 mt-3 font-weight-light text-uppercase">
@@ -193,13 +171,11 @@ export default {
       canGrant: {
         system: false,
         compose: false,
-        messaging: false,
         federation: false,
       },
       canReadSettings: {
         system: false,
         compose: false,
-        messaging: false,
         federation: false,
       },
     }
@@ -209,7 +185,7 @@ export default {
     access: {
       immediate: true,
       handler () {
-        ['system', 'compose', 'messaging', 'federation'].forEach(res => {
+        ['system', 'compose', 'federation'].forEach(res => {
           this.canGrant[res] = (this.access.find(({ resource, operation }) => resource === res && operation === 'grant') || {}).allow
           this.canReadSettings[res] = (this.access.find(({ resource, operation }) => resource === res && operation === 'settings.read') || {}).allow
         })
