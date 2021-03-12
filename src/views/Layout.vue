@@ -21,7 +21,6 @@
       <main
         class="flex-fill overflow-auto pb-5"
       >
-        <c-the-alert-container />
         <router-view />
         <c-permissions-modal />
       </main>
@@ -29,7 +28,6 @@
   </div>
 </template>
 <script>
-import CTheAlertContainer from 'corteza-webapp-admin/src/components/CTheAlertContainer'
 import CTheHeader from 'corteza-webapp-admin/src/components/CTheHeader'
 import CTheMainNav from 'corteza-webapp-admin/src/components/CTheMainNav'
 import { components, mixins } from '@cortezaproject/corteza-vue'
@@ -37,7 +35,6 @@ import { components, mixins } from '@cortezaproject/corteza-vue'
 export default {
   components: {
     CPermissionsModal: components.CPermissionsModal,
-    CTheAlertContainer,
     CTheHeader,
     CTheMainNav,
   },
@@ -75,12 +72,7 @@ export default {
     this.access = []
 
     this.loadPermissions()
-      .catch((err) => {
-        console.log(err)
-        if (err && err.message) {
-          this.$store.dispatch('ui/appendAlert', err.message)
-        }
-      })
+      .catch(this.stdReject)
       .finally(() => {
         this.$store.dispatch('ui/decLoader')
       })

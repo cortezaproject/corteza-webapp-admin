@@ -8,7 +8,14 @@ export default {
     }),
 
     stdReject (error) {
-      this.$store.dispatch('ui/appendAlert', error)
+      // Logging the error
+      console.error(error)
+
+      // And showing the toast
+      this.$bvToast.toast(error.toString(), {
+        variant: 'danger',
+        title: 'Failed to process request',
+      })
     },
 
     /**

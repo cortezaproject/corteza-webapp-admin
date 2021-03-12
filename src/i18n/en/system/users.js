@@ -126,5 +126,13 @@ export default {
       remove: 'Remove',
       searchRoles: 'Search roles',
     },
+
+    notifications: {
+      title: 'User updated',
+
+      userInfoOK: 'User info successfully updated',
+      passwordUK: 'Password successfully  changed',
+      membershipOK: 'Membership successfully  updated',
+    },
   },
 }

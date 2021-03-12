@@ -142,9 +142,7 @@ export default {
         this.$SystemAPI.userList({ query, incSuspended: true, incDeleted: true })
           .then(({ set: items = [] }) => {
             this.users = items
-          }).catch(({ message }) => {
-            this.$store.dispatch('ui/appendAlert', message)
-          })
+          }).catch(this.stdReject)
       },
     },
   },
@@ -155,9 +153,7 @@ export default {
       this.$SystemAPI.userList({ userID, incSuspended: true, incDeleted: true })
         .then(({ set: items = [] }) => {
           this.memberUsers = items
-        }).catch(({ message }) => {
-          this.$store.dispatch('ui/appendAlert', message)
-        })
+        }).catch(this.stdReject)
     }
   },
 

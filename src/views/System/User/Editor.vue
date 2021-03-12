@@ -209,6 +209,9 @@ export default {
           .then(user => {
             this.animateSuccess('info')
             this.user = new system.User(user)
+
+            // And showing the toast
+            this.toastSuccess('userInfoOK')
           })
           .catch(this.stdReject)
           .finally(() => {
@@ -268,6 +271,9 @@ export default {
       this.$SystemAPI.userSetPassword({ userID: this.userID, password })
         .then(() => {
           this.animateSuccess('password')
+
+          // And showing the toast
+          this.toastSuccess('passwordOK')
         })
         .catch(this.stdReject)
         .finally(() => {
@@ -318,6 +324,8 @@ export default {
         .then(() => {
           this.animateSuccess('roles')
           this.fetchUserRoles()
+
+          this.toastSuccess('membershippdateOK')
         })
         .catch(this.stdReject)
         .finally(() => {
@@ -355,18 +363,12 @@ export default {
       }
     },
 
-    onEnforceEmailOTP () {
-      this.incLoader()
+    toastSuccess (i18nMessage) {
+      this.$bvToast.toast(this.$t('notifications.' + i18nMessage), {
+        variant: 'primary',
+        title: this.$t('notifications.title'),
+      })
     },
-
-    onDisableEmailOTP () {
-      this.incLoader()
-    },
-
-    onRemoveTOTP () {
-      this.incLoader()
-    },
-
   },
 }
 </script>

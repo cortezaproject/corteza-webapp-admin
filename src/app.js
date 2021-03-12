@@ -47,7 +47,6 @@ export default (options = {}) => {
 
         // ref to vue is needed inside compose helper
         // load and register bundle and list of client/server scripts
-
         const bundleLoaderOpt = {
           // Name of the bundle to load
           bundle: 'admin',
@@ -63,6 +62,16 @@ export default (options = {}) => {
             accessTokenFn: accessTokenFn,
           }),
         }
+
+        // // setup listner for prompts
+        // this.$root.$on('workflowPrompt', (wfp) => {
+        //   console.log(wfp)
+        //   this.$bvToast.toast("", {
+        //     variant: 'danger',
+        //     title: 'Failed to process request'
+        //   })
+        // })
+        // this.$WFPrompts.bindVue(this).watch()
 
         this.loadBundle(bundleLoaderOpt)
           .then(() => this.$SystemAPI.automationList({ excludeInvalid: true }))

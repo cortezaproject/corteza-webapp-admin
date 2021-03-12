@@ -147,15 +147,22 @@ export default {
         this.paging.nextPage = filter.nextPage
         this.paging.prevPage = filter.prevPage
         return set
-      }).catch((error) => {
-        this.$store.dispatch('ui/appendAlert', error)
-      }).finally(() => {
-        this.decLoader()
       })
+        .catch(this.stdReject)
+        .finally(() => {
+          this.decLoader()
+        })
     },
 
     stdReject (error) {
-      this.$store.dispatch('ui/appendAlert', error)
+      // Logging the error
+      console.error(error)
+
+      // And showing the toast
+      this.$bvToast.toast(error.toString(), {
+        variant: 'danger',
+        title: 'Failed to process request',
+      })
     },
   },
 }
