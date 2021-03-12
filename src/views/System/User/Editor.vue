@@ -206,9 +206,9 @@ export default {
       if (payload.userID) {
         // On update, reset the user obj
         this.$SystemAPI.userUpdate(payload)
-          .then(u => {
+          .then(user => {
             this.animateSuccess('info')
-            this.user = u
+            this.user = new system.User(user)
           })
           .catch(this.stdReject)
           .finally(() => {
@@ -280,8 +280,6 @@ export default {
      *
      */
     onPatch (path, value) {
-      console.log(path, value)
-
       const cfg = {
         method: 'patch',
         url: this.$SystemAPI.userPartialUpdateEndpoint({ userID: this.userID }),
@@ -295,7 +293,7 @@ export default {
           return response.data.response
         }
       }).then(user => {
-        this.user = user
+        this.user = new system.User(user)
       })
     },
 
