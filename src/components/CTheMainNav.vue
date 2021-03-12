@@ -45,7 +45,7 @@
       <c-main-nav-item
         :label="$t('system.templates:navItem.label')"
         :to="{ name: 'system.template' }"
-        :icon="['fas', 'folder']"
+        :icon="['fas', 'file-code']"
       />
 
       <c-main-nav-item
@@ -66,7 +66,7 @@
         v-if="true"
         :label="$t('system.authclients:navItem.label')"
         :to="{ name: 'system.authclient' }"
-        :icon="['fas', 'lock']"
+        :icon="['fas', 'key']"
       />
 
       <c-main-nav-item
