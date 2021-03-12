@@ -141,62 +141,6 @@
           </b-input-group>
         </b-form-group>
       </b-form-group>
-
-      <b-form-group
-        :label="$t('mail.emailConfirmation.title')"
-        label-size="lg"
-      >
-        <b-form-group
-          :label="$t('mail.emailConfirmation.subject')"
-          label-cols="2"
-        >
-          <b-input-group>
-            <b-form-input v-model="settings['auth.mail.email-confirmation.subject.en']" />
-          </b-input-group>
-        </b-form-group>
-
-        <b-form-group
-          :label="$t('mail.emailConfirmation.body')"
-          label-cols="2"
-        >
-          <b-input-group>
-            <b-form-textarea
-              v-model="settings['auth.mail.email-confirmation.body.en']"
-              class="overflow-auto"
-              max-rows="20"
-            />
-          </b-input-group>
-        </b-form-group>
-      </b-form-group>
-
-      <b-form-group
-        :label="$t('mail.passwordReset.title')"
-        label-size="lg"
-        class="mb-0"
-      >
-        <b-form-group
-          :label="$t('mail.passwordReset.subject')"
-          label-cols="2"
-        >
-          <b-input-group>
-            <b-form-input v-model="settings['auth.mail.password-reset.subject.en']" />
-          </b-input-group>
-        </b-form-group>
-
-        <b-form-group
-          :label="$t('mail.passwordReset.body')"
-          label-cols="2"
-          class="mb-0"
-        >
-          <b-input-group>
-            <b-form-textarea
-              v-model="settings['auth.mail.password-reset.body.en']"
-              class="overflow-auto"
-              max-rows="20"
-            />
-          </b-input-group>
-        </b-form-group>
-      </b-form-group>
     </b-form>
 
     <template #header>

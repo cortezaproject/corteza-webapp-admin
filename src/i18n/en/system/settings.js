@@ -44,27 +44,10 @@ export default {
       },
 
       mail: {
-        title: 'Mail',
-        'from-address': 'Sender address',
-        'from-name': 'Sender name',
-        emailConfirmation: {
-          title: 'Email Confirmation',
-          subject: 'Subject',
-          body: 'Body',
-        },
-        passwordReset: {
-          title: 'Password Reset',
-          subject: 'Subject',
-          body: 'Body',
-        },
+        title: 'Authentication email sender mail',
+        'from-address': 'Sender\'s address',
+        'from-name': 'Sender\'s name',
       },
-    },
-
-    email: {
-      title: 'Email',
-
-      header: 'Header (EmailHeaderEn)',
-      footer: 'Footer (EmailFooterEn)',
     },
 
     external: {

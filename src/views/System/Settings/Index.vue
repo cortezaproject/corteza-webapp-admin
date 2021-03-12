@@ -14,15 +14,6 @@
       @submit="onAuthSubmit"
     />
 
-    <c-system-editor-email
-      class="mt-3"
-      :email="getEmail"
-      :processing="email.processing"
-      :success="email.success"
-      :can-manage="canManage"
-      @submit="onEmailSubmit"
-    />
-
     <c-system-editor-external
       class="mt-3"
       :external="settings"
@@ -36,7 +27,6 @@
 <script>
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CSystemEditorAuth from 'corteza-webapp-admin/src/components/Settings/System/CSystemEditorAuth'
-import CSystemEditorEmail from 'corteza-webapp-admin/src/components/Settings/System/CSystemEditorEmail'
 import CSystemEditorExternal from 'corteza-webapp-admin/src/components/Settings/System/CSystemEditorExternal'
 
 export default {
@@ -47,7 +37,6 @@ export default {
 
   components: {
     CSystemEditorAuth,
-    CSystemEditorEmail,
     CSystemEditorExternal,
   },
 
@@ -66,11 +55,6 @@ export default {
         success: false,
       },
 
-      email: {
-        processing: false,
-        success: false,
-      },
-
       external: {
         processing: false,
         success: false,
@@ -85,20 +69,6 @@ export default {
           const { name, value } = obj
           const split = name.split('.')
           if (split[0] === 'auth' && split[1] !== 'external') {
-            map[name] = value
-          }
-          return map
-        }, {})
-      }
-      return {}
-    },
-
-    getEmail () {
-      if (this.settings.length > 0) {
-        return this.settings.reduce((map, obj) => {
-          const { name, value } = obj
-          const split = name.split('.')
-          if (split[0] === 'general' && split[1] === 'mail') {
             map[name] = value
           }
           return map
@@ -148,23 +118,6 @@ export default {
         .catch(this.stdReject)
         .finally(() => {
           this.auth.processing = false
-        })
-    },
-
-    onEmailSubmit (email) {
-      this.email.processing = true
-
-      const values = Object.entries(email).map(([name, value]) => {
-        return { name, value }
-      })
-
-      this.$SystemAPI.settingsUpdate({ values })
-        .then(() => {
-          this.animateSuccess('email')
-        })
-        .catch(this.stdReject)
-        .finally(() => {
-          this.email.processing = false
         })
     },
 
