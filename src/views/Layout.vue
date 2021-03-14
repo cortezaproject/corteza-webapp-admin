@@ -23,6 +23,7 @@
       >
         <router-view />
         <c-permissions-modal />
+        <c-prompts />
       </main>
     </div>
   </div>
@@ -35,6 +36,7 @@ import { components, mixins } from '@cortezaproject/corteza-vue'
 export default {
   components: {
     CPermissionsModal: components.CPermissionsModal,
+    CPrompts: components.CPrompts,
     CTheHeader,
     CTheMainNav,
   },

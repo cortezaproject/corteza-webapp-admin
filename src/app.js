@@ -34,7 +34,7 @@ export default (options = {}) => {
     },
 
     async created () {
-      this.$auth.handle().then(({ accessTokenFn, user }) => {
+      return this.$auth.handle().then(({ accessTokenFn, user }) => {
         // Setup the progress bar
         this.$Progress.start()
         this.$router.beforeEach((to, from, next) => {
@@ -63,17 +63,10 @@ export default (options = {}) => {
           }),
         }
 
-        // // setup listner for prompts
-        // this.$root.$on('workflowPrompt', (wfp) => {
-        //   console.log(wfp)
-        //   this.$bvToast.toast("", {
-        //     variant: 'danger',
-        //     title: 'Failed to process request'
-        //   })
-        // })
-        // this.$WFPrompts.bindVue(this).watch()
+        // start workflow prompt watcher
+        this.$store.dispatch('wfPrompts/watch')
 
-        this.loadBundle(bundleLoaderOpt)
+        return this.loadBundle(bundleLoaderOpt)
           .then(() => this.$SystemAPI.automationList({ excludeInvalid: true }))
           .then(this.makeAutomationScriptsRegistrator(
             // compose specific handler that routes  onManual events for server-scripts
@@ -106,6 +99,7 @@ export default (options = {}) => {
         throw err
       })
     },
+
     router,
     store,
     i18n: i18n(),
