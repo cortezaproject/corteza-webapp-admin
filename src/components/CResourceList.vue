@@ -11,8 +11,8 @@
         id="resource-list"
         hover
         responsive
-        class="mb-0"
         head-variant="light"
+        class="mb-0"
         :primary-key="primaryKey"
         :sort-by.sync="sorting.sortBy"
         :sort-desc.sync="sorting.sortDesc"

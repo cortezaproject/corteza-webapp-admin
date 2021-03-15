@@ -4,6 +4,10 @@ html {
   overflow: hidden;
 }
 
+:focus {
+  outline: none;
+}
+
 .overflow-x-hidden {
   overflow-x: hidden!important;
 }
