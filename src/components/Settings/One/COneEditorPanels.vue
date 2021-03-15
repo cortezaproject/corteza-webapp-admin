@@ -18,7 +18,6 @@
           <b-row no-gutters>
             <b-col
               cols="6"
-              class="h2"
             >
               <b-form-checkbox
                 v-if="p === 0"

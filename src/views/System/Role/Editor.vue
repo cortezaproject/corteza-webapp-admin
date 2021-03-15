@@ -5,29 +5,28 @@
     <c-content-header
       :title="$t('title')"
     >
-      <b-button-group
-        v-if="roleID && canCreate"
+      <span
+        class="text-nowrap"
       >
         <b-button
-          variant="link"
+          v-if="roleID && canCreate"
+          variant="primary"
+          class="mr-2"
           :to="{ name: 'system.role.new' }"
         >
           {{ $t('new') }}
         </b-button>
-      </b-button-group>
-      <b-button-group
-        v-if="roleID && canGrant"
-      >
         <c-permissions-button
+          v-if="roleID && canGrant"
           :title="role.name"
           :target="role.name"
           :resource="'system:role:'+roleID"
-          button-variant="link"
+          button-variant="light"
         >
+          <font-awesome-icon :icon="['fas', 'lock']" />
           {{ $t('permissions') }}
         </c-permissions-button>
-      </b-button-group>
-
+      </span>
       <c-corredor-manual-buttons
         ui-page="role/editor"
         ui-slot="toolbar"

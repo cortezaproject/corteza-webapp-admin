@@ -1,14 +1,26 @@
 <template>
-  <b-row class="mb-2">
-    <h2
-      class="col-4"
-      v-html="title"
-    />
-    <b-button-toolbar
-      class="col-8 px-2 justify-content-end"
+  <b-row
+    class="mb-2"
+    no-gutters
+  >
+    <b-col
+      cols="12"
+      md="4"
     >
-      <slot />
-    </b-button-toolbar>
+      <h2
+        v-html="title"
+      />
+    </b-col>
+    <b-col
+      cols="12"
+      md="8"
+    >
+      <b-button-toolbar
+        class="justify-content-end"
+      >
+        <slot />
+      </b-button-toolbar>
+    </b-col>
   </b-row>
 </template>
 

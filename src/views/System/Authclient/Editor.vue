@@ -5,28 +5,28 @@
     <c-content-header
       :title="$t('title')"
     >
-      <b-button-group
-        v-if="authClientID && canCreate"
+      <span
+        class="text-nowrap"
       >
         <b-button
-          variant="link"
+          v-if="authClientID && canCreate"
+          variant="primary"
+          class="mr-2"
           :to="{ name: 'system.authclient.new' }"
         >
           {{ $t('new') }}
         </b-button>
-      </b-button-group>
-      <b-button-group
-        v-if="authClientID && canGrant"
-      >
         <c-permissions-button
+          v-if="authClientID && canGrant"
           :title="authclient.name"
           :target="authclient.name"
           :resource="'system:auth-client:'+authClientID"
-          button-variant="link"
+          button-variant="light"
         >
+          <font-awesome-icon :icon="['fas', 'lock']" />
           {{ $t('permissions') }}
         </c-permissions-button>
-      </b-button-group>
+      </span>
     </c-content-header>
 
     <c-authclient-editor-info

@@ -5,28 +5,27 @@
     <c-content-header
       :title="$t('title')"
     >
-      <b-button-group
+      <span
         v-if="userID"
+        class="text-nowrap"
       >
         <b-button
-          variant="link"
+          variant="primary"
+          class="mr-2"
           :to="{ name: 'system.user.new' }"
         >
           {{ $t('new') }}
         </b-button>
-      </b-button-group>
-      <b-button-group
-        v-if="userID"
-      >
         <c-permissions-button
           :title="user.name || user.handle || user.email"
           :target="user.name || user.handle || user.email"
           :resource="'system:user:'+userID"
-          button-variant="link"
+          button-variant="light"
         >
+          <font-awesome-icon :icon="['fas', 'lock']" />
           {{ $t('permissions') }}
         </c-permissions-button>
-      </b-button-group>
+      </span>
       <c-corredor-manual-buttons
         ui-page="user/editor"
         ui-slot="toolbar"

@@ -5,23 +5,25 @@
     <c-content-header
       :title="$t('title')"
     >
-      <b-button-group>
+      <span
+        class="text-nowrap"
+      >
         <b-button
-          variant="link"
+          variant="primary"
+          class="mr-2"
           :to="{ name: 'system.user.new' }"
         >
           {{ $t('new') }}
         </b-button>
-      </b-button-group>
-      <b-button-group>
         <c-permissions-button
           :title="$t('title')"
           resource="system:user:*"
-          button-variant="link"
+          button-variant="light"
         >
+          <font-awesome-icon :icon="['fas', 'lock']" />
           {{ $t('permissions') }}
         </c-permissions-button>
-      </b-button-group>
+      </span>
       <b-dropdown
         v-if="false"
         variant="link"

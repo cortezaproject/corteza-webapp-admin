@@ -5,29 +5,28 @@
     <c-content-header
       :title="$t('title')"
     >
-      <b-button-group
-        v-if="templateID && canCreate"
+      <span
+        class="text-nowrap"
       >
         <b-button
-          variant="link"
+          v-if="templateID && canCreate"
+          variant="primary"
+          class="mr-2"
           :to="{ name: 'system.template.new' }"
         >
           {{ $t('new') }}
         </b-button>
-      </b-button-group>
-      <b-button-group
-        v-if="templateID && canGrant"
-      >
         <c-permissions-button
+          v-if="templateID && canGrant"
           :title="template.handle"
           :target="template.handle"
           :resource="'system:template:'+templateID"
-          button-variant="link"
+          button-variant="light"
         >
+          <font-awesome-icon :icon="['fas', 'lock']" />
           {{ $t('permissions') }}
         </c-permissions-button>
-      </b-button-group>
-
+      </span>
       <c-corredor-manual-buttons
         ui-page="template/editor"
         ui-slot="toolbar"

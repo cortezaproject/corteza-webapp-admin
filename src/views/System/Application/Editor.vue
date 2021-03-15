@@ -5,28 +5,27 @@
     <c-content-header
       :title="$t('title')"
     >
-      <b-button-group
-        v-if="applicationID && canCreate"
+      <span
+        class="text-nowrap"
       >
         <b-button
-          variant="link"
+          v-if="applicationID && canCreate"
+          variant="primary"
           :to="{ name: 'system.application.new' }"
         >
           {{ $t('new') }}
         </b-button>
-      </b-button-group>
-      <b-button-group
-        v-if="applicationID && canGrant"
-      >
         <c-permissions-button
+          v-if="applicationID && canGrant"
           :title="application.name"
           :target="application.name"
           :resource="'system:application:'+applicationID"
-          button-variant="link"
+          button-variant="light"
         >
+          <font-awesome-icon :icon="['fas', 'lock']" />
           {{ $t('permissions') }}
         </c-permissions-button>
-      </b-button-group>
+      </span>
     </c-content-header>
 
     <c-application-editor-info

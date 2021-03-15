@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="hasAccess"
-    class="d-flex flex-column vh-100 bg-light"
+    class="d-flex flex-column vh-100"
   >
     <small
       class="p-1 text-secondary position-absolute version"
