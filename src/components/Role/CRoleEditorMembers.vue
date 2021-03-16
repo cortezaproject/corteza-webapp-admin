@@ -9,24 +9,29 @@
     >
       <b-form-group
         :label="$t('count', { count: members.length })"
-        label-cols="2"
         class="mb-0"
       >
         <table
           v-if="members && users"
-          class="w-100 m-0 p-0"
+          class="w-100 p-0 table-hover mb-2"
         >
-          <tr
-            v-for="u in memberUsers"
-            :key="u.userID"
-          >
-            <td>{{ u.name || u.handle || u.username || u.email || $t('unnamed') }}</td>
-            <td class="m-0 p-0 float-right">
-              <b-button @click="removeMember(u)">
-                {{ $t('remove') }}
-              </b-button>
-            </td>
-          </tr>
+          <tbody>
+            <tr
+              v-for="u in memberUsers"
+              :key="u.userID"
+            >
+              <td>{{ u.name || u.handle || u.username || u.email || $t('unnamed') }}</td>
+              <td class="text-right">
+                <b-button
+                  variant="link"
+                  class="text-danger pr-0"
+                  @click="removeMember(u)"
+                >
+                  {{ $t('remove') }}
+                </b-button>
+              </td>
+            </tr>
+          </tbody>
         </table>
         <b-input-group>
           <b-input-group-prepend>
@@ -36,28 +41,33 @@
         </b-input-group>
         <table
           v-if="filter && users"
-          class="w-100 m-0 p-0"
+          class="w-100 p-0 table-hover mt-2"
         >
-          <tr
-            v-for="u in filtered"
-            :key="u.userID"
-          >
-            <td>{{ u.name || u.handle || u.username || u.email || $t('unnamed') }}</td>
-            <td class="m-0 p-0 float-right">
-              <b-button
-                v-if="isMember(u)"
-                @click="removeMember(u)"
-              >
-                {{ $t('remove') }}
-              </b-button>
-              <b-button
-                v-else
-                @click="addMember(u)"
-              >
-                {{ $t('add') }}
-              </b-button>
-            </td>
-          </tr>
+          <tbody>
+            <tr
+              v-for="u in filtered"
+              :key="u.userID"
+            >
+              <td>{{ u.name || u.handle || u.username || u.email || $t('unnamed') }}</td>
+              <td class="text-right">
+                <b-button
+                  v-if="isMember(u)"
+                  variant="link"
+                  class="text-danger pr-0"
+                  @click="removeMember(u)"
+                >
+                  {{ $t('remove') }}
+                </b-button>
+                <b-button
+                  v-else
+                  variant="light"
+                  @click="addMember(u)"
+                >
+                  {{ $t('add') }}
+                </b-button>
+              </td>
+            </tr>
+          </tbody>
         </table>
       </b-form-group>
     </b-form>

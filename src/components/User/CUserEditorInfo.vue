@@ -129,7 +129,7 @@
 
       <b-button
         v-if="!user.emailConfirmed"
-        variant="link"
+        variant="light"
         @click="$emit('patch', '/emailConfirmed', true)"
       >
         {{ $t('confirmEmail') }}
