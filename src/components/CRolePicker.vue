@@ -31,19 +31,24 @@
     </b-form-text>
     <table
       v-if="filter && filtered"
-      class="w-100 m-0 p-0"
+      class="w-100 p-0 table-hover"
     >
-      <tr
-        v-for="r in filtered"
-        :key="r.roleID"
-      >
-        <td>{{ r.name || r.handle || r.roleID || $t('unnamed') }}</td>
-        <td class="m-0 p-0 float-right">
-          <b-button @click="addRole(r)">
-            {{ $t('add') }}
-          </b-button>
-        </td>
-      </tr>
+      <tbody>
+        <tr
+          v-for="r in filtered"
+          :key="r.roleID"
+        >
+          <td>{{ r.name || r.handle || r.roleID || $t('unnamed') }}</td>
+          <td class="text-right">
+            <b-button
+              variant="light"
+              @click="addRole(r)"
+            >
+              {{ $t('add') }}
+            </b-button>
+          </td>
+        </tr>
+      </tbody>
     </table>
   </b-form-group>
 </template>

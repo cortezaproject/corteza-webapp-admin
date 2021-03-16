@@ -39,8 +39,8 @@
             </b-col>
             <b-col>
               <b-button
-                variant="link"
-                class="align-top border-0 p-0"
+                variant="light"
+                class="align-top"
                 @click="redirectURI.push('')"
               >
                 + {{ $t('add') }}
@@ -65,13 +65,12 @@
             />
 
             <b-button
-              class="ml-1"
-              variant="outline-danger"
+              class="ml-1 text-danger"
+              variant="link"
               @click="redirectURI.splice(index, 1)"
             >
               <font-awesome-icon
                 :icon="['fas', 'times']"
-                class="fa-w-16"
               />
             </b-button>
           </b-input-group>
@@ -93,8 +92,8 @@
 
           <b-button
             v-if="!secret.show"
-            class="ml-1"
-            variant="outline-primary"
+            class="ml-1 text-primary"
+            variant="link"
             @click="showSecret()"
           >
             <font-awesome-icon
@@ -104,8 +103,8 @@
 
           <b-button
             v-else
-            class="ml-1"
-            variant="outline-primary"
+            class="ml-1 text-primary"
+            variant="link"
             @click="regenerateSecret()"
           >
             <font-awesome-icon
@@ -150,13 +149,12 @@
           />
 
           <b-button
-            class="ml-1"
-            variant="outline-danger"
+            class="ml-1 text-danger"
+            variant="link"
             @click="resetDateTime('validFrom')"
           >
             <font-awesome-icon
               :icon="['fas', 'times']"
-              class="fa-w-16"
             />
           </b-button>
         </b-input-group>
@@ -179,13 +177,12 @@
           />
 
           <b-button
-            class="ml-1"
-            variant="outline-danger"
+            class="ml-1 text-danger"
+            variant="link"
             @click="resetDateTime('expiresAt')"
           >
             <font-awesome-icon
               :icon="['fas', 'times']"
-              class="fa-w-16"
             />
           </b-button>
         </b-input-group>
