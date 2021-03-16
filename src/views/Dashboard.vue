@@ -16,8 +16,6 @@
     <b-row>
       <b-col
         cols="12"
-        lg="7"
-        xl="8"
       >
         <b-card
           class="shadow-sm mb-3"
@@ -88,11 +86,10 @@
       </b-col>
       <b-col
         cols="12"
-        lg="5"
-        xl="4"
+        md="6"
       >
         <b-card
-          class="shadow-sm"
+          class="shadow-sm mb-3"
         >
           <b-card-title>
             <h1>
@@ -152,8 +149,13 @@
             </b-row>
           </b-container>
         </b-card>
+      </b-col>
+      <b-col
+        cols="12"
+        md="6"
+      >
         <b-card
-          class="shadow-sm mt-3"
+          class="shadow-sm mb-3"
         >
           <b-card-title>
             <h1>
