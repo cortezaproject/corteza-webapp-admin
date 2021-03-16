@@ -11,50 +11,48 @@
       </h3>
     </template>
 
-    <b-card
-      v-for="sec in sections"
-      :key="sec.key"
-      no-body
-      class="mb-1"
-    >
-      <b-card-header
-        header-tag="header"
-        class="p-1"
-        role="tab"
+    <b-card-body>
+      <span
+        v-for="sec in sections"
+        :key="sec.key"
       >
         <b-btn
-          variant="link"
-          class="w-100"
+          variant="light"
+          class="mb-2"
+          block
           @click="openSection(sec.key)"
         >
           {{ $t(sec.key) }}
         </b-btn>
-      </b-card-header>
-      <b-collapse
-        :visible="expandedSections[sec.key]"
-        role="tabpanel"
-        class="py-2 px-0"
-      >
-        <b-list-group flush>
-          <b-list-group-item
-            v-for="(opt, i) in sec.options"
-            :key="opt.label + i"
-            @click="opt.onClick || (() => {})"
-          >
-            {{ opt.label }}
-            <b-btn
-              variant="link"
-              @click="copyToCb(opt.copyValue())"
+        <b-collapse
+          :visible="expandedSections[sec.key]"
+          role="tabpanel"
+          class="pb-2 px-0"
+        >
+          <b-list-group flush>
+            <b-list-group-item
+              v-for="(opt, i) in sec.options"
+              :key="opt.label + i"
+              class="px-0 text-nowrap"
+              @click="opt.onClick || (() => {})"
             >
-              <font-awesome-icon
-                v-if="opt.copyValue"
-                :icon="['far', 'copy']"
-              />
-            </b-btn>
-          </b-list-group-item>
-        </b-list-group>
-      </b-collapse>
-    </b-card>
+              {{ opt.label }}
+              <b-btn
+                variant="link"
+                class="pr-0 float-right"
+                @click="copyToCb(opt.copyValue())"
+              >
+                <font-awesome-icon
+                  v-if="opt.copyValue"
+                  :icon="['far', 'copy']"
+                />
+              </b-btn>
+            </b-list-group-item>
+          </b-list-group>
+        </b-collapse>
+
+      </span>
+    </b-card-body>
   </b-card>
 </template>
 

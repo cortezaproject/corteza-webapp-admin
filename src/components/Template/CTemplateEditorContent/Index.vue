@@ -1,7 +1,11 @@
 <template>
   <b-row>
     <!-- Toolbox -->
-    <b-col cols="3">
+    <b-col
+      cols="12"
+      lg="3"
+      class="mb-3 mb-lg-0"
+    >
       <editor-toolbox
         :template="template"
         :partials="partials"
@@ -12,23 +16,25 @@
     <b-modal
       v-model="previewModalVisible"
       hide-footer
-      centered
       size="lg"
-      body-class="px-5"
       @hidden="previewBlob = ''"
     >
       <iframe
         v-if="previewBlob"
-        class="w-100 vh-100"
+        class="w-100 border-0"
         :src="previewBlob"
       />
     </b-modal>
 
     <!-- Content editor -->
-    <b-col cols="9">
+    <b-col
+      cols="12"
+      lg="9"
+    >
       <b-card
         class="shadow-sm"
         header-bg-variant="white"
+        header-class="d-flex align-items-center"
         footer-bg-variant="white"
       >
         <component
@@ -39,16 +45,14 @@
         <template #header>
           <h3 class="m-0">
             {{ $t('title') }}
-
-            <b-badge
-              v-if="template.partial"
-              variant="primary"
-              style="border-radius: 0.5rem;"
-              class="py-1"
-            >
-              {{ $t('partial') }}
-            </b-badge>
           </h3>
+          <b-badge
+            v-if="template.partial"
+            variant="primary"
+            class="ml-2"
+          >
+            {{ $t('partial') }}
+          </b-badge>
         </template>
 
         <template #footer>
@@ -77,7 +81,7 @@
           :highlight-active-line="true"
           class="mt-1"
           width="100%"
-          height="200px"
+          height="500px"
           mode="json"
           theme="chrome"
           name="preview-data"
@@ -95,23 +99,24 @@
         </template>
 
         <template #footer>
-          <b-button-group
+          <div
             class="float-right"
           >
             <b-btn
-              variant="primary"
+              variant="light"
+              class="mr-2"
               @click="openPreview('html')"
             >
               {{ $t('preview.html') }}
             </b-btn>
 
             <b-btn
-              variant="primary"
+              variant="light"
               @click="openPreview('pdf')"
             >
               {{ $t('preview.pdf') }}
             </b-btn>
-          </b-button-group>
+          </div>
         </template>
       </b-card>
     </b-col>

@@ -105,8 +105,8 @@ export default {
 
       preview: {
         title: 'Preview output',
-        html: 'As HTML',
-        pdf: 'As PDF',
+        html: 'Preview HTML',
+        pdf: 'Preview PDF',
       },
     },
   },
