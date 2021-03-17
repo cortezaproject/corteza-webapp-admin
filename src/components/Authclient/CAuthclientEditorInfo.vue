@@ -154,7 +154,7 @@
             @click="resetDateTime('validFrom')"
           >
             <font-awesome-icon
-              :icon="['fas', 'times']"
+              :icon="['fas', 'sync']"
             />
           </b-button>
         </b-input-group>
@@ -182,7 +182,7 @@
             @click="resetDateTime('expiresAt')"
           >
             <font-awesome-icon
-              :icon="['fas', 'times']"
+              :icon="['fas', 'sync']"
             />
           </b-button>
         </b-input-group>
