@@ -1,3 +1,4 @@
+import workflows from './workflows'
 import permissions from './permissions'
 
 export default {
@@ -7,5 +8,6 @@ export default {
     },
   },
 
+  'automation.workflows': workflows,
   'automation.permissions': permissions,
 }

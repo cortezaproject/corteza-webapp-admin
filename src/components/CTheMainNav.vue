@@ -112,6 +112,12 @@
       </small>
 
       <c-main-nav-item
+        :label="$t('automation.workflows:navItem.label')"
+        :to="{ name: 'automation.workflow' }"
+        :icon="['fas', 'project-diagram']"
+      />
+
+      <c-main-nav-item
         :label="$t('automation.permissions:navItem.label')"
         :to="{ name: 'automation.permissions' }"
         :icon="['fas', 'lock']"

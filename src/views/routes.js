@@ -115,6 +115,7 @@ export default [
       {
         ...wrap(`automation`, `/automation`),
         children: [
+          combo('automation', 'workflow'),
           r('automation.permissions', 'permissions', 'Automation/Permissions/Index'),
         ],
       },
