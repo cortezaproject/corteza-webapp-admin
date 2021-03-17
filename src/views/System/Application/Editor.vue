@@ -21,6 +21,7 @@
           :target="application.name"
           :resource="'system:application:'+applicationID"
           button-variant="light"
+          class="ml-2"
         >
           <font-awesome-icon :icon="['fas', 'lock']" />
           {{ $t('permissions') }}
