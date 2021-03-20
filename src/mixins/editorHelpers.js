@@ -10,9 +10,16 @@ export default {
     stdReject (error) {
       // Logging the error
       console.error(error)
+      let msg = 'An error occurred'
+
+      if (typeof error === 'object' && error.message) {
+        msg = error.message
+      } else {
+        msg = error.toString()
+      }
 
       // And showing the toast
-      this.$bvToast.toast(error.toString(), {
+      this.$bvToast.toast(msg, {
         variant: 'danger',
         title: 'Failed to process request',
       })
