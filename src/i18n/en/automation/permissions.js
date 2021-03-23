@@ -17,7 +17,36 @@ export default {
       submit: 'Submit',
 
       automation: {
-        title: 'Federation service',
+        title: 'Automation',
+
+        access: 'Access to automation',
+        grant: 'Grant permissions on automation',
+        create: 'Pair nodes',
+
+        triggers: {
+          search: 'Search triggers',
+        },
+
+        sessions: {
+          search: 'Search sessions',
+        },
+
+        workflow: {
+          title: 'Workflow',
+
+          create: 'Create new workflow',
+          read: 'Read workflow',
+          update: 'Update workflow',
+          delete: 'Delete workflow',
+          undelete: 'Undelete workflow',
+          execute: 'Execute workflow',
+          triggers: {
+            manage: 'Manage workflow triggers',
+          },
+          sessions: {
+            manage: 'Manage workflow sessions',
+          },
+        },
       },
     },
   },
