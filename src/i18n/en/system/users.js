@@ -80,7 +80,7 @@ export default {
 
       new: 'New password',
       confirm: 'Confirm password',
-      missmatch: 'The passwords must match !',
+      missmatch: 'The passwords must match!',
       length: 'The passwords must be at least {{length}} characters long!',
     },
 
@@ -131,7 +131,7 @@ export default {
       title: 'User updated',
 
       userInfoOK: 'User info successfully updated',
-      passwordUK: 'Password successfully  changed',
+      passwordOK: 'Password successfully  changed',
       membershipOK: 'Membership successfully  updated',
     },
   },

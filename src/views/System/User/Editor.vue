@@ -324,7 +324,7 @@ export default {
           this.animateSuccess('roles')
           this.fetchUserRoles()
 
-          this.toastSuccess('membershippdateOK')
+          this.toastSuccess('membershipOK')
         })
         .catch(this.stdReject)
         .finally(() => {
