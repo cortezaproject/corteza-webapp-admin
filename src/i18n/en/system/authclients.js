@@ -36,6 +36,9 @@ export default {
     },
 
     columns: {
+      meta: {
+        name: 'Name',
+      },
       handle: 'Handle',
       enabled: 'Enabled',
       createdAt: 'Created',
@@ -51,6 +54,7 @@ export default {
     info: {
       title: 'Basic information',
 
+      name: 'Name',
       handle: 'Handle',
 
       redirectURI: 'Redirect URI\'s',

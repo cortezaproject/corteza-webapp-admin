@@ -83,6 +83,10 @@ export default {
 
       fields: [
         {
+          key: 'meta.name',
+          sortable: false,
+        },
+        {
           key: 'handle',
           sortable: true,
         },

@@ -18,8 +18,8 @@
         </b-button>
         <c-permissions-button
           v-if="authClientID && canGrant"
-          :title="authclient.name"
-          :target="authclient.name"
+          :title="(authclient.meta || {}).name || authclient.handle"
+          :target="(authclient.meta || {}).name || authclient.handle"
           :resource="'system:auth-client:'+authClientID"
           button-variant="light"
         >

@@ -26,15 +26,6 @@
           v-model="user.name"
           required
         />
-
-        <!--
-          include hidden input to enable
-          trigger submit event w/ ENTER
-        -->
-        <input
-          type="submit"
-          class="d-none"
-        >
       </b-form-group>
 
       <b-form-group
@@ -95,6 +86,15 @@
           disabled
         />
       </b-form-group>
+
+      <!--
+        include hidden input to enable
+        trigger submit event w/ ENTER
+      -->
+      <input
+        type="submit"
+        class="d-none"
+      >
     </b-form>
 
     <template #header>
@@ -121,15 +121,16 @@
       <confirmation-toggle
         v-if="user && user.userID"
         class="ml-1"
-        cta-class="secondary"
+        cta-class="light"
         @confirmed="$emit('status')"
       >
         {{ getSuspendStatus }}
       </confirmation-toggle>
 
       <b-button
-        v-if="!user.emailConfirmed"
+        v-if="isExisting && !user.emailConfirmed"
         variant="light"
+        class="ml-1"
         @click="$emit('patch', '/emailConfirmed', true)"
       >
         {{ $t('confirmEmail') }}
@@ -150,6 +151,7 @@
 <script>
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
+import { NoID } from '@cortezaproject/corteza-js'
 
 export default {
   name: 'CUserEditorInfo',
@@ -188,6 +190,10 @@ export default {
 
     getSuspendStatus () {
       return this.user.suspendedAt ? this.$t('unsuspend') : this.$t('suspend')
+    },
+
+    isExisting () {
+      return this.user && this.user.userID && this.user.userID !== NoID
     },
   },
 }

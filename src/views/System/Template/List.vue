@@ -123,10 +123,6 @@ export default {
           sortable: true,
         },
         {
-          key: 'language',
-          sortable: true,
-        },
-        {
           key: 'createdAt',
           label: 'Created',
           sortable: true,

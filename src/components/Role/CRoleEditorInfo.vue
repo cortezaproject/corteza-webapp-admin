@@ -5,7 +5,7 @@
     footer-bg-variant="white"
   >
     <b-form
-      @submit="$emit('submit', role)"
+      @submit.prevent="$emit('submit', role)"
     >
       <b-form-group
         :label="$t('name')"
@@ -76,6 +76,15 @@
           disabled
         />
       </b-form-group>
+
+      <!--
+        include hidden input to enable
+        trigger submit event w/ ENTER
+      -->
+      <input
+        type="submit"
+        class="d-none"
+      >
     </b-form>
 
     <template #header>

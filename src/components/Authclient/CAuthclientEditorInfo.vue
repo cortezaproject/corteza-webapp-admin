@@ -8,23 +8,22 @@
       @submit.prevent="submit"
     >
       <b-form-group
+        :label="$t('name')"
+        label-cols="2"
+      >
+        <b-form-input
+          v-model="(authclient.meta || {}).name"
+          required
+        />
+      </b-form-group>
+
+      <b-form-group
         :label="$t('handle')"
         label-cols="2"
       >
         <b-form-input
           v-model="authclient.handle"
-          :state="!!authclient.handle"
         />
-
-        <!--
-          include hidden input to enable
-          trigger submit event w/ ENTER
-        -->
-        <input
-          type="submit"
-          class="d-none"
-          :disabled="!isValid"
-        >
       </b-form-group>
 
       <b-form-group>
@@ -282,6 +281,16 @@
           disabled
         />
       </b-form-group>
+
+      <!--
+        include hidden input to enable
+        trigger submit event w/ ENTER
+      -->
+      <input
+        type="submit"
+        class="d-none"
+        :disabled="!isValid"
+      >
     </b-form>
 
     <template #header>

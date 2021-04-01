@@ -24,6 +24,10 @@ export default {
       all: 'all users',
       specific: 'user "{{target}}"',
     },
+    'auth-client': {
+      all: 'all auth clients',
+      specific: 'auth client "{{target}}"',
+    },
     application: {
       all: 'all applications',
       specific: 'application "{{target}}"',
