@@ -13,8 +13,12 @@
         :key="r.userID"
       >
         <td>{{ r.name || r.handle || r.roleID || $t('unnamed') }}</td>
-        <td class="m-0 p-0 float-right">
-          <b-button @click="removeRole(r)">
+        <td class="text-right">
+          <b-button
+            variant="link"
+            class="text-danger pr-0"
+            @click="removeRole(r)"
+          >
             {{ $t('remove') }}
           </b-button>
         </td>
