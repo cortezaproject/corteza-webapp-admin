@@ -40,6 +40,17 @@
       </b-form-group>
 
       <b-form-group
+        :label="$t('handle')"
+        label-cols="2"
+        :class="{ 'mb-0': !workflow.workflowID }"
+      >
+        <b-form-input
+          v-model="workflow.handle"
+          :state="checkHandle"
+        />
+      </b-form-group>
+
+      <b-form-group
         v-if="workflow.workflowID"
         label-cols="2"
       >
@@ -112,7 +123,7 @@
         class="float-right"
         :processing="processing"
         :success="success"
-        :disabled="!canCreate"
+        :disabled="!canCreate || disabled"
         @submit="$emit('submit', workflow)"
       />
 
@@ -168,6 +179,19 @@ export default {
   computed: {
     getDeleteStatus () {
       return this.workflow.deletedAt ? this.$t('undelete') : this.$t('delete')
+    },
+
+    disabled () {
+      return !this.checkHandle
+    },
+
+    checkHandle () {
+      const { handle } = this.workflow
+      if (!handle || handle.length === 0 || handle.length > 64) {
+        return null
+      }
+
+      return /^[A-Za-z][0-9A-Za-z_\-.]*[A-Za-z0-9]$/.test(handle)
     },
   },
 

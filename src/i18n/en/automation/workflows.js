@@ -53,6 +53,7 @@ export default {
 
       id: 'ID',
       name: 'Name',
+      handle: 'Handle',
       enabled: 'Enabled',
       openBuilder: 'Open builder',
 
