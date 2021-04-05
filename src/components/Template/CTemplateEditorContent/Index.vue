@@ -111,6 +111,7 @@
             </b-btn>
 
             <b-btn
+              v-if="false"
               variant="light"
               @click="openPreview('pdf')"
             >
