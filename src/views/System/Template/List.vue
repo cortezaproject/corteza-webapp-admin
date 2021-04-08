@@ -116,7 +116,6 @@ export default {
       fields: [
         {
           key: 'meta.short',
-          sortable: true,
         },
         {
           key: 'handle',
