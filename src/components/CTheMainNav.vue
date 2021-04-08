@@ -33,15 +33,6 @@
         :icon="['fas', 'th-large']"
       />
 
-      <!--
-      <c-main-nav-item
-        :label="$t('system.scripts:navItem.label')"
-        :to="{ name: 'system.script' }"
-        :icon="['fas', 'magic']"
-      />
-      -->
-
-      <!-- v-if="canReadSettings.system" -->
       <c-main-nav-item
         :label="$t('system.templates:navItem.label')"
         :to="{ name: 'system.template' }"
@@ -67,13 +58,6 @@
         :label="$t('system.authclients:navItem.label')"
         :to="{ name: 'system.authclient' }"
         :icon="['fas', 'key']"
-      />
-
-      <c-main-nav-item
-        v-if="canGrant.system"
-        :label="$t('system.automation:navItem.label')"
-        :to="{ name: 'system.automation' }"
-        :icon="['fas', 'cogs']"
       />
 
       <c-main-nav-item
@@ -106,18 +90,29 @@
       />
     </b-list-group>
 
-    <b-list-group>
+    <b-list-group
+      v-if="canGrant.automation || canAccess.automation"
+    >
       <small class="ml-1 mt-3 font-weight-light text-uppercase">
         {{ $t('automation:navGroup.label') }}
       </small>
 
       <c-main-nav-item
+        v-if="canAccess.automation"
         :label="$t('automation.workflows:navItem.label')"
         :to="{ name: 'automation.workflow' }"
         :icon="['fas', 'project-diagram']"
       />
 
       <c-main-nav-item
+        v-if="canAccess.automation"
+        :label="$t('automation.scripts:navItem.label')"
+        :to="{ name: 'automation.scripts' }"
+        :icon="['fas', 'scroll']"
+      />
+
+      <c-main-nav-item
+        v-if="canGrant.automation"
         :label="$t('automation.permissions:navItem.label')"
         :to="{ name: 'automation.permissions' }"
         :icon="['fas', 'lock']"
@@ -186,6 +181,9 @@ export default {
 
   data () {
     return {
+      canAccess: {
+        automation: false,
+      },
       canGrant: {
         system: false,
         compose: false,
@@ -206,6 +204,7 @@ export default {
       immediate: true,
       handler () {
         ['system', 'compose', 'federation', 'automation'].forEach(res => {
+          this.canAccess[res] = (this.access.find(({ resource, operation }) => resource === res && operation === 'access') || {}).allow
           this.canGrant[res] = (this.access.find(({ resource, operation }) => resource === res && operation === 'grant') || {}).allow
           this.canReadSettings[res] = (this.access.find(({ resource, operation }) => resource === res && operation === 'settings.read') || {}).allow
         })

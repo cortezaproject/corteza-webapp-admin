@@ -27,6 +27,7 @@ import {
   faAngleRight,
   faAngleLeft,
   faProjectDiagram,
+  faScroll,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -64,4 +65,5 @@ library.add(
   faAngleRight,
   faAngleLeft,
   faProjectDiagram,
+  faScroll,
 )

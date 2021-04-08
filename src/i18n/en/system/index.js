@@ -7,7 +7,6 @@ import scripts from './scripts'
 import settings from './settings'
 import authclients from './authclients'
 import permissions from './permissions'
-import automation from './automation'
 import actionlog from './actionlog'
 
 export default {
@@ -27,6 +26,5 @@ export default {
   'system.settings': settings,
   'system.authclients': authclients,
   'system.permissions': permissions,
-  'system.automation': automation,
   'system.actionlog': actionlog,
 }

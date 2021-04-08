@@ -5,80 +5,78 @@
     <c-content-header
       :title="$t('title')"
     />
-    <b-card
-      class="mb-1"
-    >
-      <b-form
-        @submit.prevent="search"
-      >
-        <b-form-group
-          label-cols-lg="2"
-          :label="$t('filter.searchQuery')"
-        >
-          <b-form-input
-            v-model="filter.query"
-            size="sm"
-          />
-        </b-form-group>
-        <b-form-group
-          label-cols-lg="2"
-        >
-          <b-form-checkbox
-            v-model="filter.incScriptsWithErrors"
-            size="sm"
-          >
-            {{ $t('filter.incScriptsWithErrors', { count: totalScriptsWithErrors}) }}
-          </b-form-checkbox>
-        </b-form-group>
-        <b-form-group
-          label-cols-lg="2"
-        >
-          <b-form-checkbox
-            v-model="filter.incScriptsWithTriggers"
-            size="sm"
-          >
-            {{ $t('filter.incScriptsWithTriggers', { count: totalScriptsWithTriggers}) }}
-          </b-form-checkbox>
-        </b-form-group>
-        <b-form-group
-          label-cols-lg="2"
-        >
-          <b-form-checkbox
-            v-model="filter.incScriptsWithIterator"
-            size="sm"
-          >
-            {{ $t('filter.incScriptsWithIterator', { count: totalScriptsWithIterator}) }}
-          </b-form-checkbox>
-        </b-form-group>
-        <b-form-group
-          label-cols-lg="2"
-        >
-          <b-form-checkbox
-            v-model="filter.incScriptsWithSecurity"
-            size="sm"
-          >
-            {{ $t('filter.incScriptsWithSecurity', { count: totalScriptsWithSecurity}) }}
-          </b-form-checkbox>
-        </b-form-group>
-        <b-form-group
-          label-cols-lg="2"
-        >
-          <b-form-checkbox
-            v-model="filter.absoluteTime"
-            size="sm"
-          >
-            {{ $t('filter.absoluteTime') }}
-          </b-form-checkbox>
-        </b-form-group>
-      </b-form>
-    </b-card>
 
     <b-card
       no-body
       class="shadow-sm"
       header-bg-variant="white"
-      footer-bg-variant="white"
     >
+      <template #header>
+        <b-form
+          @submit.prevent="search"
+        >
+          <b-form-group
+            label-cols-lg="2"
+            :label="$t('filter.searchQuery')"
+          >
+            <b-form-input
+              v-model="filter.query"
+              size="sm"
+            />
+          </b-form-group>
+          <b-form-group
+            label-cols-lg="2"
+          >
+            <b-form-checkbox
+              v-model="filter.incScriptsWithErrors"
+              size="sm"
+            >
+              {{ $t('filter.incScriptsWithErrors', { count: totalScriptsWithErrors}) }}
+            </b-form-checkbox>
+          </b-form-group>
+          <b-form-group
+            label-cols-lg="2"
+          >
+            <b-form-checkbox
+              v-model="filter.incScriptsWithTriggers"
+              size="sm"
+            >
+              {{ $t('filter.incScriptsWithTriggers', { count: totalScriptsWithTriggers}) }}
+            </b-form-checkbox>
+          </b-form-group>
+          <b-form-group
+            label-cols-lg="2"
+          >
+            <b-form-checkbox
+              v-model="filter.incScriptsWithIterator"
+              size="sm"
+            >
+              {{ $t('filter.incScriptsWithIterator', { count: totalScriptsWithIterator}) }}
+            </b-form-checkbox>
+          </b-form-group>
+          <b-form-group
+            label-cols-lg="2"
+          >
+            <b-form-checkbox
+              v-model="filter.incScriptsWithSecurity"
+              size="sm"
+            >
+              {{ $t('filter.incScriptsWithSecurity', { count: totalScriptsWithSecurity}) }}
+            </b-form-checkbox>
+          </b-form-group>
+          <b-form-group
+            label-cols-lg="2"
+          >
+            <b-form-checkbox
+              v-model="filter.absoluteTime"
+              size="sm"
+            >
+              {{ $t('filter.absoluteTime') }}
+            </b-form-checkbox>
+          </b-form-group>
+        </b-form>
+      </template>
+
       <b-card-body
         class="p-0"
       >
@@ -103,7 +101,7 @@
               <div>{{ $t('loading') }}</div>
             </div>
           </template>
-          <template #cell(label)="{ value }" />
+          <template #cell(label)="{}" />
           <template #cell(name)="{ item: { label, name, errors, description, ...r }, toggleDetails }">
             <div>
               <span
@@ -188,7 +186,7 @@ export default {
   ],
 
   i18nOptions: {
-    namespaces: [ 'system.automation' ],
+    namespaces: [ 'automation.scripts' ],
     keyPrefix: 'list',
   },
 

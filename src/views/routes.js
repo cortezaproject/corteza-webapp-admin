@@ -99,7 +99,6 @@ export default [
           combo('system', 'authclient', { pkey: 'authClientID' }),
 
           r('system.permissions', 'permissions', 'System/Permissions/Index'),
-          r('system.automation', 'automation', 'System/Automation/Index'),
           r('system.actionlog', 'actionlog', 'System/Actionlog/Index'),
         ],
       },
@@ -116,6 +115,7 @@ export default [
         ...wrap(`automation`, `/automation`),
         children: [
           combo('automation', 'workflow'),
+          r('automation.scripts', 'scripts', 'Automation/Scripts/Index'),
           r('automation.permissions', 'permissions', 'Automation/Permissions/Index'),
         ],
       },

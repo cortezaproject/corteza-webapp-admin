@@ -1,10 +1,10 @@
 export default {
   navItem: {
-    label: 'Automation',
+    label: 'Corredor Scripts',
   },
 
   list: {
-    title: 'System Automation',
+    title: 'Corredor Scripts',
 
     columns: {
       updatedAt: 'Last update',
