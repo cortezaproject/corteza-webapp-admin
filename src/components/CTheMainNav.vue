@@ -56,7 +56,7 @@
       <c-main-nav-item
         v-if="true"
         :label="$t('system.authclients:navItem.label')"
-        :to="{ name: 'system.authclient' }"
+        :to="{ name: 'system.authClient' }"
         :icon="['fas', 'key']"
       />
 

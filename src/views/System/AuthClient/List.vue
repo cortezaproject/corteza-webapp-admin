@@ -12,7 +12,7 @@
           v-if="canCreate"
           variant="primary"
           class="mr-2"
-          :to="{ name: 'system.authclient.new' }"
+          :to="{ name: 'system.authClient.new' }"
         >
           {{ $t('new') }}
         </b-button>
@@ -29,7 +29,7 @@
     </c-content-header>
     <c-resource-list
       primary-key="authClientID"
-      edit-route="system.authclient.edit"
+      edit-route="system.authClient.edit"
       :loading-text="$t('loading')"
       :paging="paging"
       :sorting="sorting"
@@ -125,7 +125,7 @@ export default {
 
       this.$SystemAPI.permissionsEffective()
         .then(rules => {
-          this.canCreate = rules.find(({ resource, operation }) => resource === 'system' && operation === 'client.create').allow
+          this.canCreate = rules.find(({ resource, operation }) => resource === 'system' && operation === 'auth-client.create').allow
           this.canGrant = rules.find(({ resource, operation }) => resource === 'system' && operation === 'grant').allow
         })
         .catch(this.stdReject)

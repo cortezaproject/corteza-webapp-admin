@@ -12,7 +12,7 @@
           v-if="authClientID && canCreate"
           variant="primary"
           class="mr-2"
-          :to="{ name: 'system.authclient.new' }"
+          :to="{ name: 'system.authClient.new' }"
         >
           {{ $t('new') }}
         </b-button>
@@ -117,7 +117,7 @@ export default {
 
       this.$SystemAPI.permissionsEffective()
         .then(rules => {
-          this.canCreate = rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'client.create').allow
+          this.canCreate = rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'auth-client.create').allow
           this.canGrant = rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'grant').allow
         })
         .catch(this.stdReject)
@@ -156,7 +156,7 @@ export default {
         this.$SystemAPI.authClientCreate({ validGrant: this.authclient.grant, ...authclient })
           .then(({ authClientID }) => {
             this.animateSuccess('info')
-            this.$router.push({ name: 'system.authclient.edit', params: { authClientID } })
+            this.$router.push({ name: 'system.auth-client.edit', params: { authClientID } })
           })
           .catch(this.stdReject)
           .finally(() => {
