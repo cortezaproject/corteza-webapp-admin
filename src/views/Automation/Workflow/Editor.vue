@@ -160,10 +160,6 @@ export default {
     onInfoSubmit (workflow) {
       this.info.processing = true
 
-      this.workflow.handle = this.workflow.meta.name.trim(' ').split(' ').map(s => {
-        return s[0].toUpperCase() + s.slice(1).toLowerCase()
-      }).join('')
-
       if (this.workflowID) {
         this.$AutomationAPI.workflowUpdate(workflow)
           .then(() => {
