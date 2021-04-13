@@ -1,0 +1,98 @@
+<template>
+  <b-container
+    class="py-3"
+  >
+    <c-content-header
+      :title="$t('title')"
+    />
+
+    <c-session-editor-info
+      :session="session"
+      :user="user"
+      :processing="info.processing"
+    />
+  </b-container>
+</template>
+<script>
+import { system } from '@cortezaproject/corteza-js'
+import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
+import CSessionEditorInfo from 'corteza-webapp-admin/src/components/Session/CSessionEditorInfo'
+
+export default {
+  components: {
+    CSessionEditorInfo,
+  },
+
+  i18nOptions: {
+    namespaces: [ 'automation.sessions' ],
+    keyPrefix: 'editor',
+  },
+
+  mixins: [
+    editorHelpers,
+  ],
+
+  props: {
+    sessionID: {
+      type: String,
+      required: false,
+      default: undefined,
+    },
+  },
+
+  data () {
+    return {
+      session: {},
+      user: {},
+
+      info: {
+        processing: false,
+      },
+    }
+  },
+
+  watch: {
+    sessionID: {
+      immediate: true,
+      handler () {
+        if (this.sessionID) {
+          this.fetchSession()
+        }
+      },
+    },
+  },
+
+  methods: {
+    fetchSession () {
+      this.incLoader()
+
+      this.$AutomationAPI.sessionRead({ sessionID: this.sessionID })
+        .then(session => {
+          this.prepare(session)
+          this.fetchUser()
+        })
+        .catch(this.stdReject)
+        .finally(() => {
+          this.decLoader()
+        })
+    },
+
+    fetchUser () {
+      this.incLoader()
+
+      this.$SystemAPI.userRead({ userID: this.session.createdBy })
+        .then(user => {
+          this.user = new system.User(user)
+        })
+        .catch(this.stdReject)
+        .finally(() => {
+          this.decLoader()
+        })
+    },
+
+    prepare (session = {}) {
+      this.session = session
+    },
+  },
+}
+</script>

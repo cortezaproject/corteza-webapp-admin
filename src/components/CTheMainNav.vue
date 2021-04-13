@@ -106,6 +106,13 @@
 
       <c-main-nav-item
         v-if="canAccess.automation"
+        :label="$t('automation.sessions:navItem.label')"
+        :to="{ name: 'automation.session' }"
+        :icon="['fas', 'business-time']"
+      />
+
+      <c-main-nav-item
+        v-if="canAccess.automation"
         :label="$t('automation.scripts:navItem.label')"
         :to="{ name: 'automation.scripts' }"
         :icon="['fas', 'scroll']"

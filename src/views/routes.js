@@ -116,6 +116,7 @@ export default [
         children: [
           combo('automation', 'workflow'),
           r('automation.scripts', 'scripts', 'Automation/Scripts/Index'),
+          combo('automation', 'session'),
           r('automation.permissions', 'permissions', 'Automation/Permissions/Index'),
         ],
       },
