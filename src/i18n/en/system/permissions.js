@@ -94,6 +94,18 @@ export default {
           delete: 'Delete any client',
           authorize: 'Authorize any client',
         },
+        'messagebus-queue': {
+          title: 'Messaging queues',
+
+          create: 'Create new messaging queue',
+          read: 'Read any queue',
+          update: 'Update any queue',
+          delete: 'Delete any queue',
+          queue: {
+            read: 'Read messages from queue',
+            write: 'Write messages to queue',
+          },
+        },
       },
     },
   },

@@ -100,6 +100,8 @@ export default [
 
           r('system.permissions', 'permissions', 'System/Permissions/Index'),
           r('system.actionlog', 'actionlog', 'System/Actionlog/Index'),
+
+          combo('system', 'queue', { pkey: 'queueID' }),
         ],
       },
 

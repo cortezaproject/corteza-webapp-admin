@@ -66,6 +66,13 @@
         :to="{ name: 'system.actionlog' }"
         :icon="['fas', 'glasses']"
       />
+
+      <c-main-nav-item
+        v-if="true"
+        :label="$t('system.queues:navItem.label')"
+        :to="{ name: 'system.queue' }"
+        :icon="['fas', 'stream']"
+      />
     </b-list-group>
 
     <b-list-group
