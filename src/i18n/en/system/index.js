@@ -8,6 +8,7 @@ import settings from './settings'
 import authclients from './authclients'
 import permissions from './permissions'
 import actionlog from './actionlog'
+import queues from './queues'
 
 export default {
   system: {
@@ -27,4 +28,5 @@ export default {
   'system.authclients': authclients,
   'system.permissions': permissions,
   'system.actionlog': actionlog,
+  'system.queues': queues,
 }
