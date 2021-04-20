@@ -156,7 +156,7 @@ export default {
         this.$SystemAPI.authClientCreate({ validGrant: this.authclient.grant, ...authclient })
           .then(({ authClientID }) => {
             this.animateSuccess('info')
-            this.$router.push({ name: 'system.auth-client.edit', params: { authClientID } })
+            this.$router.push({ name: 'system.authClient.edit', params: { authClientID } })
           })
           .catch(this.stdReject)
           .finally(() => {

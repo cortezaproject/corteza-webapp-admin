@@ -116,19 +116,14 @@
       <b-form-group
         label-cols="2"
       >
-        <b-form-radio
+        <b-form-radio-group
           v-model="authclient.grant"
           value="authorization_code"
-        >
-          {{ $t('grant.authorization_code') }}
-        </b-form-radio>
-
-        <b-form-radio
-          v-model="authclient.grant"
-          value="client_credentials"
-        >
-          {{ $t('grant.client_credentials') }}
-        </b-form-radio>
+          :options="[
+            { value: 'authorization_code', text: $t('grant.authorization_code') },
+            { value: 'client_credentials', text: $t('grant.client_credentials') },
+          ]"
+        />
       </b-form-group>
 
       <b-form-group
