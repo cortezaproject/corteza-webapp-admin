@@ -143,7 +143,7 @@
           />
 
           <b-button
-            class="ml-1 text-danger"
+            class="ml-1 text-secondary"
             variant="link"
             @click="resetDateTime('validFrom')"
           >
@@ -171,7 +171,7 @@
           />
 
           <b-button
-            class="ml-1 text-danger"
+            class="ml-1 text-secondary"
             variant="link"
             @click="resetDateTime('expiresAt')"
           >
