@@ -20,7 +20,7 @@
         <b-card
           class="shadow-sm mb-3"
         >
-          <b-card-title>
+          <b-card-title title-tag="h3">
             <router-link
               class="display-3"
               :to="{ name: 'system.user.list' }"
@@ -29,7 +29,9 @@
               {{ users.valid }}
             </router-link>
           </b-card-title>
-          <b-card-sub-title>{{ $t('users.title') }}</b-card-sub-title>
+          <b-card-sub-title sub-title-tag="h4">
+            {{ $t('users.title') }}
+          </b-card-sub-title>
 
           <canvas
             ref="userChart"
@@ -95,18 +97,18 @@
         <b-card
           class="shadow-sm mb-3"
         >
-          <b-card-title>
-            <h1>
-              <router-link
-                class="display-4"
-                :to="{ name: 'system.role.list' }"
-                :aria-label="roles.valid + ' ' + $t('roles.title')"
-              >
-                {{ roles.valid }}
-              </router-link>
-            </h1>
+          <b-card-title title-tag="h3">
+            <router-link
+              class="display-4"
+              :to="{ name: 'system.role.list' }"
+              :aria-label="roles.valid + ' ' + $t('roles.title')"
+            >
+              {{ roles.valid }}
+            </router-link>
           </b-card-title>
-          <b-card-sub-title>{{ $t('roles.title') }}</b-card-sub-title>
+          <b-card-sub-title sub-title-tag="h4">
+            {{ $t('roles.title') }}
+          </b-card-sub-title>
 
           <b-container class="mt-3">
             <b-row>
@@ -165,18 +167,18 @@
         <b-card
           class="shadow-sm mb-3"
         >
-          <b-card-title>
-            <h1>
-              <router-link
-                class="display-4"
-                :to="{ name: 'system.application.list' }"
-                :aria-label="applications.valid + ' ' + $t('applications.title')"
-              >
-                {{ applications.valid }}
-              </router-link>
-            </h1>
+          <b-card-title title-tag="h3">
+            <router-link
+              class="display-4"
+              :to="{ name: 'system.application.list' }"
+              :aria-label="applications.valid + ' ' + $t('applications.title')"
+            >
+              {{ applications.valid }}
+            </router-link>
           </b-card-title>
-          <b-card-sub-title>{{ $t('applications.title') }}</b-card-sub-title>
+          <b-card-sub-title sub-title-tag="h4">
+            {{ $t('applications.title') }}
+          </b-card-sub-title>
 
           <b-container class="mt-3">
             <b-row>
