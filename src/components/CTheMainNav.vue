@@ -2,7 +2,7 @@
   <c-sidebar
     class="overflow-auto pt-5"
   >
-    <b-list-group>
+    <b-list-group tag="ul">
       <c-main-nav-item
         :label="$t('dashboard:navItem.label')"
         :to="{ name: 'dashboard' }"
@@ -10,10 +10,10 @@
       />
     </b-list-group>
 
-    <b-list-group>
-      <small class="ml-1 mt-3 font-weight-light text-uppercase">
+    <b-list-group tag="ul">
+      <h2 class="small ml-1 mt-3 font-weight-light text-uppercase">
         {{ $t('system:navGroup.label') }}
-      </small>
+      </h2>
 
       <c-main-nav-item
         :label="$t('system.users:navItem.label')"
@@ -78,9 +78,9 @@
     <b-list-group
       v-if="canGrant.compose || canReadSettings.compose"
     >
-      <small class="ml-1 mt-3 font-weight-light text-uppercase">
+      <h2 class="small ml-1 mt-3 font-weight-light text-uppercase">
         {{ $t('compose:navGroup.label') }}
-      </small>
+      </h2>
 
       <c-main-nav-item
         v-if="canReadSettings.compose"
@@ -100,9 +100,9 @@
     <b-list-group
       v-if="canGrant.automation || canAccess.automation"
     >
-      <small class="ml-1 mt-3 font-weight-light text-uppercase">
+      <h2 class="small ml-1 mt-3 font-weight-light text-uppercase">
         {{ $t('automation:navGroup.label') }}
-      </small>
+      </h2>
 
       <c-main-nav-item
         v-if="canAccess.automation"
@@ -136,9 +136,9 @@
     <b-list-group
       v-if="canGrant.federation || canPairNodes()"
     >
-      <small class="ml-1 mt-3 font-weight-light text-uppercase">
+      <h2 class="small ml-1 mt-3 font-weight-light text-uppercase">
         {{ $t('federation:navGroup.label') }}
-      </small>
+      </h2>
 
       <c-main-nav-item
         v-if="canPairNodes()"
@@ -158,9 +158,9 @@
     <b-list-group
       v-if="canReadSettings.system"
     >
-      <small class="ml-1 mt-3 font-weight-light text-uppercase">
+      <h2 class="small ml-1 mt-3 font-weight-light text-uppercase">
         {{ $t('ui.one:navGroup.label') }}
-      </small>
+      </h2>
 
       <c-main-nav-item
         v-if="canReadSettings.system"

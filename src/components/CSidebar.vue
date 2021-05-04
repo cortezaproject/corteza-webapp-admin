@@ -3,8 +3,9 @@
     class="sidebar overflow-x-hidden"
     :class="mainStyleClasses"
   >
-    <b-list-group>
+    <b-list-group tag="ul">
       <b-list-group-item
+        tag="li"
         class="p-2 border-0 bg-dark text-white switcher position-absolute"
         :class="switcherClasses"
         @click="minified=!minified"

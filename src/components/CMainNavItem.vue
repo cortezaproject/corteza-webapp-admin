@@ -1,16 +1,21 @@
 <template>
   <b-list-group-item
-    :to="to"
-    active-class="text-primary is-active"
+    tag="li"
     class="p-2 border-0 text-nowrap bg-transparent"
   >
-    <font-awesome-icon
-      :icon="icon"
-    />
-    <span
-      class="label"
-      v-html="label"
-    />
+    <router-link
+      :to="to"
+      class="nav-item"
+      active-class="text-primary"
+    >
+      <font-awesome-icon
+        :icon="icon"
+      />
+      <span
+        class="label"
+        v-html="label"
+      />
+    </router-link>
   </b-list-group-item>
 </template>
 
@@ -39,8 +44,7 @@ export default {
   width: 30px;
 }
 
-.is-active {
-  background-color: $primary;
+.nav-item {
+  color: black;
 }
-
 </style>
