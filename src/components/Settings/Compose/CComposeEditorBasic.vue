@@ -7,92 +7,64 @@
     <b-form
       @submit.prevent="$emit('submit', basic)"
     >
-      <b-form-group
-        :label="$t('ui.title')"
-        label-size="lg"
+      <h4>{{ $t('ui.title') }}</h4>
+      <b-form-checkbox
+        v-model="basic['compose.ui.namespace-switcher.enabled']"
+        :value="true"
+        :unchecked-value="false"
       >
-        <b-form-group
-          label-cols="2"
-          class="mb-0"
-        >
-          <b-form-checkbox
-            v-model="basic['compose.ui.namespace-switcher.enabled']"
-            :value="true"
-            :unchecked-value="false"
-          >
-            {{ $t('ui.namespace-switcher.enabled') }}
-          </b-form-checkbox>
-        </b-form-group>
-
-        <b-form-group label-cols="2">
-          <b-form-checkbox
-            v-model="basic['compose.ui.namespace-switcher.defaultOpen']"
-            :value="true"
-            :unchecked-value="false"
-          >
-            {{ $t('ui.namespace-switcher.defaultOpen') }}
-          </b-form-checkbox>
-        </b-form-group>
-      </b-form-group>
-
+        {{ $t('ui.namespace-switcher.enabled') }}
+      </b-form-checkbox>
+      <b-form-checkbox
+        v-model="basic['compose.ui.namespace-switcher.defaultOpen']"
+        :value="true"
+        :unchecked-value="false"
+      >
+        {{ $t('ui.namespace-switcher.defaultOpen') }}
+      </b-form-checkbox>
       <hr>
-
+      <h4>{{ $t('attachments.page') }}</h4>
       <b-form-group
-        :label="$t('attachments.page')"
-        label-size="lg"
+        :label="$t('attachments.max-size')"
+        label-cols="2"
+      >
+        <b-form-input
+          v-model="basic['compose.page.attachments.max-size']"
+          type="number"
+        />
+      </b-form-group>
+      <b-form-group
+        :label="$t('attachments.type.whitelist')"
+        :description="$t('attachments.type.description')"
+        label-cols="2"
         class="mb-0"
       >
-        <b-form-group
-          :label="$t('attachments.max-size')"
-          label-cols="2"
-        >
-          <b-input-group>
-            <b-form-input
-              v-model="basic['compose.page.attachments.max-size']"
-              type="number"
-            />
-          </b-input-group>
-        </b-form-group>
-        <b-form-group
-          :label="$t('attachments.type.whitelist')"
-          :description="$t('attachments.type.description')"
-          label-cols="2"
-          class="mb-0"
-        >
-          <b-input-group>
-            <b-form-input v-model="pageAttachmentWhitelist" />
-          </b-input-group>
-        </b-form-group>
+        <b-input-group>
+          <b-form-input v-model="pageAttachmentWhitelist" />
+        </b-input-group>
       </b-form-group>
-
       <hr>
-
+      <h4>{{ $t('attachments.record') }}</h4>
       <b-form-group
-        :label="$t('attachments.record')"
-        label-size="lg"
+        :label="$t('attachments.max-size')"
+        label-cols="2"
+      >
+        <b-input-group>
+          <b-form-input
+            v-model="basic['compose.record.attachments.max-size']"
+            type="number"
+          />
+        </b-input-group>
+      </b-form-group>
+      <b-form-group
+        :label="$t('attachments.type.whitelist')"
+        :description="$t('attachments.type.description')"
+        label-cols="2"
         class="mb-0"
       >
-        <b-form-group
-          :label="$t('attachments.max-size')"
-          label-cols="2"
-        >
-          <b-input-group>
-            <b-form-input
-              v-model="basic['compose.record.attachments.max-size']"
-              type="number"
-            />
-          </b-input-group>
-        </b-form-group>
-        <b-form-group
-          :label="$t('attachments.type.whitelist')"
-          :description="$t('attachments.type.description')"
-          label-cols="2"
-          class="mb-0"
-        >
-          <b-input-group class="m-0">
-            <b-form-input v-model="recordAttachmentWhitelist" />
-          </b-input-group>
-        </b-form-group>
+        <b-input-group class="m-0">
+          <b-form-input v-model="recordAttachmentWhitelist" />
+        </b-input-group>
       </b-form-group>
     </b-form>
 
