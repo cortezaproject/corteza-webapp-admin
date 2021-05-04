@@ -220,6 +220,19 @@
         </b-form-checkbox>
       </b-form-group>
 
+      <b-form-group
+        v-if="authclient.grant === 'client_credentials'"
+        label-cols="2"
+        :label="$t('security.impersonateUser.label')"
+        :description="$t('security.impersonateUser.description')"
+      >
+        <b-form-input
+          v-model="authclient.security.impersonateUser"
+          type="number"
+          class="mb-3"
+        />
+      </b-form-group>
+
       <c-role-picker
         label="security.permittedRoles.label"
         :description="$t('security.permittedRoles.description')"

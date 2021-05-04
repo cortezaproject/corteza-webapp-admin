@@ -80,6 +80,11 @@ export default {
       },
 
       security: {
+        impersonateUser: {
+          label: 'Impersonate user',
+          description: 'When authenticating with client credentials, act in the name of the impersonated user',
+        },
+
         permittedRoles: {
           label: 'Permitted roles ({{count}})',
           description: 'Only roles in this list will be added into security context when user authorizes this client',
