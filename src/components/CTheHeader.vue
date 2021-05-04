@@ -26,6 +26,8 @@
       <a
         href="#"
         class="text-white ml-3 h5"
+        :area-label="$t('general.logout')"
+        :name="$t('general.logout')"
         @click="$auth.logout()"
       >
         <font-awesome-icon
