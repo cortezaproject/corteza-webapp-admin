@@ -10,6 +10,7 @@ export default {
     total: 'Total',
     suspended: 'Suspended',
     deleted: 'Deleted',
+    users: 'User(s)',
   },
 
   roles: {
@@ -17,11 +18,13 @@ export default {
     total: 'Total',
     archived: 'Archived',
     deleted: 'Deleted',
+    roles: 'Role(s)',
   },
 
   applications: {
     title: 'Active application(s)',
     total: 'Total',
     deleted: 'Deleted',
+    applications: 'Application(s)',
   },
 }

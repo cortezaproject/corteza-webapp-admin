@@ -24,6 +24,7 @@
             <router-link
               class="display-3"
               :to="{ name: 'system.user.list' }"
+              :area-label="users.valid + ' ' + $t('users.title')"
             >
               {{ users.valid }}
             </router-link>
@@ -42,6 +43,7 @@
               >
                 <router-link
                   :to="{ name: 'system.user.list', query: { deleted: 1, suspended: 1 } }"
+                  :aria-label="users.total + ' ' + $t('users.users') + ' ' + $t('users.total')"
                 >
                   {{ users.total }}
                 </router-link>
@@ -49,6 +51,7 @@
               <b-col cols="4">
                 <router-link
                   :to="{ name: 'system.user.list', query: { deleted: 1, suspended: 2 } }"
+                  :aria-label="users.suspended + ' ' + $t('users.users') + ' ' + $t('users.suspended')"
                 >
                   {{ users.suspended }}
                 </router-link>
@@ -56,6 +59,7 @@
               <b-col cols="4">
                 <router-link
                   :to="{ name: 'system.user.list', query: { deleted: 2, suspended: 1 } }"
+                  :aria-label="users.deleted + ' ' + $t('users.users') + ' ' + $t('users.deleted')"
                 >
                   {{ users.deleted }}
                 </router-link>
@@ -96,6 +100,7 @@
               <router-link
                 class="display-4"
                 :to="{ name: 'system.role.list' }"
+                :aria-label="roles.valid + ' ' + $t('roles.title')"
               >
                 {{ roles.valid }}
               </router-link>
@@ -108,6 +113,7 @@
               <b-col cols="4">
                 <router-link
                   :to="{ name: 'system.role.list', query: { deleted: 1, archived: 1 } }"
+                  :aria-label="roles.total + ' ' + $t('roles.roles') + ' ' + $t('roles.total')"
                 >
                   {{ roles.total }}
                 </router-link>
@@ -115,6 +121,7 @@
               <b-col cols="4">
                 <router-link
                   :to="{ name: 'system.role.list', query: { deleted: 1, archived: 2 } }"
+                  :aria-label="roles.archived + ' ' + $t('roles.roles') + ' ' + $t('roles.archived')"
                 >
                   {{ roles.archived }}
                 </router-link>
@@ -122,6 +129,7 @@
               <b-col cols="4">
                 <router-link
                   :to="{ name: 'system.role.list', query: { deleted: 2, archived: 1 } }"
+                  :aria-label="roles.deleted + ' ' + $t('roles.roles') + ' ' + $t('roles.deleted')"
                 >
                   {{ roles.deleted }}
                 </router-link>
@@ -162,6 +170,7 @@
               <router-link
                 class="display-4"
                 :to="{ name: 'system.application.list' }"
+                :aria-label="applications.valid + ' ' + $t('applications.title')"
               >
                 {{ applications.valid }}
               </router-link>
@@ -174,6 +183,7 @@
               <b-col cols="4">
                 <router-link
                   :to="{ name: 'system.application.list', query: { deleted: 2 } }"
+                  :aria-label="applications.total + ' ' + $t('applications.applications') + ' ' + $t('applications.total')"
                 >
                   {{ applications.total }}
                 </router-link>
@@ -181,6 +191,7 @@
               <b-col cols="4">
                 <router-link
                   :to="{ name: 'system.application.list', query: { deleted: 1 } }"
+                  :aria-label="applications.deleted + ' ' + $t('applications.applications') + ' ' + $t('applications.deleted')"
                 >
                   {{ applications.deleted }}
                 </router-link>
