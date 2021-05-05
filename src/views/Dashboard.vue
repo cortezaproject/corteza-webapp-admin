@@ -41,7 +41,9 @@
           <b-container class="mt-3">
             <b-row>
               <b-col
-                cols="4"
+                cols="12"
+                sm="4"
+                class="mb-2 mb-sm-0"
               >
                 <router-link
                   :to="{ name: 'system.user.list', query: { deleted: 1, suspended: 1 } }"
@@ -49,42 +51,39 @@
                 >
                   {{ users.total }}
                 </router-link>
+                <span class="text-secondary d-sm-block">
+                  {{ $t('users.total') }}
+                </span>
               </b-col>
-              <b-col cols="4">
+              <b-col
+                cols="12"
+                sm="4"
+                class="mb-2 mb-sm-0"
+              >
                 <router-link
                   :to="{ name: 'system.user.list', query: { deleted: 1, suspended: 2 } }"
                   :aria-label="users.suspended + ' ' + $t('users.users') + ' ' + $t('users.suspended')"
                 >
                   {{ users.suspended }}
                 </router-link>
+                <span class="text-secondary d-sm-block">
+                  {{ $t('users.suspended') }}
+                </span>
               </b-col>
-              <b-col cols="4">
+              <b-col
+                cols="12"
+                sm="4"
+                class="mb-2 mb-sm-0"
+              >
                 <router-link
                   :to="{ name: 'system.user.list', query: { deleted: 2, suspended: 1 } }"
                   :aria-label="users.deleted + ' ' + $t('users.users') + ' ' + $t('users.deleted')"
                 >
                   {{ users.deleted }}
                 </router-link>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col
-                cols="4"
-                class="text-secondary"
-              >
-                {{ $t('users.total') }}
-              </b-col>
-              <b-col
-                cols="4"
-                class="text-secondary"
-              >
-                {{ $t('users.suspended') }}
-              </b-col>
-              <b-col
-                cols="4"
-                class="text-secondary"
-              >
-                {{ $t('users.deleted') }}
+                <span class="text-secondary d-sm-block">
+                  {{ $t('users.deleted') }}
+                </span>
               </b-col>
             </b-row>
           </b-container>
@@ -112,49 +111,50 @@
 
           <b-container class="mt-3">
             <b-row>
-              <b-col cols="4">
+              <b-col
+                cols="12"
+                sm="4"
+                class="mb-2 mb-sm-0"
+              >
                 <router-link
                   :to="{ name: 'system.role.list', query: { deleted: 1, archived: 1 } }"
                   :aria-label="roles.total + ' ' + $t('roles.roles') + ' ' + $t('roles.total')"
                 >
                   {{ roles.total }}
                 </router-link>
+                <span class="text-secondary d-sm-block">
+                  {{ $t('roles.total') }}
+                </span>
               </b-col>
-              <b-col cols="4">
+              <b-col
+                cols="12"
+                sm="4"
+                class="mb-2 mb-sm-0"
+              >
                 <router-link
                   :to="{ name: 'system.role.list', query: { deleted: 1, archived: 2 } }"
                   :aria-label="roles.archived + ' ' + $t('roles.roles') + ' ' + $t('roles.archived')"
                 >
                   {{ roles.archived }}
                 </router-link>
+                <span class="text-secondary d-sm-block">
+                  {{ $t('roles.archived') }}
+                </span>
               </b-col>
-              <b-col cols="4">
+              <b-col
+                cols="12"
+                sm="4"
+                class="mb-2 mb-sm-0"
+              >
                 <router-link
                   :to="{ name: 'system.role.list', query: { deleted: 2, archived: 1 } }"
                   :aria-label="roles.deleted + ' ' + $t('roles.roles') + ' ' + $t('roles.deleted')"
                 >
                   {{ roles.deleted }}
                 </router-link>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col
-                cols="4"
-                class="text-secondary"
-              >
-                {{ $t('roles.total') }}
-              </b-col>
-              <b-col
-                cols="4"
-                class="text-secondary"
-              >
-                {{ $t('roles.archived') }}
-              </b-col>
-              <b-col
-                cols="4"
-                class="text-secondary"
-              >
-                {{ $t('roles.deleted') }}
+                <span class="text-secondary d-sm-block">
+                  {{ $t('roles.deleted') }}
+                </span>
               </b-col>
             </b-row>
           </b-container>
@@ -182,35 +182,35 @@
 
           <b-container class="mt-3">
             <b-row>
-              <b-col cols="4">
+              <b-col
+                cols="12"
+                sm="4"
+                class="mb-2 mb-sm-0"
+              >
                 <router-link
                   :to="{ name: 'system.application.list', query: { deleted: 2 } }"
                   :aria-label="applications.total + ' ' + $t('applications.applications') + ' ' + $t('applications.total')"
                 >
                   {{ applications.total }}
                 </router-link>
+                <span class="text-secondary d-sm-block">
+                  {{ $t('applications.total') }}
+                </span>
               </b-col>
-              <b-col cols="4">
+              <b-col
+                cols="12"
+                sm="4"
+                class="mb-2 mb-sm-0"
+              >
                 <router-link
                   :to="{ name: 'system.application.list', query: { deleted: 1 } }"
                   :aria-label="applications.deleted + ' ' + $t('applications.applications') + ' ' + $t('applications.deleted')"
                 >
                   {{ applications.deleted }}
                 </router-link>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col
-                cols="4"
-                class="text-secondary"
-              >
-                {{ $t('applications.total') }}
-              </b-col>
-              <b-col
-                cols="4"
-                class="text-secondary"
-              >
-                {{ $t('applications.deleted') }}
+                <span class="text-secondary d-sm-block">
+                  {{ $t('applications.deleted') }}
+                </span>
               </b-col>
             </b-row>
           </b-container>

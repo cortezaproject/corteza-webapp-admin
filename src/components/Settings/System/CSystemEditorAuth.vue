@@ -127,9 +127,13 @@
         <b-form-group
           :label="$t('mail.from-address')"
           label-cols="2"
+          description="Please enter valid email address."
         >
           <b-input-group>
-            <b-form-input v-model="settings['auth.mail.from-address']" />
+            <b-form-input
+              v-model="settings['auth.mail.from-address']"
+              type="email"
+            />
           </b-input-group>
         </b-form-group>
         <b-form-group
