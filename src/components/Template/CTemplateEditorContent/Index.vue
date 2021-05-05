@@ -103,6 +103,7 @@
             class="float-right"
           >
             <b-btn
+              v-if="canPreviewHTML"
               variant="light"
               class="mr-2"
               @click="openPreview('html')"
@@ -111,7 +112,7 @@
             </b-btn>
 
             <b-btn
-              v-if="false"
+              v-if="canPreviewPDF"
               variant="light"
               @click="openPreview('pdf')"
             >
@@ -188,6 +189,8 @@ export default {
 
       previewModalVisible: false,
       previewBlob: '',
+
+      availableDrivers: [],
     }
   },
 
@@ -202,6 +205,20 @@ export default {
           return EditorUnsupported
       }
     },
+
+    canPreviewHTML () {
+      return this.availableDrivers.find(({ outputTypes }) => outputTypes.includes('text/html'))
+    },
+
+    canPreviewPDF () {
+      return this.availableDrivers.find(({ outputTypes }) => outputTypes.includes('application/pdf'))
+    },
+  },
+
+  async created () {
+    this.availableDrivers = await this.$SystemAPI.templateRenderDrivers()
+      .then(rsp => rsp.set)
+      .catch(this.stdReject)
   },
 
   methods: {
