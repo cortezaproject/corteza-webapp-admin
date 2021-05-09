@@ -180,8 +180,8 @@ import { pick } from 'lodash'
 const tabDefaults = {
   title: 'Untitled',
   url: '',
-  logo: '/applications/default_logo.jpg',
-  icon: '/applications/default_icon.png',
+  logo: 'applications/default_logo.jpg',
+  icon: 'applications/default_icon.png',
   sticky: false,
 }
 
