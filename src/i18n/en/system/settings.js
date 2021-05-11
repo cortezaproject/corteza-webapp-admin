@@ -65,6 +65,18 @@ export default {
       facebook: 'Facebook',
       github: 'GitHub',
       linkedin: 'LinkedIn',
+
+      saml: {
+        title: 'SAML',
+        cert: 'Certificate public key',
+        'cert-key': 'Certificate private key',
+        idp: 'Identity provider URL',
+
+        desc: {
+          cert: 'Content will be minimized',
+          'cert-key': 'Content will be minimized',
+        },
+      },
     },
   },
 }

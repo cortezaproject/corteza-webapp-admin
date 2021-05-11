@@ -55,6 +55,12 @@
           v-model="standard.linkedin"
           :title="$t('linkedin')"
         />
+        <hr>
+
+        <saml-external
+          v-model="saml"
+          :title="$t('saml.title')"
+        />
       </div>
     </b-form>
 
@@ -80,6 +86,7 @@
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 import OidcExternal from 'corteza-webapp-admin/src/components/Settings/System/Auth/ExternalOIDC'
 import StandardExternal from 'corteza-webapp-admin/src/components/Settings/System/Auth/ExternalStd'
+import SamlExternal from 'corteza-webapp-admin/src/components/Settings/System/Auth/ExternalSAML'
 
 export default {
   name: 'CSystemEditorExternal',
@@ -93,6 +100,7 @@ export default {
     CSubmitButton,
     OidcExternal,
     StandardExternal,
+    SamlExternal,
   },
 
   props: {
@@ -148,6 +156,13 @@ export default {
           secret: '',
         },
       },
+
+      saml: {
+        enabled: false,
+        cert: '',
+        key: '',
+        idp: '',
+      },
     }
   },
 
@@ -190,6 +205,13 @@ export default {
         }
       }
 
+      // push saml
+      for (let k of ['enabled', 'key', 'cert', 'idp']) {
+        name = `auth.external.saml.${k}`
+        value = this.saml[k]
+        c.push({ name, value })
+      }
+
       // Find out if enabled flag got changed
       name = 'auth.external.enabled'
       c.push({ name, value: this.enabled })
@@ -221,6 +243,13 @@ export default {
           }))
         }
 
+        this.saml = {
+          enabled: this.extractKey(this.external, 'auth.external.saml.enabled'),
+          cert: this.extractKey(this.external, 'auth.external.saml.cert'),
+          key: this.extractKey(this.external, 'auth.external.saml.key'),
+          idp: this.extractKey(this.external, 'auth.external.saml.idp'),
+        }
+
         this.enabled = !!(this.external.find(v => v.name === 'auth.external.enabled') || {}).value
       },
     },
@@ -232,22 +261,24 @@ export default {
 
       for (let k in base) {
         const name = `auth.external.providers.${provider}.${k}`
-        const v = settings.find(v => v.name === name)
-        if (!v) {
-          continue
-        }
-
-        switch (typeof out[k]) {
-          case 'string':
-            out[k] = v.value || ''
-            break
-          case 'boolean':
-            out[k] = !!v.value
-            break
-        }
+        out[k] = this.extractKey(settings, name, typeof out[k])
       }
 
       return out
+    },
+
+    extractKey (settings = {}, name, t = 'string') {
+      const v = settings.find(v => v.name === name)
+      if (!v) {
+        return null
+      }
+
+      switch (t) {
+        case 'string':
+          return v.value || ''
+        case 'boolean':
+          return !!v.value
+      }
     },
   },
 }
