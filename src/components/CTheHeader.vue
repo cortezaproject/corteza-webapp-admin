@@ -28,7 +28,7 @@
         class="text-white ml-3 h5"
         :area-label="$t('general.logout')"
         :name="$t('general.logout')"
-        @click="$auth.logout()"
+        @click.prevent="$auth.logout()"
       >
         <font-awesome-icon
           :icon="['fas', 'power-off']"
