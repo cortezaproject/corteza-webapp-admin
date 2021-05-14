@@ -161,7 +161,7 @@ export default {
         enabled: false,
         cert: '',
         key: '',
-        idp: '',
+        idp: {},
       },
     }
   },
@@ -206,9 +206,15 @@ export default {
       }
 
       // push saml
-      for (let k of ['enabled', 'key', 'cert', 'idp']) {
+      for (let k of ['enabled', 'key', 'cert']) {
         name = `auth.external.saml.${k}`
         value = this.saml[k]
+        c.push({ name, value })
+      }
+
+      for (let k of ['url', 'ident-name', 'ident-handle', 'ident-identifier']) {
+        name = `auth.external.saml.idp.${k}`
+        value = this.saml.idp[k]
         c.push({ name, value })
       }
 
@@ -247,7 +253,12 @@ export default {
           enabled: this.extractKey(this.external, 'auth.external.saml.enabled'),
           cert: this.extractKey(this.external, 'auth.external.saml.cert'),
           key: this.extractKey(this.external, 'auth.external.saml.key'),
-          idp: this.extractKey(this.external, 'auth.external.saml.idp'),
+          idp: {
+            url: this.extractKey(this.external, 'auth.external.saml.idp.url'),
+            'ident-name': this.extractKey(this.external, 'auth.external.saml.idp.ident-name'),
+            'ident-handle': this.extractKey(this.external, 'auth.external.saml.idp.ident-handle'),
+            'ident-identifier': this.extractKey(this.external, 'auth.external.saml.idp.ident-identifier'),
+          },
         }
 
         this.enabled = !!(this.external.find(v => v.name === 'auth.external.enabled') || {}).value
