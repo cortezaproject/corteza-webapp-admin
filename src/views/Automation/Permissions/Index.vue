@@ -11,6 +11,7 @@
       :roles-excluded="rolesExcluded"
       :permissions="permissions"
       :role-permissions="rolePermissions"
+      :effective="effective"
       :loaded="isLoaded"
       :processing="permission.processing"
       :success="permission.success"

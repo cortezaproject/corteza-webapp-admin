@@ -7,7 +7,7 @@
       footer-bg-variant="white"
     >
       <div
-        v-if="loaded"
+        v-if="loaded && canGrant"
       >
         <b-row
           class="bg-light text-center"
@@ -41,13 +41,6 @@
               />
             </div>
           </b-col>
-          <!--
-          <b-col
-            class="border-bottom border-left py-2 bg-light"
-          >
-            Effective
-          </b-col>
-          -->
         </b-row>
         <div
           v-for="(operations, resource) in permissions"
@@ -104,22 +97,6 @@
               v-if="roles.length < 9"
               class="border-bottom border-left py-2 not-allowed bg-light"
             />
-            <!--
-            <b-col
-              class="border-bottom border-left py-2 bg-light not-allowed"
-            >
-              <font-awesome-icon
-                v-if="effective[permission]"
-                :icon="['fas', 'check']"
-                class="text-success"
-              />
-              <font-awesome-icon
-                v-else-if="effective[permission] === false"
-                :icon="['fas', 'times']"
-                class="text-danger"
-              />
-            </b-col>
-            -->
           </b-row>
         </div>
       </div>
@@ -128,16 +105,18 @@
         v-else
         class="text-center m-5"
       >
-        <div>
-          <b-spinner
-            small
-            class="align-middle m-2"
-          />
-        </div>
-        <div>{{ $t('rules.loading') }}</div>
+        <b-spinner
+          v-if="!loaded"
+          small
+          class="align-middle m-2"
+        />
+        <div>{{ canGrant ? $t('rules.loading') : $t('rules.notAllowed') }}</div>
       </div>
 
-      <template #footer>
+      <template
+        v-if="loaded && canGrant"
+        #footer
+      >
         <small class="float-left text-primary">
           {{ $t('rules.tip1') }}
           <br>
@@ -226,9 +205,22 @@ export default {
 
   data () {
     return {
+      canGrant: false,
+
       newRole: null,
       permissionChanges: [],
     }
+  },
+
+  watch: {
+    effective: {
+      immediate: true,
+      handler () {
+        // Get CanGrant from effective permissions
+        const grantKey = Object.keys(this.effective).find(key => key.includes('grant'))
+        this.canGrant = this.effective[grantKey] || false
+      },
+    },
   },
 
   methods: {

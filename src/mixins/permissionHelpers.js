@@ -53,8 +53,8 @@ export default {
 
   computed: {
     isLoaded () {
-      const { roles, permissions } = this.loaded
-      return roles && permissions
+      const { roles, permissions, effective } = this.loaded
+      return roles && permissions && effective
     },
   },
 
@@ -101,6 +101,8 @@ export default {
 
     fetchPermissions () {
       this.incLoader()
+
+      this.fetchEffective()
 
       this.api.permissionsList()
         .then(permissions => {
