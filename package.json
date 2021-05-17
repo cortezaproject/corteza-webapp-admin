@@ -17,8 +17,8 @@
     "pre-commit": "yarn lint"
   },
   "dependencies": {
-    "@cortezaproject/corteza-js": "^2021.3.0",
-    "@cortezaproject/corteza-vue": "^2021.3.0",
+    "@cortezaproject/corteza-js": "2021.6.0-rc.1",
+    "@cortezaproject/corteza-vue": "2021.6.0-rc.1",
     "@fortawesome/fontawesome-svg-core": "1.2.27",
     "@fortawesome/free-regular-svg-icons": "^5.14.0",
     "@fortawesome/free-solid-svg-icons": "5.12.1",
