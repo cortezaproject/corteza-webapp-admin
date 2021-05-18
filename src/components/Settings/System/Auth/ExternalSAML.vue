@@ -21,7 +21,7 @@
       >
         <b-form-group
           :label="$t('saml.cert')"
-          label-cols="3"
+          label-cols="2"
           :description="$t('saml.desc.cert')"
         >
           <b-input-group>
@@ -32,7 +32,7 @@
         </b-form-group>
         <b-form-group
           :label="$t('saml.cert-key')"
-          label-cols="3"
+          label-cols="2"
           :description="$t('saml.desc.cert-key')"
         >
           <b-input-group>
@@ -49,7 +49,7 @@
       >
         <b-form-group
           :label="$t('saml.idp.url')"
-          label-cols="3"
+          label-cols="2"
         >
           <b-input-group>
             <b-form-input v-model.trim="value.idp.url" />
@@ -59,7 +59,7 @@
         <b-form-group
           :label="$t('saml.idp.ident-name')"
           :description="$t('saml.desc.idp.ident-name')"
-          label-cols="3"
+          label-cols="2"
         >
           <b-input-group>
             <b-form-input v-model.trim="value.idp['ident-name']" />
@@ -69,7 +69,7 @@
         <b-form-group
           :label="$t('saml.idp.ident-handle')"
           :description="$t('saml.desc.idp.ident-handle')"
-          label-cols="3"
+          label-cols="2"
         >
           <b-input-group>
             <b-form-input v-model.trim="value.idp['ident-handle']" />
@@ -79,7 +79,7 @@
         <b-form-group
           :label="$t('saml.idp.ident-identifier')"
           :description="$t('saml.desc.idp.ident-identifier')"
-          label-cols="3"
+          label-cols="2"
         >
           <b-input-group>
             <b-form-input v-model.trim="value.idp['ident-identifier']" />
