@@ -65,6 +65,29 @@ export default {
       facebook: 'Facebook',
       github: 'GitHub',
       linkedin: 'LinkedIn',
+
+      saml: {
+        title: 'SAML',
+        cert: 'Certificate public key',
+        'cert-key': 'Certificate private key',
+        idp: {
+          title: 'Identity provider',
+          url: 'URL',
+          'ident-name': 'Identity payload name',
+          'ident-handle': 'Identity payload handle',
+          'ident-identifier': 'Identity payload default identifier',
+        },
+
+        desc: {
+          cert: 'Content will be minimized',
+          'cert-key': 'Content will be minimized',
+          idp: {
+            'ident-name': 'Name field coming from idp',
+            'ident-handle': 'Handle field coming from idp',
+            'ident-identifier': 'Determines by which field do we match, usually email',
+          },
+        },
+      },
     },
   },
 }
