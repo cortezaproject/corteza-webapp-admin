@@ -142,14 +142,19 @@ export default {
         this.$router.push(this.encodeRouteParams())
       }
 
-      return p.then(({ set, filter } = {}) => {
+      return p.then(async ({ set, filter } = {}) => {
         this.paging.pageCursor = undefined
         this.paging.nextPage = filter.nextPage
         this.paging.prevPage = filter.prevPage
+
         return set
       })
         .catch(this.stdReject)
-        .finally(() => {
+        .finally(async () => {
+          await new Promise(
+            resolve => setTimeout(resolve, 300)
+          )
+
           this.decLoader()
         })
     },

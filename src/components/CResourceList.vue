@@ -24,7 +24,6 @@
           <div class="text-center m-5">
             <div>
               <b-spinner
-                small
                 class="align-middle m-2"
               />
             </div>
