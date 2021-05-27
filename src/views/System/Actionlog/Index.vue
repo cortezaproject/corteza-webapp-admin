@@ -16,99 +16,44 @@
           label-cols-lg="2"
           :label="$t('filter.from')"
         >
-          <b-form-input
-            v-model="filter.from"
-            lazy-formatter
-            size="sm"
-            placeholder="YYYY-MM-DDTHH:MM:SS"
-            :formatter="isoDateFormatter"
-          />
-          <template #description>
-            <b-button
-              variant="link"
-              class="my-0 py-0"
-              @click.prevent="moveFromFilter(-2)"
-            >
-              &lt;&lt;
-            </b-button>
-            <b-button
-              variant="link"
-              class="my-0 py-0"
-              @click.prevent="moveFromFilter(-1)"
-            >
-              &lt;
-            </b-button>
-            <b-button
-              variant="link"
-              class="my-0 py-0"
-              @click.prevent="moveFromFilter(0)"
-            >
-              {{ $t('filter.today') }}
-            </b-button>
-            <b-button
-              variant="link"
-              class="my-0 py-0"
-              @click.prevent="moveFromFilter(1)"
-            >
-              &gt;
-            </b-button>
-            <b-button
-              variant="link"
-              class="my-0 py-0"
-              @click.prevent="moveFromFilter(2)"
-            >
-              &gt;&gt;
-            </b-button>
-          </template>
+          <b-input-group>
+            <b-form-datepicker
+              v-model="from.date"
+              today-button
+              reset-button
+              close-button
+              locale="en"
+            />
+
+            <b-form-timepicker
+              v-model="from.time"
+              now-button
+              reset-button
+              locale="en"
+            />
+          </b-input-group>
         </b-form-group>
         <b-form-group
           label-cols-lg="2"
           :label="$t('filter.to')"
         >
-          <b-form-input
-            v-model="filter.to"
-            lazy-formatter
-            size="sm"
-            placeholder="YYYY-MM-DDTHH:MM:SS"
-            :formatter="isoDateFormatter"
-          />
-          <template #description>
-            <b-button
-              variant="link"
-              class="small my-0 py-0"
-              @click.prevent="moveToFilter(-2)"
-            >
-              &lt;&lt;
-            </b-button>
-            <b-button
-              variant="link"
-              class="small my-0 py-0"
-              @click.prevent="moveToFilter(-1)"
-            >
-              &lt;
-            </b-button>
-            <b-button
-              variant="link"
-              class="small my-0 py-0"
-              @click.prevent="moveToFilter(0)"
-            >
-              {{ $t('filter.today') }}
-            </b-button>
-            <b-button
-              variant="link"
-              class="small my-0 py-0"
-              @click.prevent="moveToFilter(1)"
-            >
-              &gt;
-            </b-button>
-            <b-button
-              variant="link"
-              class="small my-0 py-0"
-              @click.prevent="moveToFilter(2)"
-            >
-              &gt;&gt;
-            </b-button>
-          </template>
+          <b-input-group>
+            <b-form-datepicker
+              v-model="to.date"
+              today-button
+              reset-button
+              close-button
+              :max="new Date()"
+              locale="en"
+            />
+
+            <b-form-timepicker
+              v-model="to.time"
+              now-button
+              reset-button
+              locale="en"
+            />
+          </b-input-group>
         </b-form-group>
         <b-form-group
           label-cols-lg="2"
@@ -334,7 +279,6 @@
 
 <script>
 import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
-import moment from 'moment'
 
 const defSeverity = 6
 const severity = [
@@ -375,6 +319,16 @@ export default {
   data () {
     return {
       id: 'actionlog',
+
+      from: {
+        date: undefined,
+        time: undefined,
+      },
+
+      to: {
+        date: undefined,
+        time: undefined,
+      },
 
       filter: {
         beforeActionID: undefined,
@@ -424,9 +378,31 @@ export default {
     }
   },
 
+  computed: {
+    fromDateTime () {
+      return this.getDateTime(this.from)
+    },
+
+    toDateTime () {
+      return this.getDateTime(this.to)
+    },
+  },
+
   watch: {
-    $route (to, from) {
-      // this.load()
+    'from.time': {
+      handler (time) {
+        if (time && !this.from.date) {
+          this.from.date = new Date().toISOString().split('T')[0]
+        }
+      },
+    },
+
+    'to.time': {
+      handler (time) {
+        if (time && !this.to.date) {
+          this.to.date = new Date().toISOString().split('T')[0]
+        }
+      },
     },
   },
 
@@ -436,18 +412,23 @@ export default {
 
   methods: {
     search () {
+      // Do a complete search, not just beforeActionID
       this.load(true)
     },
 
     load (reset = false) {
       if (reset) {
         this.items.length = 0
+        this.paging.beforeActionID = undefined
       } else {
         const len = this.items.length
         if (len > 0) {
           this.paging.beforeActionID = (this.items[len - 1] || {}).actionID
         }
       }
+
+      this.filter.from = this.fromDateTime
+      this.filter.to = this.toDateTime
 
       this.procListResults(this.$SystemAPI.actionlogList({ ...this.filter, ...this.paging }), false)
         .then(rr => {
@@ -462,18 +443,6 @@ export default {
       }
     },
 
-    isoDateFormatter (v) {
-      return moment(v).toISOString()
-    },
-
-    moveFromFilter (s) {
-      this.filter.from = this.moveTimestampFilter(this.filter.from, s).startOf('day').toISOString(true)
-    },
-
-    moveToFilter (s) {
-      this.filter.to = this.moveTimestampFilter(this.filter.to, s).endOf('day').toISOString(true)
-    },
-
     // Resets paging & sorting and adds filtering params for drill-down
     drillDownLink (query = {}) {
       return {
@@ -486,23 +455,9 @@ export default {
       }
     },
 
-    moveTimestampFilter (v, s) {
-      v = v ? moment(v) : moment()
-      v.startOf('day')
-
-      const a = Math.abs(s)
-      const d = s / a // + or -
-
-      switch (a) {
-        case 0:
-          return moment()
-        case 1:
-          return v.add(d, 'days')
-        case 2:
-          return v.add(d, 'months')
-        default:
-          return v
-      }
+    getDateTime ({ date, time }) {
+      const datetime = date && time ? `${date} ${time}` : date || time
+      return datetime ? new Date(datetime).toISOString() : undefined
     },
   },
 }

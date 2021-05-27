@@ -21,7 +21,7 @@ export default {
     filter: {
       from: 'Starting from',
       to: 'Ending at',
-      today: 'today',
+      today: 'Today',
       resource: 'Resource',
       action: 'Action',
       actor: 'User ID',
