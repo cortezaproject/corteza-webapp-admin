@@ -82,42 +82,4 @@ export default {
       searchUsers: 'Search users',
     },
   },
-
-  ____legacy: {
-    information: 'Role information',
-    enabled: 'Enabled',
-    listed: 'Listed',
-    'manage-id-permissions': 'Manage permissions for this role',
-    'manage-wc-permissions': 'Manage permissions for all roles',
-    add: 'Add Role',
-    'delete': 'Delete role',
-    id: {
-      label: 'ID',
-    },
-    name: {
-      label: 'Name',
-      description: 'As an alternative to role name',
-    },
-    appSelector: {
-      label: 'Unify app selector',
-    },
-    logo: {
-      label: 'Logo',
-      description: 'Logo used in Unify role selector',
-    },
-    url: {
-      label: 'URL',
-      description: 'Role URL',
-    },
-    config: {
-      label: 'Configuration',
-      description: 'Role configuration (JSON)',
-    },
-    lastUpdate: {
-      label: 'Last update',
-    },
-    created: {
-      label: 'Created',
-    },
-  },
 }

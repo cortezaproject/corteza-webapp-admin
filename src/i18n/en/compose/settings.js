@@ -24,7 +24,7 @@ export default {
         'max-size': 'Max size (MB)',
         type: {
           whitelist: 'File type whitelist',
-          description: 'MIME types, sepparated with ",". Example: "text/plain,text/csv"',
+          description: 'MIME types, separated with ",". Example: "text/plain,text/csv"',
         },
       },
     },
