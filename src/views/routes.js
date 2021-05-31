@@ -130,13 +130,6 @@ export default [
           r('federation.permissions', 'permissions', 'Federation/Permissions/Index'),
         ],
       },
-
-      {
-        ...wrap(`one`, `/one`),
-        children: [
-          r('one.settings', 'settings', 'One/Settings/Index'),
-        ],
-      },
     ],
   },
 

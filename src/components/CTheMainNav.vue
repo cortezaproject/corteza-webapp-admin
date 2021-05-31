@@ -154,21 +154,6 @@
         :icon="['fas', 'lock']"
       />
     </b-list-group>
-
-    <b-list-group
-      v-if="canReadSettings.system"
-    >
-      <h2 class="small ml-1 mt-3 font-weight-light text-uppercase">
-        {{ $t('ui.one:navGroup.label') }}
-      </h2>
-
-      <c-main-nav-item
-        v-if="canReadSettings.system"
-        :label="$t('ui.one.settings:navItem.label')"
-        :to="{ name: 'one.settings' }"
-        :icon="['fas', 'sliders-h']"
-      />
-    </b-list-group>
   </c-sidebar>
 </template>
 <script>
