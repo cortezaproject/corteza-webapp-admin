@@ -30,11 +30,13 @@ import {
   faScroll,
   faBusinessTime,
   faStream,
+  faGripHorizontal,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
   faCopy,
   faCheckCircle,
+  faQuestionCircle,
 } from '@fortawesome/free-regular-svg-icons'
 
 library.add(
@@ -70,4 +72,6 @@ library.add(
   faScroll,
   faBusinessTime,
   faStream,
+  faQuestionCircle,
+  faGripHorizontal,
 )

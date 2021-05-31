@@ -8,9 +8,15 @@
     >
       {{ frontendVersion }}
     </small>
-
-    <c-the-header />
-
+    <header>
+      <c-topbar
+        :sidebar-pinned="pinned"
+      >
+        <template #title>
+          {{ appName }}
+        </template>
+      </c-topbar>
+    </header>
     <div
       class="d-flex flex-row overflow-hidden"
     >
@@ -29,16 +35,17 @@
   </div>
 </template>
 <script>
-import CTheHeader from 'corteza-webapp-admin/src/components/CTheHeader'
 import CTheMainNav from 'corteza-webapp-admin/src/components/CTheMainNav'
 import { components, mixins } from '@cortezaproject/corteza-vue'
+
+const { CTopbar } = components
 
 export default {
   components: {
     CPermissionsModal: components.CPermissionsModal,
     CPrompts: components.CPrompts,
-    CTheHeader,
     CTheMainNav,
+    CTopbar,
   },
 
   mixins: [
@@ -49,6 +56,7 @@ export default {
     return {
       error: null,
       access: [],
+      pinned: false,
     }
   },
 
@@ -60,6 +68,11 @@ export default {
 
     hasAccess () {
       return this.access.filter(({ allow }) => allow).length > 0
+    },
+
+    appName () {
+      /* eslint-disable no-undef */
+      return WEBAPP
     },
   },
 
