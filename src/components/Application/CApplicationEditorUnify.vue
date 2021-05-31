@@ -16,48 +16,6 @@
       </b-form-group>
 
       <b-form-group
-        :label="$t('icon.label')"
-        :description="$t('icon.description')"
-        label-cols="2"
-      >
-        <template #label>
-          <div
-            class="d-flex"
-          >
-            {{ $t('icon.label') }}
-            <b-button
-              v-if="unify.icon"
-              v-b-modal.icon
-              variant="link"
-              class="d-flex align-items-center border-0 p-0 ml-2"
-            >
-              <font-awesome-icon
-                :icon="['fas', 'eye']"
-              />
-            </b-button>
-          </div>
-        </template>
-        <b-form-file
-          v-model="unifyAssets.icon"
-          accept="image/*"
-          :placeholder="$t('icon.placeholder')"
-        />
-      </b-form-group>
-
-      <b-modal
-        id="icon"
-        hide-header
-        hide-footer
-        centered
-        body-class="p-1"
-      >
-        <b-img
-          :src="unify.icon"
-          fluid-grow
-        />
-      </b-modal>
-
-      <b-form-group
         :label="$t('logo.label')"
         :description="$t('logo.description')"
         label-cols="2"

@@ -101,10 +101,6 @@ export default {
     appSelector: {
       label: 'Unify app selector',
     },
-    icon: {
-      label: 'Icon',
-      description: 'Icon used in Unify tab',
-    },
     logo: {
       label: 'Logo',
       description: 'Logo used in Unify role selector',
