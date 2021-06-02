@@ -37,6 +37,7 @@ import {
   faCopy,
   faCheckCircle,
   faQuestionCircle,
+  faUser,
 } from '@fortawesome/free-regular-svg-icons'
 
 library.add(
@@ -74,4 +75,5 @@ library.add(
   faStream,
   faQuestionCircle,
   faGripHorizontal,
+  faUser,
 )
