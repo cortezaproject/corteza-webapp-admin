@@ -3,11 +3,6 @@
     v-if="hasAccess"
     class="d-flex flex-column vh-100"
   >
-    <small
-      class="p-1 text-secondary position-absolute version"
-    >
-      {{ frontendVersion }}
-    </small>
     <header>
       <c-topbar
         :sidebar-pinned="pinned"
@@ -61,10 +56,6 @@ export default {
   },
 
   computed: {
-    frontendVersion () {
-      /* eslint-disable no-undef */
-      return VERSION
-    },
 
     hasAccess () {
       return this.access.filter(({ allow }) => allow).length > 0
