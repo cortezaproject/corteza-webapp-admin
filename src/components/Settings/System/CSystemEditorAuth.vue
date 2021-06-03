@@ -61,7 +61,7 @@
             :value="true"
             :unchecked-value="false"
           >
-            {{ $t('mfa.emailOTP.enforced') }}
+            {{ $t('mfa.emailOTP.enabled') }}
           </b-form-checkbox>
         </b-form-group>
         <b-form-group label-cols="2">
