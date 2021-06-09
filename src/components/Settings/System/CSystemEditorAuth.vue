@@ -127,7 +127,7 @@
         <b-form-group
           :label="$t('mail.from-address')"
           label-cols="2"
-          description="Please enter valid email address."
+          :description="$t('mail.validate-email')"
         >
           <b-input-group>
             <b-form-input

@@ -22,6 +22,7 @@
               today-button
               reset-button
               close-button
+              :placeholder="$t('filter.choose-date')"
               locale="en"
             />
 
@@ -29,6 +30,7 @@
               v-model="from.time"
               now-button
               reset-button
+              :placeholder="$t('filter.no-time')"
               locale="en"
             />
           </b-input-group>
@@ -44,6 +46,7 @@
               reset-button
               close-button
               :max="new Date()"
+              :placeholder="$t('filter.choose-date')"
               locale="en"
             />
 
@@ -51,6 +54,7 @@
               v-model="to.time"
               now-button
               reset-button
+              :placeholder="$t('filter.no-time')"
               locale="en"
             />
           </b-input-group>
@@ -153,7 +157,7 @@
               <b-card :header="$t('details.header')">
                 <b-row>
                   <b-col cols="4">
-                    ID
+                    {{ $t('details.id') }}
                   </b-col>
                   <b-col cols="8">
                     {{ a.actionID }}
@@ -281,29 +285,11 @@
 import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
 
 const defSeverity = 6
-const severity = [
-  { label: 'emergency',
-    class: 'text-danger' },
-  { label: 'alert',
-    class: 'text-danger' },
-  { label: 'critical',
-    class: 'text-danger' },
-  { label: 'error',
-    class: 'text-danger' },
-  { label: 'warning',
-    class: 'text-warning' },
-  { label: 'notice',
-    class: 'text-success' },
-  { label: 'info',
-    class: 'text-success' },
-  { label: 'debug',
-    class: '' },
-]
 
 export default {
   filters: {
     severityLabel (s) {
-      return severity[s].label
+      return this.severity[s].label
     },
   },
 
@@ -365,8 +351,8 @@ export default {
         {
           key: 'severity',
           label: '',
-          tdClass: (v, k, item) => ['text-right', severity[item.severity].class],
-          formatter: (v) => severity[v].label,
+          tdClass: (v, k, item) => ['text-right', this.severity[item.severity].class],
+          formatter: (v) => this.severity[v].label,
         },
       ].map(c => ({
         // Generate column label translation key
@@ -375,6 +361,25 @@ export default {
       })),
 
       items: [],
+
+      severity: [
+        { label: this.$t('emergency'),
+          class: 'text-danger' },
+        { label: this.$t('alert'),
+          class: 'text-danger' },
+        { label: this.$t('critical'),
+          class: 'text-danger' },
+        { label: this.$t('error'),
+          class: 'text-danger' },
+        { label: this.$t('warning'),
+          class: 'text-warning' },
+        { label: this.$t('notice'),
+          class: 'text-success' },
+        { label: this.$t('info'),
+          class: 'text-success' },
+        { label: this.$t('debug'),
+          class: '' },
+      ],
     }
   },
 
@@ -439,7 +444,7 @@ export default {
     trClass (item, type) {
       if (type === 'row') {
         const { severity: s = defSeverity } = item
-        return severity[s].tdClass
+        return this.severity[s].tdClass
       }
     },
 

@@ -60,7 +60,7 @@
           >
             <b-form-input
               v-model="redirectURI[index]"
-              placeholder="URI"
+              :placeholder="$t('uri')"
             />
 
             <b-button
@@ -134,11 +134,13 @@
         <b-input-group>
           <b-form-datepicker
             v-model="validFrom.date"
+            :placeholder="$t('choose-date')"
             locale="en"
           />
 
           <b-form-timepicker
             v-model="validFrom.time"
+            :placeholder="$t('no-time')"
             locale="en"
           />
 
@@ -162,11 +164,13 @@
         <b-input-group>
           <b-form-datepicker
             v-model="expiresAt.date"
+            :placeholder="$t('choose-date')"
             locale="en"
           />
 
           <b-form-timepicker
             v-model="expiresAt.time"
+            :placeholder="$t('no-time')"
             locale="en"
           />
 

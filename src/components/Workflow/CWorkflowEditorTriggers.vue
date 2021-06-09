@@ -22,7 +22,7 @@
           <code
             v-if="index < trigger.item.constraints.length - 1"
           >
-            and
+            {{ $t('and') }}
           </code>
         </samp>
       </template>

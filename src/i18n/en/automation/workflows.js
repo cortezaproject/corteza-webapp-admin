@@ -73,6 +73,8 @@ export default {
         eventType: 'Event',
         constraints: 'Constraints',
       },
+
+      and: 'and',
     },
   },
 }

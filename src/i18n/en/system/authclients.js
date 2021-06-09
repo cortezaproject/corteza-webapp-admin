@@ -110,6 +110,9 @@ export default {
       remove: 'Remove',
       searchRoles: 'Search roles',
 
+      uri: 'URI',
+      'choose-date': 'Choose a date',
+      'no-time': 'No time selected',
       delete: 'Delete',
       undelete: 'Undelete',
       deletedAt: 'Deleted at',

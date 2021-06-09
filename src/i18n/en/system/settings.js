@@ -45,9 +45,12 @@ export default {
 
       mail: {
         title: 'Authentication email sender mail',
+        'validate-email': 'Please enter valid email address.',
         'from-address': 'Sender\'s address',
         'from-name': 'Sender\'s name',
       },
+
+      url: 'URL',
     },
 
     external: {
@@ -60,6 +63,7 @@ export default {
       secret: 'Secret',
       issuer: 'OIDC Issuer URL',
       'provider-enabled': 'Enable this external authentication provider',
+      certificate: 'Certificate',
       oidc: 'OpenID Connect',
       google: 'Google',
       facebook: 'Facebook',

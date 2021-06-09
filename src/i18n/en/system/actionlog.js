@@ -21,6 +21,8 @@ export default {
     filter: {
       from: 'Starting from',
       to: 'Ending at',
+      'choose-date': 'Choose a date',
+      'no-time': 'No time selected',
       today: 'Today',
       resource: 'Resource',
       action: 'Action',
@@ -29,6 +31,7 @@ export default {
     },
 
     details: {
+      'id': 'ID',
       'header': 'Details',
       'timestamp': 'Timestamp',
       'requestOrigin': 'Request Origin',

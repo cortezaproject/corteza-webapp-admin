@@ -15,7 +15,7 @@
 
     <div v-if="value.enabled">
       <b-form-group
-        label="Certificate"
+        :label="$t('certificate')"
         label-size="lg"
         label-class="pt-1"
       >
@@ -42,7 +42,7 @@
       </b-form-group>
 
       <b-form-group
-        label="Identity provider"
+        :label="$t('saml.idp.title')"
         label-size="lg"
         label-class="pt-1"
         class="mb-0"
