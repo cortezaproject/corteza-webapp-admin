@@ -1,6 +1,6 @@
 <template>
-  <c-sidebar
-    class="overflow-auto pt-5"
+  <div
+    class="overflow-auto"
   >
     <b-list-group tag="ul">
       <c-main-nav-item
@@ -11,7 +11,7 @@
     </b-list-group>
 
     <b-list-group tag="ul">
-      <h2 class="small ml-1 mt-3 font-weight-light text-uppercase">
+      <h2 class="small ml-1 mt-2 font-weight-light text-uppercase">
         {{ $t('system:navGroup.label') }}
       </h2>
 
@@ -154,16 +154,14 @@
         :icon="['fas', 'lock']"
       />
     </b-list-group>
-  </c-sidebar>
+  </div>
 </template>
 <script>
 import CMainNavItem from 'corteza-webapp-admin/src/components/CMainNavItem'
-import CSidebar from 'corteza-webapp-admin/src/components/CSidebar'
 import federationMixin from 'corteza-webapp-admin/src/mixins/federation'
 
 export default {
   components: {
-    CSidebar,
     CMainNavItem,
   },
 

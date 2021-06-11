@@ -73,7 +73,7 @@ function combo (ns, name, opt = {}) {
 
 export default [
   {
-    name: 'layout',
+    name: 'root',
     path: '/',
     component: () => import('./Layout.vue'),
     redirect: 'dashboard',

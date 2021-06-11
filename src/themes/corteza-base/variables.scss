@@ -1,4 +1,8 @@
-$logo: '/images/logo.png' !default;
+$wideminwidth:767px !default;
+$confortableminwidth:1020px !default;
+
+$logo: 'img/logo.png' !default;
+$icon-logo: 'img/icon.png' !default;
 
 // Paths
 $fonts_dir : './fonts/' !default;
@@ -25,10 +29,18 @@ $dark:          #1e2224 !default;
 
 $gray-200:      #F3F3F5 !default;
 
-$sidebar-width: 200px !default;
+// Grid - maybe not the smartest idea to change this but let's see
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1500px
+) !default;
 
 // Options
 $enable-rounded:   true !default;
+$enable-gradients: false !default;
 $enable-responsive-font-sizes: true !default;
 
 // Body
@@ -40,20 +52,40 @@ $card-border-width:  0 !default;
 $card-cap-bg:        $gray-200 !default;
 
 // Tables
-$table-head-bg:       $gray-200 !default;
-$table-hover-bg:       $gray-200 !default;
+$table-cell-padding-sm: 0.25rem !default;
+$table-hover-bg:     $gray-200 !default;
 
 // Buttons
 $btn-font-size: $font-size-base !default;
 $btn-padding-y: 0.25em !default;
 $btn-padding-x: 1em !default;
 
-$btn-focus-width:       0 !default;
+$btn-focus-width:       0.2rem !default;
 $btn-focus-box-shadow:  none !default;
 $btn-active-box-shadow: none !default;
 
 $btn-font-size-lg:  16px !default;
 $btn-font-family:   $semibold !default;
+
+$topbar-height:         64px !default;
+
+// Navbar
+$navbar-bg:             $white !default;
+$navbar-color:          $black !default;
+$navbar-border:         $primary !default;
+$navbar-active-bg:      $white !default;
+$navbar-active-color:   $primary !default;
+$navbar-active-border:  $primary !default;
+$navbar-hover-bg:       $white !default;
+$navbar-hover-color:    $primary !default;
+$navbar-hover-border:   $primary !default;
+$navbar-height:         50px !default;
+$navbar-padding-y:      0 !default;
+$navbar-padding-x:      0 !default;
+
+$navbar-toggler-font-size:  24px !default;
+$sidebar-width:         320px !default;
+$sidebar-bg:            #F4F7FA;
 
 // Pagination
 $pagination-color:        $dark !default;
@@ -71,11 +103,3 @@ $input-border-width:  2px !default;
 $input-btn-focus-width:     0 !default;
 $input-focus-box-shadow:    none !default;
 $input-focus-border-color:  $primary !default;
-
-/* stylelint-disable */
-:export {
-  primary: $primary;
-  danger: $danger;
-  secondary: $secondary;
-}
-/* stylelint-enable */

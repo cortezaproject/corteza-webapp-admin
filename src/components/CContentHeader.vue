@@ -1,27 +1,15 @@
 <template>
-  <b-row
-    class="mb-2"
-    no-gutters
+  <div
+    class="d-flex justify-content-end mb-2"
   >
-    <b-col
-      cols="12"
-      md="4"
-    >
-      <h2
-        v-html="title"
-      />
-    </b-col>
-    <b-col
-      cols="12"
-      md="8"
-    >
-      <b-button-toolbar
-        class="justify-content-end"
-      >
-        <slot />
-      </b-button-toolbar>
-    </b-col>
-  </b-row>
+    <portal to="topbar-title">
+      {{ title }}
+    </portal>
+
+    <b-button-toolbar>
+      <slot />
+    </b-button-toolbar>
+  </div>
 </template>
 
 <script>
@@ -31,7 +19,8 @@ export default {
   props: {
     title: {
       type: String,
-      required: true,
+      required: false,
+      default: '',
     },
   },
 }

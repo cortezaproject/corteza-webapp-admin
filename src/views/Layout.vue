@@ -1,46 +1,79 @@
 <template>
-  <div
-    v-if="hasAccess"
-    class="d-flex flex-column vh-100"
-  >
-    <header>
+  <div class="d-flex flex-column w-100 vh-100">
+    <header
+      class="mw-100"
+    >
       <c-topbar
         :sidebar-pinned="pinned"
       >
         <template #title>
-          {{ appName }}
+          <portal-target name="topbar-title" />
+        </template>
+
+        <template #tools>
+          <portal-target name="topbar-tools" />
         </template>
       </c-topbar>
     </header>
-    <div
-      class="d-flex flex-row overflow-hidden"
-    >
+
+    <aside>
+      <c-sidebar
+        :expanded.sync="expanded"
+        :pinned.sync="pinned"
+        expand-on-hover
+      >
+        <template #header-expanded>
+          <portal-target name="sidebar-header-expanded" />
+        </template>
+
+        <template #body-expanded>
+          <portal-target name="sidebar-body-expanded" />
+        </template>
+
+        <template #footer-expanded>
+          <portal-target name="sidebar-footer-expanded" />
+        </template>
+      </c-sidebar>
+    </aside>
+
+    <portal to="sidebar-body-expanded">
       <c-the-main-nav
         :access="access"
       />
+    </portal>
 
-      <main
-        class="flex-fill overflow-auto pb-5"
-      >
-        <router-view />
-        <c-permissions-modal />
-        <c-prompts />
-      </main>
-    </div>
+    <main class="d-inline-flex h-100 overflow-auto">
+      <!--
+        Content spacer
+        Large and xl screens should push in content when the nav is expanded
+      -->
+      <template>
+        <div
+          class="spacer"
+          :class="{
+            'expanded': expanded && pinned,
+          }"
+        />
+      </template>
+      <router-view />
+    </main>
+
+    <c-prompts />
+    <c-permissions-modal />
   </div>
 </template>
 <script>
 import CTheMainNav from 'corteza-webapp-admin/src/components/CTheMainNav'
 import { components, mixins } from '@cortezaproject/corteza-vue'
-
-const { CTopbar } = components
+const { CPermissionsModal, CPrompts, CTopbar, CSidebar } = components
 
 export default {
   components: {
-    CPermissionsModal: components.CPermissionsModal,
-    CPrompts: components.CPrompts,
-    CTheMainNav,
+    CPermissionsModal,
+    CPrompts,
     CTopbar,
+    CSidebar,
+    CTheMainNav,
   },
 
   mixins: [
@@ -51,7 +84,8 @@ export default {
     return {
       error: null,
       access: [],
-      pinned: false,
+      expanded: true,
+      pinned: true,
     }
   },
 
@@ -121,8 +155,19 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.version {
-  bottom: 0;
-  right: 0;
+.spacer {
+  min-width: 0;
+  -webkit-transition: min-width 0.2s ease-in-out;
+  -moz-transition: min-width 0.2s ease-in-out;
+  -o-transition: min-width 0.2s ease-in-out;
+  transition: min-width 0.2s ease-in-out;
+
+  &.expanded {
+    min-width: $sidebar-width;
+    -webkit-transition: min-width 0.2s ease-in-out;
+    -moz-transition: min-width 0.2s ease-in-out;
+    -o-transition: min-width 0.2s ease-in-out;
+    transition: min-width 0.2s ease-in-out;
+  }
 }
 </style>

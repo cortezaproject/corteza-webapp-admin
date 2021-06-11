@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import PortalVue from 'portal-vue'
 import './faIcons'
 import CContentHeader from './CContentHeader'
 import CResourceList from './CResourceList'
@@ -8,6 +9,7 @@ import { components } from '@cortezaproject/corteza-vue'
 
 const { CCorredorManualButtons, CPermissionsButton } = components
 
+Vue.use(PortalVue)
 Vue.component('c-corredor-manual-buttons', CCorredorManualButtons)
 Vue.component('c-permissions-button', CPermissionsButton)
 Vue.component('font-awesome-icon', FontAwesomeIcon)

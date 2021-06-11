@@ -31,6 +31,7 @@ import {
   faBusinessTime,
   faStream,
   faGripHorizontal,
+  faThumbtack,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -76,4 +77,5 @@ library.add(
   faQuestionCircle,
   faGripHorizontal,
   faUser,
+  faThumbtack,
 )
