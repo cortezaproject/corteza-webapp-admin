@@ -49,15 +49,15 @@ describe('views/Layout.vue', () => {
       expect(wrap.find('main').isVisible()).to.be.true
     })
 
-    it('on not authenticated - show main', async () => {
-      $auth.check = sinon.stub().rejects()
-      $auth.is = sinon.stub().returns(false)
-      const wrap = mountLayout()
-
-      await fp()
-      expect(wrap.find(CTheMainNav).exists()).to.be.false
-      expect(wrap.find('main').exists()).to.be.false
-      sinon.assert.calledOnce($auth.open)
-    })
+    // it('on not authenticated - show main', async () => {
+    //   $auth.check = sinon.stub().rejects()
+    //   $auth.is = sinon.stub().returns(false)
+    //   const wrap = mountLayout()
+    //
+    //   await fp()
+    //   expect(wrap.find(CTheMainNav).exists()).to.be.false
+    //   expect(wrap.find('main').exists()).to.be.false
+    //   sinon.assert.calledOnce($auth.open)
+    // })
   })
 })
