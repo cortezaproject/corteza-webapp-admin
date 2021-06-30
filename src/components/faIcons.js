@@ -36,6 +36,7 @@ import {
   faFile,
   faFileAlt,
   faPuzzlePiece,
+  faFlag,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -86,4 +87,5 @@ library.add(
   faFile,
   faFileAlt,
   faPuzzlePiece,
+  faFlag,
 )
