@@ -32,6 +32,7 @@ import {
   faStream,
   faGripHorizontal,
   faThumbtack,
+  faFlag,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -78,4 +79,5 @@ library.add(
   faGripHorizontal,
   faUser,
   faThumbtack,
+  faFlag,
 )
