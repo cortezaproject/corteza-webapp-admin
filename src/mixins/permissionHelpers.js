@@ -42,7 +42,6 @@ export default {
       loaded: {
         roles: false,
         permissions: false,
-        effective: false,
       },
       permission: {
         processing: false,
@@ -53,8 +52,7 @@ export default {
 
   computed: {
     isLoaded () {
-      const { roles, permissions, effective } = this.loaded
-      return roles && permissions && effective
+      return this.loaded.roles && this.loaded.permissions
     },
   },
 
@@ -62,9 +60,11 @@ export default {
     fetchRoles () {
       this.incLoader()
 
-      this.$SystemAPI.roleList()
+      return this.$SystemAPI.roleList()
         .then(({ set }) => {
-          this.roles = set.filter(r => this.rolesIncluded.includes(r.roleID))
+          this.roles = set
+            .filter(r => this.rolesIncluded.includes(r.roleID))
+            .filter(({ bypassRBAC }) => !bypassRBAC)
           this.rolePermissions = []
           this.rolesExcluded = []
 
@@ -74,16 +74,8 @@ export default {
 
             if (this.rolesIncluded.includes(roleID)) {
               return this.api.permissionsRead({ roleID })
-                .then(rolePermissions => {
-                  rolePermissions = rolePermissions
-                    .reduce((map, { resource, operation, access }) => {
-                      if ((this.permissions[`${resource}/`] || []).find(op => operation === op)) {
-                        map[`${resource}/${operation}`] = access
-                      }
-                      return map
-                    }, {})
-
-                  this.rolePermissions.push({ roleID, rules: rolePermissions })
+                .then(rr => {
+                  this.rolePermissions.push({ roleID, rules: this.roleRules(rr) })
                 })
             } else {
               // Keep track of excluded roles that can be added to the list
@@ -102,49 +94,22 @@ export default {
     fetchPermissions () {
       this.incLoader()
 
-      this.fetchEffective()
-
       this.api.permissionsList()
         .then(permissions => {
-          this.permissions = permissions
-            .reduce((map, { resource, operation }) => {
-              if (resource.includes(':')) {
-                resource = `${resource}*/`
-              } else {
-                resource = `${resource}/`
+          this.permissions = (permissions || [])
+            .reduce((map, { type, any, op }) => {
+              if (!map[type]) {
+                map[type] = { any, ops: [] }
               }
 
-              if (!map[resource]) {
-                map[resource] = []
-              }
-
-              map[resource].push(operation)
+              map[type].ops.push(op)
               return map
             }, {})
-
-          this.fetchRoles()
         })
+        .then(() => this.fetchRoles())
         .catch(this.stdReject)
         .finally(() => {
           this.loaded.permissions = true
-          this.decLoader()
-        })
-    },
-
-    fetchEffective () {
-      this.incLoader()
-
-      this.api.permissionsEffective()
-        .then(effective => {
-          this.effective = effective
-            .reduce((map, { resource, operation, allow }) => {
-              map[`${resource}/${operation}`] = allow
-              return map
-            }, {})
-        })
-        .catch(this.stdReject)
-        .finally(() => {
-          this.loaded.effective = true
           this.decLoader()
         })
     },
@@ -154,7 +119,7 @@ export default {
       Promise.all(roleRules.map(({ roleID, rules }) => {
         const externalRules = []
         Object.entries(rules).forEach(([ key, value ]) => {
-          let [ resource, operation ] = key.split('/')
+          let [ operation, resource ] = key.split('@', 2)
           externalRules.push({ roleID, resource, operation, access: value })
         })
 
@@ -179,16 +144,8 @@ export default {
       setIncludedRoles(this.rolesIncluded)
 
       this.api.permissionsRead({ roleID })
-        .then(rolePermissions => {
-          rolePermissions = rolePermissions
-            .reduce((map, { resource, operation, access }) => {
-              if ((this.permissions[`${resource}/`] || []).find(op => operation === op)) {
-                map[`${resource}/${operation}`] = access
-              }
-              return map
-            }, {})
-
-          this.rolePermissions.push({ roleID, rules: rolePermissions })
+        .then(rr => {
+          this.rolePermissions.push({ roleID, rules: this.roleRules(rr) })
 
           // Add new role
           this.roles.push(role)
@@ -198,6 +155,18 @@ export default {
         .finally(() => {
           this.loaded.roles = true
         })
+    },
+
+    roleRules (rules) {
+      return (rules || [])
+        .reduce((map, { resource, operation, access }) => {
+          const [ type ] = resource.split('/', 2)
+          if ((this.permissions[type] || { ops: [] }).ops.indexOf(operation) > 0) {
+            map[`${operation}@${resource}`] = access
+          }
+
+          return map
+        }, {})
     },
   },
 }

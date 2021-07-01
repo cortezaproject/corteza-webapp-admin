@@ -17,7 +17,7 @@
         </b-button>
         <c-permissions-button
           :title="$t('title')"
-          resource="system:user:*"
+          resource="corteza::system:user/*"
           button-variant="light"
         >
           <font-awesome-icon :icon="['fas', 'lock']" />

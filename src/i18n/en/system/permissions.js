@@ -17,95 +17,105 @@ export default {
       tip2: 'Use Alt-Click to set explicit deny on operation',
       submit: 'Submit',
 
-      system: {
-        title: 'System service',
-
-        grant: 'Grant permission on system service',
-        access: 'Allow access to administration',
-        organisation: {
-          title: 'Organisations',
-
-          create: 'Create new organisation',
-          access: 'Access to all organisations',
+      component: {
+        type: {
+          label: 'System service',
         },
-        role: {
-          title: 'Roles',
 
-          create: 'Create new role',
+        operations: {
+          grant: 'Grant permission on system service',
+          roleCreate: 'Create new role',
+          userCreate: 'Create new user',
+          applicationCreate: 'Create new application',
+          applicationFlagSelf: 'Can pin application for themselves',
+          applicationFlagGlobal: 'Can pin application for everyone',
+          authClientCreate: 'Create new auth client',
+          queueCreate: 'Create new messaging queue',
+          templateCreate: 'Create new template',
+          settingsRead: 'Access all settings',
+          settingsManage: 'Manage all settings',
+          reminderAssign: 'Allow reminder assignment',
+        },
+      },
+
+      role: {
+        type: {
+          label: 'Roles',
+        },
+
+        operations: {
           read: 'Read any role',
           update: 'Update any role',
           delete: 'Delete any role',
-          members: {
-            manage: 'Manage members for any role',
-          },
+          membersManage: 'Manage members for any role',
         },
-        user: {
-          title: 'Users',
+      },
+      user: {
+        type: {
+          label: 'Users',
+        },
 
-          create: 'Create new user',
+        operations: {
           read: 'Read any user',
           update: 'Update any user',
           delete: 'Delete any user',
           suspend: 'Suspend any user',
           unsuspend: 'Unsuspend any user',
-          unmask: {
-            email: 'Show email details',
-            name: 'Show name details',
-          },
+
+          emailUnmask: 'Show email details',
+          nameUnmask: 'Show name details',
+
           impersonate: 'Impersonate any user',
         },
-        application: {
-          title: 'Applications',
+      },
+      application: {
+        type: {
+          label: 'Applications',
+        },
 
-          create: 'Create new application',
+        operations: {
           read: 'Access any application',
           update: 'Update any application',
           delete: 'Delete any application',
-
-          flag: {
-            self: 'Can pin application for themselves',
-            global: 'Can pin application for everyone',
-          },
         },
-        template: {
-          title: 'Templates',
+      },
+      template: {
+        type: {
+          label: 'Templates',
+        },
 
-          create: 'Create new template',
+        operations: {
           read: 'Read any template',
           update: 'Update any template',
           delete: 'Delete any template',
           render: 'Render any template',
         },
-        settings: {
-          read: 'Access all settings',
-          manage: 'Manage all settings',
-        },
-        reminder: {
-          assign: 'Allow reminder assignment',
-        },
-        'authClient': {
-          create: 'Create new auth client',
-        },
-        'auth-client': {
-          title: 'Auth clients',
+      },
 
-          create: 'Create new auth client',
+      authClient: {
+        type: {
+          label: 'Auth clients',
+        },
+
+        operations: {
           read: 'Read any client',
           update: 'Update any client',
           delete: 'Delete any client',
           authorize: 'Authorize any client',
         },
-        'messagebus-queue': {
-          title: 'Messaging queues',
+      },
 
-          create: 'Create new messaging queue',
+      queue: {
+        type: {
+          label: 'Messaging queues',
+        },
+
+        operations: {
           read: 'Read any queue',
           update: 'Update any queue',
           delete: 'Delete any queue',
-          queue: {
-            read: 'Read messages from queue',
-            write: 'Write messages to queue',
-          },
+          queueRead: 'Read messages from queue',
+          queueWrite: 'Write messages to queue',
         },
       },
     },

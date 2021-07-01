@@ -9,6 +9,15 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   modules: {
     ui,
+    rbac: {
+      namespaced: true,
+      ...cvStore.RBAC(
+        Vue.prototype.$SystemAPI,
+        Vue.prototype.$ComposeAPI,
+        Vue.prototype.$AutomationAPI,
+        Vue.prototype.$FederationAPI,
+      ),
+    },
     wfPrompts: {
       namespaced: true,
       ...cvStore.wfPrompts({

@@ -28,6 +28,7 @@
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CSystemEditorAuth from 'corteza-webapp-admin/src/components/Settings/System/CSystemEditorAuth'
 import CSystemEditorExternal from 'corteza-webapp-admin/src/components/Settings/System/CSystemEditorExternal'
+import { mapGetters } from 'vuex'
 
 export default {
   i18nOptions: {
@@ -48,8 +49,6 @@ export default {
     return {
       settings: [],
 
-      canManage: false,
-
       auth: {
         processing: false,
         success: false,
@@ -63,6 +62,14 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      can: 'rbac/can',
+    }),
+
+    canManage () {
+      return this.can('system/', 'settings.manage')
+    },
+
     getAuth () {
       if (this.settings.length > 0) {
         return this.settings.reduce((map, obj) => {
@@ -89,11 +96,6 @@ export default {
       this.$SystemAPI.settingsList()
         .then(settings => {
           this.settings = settings
-
-          this.$SystemAPI.permissionsEffective()
-            .then(rules => {
-              this.canManage = rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'settings.manage').allow
-            })
         })
         .catch(err => {
           this.stdReject(err)

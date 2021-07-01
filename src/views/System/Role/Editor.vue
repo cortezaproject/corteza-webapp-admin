@@ -20,7 +20,7 @@
           v-if="roleID && canGrant"
           :title="role.name"
           :target="role.name"
-          :resource="'system:role:'+roleID"
+          :resource="'corteza::system:role/'+roleID"
           button-variant="light"
         >
           <font-awesome-icon :icon="['fas', 'lock']" />
@@ -62,6 +62,7 @@
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CRoleEditorInfo from 'corteza-webapp-admin/src/components/Role/CRoleEditorInfo'
 import CRoleEditorMembers from 'corteza-webapp-admin/src/components/Role/CRoleEditorMembers'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -91,9 +92,6 @@ export default {
       role: {},
       roleMembers: null,
 
-      canCreate: false,
-      canGrant: false,
-
       info: {
         processing: false,
         success: false,
@@ -105,11 +103,24 @@ export default {
     }
   },
 
+  computed: {
+    ...mapGetters({
+      can: 'rbac/can',
+    }),
+
+    canCreate () {
+      return this.can('system/', 'role.create')
+    },
+
+    canGrant () {
+      return this.can('system/', 'grant')
+    },
+  },
+
   watch: {
     roleID: {
       immediate: true,
       handler () {
-        this.fetchEffective()
         if (this.roleID) {
           this.fetchRole()
         } else {
@@ -134,20 +145,6 @@ export default {
           return this.$SystemAPI.roleMemberList(r)
         })
         .then((mm = []) => { this.roleMembers = mm })
-        .catch(this.stdReject)
-        .finally(() => {
-          this.decLoader()
-        })
-    },
-
-    fetchEffective () {
-      this.incLoader()
-
-      this.$SystemAPI.permissionsEffective()
-        .then(rules => {
-          this.canCreate = rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'role.create').allow
-          this.canGrant = rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'grant').allow
-        })
         .catch(this.stdReject)
         .finally(() => {
           this.decLoader()

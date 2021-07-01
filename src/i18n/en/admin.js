@@ -36,261 +36,240 @@ export default {
       compose: 'Compose',
     },
 
-    role: {
-      all: 'all roles',
-      specific: 'role "{{target}}"',
-    },
-    template: {
-      all: 'all templates',
-      specific: 'template "{{target}}"',
-    },
-    user: {
-      all: 'all users',
-      specific: 'user "{{target}}"',
-    },
-    'auth-client': {
-      all: 'all auth clients',
-      specific: 'auth client "{{target}}"',
-    },
-    application: {
-      all: 'all applications',
-      specific: 'application "{{target}}"',
-    },
-    workflow: {
-      all: 'all workflows',
-      specific: 'workflow "{{target}}"',
-    },
-    system: {
+    // @todo should be split per component and merged with <component>/permissions.js
+    systemComponent: {
       title: 'System service',
-      grant: {
-        title: 'Grant permission on system service',
-        description: 'Default: deny',
-      },
-      access: {
-        title: 'Allow access to administration',
-        description: 'Default: deny',
-      },
-      'organisation-create': {
-        title: 'Create new organisation',
-        description: 'Default: deny',
-      },
-      'role-create': {
-        title: 'Create new role',
-        description: 'Default: deny',
-      },
-      'user-create': {
-        title: 'Create new user',
-        description: 'Default: deny',
-      },
-      'application-create': {
-        title: 'Create new application',
-        description: 'Default: deny',
-      },
-      'settings-read': {
-        title: 'Access all settings',
-        description: 'Default: deny',
-      },
-      'settings-manage': {
-        title: 'Manage all settings',
-        description: 'Default: deny',
-      },
       service: {
         NoPermissions: 'You don’t have permission for this action',
         UserHandleNotUnique: 'Handle is already used',
         RoleHandleNotUnique: 'Handle is already used',
       },
-      'automation-script-create': {
-        title: 'Create automation scripts',
-        description: 'Default: allow',
-      },
-      'reminder-assign': {
-        title: 'Allow reminder assignment',
-        description: 'Default: deny',
-      },
-    },
-    'system-role': {
-      read: {
-        title: 'Read any role',
-        specific: 'Read {{target}}',
-        description: 'Default: allow',
-      },
-      update: {
-        title: 'Update any role',
-        specific: 'Update {{target}}',
-        description: 'Default: allow',
-      },
-      'delete': {
-        title: 'Delete any role',
-        specific: 'Delete {{target}}',
-        description: 'Default: allow',
-      },
-      'members-manage': {
-        title: 'Manage members for any role',
-        specific: 'Manage members for {{target}}',
-        description: 'Default: allow',
-      },
-    },
-    'system-template': {
-      read: {
-        title: 'Read any template',
-        specific: 'Read {{target}}',
-        description: 'Default: allow',
-      },
-      update: {
-        title: 'Update any template',
-        specific: 'Update {{target}}',
-        description: 'Default: deny',
-      },
-      render: {
-        title: 'Render any template',
-        specific: 'Render {{target}}',
-        description: 'Default: allow',
-      },
-      'delete': {
-        title: 'Delete any template',
-        specific: 'Delete {{target}}',
-        description: 'Default: deny',
+
+      operations: {
+        grant: {
+          title: 'Grant permission on system service',
+          description: 'Default: deny',
+        },
+        access: {
+          title: 'Allow access to administration',
+          description: 'Default: deny',
+        },
+        roleCreate: {
+          title: 'Create new role',
+          description: 'Default: deny',
+        },
+        userCreate: {
+          title: 'Create new user',
+          description: 'Default: deny',
+        },
+        applicationCreate: {
+          title: 'Create new application',
+          description: 'Default: deny',
+        },
+        settingsRead: {
+          title: 'Access all settings',
+          description: 'Default: deny',
+        },
+        settingsManage: {
+          title: 'Manage all settings',
+          description: 'Default: deny',
+        },
+        reminderAssign: {
+          title: 'Allow reminder assignment',
+          description: 'Default: deny',
+        },
       },
     },
-    'system-user': {
-      read: {
-        title: 'Read any user',
-        specific: 'Read {{target}}',
-        description: 'Default: allow',
-      },
-      update: {
-        title: 'Update any user',
-        specific: 'Update {{target}}',
-        description: 'Default: allow',
-      },
-      'delete': {
-        title: 'Delete any user',
-        specific: 'Delete {{target}}',
-        description: 'Default: allow',
-      },
-      suspend: {
-        title: 'Suspend any user',
-        specific: 'Suspend {{target}}',
-        description: 'Default: allow',
-      },
-      unsuspend: {
-        title: 'Unsuspend any user',
-        specific: 'Unsuspend {{target}}',
-        description: 'Default: allow',
-      },
-      'unmask-name': {
-        title: 'Show name details for any user',
-        specific: 'Show name details for {{target}}',
-        description: 'Default: deny',
-      },
-      'unmask-email': {
-        title: 'Show email details for any user',
-        specific: 'Show email details for {{target}}',
-        description: 'Default: deny',
-      },
-      impersonate: {
-        title: 'Impersonate any user',
-        specific: 'Impersonate this user {{target}}',
-        description: 'Default: deny',
+    systemRole: {
+      all: 'all roles',
+      specific: 'role "{{target}}"',
+
+      operations: {
+        read: {
+          title: 'Read any role',
+          specific: 'Read {{target}}',
+          description: 'Default: deny',
+        },
+        update: {
+          title: 'Update any role',
+          specific: 'Update {{target}}',
+          description: 'Default: deny',
+        },
+        'delete': {
+          title: 'Delete any role',
+          specific: 'Delete {{target}}',
+          description: 'Default: deny',
+        },
+        membersManage: {
+          title: 'Manage members for any role',
+          specific: 'Manage members for {{target}}',
+          description: 'Default: deny',
+        },
       },
     },
-    'system-application': {
-      read: {
-        title: 'Read any application',
-        specific: 'Read {{target}}',
-        description: 'Default: allow',
-      },
-      update: {
-        title: 'Update any application',
-        specific: 'Update {{target}}',
-        description: 'Default: deny',
-      },
-      'delete': {
-        title: 'Delete any application',
-        specific: 'Delete {{target}}',
-        description: 'Default: deny',
-      },
-    },
-    'system-organisation': {
-      access: {
-        title: 'Access to all organisations',
-        description: 'Default: deny',
-      },
-    },
-    'system-automation-script': {
-      read: {
-        title: 'Read any script',
-        specific: 'Read script "{{target}}"',
-        description: 'Default: deny',
-      },
-      update: {
-        title: 'Update any script',
-        specific: 'Update script "{{target}}"',
-        description: 'Default: deny',
-      },
-      'delete': {
-        title: 'Delete any script',
-        specific: 'Delete script "{{target}}"',
-        description: 'Default: deny',
+    systemTemplate: {
+      all: 'all templates',
+      specific: 'template "{{target}}"',
+
+      operations: {
+        read: {
+          title: 'Read any template',
+          specific: 'Read {{target}}',
+          description: 'Default: deny',
+        },
+        update: {
+          title: 'Update any template',
+          specific: 'Update {{target}}',
+          description: 'Default: deny',
+        },
+        render: {
+          title: 'Render any template',
+          specific: 'Render {{target}}',
+          description: 'Default: deny',
+        },
+        'delete': {
+          title: 'Delete any template',
+          specific: 'Delete {{target}}',
+          description: 'Default: deny',
+        },
       },
     },
-    'system-auth-client': {
-      read: {
-        title: 'Read any client',
-        specific: 'Read client "{{target}}',
-        description: 'Default: deny',
-      },
-      update: {
-        title: 'Update any client',
-        specific: 'Update client "{{target}}',
-        description: 'Default: deny',
-      },
-      delete: {
-        title: 'Delete any client',
-        specific: 'Delete client "{{target}}',
-        description: 'Default: deny',
-      },
-      authorize: {
-        title: 'Authorize any client',
-        specific: 'Authorize client "{{target}}',
-        description: 'User can authorize (use) this client. Default: deny',
+    systemUser: {
+      all: 'all users',
+      specific: 'user "{{target}}"',
+
+      operations: {
+        read: {
+          title: 'Read any user',
+          specific: 'Read {{target}}',
+          description: 'Default: deny',
+        },
+        update: {
+          title: 'Update any user',
+          specific: 'Update {{target}}',
+          description: 'Default: deny',
+        },
+        'delete': {
+          title: 'Delete any user',
+          specific: 'Delete {{target}}',
+          description: 'Default: deny',
+        },
+        suspend: {
+          title: 'Suspend any user',
+          specific: 'Suspend {{target}}',
+          description: 'Default: deny',
+        },
+        unsuspend: {
+          title: 'Unsuspend any user',
+          specific: 'Unsuspend {{target}}',
+          description: 'Default: deny',
+        },
+        nameUnmask: {
+          title: 'Show name details for any user',
+          specific: 'Show name details for {{target}}',
+          description: 'Default: deny',
+        },
+        emailUnmask: {
+          title: 'Show email details for any user',
+          specific: 'Show email details for {{target}}',
+          description: 'Default: deny',
+        },
+        impersonate: {
+          title: 'Impersonate any user',
+          specific: 'Impersonate this user {{target}}',
+          description: 'Default: deny',
+        },
       },
     },
-    'automation-workflow': {
-      read: {
-        title: 'Read any workflow',
-        specific: 'Read this workflow',
-        description: 'Default: deny',
+    systemApplication: {
+      all: 'all applications',
+      specific: 'application "{{target}}"',
+
+      operations: {
+        read: {
+          title: 'Read any application',
+          specific: 'Read {{target}}',
+          description: 'Default: deny',
+        },
+        update: {
+          title: 'Update any application',
+          specific: 'Update {{target}}',
+          description: 'Default: deny',
+        },
+        'delete': {
+          title: 'Delete any application',
+          specific: 'Delete {{target}}',
+          description: 'Default: deny',
+        },
       },
-      update: {
-        title: 'Update any workflow',
-        specific: 'Update this workflow',
-        description: 'Default: deny',
+    },
+    systemAuthClient: {
+      all: 'all auth clients',
+      specific: 'auth client "{{target}}"',
+
+      operations: {
+        read: {
+          title: 'Read any client',
+          specific: 'Read client "{{target}}',
+          description: 'Default: deny',
+        },
+        update: {
+          title: 'Update any client',
+          specific: 'Update client "{{target}}',
+          description: 'Default: deny',
+        },
+        delete: {
+          title: 'Delete any client',
+          specific: 'Delete client "{{target}}',
+          description: 'Default: deny',
+        },
+        authorize: {
+          title: 'Authorize any client',
+          specific: 'Authorize client "{{target}}',
+          description: 'User can authorize (use) this client. Default: deny',
+        },
       },
-      delete: {
-        title: 'Delete any workflow',
-        specific: 'Delete this workflow',
-        description: 'Default: deny',
-      },
-      undelete: {
-        title: 'Undelete any workflow',
-        specific: 'Undelete this workflow',
-        description: 'Default: deny',
-      },
-      execute: {
-        title: 'Execute any workflow',
-        specific: 'Execute this workflow',
-        description: 'Default: deny',
-      },
-      'triggers-manage': {
-        title: 'Manage all triggers',
-        specific: 'Manage triggers for this workflow',
-        description: 'Default: deny',
-      },
-      'sessions-manage': {
-        title: 'Manage all sessions',
-        specific: 'Manage sessions for this workflow',
-        description: 'Default: deny',
+    },
+    automationWorkflow: {
+      all: 'all workflows',
+      specific: 'workflow "{{target}}"',
+
+      operations: {
+        read: {
+          title: 'Read any workflow',
+          specific: 'Read this workflow',
+          description: 'Default: deny',
+        },
+        update: {
+          title: 'Update any workflow',
+          specific: 'Update this workflow',
+          description: 'Default: deny',
+        },
+        delete: {
+          title: 'Delete any workflow',
+          specific: 'Delete this workflow',
+          description: 'Default: deny',
+        },
+        undelete: {
+          title: 'Undelete any workflow',
+          specific: 'Undelete this workflow',
+          description: 'Default: deny',
+        },
+        execute: {
+          title: 'Execute any workflow',
+          specific: 'Execute this workflow',
+          description: 'Default: deny',
+        },
+        'triggers-manage': {
+          title: 'Manage all triggers',
+          specific: 'Manage triggers for this workflow',
+          description: 'Default: deny',
+        },
+        'sessions-manage': {
+          title: 'Manage all sessions',
+          specific: 'Manage sessions for this workflow',
+          description: 'Default: deny',
+        },
       },
     },
   },

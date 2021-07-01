@@ -10,7 +10,7 @@
         v-if="loaded && canGrant"
       >
         <b-row
-          class="bg-light text-center"
+          class="text-center"
         >
           <b-col
             class="border-bottom py-2"
@@ -43,17 +43,17 @@
           </b-col>
         </b-row>
         <div
-          v-for="(operations, resource) in permissions"
-          :key="resource"
+          v-for="type in sortedPermissions"
+          :key="type"
         >
           <b-row
             class="bg-secondary"
           >
             <b-col
               cols="3"
-              class="py-2 text-left font-weight-bold"
+              class="py-2 text-left font-weight-bold "
             >
-              {{ getTranslation(resource) }}
+              {{ getTranslation(type) }}
             </b-col>
             <b-col
               v-for="role in roles"
@@ -62,15 +62,15 @@
             />
           </b-row>
           <b-row
-            v-for="operation in operations"
+            v-for="operation in permissions[type].ops"
             :key="operation"
             class="text-center"
           >
             <b-col
-              class="border-bottom text-left py-2"
+              class="border-bottom text-left py-2 text-truncate"
               cols="3"
             >
-              {{ getTranslation(resource, operation) }}
+              <span :title="getTranslation(type, operation)">{{ getTranslation(type, operation) }}</span>
             </b-col>
             <b-col
               v-for="role in roles"
@@ -78,17 +78,17 @@
               class="border-bottom border-left py-2 pointer active-cell"
               :class="{
                 'not-allowed bg-light': role.roleID.includes('-'),
-                'bg-warning': checkChange(role.roleID, `${resource}${operation}`)
+                'bg-warning': checkChange(role.roleID, permissions[type].any, operation)
               }"
-              @click="ruleChange($event, role.roleID, `${resource}${operation}`)"
+              @click="ruleChange($event, role.roleID, permissions[type].any, operation)"
             >
               <font-awesome-icon
-                v-if="checkRule(role.roleID, `${resource}${operation}`, 'allow')"
+                v-if="checkRule(role.roleID, permissions[type].any, operation, 'allow')"
                 :icon="['fas', 'check']"
                 class="text-success"
               />
               <font-awesome-icon
-                v-if="checkRule(role.roleID, `${resource}${operation}`, 'deny')"
+                v-if="checkRule(role.roleID, permissions[type].any, operation, 'deny')"
                 :icon="['fas', 'times']"
                 class="text-danger"
               />
@@ -105,12 +105,22 @@
         v-else
         class="text-center m-5"
       >
-        <b-spinner
+        <div
           v-if="!loaded"
-          small
-          class="align-middle m-2"
-        />
-        <div>{{ canGrant ? $t('rules.loading') : $t('rules.notAllowed') }}</div>
+        >
+          <b-spinner
+            class="align-middle m-5"
+          />
+          <div>
+            {{ $t('rules.loading') }}
+          </div>
+        </div>
+        <div
+          v-else-if="!canGrant"
+          class="text-danger"
+        >
+          {{ $t('rules.notAllowed') }}
+        </div>
       </div>
 
       <template
@@ -154,6 +164,7 @@
 <script>
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 import { VueSelect } from 'vue-select'
+import _ from 'lodash'
 
 export default {
   components: {
@@ -182,9 +193,9 @@ export default {
       required: true,
     },
 
-    effective: {
-      type: Object,
-      default: () => {},
+    canGrant: {
+      type: Boolean,
+      value: false,
     },
 
     loaded: {
@@ -205,32 +216,27 @@ export default {
 
   data () {
     return {
-      canGrant: false,
-
       newRole: null,
       permissionChanges: [],
     }
   },
 
-  watch: {
-    effective: {
-      immediate: true,
-      handler () {
-        // Get CanGrant from effective permissions
-        const grantKey = Object.keys(this.effective).find(key => key.includes('grant'))
-        this.canGrant = this.effective[grantKey] || false
-      },
+  computed: {
+    sortedPermissions () {
+      return Object.keys(this.permissions).sort()
     },
   },
 
   methods: {
-    checkRule (roleID, permission, access) {
-      return (this.rolePermissions.find(r => r.roleID === roleID) || { rules: {} }).rules[permission] === access
+    checkRule (roleID, res, op, access) {
+      const key = `${op}@${res}`
+      return (this.rolePermissions.find(r => r.roleID === roleID) || { rules: {} }).rules[key] === access
     },
 
-    checkChange (roleID, permission) {
-      const current = (this.rolePermissions.find(r => r.roleID === roleID) || { rules: {} }).rules[permission]
-      const initial = (this.permissionChanges.find(r => r.roleID === roleID) || { rules: {} }).rules[permission]
+    checkChange (roleID, res, op) {
+      const key = `${op}@${res}`
+      const current = (this.rolePermissions.find(r => r.roleID === roleID) || { rules: {} }).rules[key]
+      const initial = (this.permissionChanges.find(r => r.roleID === roleID) || { rules: {} }).rules[key]
 
       if (initial) {
         return current !== initial
@@ -239,17 +245,18 @@ export default {
       }
     },
 
-    ruleChange (event, roleID, permission) {
-      let access = (this.rolePermissions.find(r => r.roleID === roleID) || { rules: {} }).rules[permission]
+    ruleChange (event, roleID, res, op) {
+      const key = `${op}@${res}`
+      let access = (this.rolePermissions.find(r => r.roleID === roleID) || { rules: {} }).rules[key]
 
       // Keep track of permission changes, record initial value before it changes
-      if (!(this.permissionChanges.find(r => r.roleID === roleID) || { rules: {} }).rules[permission]) {
+      if (!(this.permissionChanges.find(r => r.roleID === roleID) || { rules: {} }).rules[key]) {
         this.permissionChanges.push({ roleID, rules: { } })
 
         if (!access) {
           access = 'inherit'
         }
-        this.$set(this.permissionChanges.find(r => r.roleID === roleID).rules, permission, access)
+        this.$set(this.permissionChanges.find(r => r.roleID === roleID).rules, key, access)
       }
 
       if (event.altKey) {
@@ -266,18 +273,16 @@ export default {
         }
       }
 
-      this.$set(this.rolePermissions.find(r => r.roleID === roleID).rules, permission, access)
+      this.$set(this.rolePermissions.find(r => r.roleID === roleID).rules, key, access)
     },
 
     getTranslation (resource, operation = '') {
-      resource = resource.replace(/:/g, '.').replace(/\*/g, '').replace(/\//g, '')
-      if (resource.charAt(resource.length - 1) !== '.') {
-        resource = `${resource}.`
-      }
+      resource = _.camelCase(resource.split(':')[3]) || 'component'
+
       if (operation) {
-        return this.$t(`rules.${resource}${operation}`)
+        return this.$t(`rules.${resource}.operations.${_.camelCase(operation)}`)
       } else {
-        return this.$t(`rules.${resource}title`)
+        return this.$t(`rules.${resource}.type.label`)
       }
     },
 

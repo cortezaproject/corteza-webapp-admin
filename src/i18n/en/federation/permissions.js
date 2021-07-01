@@ -17,35 +17,52 @@ export default {
       tip2: 'Use Alt-Click to set explicit deny on operation',
       submit: 'Submit',
 
-      federation: {
-        title: 'Federation service',
+      component: {
+        type: {
+          label: 'Federation service',
+        },
 
-        access: 'Access to federation',
-        grant: 'Grant permissions on federation service',
-        pair: 'Pair nodes',
+        operations: {
+          grant: 'Grant permissions on federation service',
+          nodeCreate: 'Create nodes',
+          pair: 'Pair nodes',
+          settingsRead: 'Access all settings',
+          settingsManage: 'Manage all settings',
+        },
+      },
 
-        node: {
-          title: 'Nodes',
-          create: 'Create nodes',
+      node: {
+        type: {
+          label: 'Nodes',
+        },
+
+        operations: {
           read: 'Access any node',
           update: 'Update any node',
           delete: 'Delete any node',
           manage: 'Manage any node',
           pair: 'Pair nodes',
-          module: {
-            create: 'Create modules',
-          },
+          moduleCreate: 'Create modules',
+        },
+      },
+
+      sharedModule: {
+        type: {
+          label: 'Modules',
         },
 
-        module: {
-          title: 'Modules',
-          manage: 'Manage any module',
+        operations: {
           map: 'Map any module',
         },
+      },
 
-        settings: {
-          read: 'Access all settings',
-          manage: 'Manage all settings',
+      exposedModule: {
+        type: {
+          label: 'Modules',
+        },
+
+        operations: {
+          manage: 'Manage any module',
         },
       },
     },

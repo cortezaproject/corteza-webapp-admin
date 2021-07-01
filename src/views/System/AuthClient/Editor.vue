@@ -20,7 +20,7 @@
           v-if="authClientID && canGrant"
           :title="(authclient.meta || {}).name || authclient.handle"
           :target="(authclient.meta || {}).name || authclient.handle"
-          :resource="'system:auth-client:'+authClientID"
+          :resource="'corteza::system:auth-client/'+authClientID"
           button-variant="light"
         >
           <font-awesome-icon :icon="['fas', 'lock']" />
@@ -44,6 +44,7 @@
 <script>
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CAuthclientEditorInfo from 'corteza-webapp-admin/src/components/Authclient/CAuthclientEditorInfo'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -72,9 +73,6 @@ export default {
       authclient: {},
       roles: [],
 
-      canCreate: false,
-      canGrant: false,
-
       info: {
         processing: false,
         success: false,
@@ -82,11 +80,24 @@ export default {
     }
   },
 
+  computed: {
+    ...mapGetters({
+      can: 'rbac/can',
+    }),
+
+    canCreate () {
+      return this.can('system/', 'auth-client.create')
+    },
+
+    canGrant () {
+      return this.can('system/', 'grant')
+    },
+  },
+
   watch: {
     authClientID: {
       immediate: true,
       handler () {
-        this.fetchEffective()
         if (this.authClientID) {
           this.fetchRoles().then(() => {
             this.fetchAuthclient()
@@ -105,20 +116,6 @@ export default {
       this.$SystemAPI.authClientRead({ clientID: this.authClientID })
         .then(ac => {
           this.authclient = ac
-        })
-        .catch(this.stdReject)
-        .finally(() => {
-          this.decLoader()
-        })
-    },
-
-    fetchEffective () {
-      this.incLoader()
-
-      this.$SystemAPI.permissionsEffective()
-        .then(rules => {
-          this.canCreate = rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'auth-client.create').allow
-          this.canGrant = rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'grant').allow
         })
         .catch(this.stdReject)
         .finally(() => {

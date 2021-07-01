@@ -19,7 +19,7 @@
           v-if="applicationID && canGrant"
           :title="application.name"
           :target="application.name"
-          :resource="'system:application:'+applicationID"
+          :resource="'corteza::system:application/'+applicationID"
           button-variant="light"
           class="ml-2"
         >
@@ -55,6 +55,7 @@
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CApplicationEditorInfo from 'corteza-webapp-admin/src/components/Application/CApplicationEditorInfo'
 import CApplicationEditorUnify from 'corteza-webapp-admin/src/components/Application/CApplicationEditorUnify'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -83,10 +84,6 @@ export default {
     return {
       application: {},
 
-      canCreate: false,
-      canGrant: false,
-      canPin: false,
-
       info: {
         processing: false,
         success: false,
@@ -98,11 +95,28 @@ export default {
     }
   },
 
+  computed: {
+    ...mapGetters({
+      can: 'rbac/can',
+    }),
+
+    canCreate () {
+      return this.can('system/', 'application.create')
+    },
+
+    canGrant () {
+      return this.can('system/', 'grant')
+    },
+
+    canPin () {
+      return this.can('system/', 'pin')
+    },
+  },
+
   watch: {
     applicationID: {
       immediate: true,
       handler () {
-        this.fetchEffective()
         if (this.applicationID) {
           this.fetchApplication()
         } else {
@@ -118,21 +132,6 @@ export default {
 
       this.$SystemAPI.applicationRead({ applicationID: this.applicationID, incFlags: 1 })
         .then(this.prepare)
-        .catch(this.stdReject)
-        .finally(() => {
-          this.decLoader()
-        })
-    },
-
-    fetchEffective () {
-      this.incLoader()
-
-      this.$SystemAPI.permissionsEffective()
-        .then(rules => {
-          this.canCreate = rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'application.create').allow
-          this.canGrant = rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'grant').allow
-          this.canPin = rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'application.flag.global').allow
-        })
         .catch(this.stdReject)
         .finally(() => {
           this.decLoader()

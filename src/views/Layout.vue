@@ -37,9 +37,7 @@
     </aside>
 
     <portal to="sidebar-body-expanded">
-      <c-the-main-nav
-        :access="access"
-      />
+      <c-the-main-nav />
     </portal>
 
     <main class="d-inline-flex h-100 overflow-auto">
@@ -83,73 +81,15 @@ export default {
   data () {
     return {
       error: null,
-      access: [],
       expanded: true,
       pinned: true,
     }
   },
 
   computed: {
-
-    hasAccess () {
-      return this.access.filter(({ allow }) => allow).length > 0
-    },
-
     appName () {
       /* eslint-disable no-undef */
       return WEBAPP
-    },
-  },
-
-  /**
-   * This is the base admin layout
-   *
-   * Redirect to /auth if user is not authenticated
-   */
-  created () {
-    this.$store.dispatch('ui/incLoader')
-
-    this.access = []
-
-    this.loadPermissions()
-      .catch(this.stdReject)
-      .finally(() => {
-        this.$store.dispatch('ui/decLoader')
-      })
-  },
-
-  methods: {
-    async loadPermissions () {
-      // Load effective System permissions
-      return this.$SystemAPI.permissionsEffective()
-        .then(rules => {
-          this.access = rules
-
-          if (!this.hasAccess) {
-            // Open auth if we do not have admin (system) access
-            throw new Error(this.$t('general.noAccess'))
-          }
-
-          // Load effective Compose permissions
-          return this.$ComposeAPI.permissionsEffective()
-        })
-        .then(rules => {
-          this.access = this.access.concat(rules)
-
-          // Load effective Federation permissions, make sure not to trigger error since federation endpoints are optional
-          return this.$FederationAPI.permissionsEffective()
-            .catch(() => [])
-        })
-        .then(rules => {
-          this.access = this.access.concat(rules)
-
-          // Load effective Federation permissions, make sure not to trigger error since federation endpoints are optional
-          return this.$AutomationAPI.permissionsEffective()
-            .catch(() => [])
-        })
-        .then(rules => {
-          this.access = this.access.concat(rules)
-        })
     },
   },
 }
