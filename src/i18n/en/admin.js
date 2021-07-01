@@ -36,6 +36,50 @@ export default {
       compose: 'Compose',
     },
 
+    // @todo should be split per component and merged with <component>/permissions.js
+    systemComponent: {
+      title: 'System service',
+      service: {
+        NoPermissions: 'You don’t have permission for this action',
+        UserHandleNotUnique: 'Handle is already used',
+        RoleHandleNotUnique: 'Handle is already used',
+      },
+
+      operations: {
+        grant: {
+          title: 'Grant permission on system service',
+          description: 'Default: deny',
+        },
+        access: {
+          title: 'Allow access to administration',
+          description: 'Default: deny',
+        },
+        roleCreate: {
+          title: 'Create new role',
+          description: 'Default: deny',
+        },
+        userCreate: {
+          title: 'Create new user',
+          description: 'Default: deny',
+        },
+        applicationCreate: {
+          title: 'Create new application',
+          description: 'Default: deny',
+        },
+        settingsRead: {
+          title: 'Access all settings',
+          description: 'Default: deny',
+        },
+        settingsManage: {
+          title: 'Manage all settings',
+          description: 'Default: deny',
+        },
+        reminderAssign: {
+          title: 'Allow reminder assignment',
+          description: 'Default: deny',
+        },
+      },
+    },
     systemRole: {
       all: 'all roles',
       specific: 'role "{{target}}"',
@@ -216,12 +260,12 @@ export default {
           specific: 'Execute this workflow',
           description: 'Default: deny',
         },
-        triggersManage: {
+        'triggers-manage': {
           title: 'Manage all triggers',
           specific: 'Manage triggers for this workflow',
           description: 'Default: deny',
         },
-        sessionsManage: {
+        'sessions-manage': {
           title: 'Manage all sessions',
           specific: 'Manage sessions for this workflow',
           description: 'Default: deny',
