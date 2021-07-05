@@ -62,6 +62,7 @@ export default {
       handle: 'Handle',
 
       confirmEmail: 'Confirm email address',
+      revokeAllSession: 'Revoke all active session',
 
       suspend: 'Suspend',
       unsuspend: 'Unsuspend',

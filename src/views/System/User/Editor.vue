@@ -44,6 +44,7 @@
       @delete="onDelete"
       @status="onStatusChange"
       @patch="onPatch"
+      @sessionsRemove="onSessionsRemove"
     />
 
     <c-user-editor-roles
@@ -360,6 +361,25 @@ export default {
             this.decLoader()
           })
       }
+    },
+
+    /**
+     * Handles user logout event, calls user logout API endpoint
+     * Removes all active auth session and token of user
+     */
+    onSessionsRemove () {
+      this.incLoader()
+
+      const userID = this.userID
+
+      this.$SystemAPI.userSessionsRemove({ userID })
+        .then(() => {
+          this.fetchUser()
+        })
+        .catch(this.stdReject)
+        .finally(() => {
+          this.decLoader()
+        })
     },
 
     toastSuccess (i18nMessage) {

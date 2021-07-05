@@ -127,6 +127,16 @@
         {{ getSuspendStatus }}
       </confirmation-toggle>
 
+      <confirmation-toggle
+        v-if="user && user.userID"
+        :disabled="user.userID === userID"
+        class="ml-1"
+        cta-class="secondary"
+        @confirmed="$emit('sessionsRemove')"
+      >
+        {{ $t('revokeAllSession') }}
+      </confirmation-toggle>
+
       <b-button
         v-if="isExisting && !user.emailConfirmed"
         variant="light"
@@ -194,6 +204,13 @@ export default {
 
     isExisting () {
       return this.user && this.user.userID && this.user.userID !== NoID
+    },
+
+    userID () {
+      if (this.$auth.user) {
+        return this.$auth.user.userID
+      }
+      return undefined
     },
   },
 }
