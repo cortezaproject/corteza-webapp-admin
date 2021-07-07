@@ -35,17 +35,26 @@
       :success="info.success"
       :can-create="canCreate"
       @submit="onInfoSubmit"
-      @delete="onDelete"
+      @delete="onInfoDelete"
+    />
+    <c-functions-stepper
+      v-if="routeID"
+      :processing="stepper.processing"
+      :success="stepper.success"
+      :route-functions="routeFunctions"
+      @submit="onFunctionsSubmit"
     />
   </b-container>
 </template>
 <script>
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CRouteEditorInfo from 'corteza-webapp-admin/src/components/Route/CRouteEditorInfo'
+import CFunctionsStepper from 'corteza-webapp-admin/src/components/Route/CFunctionsStepper'
 
 export default {
   components: {
     CRouteEditorInfo,
+    CFunctionsStepper,
   },
 
   i18nOptions: {
@@ -68,11 +77,15 @@ export default {
   data () {
     return {
       route: {},
-
       canCreate: false,
       canGrant: false,
+      routeFunctions: [],
 
       info: {
+        processing: false,
+        success: false,
+      },
+      stepper: {
         processing: false,
         success: false,
       },
@@ -145,8 +158,56 @@ export default {
           })
       }
     },
+    onFunctionsSubmit (steps) {
+      if (this.routeID) {
+        steps.forEach(step => {
+          step.functions.forEach(func => {
+            this.stepper.processing = true
+            func.params = [...func.params.map(p => {
+              return { [p.label]: p.value }
+            })]
+            console.log(func)
+            if (func) {
+              this.$SystemAPI.functionCreate({ ...func, route: this.routeID })
+                .then(() => {
+                  this.animateSuccess('stepper')
+                })
+                .catch(this.stdReject)
+                .finally(() => {
+                  this.stepper.processing = false
+                })
+            }
+          })
+        })
+      }
+    },
 
-    onDelete () {
+    fetchFunctions () {
+      this.incLoader()
+
+      this.$SystemAPI.functionList({ routeID: this.routeID })
+        .then(api => {
+          this.routeFunctions = api
+        })
+        .catch(this.stdReject)
+        .finally(() => {
+          this.decLoader()
+        })
+    },
+
+    onFunctionDelete (functionID) {
+      this.incLoader()
+
+      this.$SystemAPI.routeDelete({ functionID: functionID })
+        .then(() => {
+          console.log('Function deleted successfuly!')
+        })
+        .catch(this.stdReject)
+        .finally(() => {
+          this.decLoader()
+        })
+    },
+    onInfoDelete () {
       this.incLoader()
 
       if (this.route.deletedAt) {
