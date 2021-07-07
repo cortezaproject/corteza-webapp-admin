@@ -37,13 +37,10 @@
         :label="$t('method')"
         label-cols="2"
       >
-        <b-form-input
+        <b-form-select
           v-model="route.method"
+          :options="methods"
         />
-        <input
-          type="submit"
-          class="d-none"
-        >
       </b-form-group>
 
       <b-form-group
@@ -157,6 +154,12 @@ export default {
       type: Boolean,
       required: true,
     },
+  },
+
+  data () {
+    return {
+      methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    }
   },
 
   computed: {
