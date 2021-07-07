@@ -37,6 +37,7 @@ import {
   faFileAlt,
   faPuzzlePiece,
   faFlag,
+  faCog,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -44,6 +45,7 @@ import {
   faCheckCircle,
   faQuestionCircle,
   faUser,
+  faTrashAlt,
 } from '@fortawesome/free-regular-svg-icons'
 
 library.add(
@@ -88,4 +90,6 @@ library.add(
   faFileAlt,
   faPuzzlePiece,
   faFlag,
+  faTrashAlt,
+  faCog,
 )
