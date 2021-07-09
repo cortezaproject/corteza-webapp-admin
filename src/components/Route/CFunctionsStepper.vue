@@ -14,15 +14,22 @@
         @click="onActivateTab(index)"
       >
         <section class="d-flex w-100">
+          <div class="d-flex flex-column w-35">
+            <c-functions-dropdown
+              :avaliable-functions="filterAvaliableFunctionsByKind(step.kind)"
+              @addFunction="onAddFunction"
+            />
+            <c-function
+              :func="getSelectedFunction()"
+              @updateFunction="onUpdateFunction"
+            />
+          </div>
           <c-functions-table
-            class="w-60"
+            class="w-60 ml-5"
             :avaliable-functions="filterAvaliableFunctionsByKind(step.kind)"
-            :functions="step.functions"
+            :functions="filterSelectedFunctionsByKind(step.kind)"
             @functionSelect="onFunctionSelect"
-          />
-          <c-function
-            class="w-35 ml-5"
-            :func="getSelectedFunction()"
+            @removeFunction="onRemoveFunction"
           />
         </section>
       </b-tab>
@@ -32,7 +39,7 @@
       :processing="processing"
       :success="success"
       :disabled="disabled"
-      @submit="$emit('submit', steps)"
+      @submit="$emit('submit', [...functions], deletedFunctions)"
     />
   </b-card>
 </template>
@@ -40,12 +47,14 @@
 import CFunction from 'corteza-webapp-admin/src/components/Route/CFunction'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 import CFunctionsTable from 'corteza-webapp-admin/src/components/Route/CFunctionsTable'
+import CFunctionsDropdown from 'corteza-webapp-admin/src/components/Route/CFunctionsDropdown'
 
 export default {
   components: {
     CFunction,
     CSubmitButton,
     CFunctionsTable,
+    CFunctionsDropdown,
   },
   props: {
     processing: {
@@ -58,10 +67,6 @@ export default {
       value: false,
     },
 
-    routeFunctions: {
-      type: Array,
-      default: () => [],
-    },
   },
   data () {
     return {
@@ -70,55 +75,80 @@ export default {
         {
           title: 'Access control',
           kind: 'verifier',
-          functions: [],
         },
         {
           title: 'Validation',
           kind: 'validator',
-          functions: [],
         },
         {
           title: 'Processing',
           kind: 'processer',
-          functions: [],
         },
         {
           title: 'Expediting',
           kind: 'expediter',
-          functions: [],
         },
       ],
       selectedFunction: null,
-      avaliableFunctions: null,
+      avaliableFunctions: [],
+      deletedFunctions: [],
+      functions: [],
     }
   },
 
   computed: {
     disabled () {
-      return !this.steps.find(step => step.functions.length > 0)
+      // return !this.steps.find(step => step.functions.length > 0)
+      return !this.functions.length
     },
   },
 
   created () {
-    this.avaliableFunctions = this.getAvaliableFunctions()
+    this.avaliableFunctions = this.getAvaliableFunctionsStatic()
   },
 
   methods: {
+    onAddFunction (func) {
+      if (!this.functions.find(f => f.ref === func.ref)) {
+        this.functions.push({ ...func })
+      }
+      this.selectedFunction = { ...func }
+    },
+    onUpdateFunction (func) {
+      this.functions[this.functions.findIndex(f => f.ref === func.ref)] = { ...func }
+    },
+    onRemoveFunction (func) {
+      if (func.functionID) {
+        this.deletedFunctions.push(func.functionID)
+      }
+      this.functions.splice(this.functions.findIndex(f => f.ref === func.ref), 1)
+    },
+
     onFunctionSelect (func = {}) {
       this.selectedFunction = { ...func }
     },
+
     getSelectedFunction () {
       return this.selectedFunction ? this.selectedFunction : null
     },
+
     filterAvaliableFunctionsByKind (kind) {
-      return this.avaliableFunctions.filter(f => {
+      return (this.avaliableFunctions || []).filter(f => {
         return f.kind === kind
       })
     },
-    onActivateTab (index) {
-      this.selectedFunction = this.steps[index].functions.length > 0 ? this.steps[index].functions[0] : null
+
+    filterSelectedFunctionsByKind (kind) {
+      return (this.functions || []).filter(f => {
+        return f.kind === kind
+      })
     },
-    getAvaliableFunctions () {
+
+    onActivateTab (index) {
+      this.selectedFunction = (this.functions || []).some(f => f.step === index) ? this.functions.find(f => f.step === index) : null
+    },
+
+    getAvaliableFunctionsStatic () {
       return [
         {
           'ref': 'verifierQueryParam',
@@ -312,10 +342,24 @@ export default {
         },
       ]
     },
-    getRouteFunctions () {
-      // Remove step functions from steps
-      // Use routeFunctions
 
+    setAvaliableFunctions (functions) {
+      this.avaliableFunctions = functions.map(f => {
+        return { name, ...f, ref: f.name }
+      })
+    },
+    setRouteFunctions (routeFunctions = []) {
+      this.functions = (routeFunctions || []).map(func => {
+        const f = this.avaliableFunctions.find(af => af.ref === func.ref)
+        f.params = this.decodeParams({ ...func.params })
+        f.functionID = func.functionID
+        return { ...f }
+      })
+    },
+    decodeParams (params) {
+      return Object.entries(params).map(p => {
+        return { label: p[0], value: p[1], type: 'string' }
+      })
     },
   },
 }
