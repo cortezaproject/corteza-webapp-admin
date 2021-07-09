@@ -39,9 +39,9 @@
     />
     <c-functions-stepper
       v-if="routeID"
+      ref="stepper"
       :processing="stepper.processing"
       :success="stepper.success"
-      :route-functions="routeFunctions"
       @submit="onFunctionsSubmit"
     />
   </b-container>
@@ -79,7 +79,6 @@ export default {
       route: {},
       canCreate: false,
       canGrant: false,
-      routeFunctions: [],
 
       info: {
         processing: false,
@@ -99,6 +98,8 @@ export default {
         this.fetchEffective()
         if (this.routeID) {
           this.fetchRoute()
+          this.fetchFunctions()
+          this.fetchAllAvaliableFunctions()
         } else {
           this.route = {}
         }
@@ -158,36 +159,81 @@ export default {
           })
       }
     },
-    onFunctionsSubmit (steps) {
+    onFunctionsSubmit (functions = [], functionsToDelete = []) {
+      if (functionsToDelete.length) {
+        this.deleteFunctions(functionsToDelete)
+      }
       if (this.routeID) {
-        steps.forEach(step => {
-          step.functions.forEach(func => {
-            this.stepper.processing = true
-            func.params = [...func.params.map(p => {
-              return { [p.label]: p.value }
-            })]
-            console.log(func)
-            if (func) {
-              this.$SystemAPI.functionCreate({ ...func, route: this.routeID })
-                .then(() => {
-                  this.animateSuccess('stepper')
-                })
-                .catch(this.stdReject)
-                .finally(() => {
-                  this.stepper.processing = false
-                })
+        functions.forEach(({ ...func }) => {
+          this.stepper.processing = true
+          func.params = func.params.reduce(function (result, p) {
+            result[p.label] = p.value
+            return result
+          }, {})
+          if (func.updated) {
+            if (func.functionID) {
+              this.updateFunction(func)
+            } else {
+              this.createFunction(func)
             }
-          })
+          }
         })
       }
     },
 
+    createFunction (func) {
+      this.$SystemAPI.functionCreate({ ...func, routeID: this.routeID })
+        .then(() => {
+          this.animateSuccess('stepper')
+        })
+        .catch(this.stdReject)
+        .finally(() => {
+          this.stepper.processing = false
+        })
+    },
+
+    updateFunction (func) {
+      this.$SystemAPI.functionUpdate({ ...func, routeID: this.routeID })
+        .then(() => {
+          this.animateSuccess('stepper')
+        })
+        .catch(this.stdReject)
+        .finally(() => {
+          this.stepper.processing = false
+        })
+    },
+
+    deleteFunctions (functionsToDelete) {
+      functionsToDelete.forEach(id => {
+        this.$SystemAPI.functionDelete({ functionID: id })
+          .then(() => {
+            this.animateSuccess('stepper')
+          })
+          .catch(this.stdReject)
+          .finally(() => {
+            this.stepper.processing = false
+          })
+      })
+    },
+
     fetchFunctions () {
       this.incLoader()
-
       this.$SystemAPI.functionList({ routeID: this.routeID })
         .then(api => {
-          this.routeFunctions = api
+          this.$refs.stepper.setRouteFunctions(api.set)
+        })
+        .catch(this.stdReject)
+        .finally(() => {
+          this.decLoader()
+        })
+    },
+
+    fetchAllAvaliableFunctions () {
+      this.incLoader()
+
+      this.$SystemAPI.functionDefinitions()
+        .then(api => {
+          this.$refs.stepper.setAvaliableFunctions(api)
         })
         .catch(this.stdReject)
         .finally(() => {

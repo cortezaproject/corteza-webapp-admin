@@ -5,20 +5,6 @@
     >
       <th>
         <span>Functions</span>
-        <b-dropdown
-          text="Add function"
-          class="ml-2 dropdown-function"
-          variant="light"
-        >
-          <b-dropdown-item
-            v-for="(func, index) in avaliableFunctions"
-            :key="index"
-            href="#"
-            @click="onAddFunction(func)"
-          >
-            {{ func.label }}
-          </b-dropdown-item>
-        </b-dropdown>
       </th><th>
         Status
       </th>
@@ -45,7 +31,7 @@
               variant="danger"
               class="my-1"
               size="sm"
-              @click="onRemoveFunction(index)"
+              @click="onRemoveFunction(func)"
             >
               Remove
             </b-button>
@@ -89,8 +75,8 @@ export default {
         this.$emit('functionSelect', this.functions[0])
       }
     },
-    onRemoveFunction (index) {
-      this.functions.splice(index, 1)
+    onRemoveFunction (func) {
+      this.$emit('removeFunction', func)
     },
     onRowClick (func, index) {
       this.selectedRow = index
