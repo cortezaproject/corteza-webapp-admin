@@ -33,5 +33,13 @@ export default {
       default: () => [],
     },
   },
+  watch: {
+    params: {
+      handler () {
+        this.$emit('paramsUpdated')
+      },
+      deep: true,
+    },
+  },
 }
 </script>

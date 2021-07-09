@@ -5,16 +5,9 @@
     >
       <c-function-params
         :params="func.params"
+        @paramsUpdated="onParamsUpdated"
       />
     </div>
-    <b-button
-      variant="primary"
-      class="mb-2 d-flex ml-auto"
-      size="sm"
-      @click="onSingleFunctionSubmit"
-    >
-      Submit function
-    </b-button>
   </div>
 </template>
 <script>
@@ -35,17 +28,8 @@ export default {
     }
   },
   methods: {
-    // Currently for testing purposes of single function only
-    onSingleFunctionSubmit (func) {
-      console.log(func)
-      this.$SystemAPI.functionCreate({ ...func, route: '12345' })
-        .then(() => {
-          console.log('Sucess')
-        })
-        .catch(this.stdReject)
-        .finally(() => {
-          console.log('Finally')
-        })
+    onParamsUpdated () {
+      this.$emit('updateFunction', { ...this.func, updated: true })
     },
   },
 }
