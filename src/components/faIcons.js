@@ -33,6 +33,9 @@ import {
   faGripHorizontal,
   faThumbtack,
   faBars,
+  faFile,
+  faFileAlt,
+  faPuzzlePiece,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -80,4 +83,7 @@ library.add(
   faUser,
   faThumbtack,
   faBars,
+  faFile,
+  faFileAlt,
+  faPuzzlePiece,
 )

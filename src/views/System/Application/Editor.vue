@@ -131,6 +131,7 @@ export default {
   },
 
   methods: {
+
     fetchApplication () {
       this.incLoader()
 
