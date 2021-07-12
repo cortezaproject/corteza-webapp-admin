@@ -61,6 +61,11 @@ export default [
         route: 'system.queue',
         icon: 'stream',
       },
+      {
+        label: 'system.routes:navItem.label',
+        route: 'system.route',
+        icon: 'flag',
+      },
     ],
   },
 
