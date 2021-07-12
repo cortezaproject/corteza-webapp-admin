@@ -1,19 +1,25 @@
+import stats from './stats';
+import applications from './applications';
+import users from './users';
+import roles from './roles';
+import templates from './templates';
+import scripts from './scripts';
+import settings from './settings';
+import authclients from './authclients';
+import permissions from './permissions';
+import actionlog from './actionlog';
+import queues from './queues';
 export default {
-  navItem: { label: 'Scripts' },
-  list: {
-    title: 'Scripts',
-    filterForm: {
-      query: {
-        label: 'Filter scripts list',
-        placeholder: 'Filter scripts by name'
-      }
-    },
-    columns: {
-      name: 'Name',
-      email: 'Email',
-      createdAt: 'Created',
-      enabled: 'Enabled',
-      actions: ''
-    }
-  }
+  system: { navGroup: { label: 'System' } },
+  'system.stats': stats,
+  'system.applications': applications,
+  'system.users': users,
+  'system.roles': roles,
+  'system.templates': templates,
+  'system.scripts': scripts,
+  'system.settings': settings,
+  'system.authclients': authclients,
+  'system.permissions': permissions,
+  'system.actionlog': actionlog,
+  'system.queues': queues
 };
