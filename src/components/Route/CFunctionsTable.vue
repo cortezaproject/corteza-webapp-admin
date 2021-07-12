@@ -17,7 +17,7 @@
         class="pointer"
         :class="[selectedRow===index ? 'row-selected' : 'row-not-selected']"
         active
-        @click="onRowClick(func,index)"
+        @click.stop="onRowClick(func,index)"
       >
         <td>
           {{ func.label }}
@@ -30,7 +30,7 @@
             variant="danger"
             class="my-1"
             size="sm"
-            @click="onRemoveFunction(func)"
+            @click.stop="onRemoveFunction(func)"
           >
             Remove
           </b-button>
