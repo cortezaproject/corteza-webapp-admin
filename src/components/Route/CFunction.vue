@@ -1,13 +1,28 @@
 <template>
-  <div v-if="func">
-    <div
-      class="form d-flex flex-column"
+  <div
+    class="form d-flex flex-column"
+  >
+    <c-function-params
+      :params="func.params"
+      :label="func.label"
+      @paramsUpdated="onParamsUpdated"
+    />
+    <b-button
+      variant="light"
+      :disabled="added"
+      class="mb-2 d-flex mr-auto align-items-center"
+      size="md"
+      @click="onFunctionAdd"
     >
-      <c-function-params
-        :params="func.params"
-        @paramsUpdated="onParamsUpdated"
-      />
-    </div>
+      <span>
+        <font-awesome-icon
+          :icon="['fas', 'plus']"
+          size="sm"
+          class="mr-1"
+        />
+        Add {{ func.label }}
+      </span>
+    </b-button>
   </div>
 </template>
 <script>
@@ -22,6 +37,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    added: {
+      type: Boolean,
+      value: false,
+    },
   },
   data () {
     return {
@@ -30,6 +49,9 @@ export default {
   methods: {
     onParamsUpdated () {
       this.$emit('updateFunction', { ...this.func, updated: true })
+    },
+    onFunctionAdd () {
+      this.$emit('addFunction', { ...this.func, updated: true })
     },
   },
 }
