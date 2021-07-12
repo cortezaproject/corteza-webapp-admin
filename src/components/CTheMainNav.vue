@@ -61,6 +61,13 @@
       />
 
       <c-main-nav-item
+        v-if="true"
+        :label="$t('system.routes:navItem.label')"
+        :to="{ name: 'system.route' }"
+        :icon="['fas', 'flag']"
+      />
+
+      <c-main-nav-item
         v-if="canGrant.system"
         :label="$t('system.actionlog:navItem.label')"
         :to="{ name: 'system.actionlog' }"
