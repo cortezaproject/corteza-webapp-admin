@@ -1,66 +1,43 @@
 export default {
-  navItem: { label: 'Applications' },
+  navItem: { label: 'Action log' },
   list: {
-    title: 'Applications',
-    new: 'New',
-    permissions: 'Permissions',
-    yaml: 'YAML',
-    loading: 'Loading applications',
-    numFound: `{{count}} application found`,
-    numFound_plural: `{{count}} applications found`,
-    filterForm: {
-      query: {
-        label: 'Filter applications list',
-        placeholder: 'Filter applications by name'
-      },
-      excluded: { label: 'Without' },
-      inclusive: { label: 'Including' },
-      exclusive: { label: 'Only' },
-      deleted: { label: 'deleted applications' }
-    },
+    title: 'Action log',
+    loadOlder: 'Load older actions',
     columns: {
-      name: 'Name',
-      createdAt: 'Created',
-      enabled: 'Enabled',
-      actions: ''
-    }
-  },
-  editor: {
-    title: 'Edit application',
-    new: 'New',
-    permissions: 'Permissions',
-    info: {
-      title: 'Basic information',
-      id: 'ID',
-      name: 'Name',
-      enabled: 'Enabled',
-      delete: 'Delete',
-      undelete: 'Undelete',
-      deletedAt: 'Deleted at',
-      updatedAt: 'Updated at',
-      createdAt: 'Created at'
+      timestamp: 'Timestamp',
+      description: 'Description',
+      resource: 'Resource',
+      requestOrigin: 'Origin',
+      action: 'Action',
+      actor: 'User',
+      severity: 'Severity'
     },
-    unify: {
-      title: 'Unify app selector',
-      name: {
-        label: 'Name',
-        description: 'Name used in the application selector'
-      },
-      logo: {
-        label: 'Logo',
-        description: 'Logo used in the application selector',
-        placeholder: 'Choose a logo or drop it here...'
-      },
-      url: {
-        label: 'URL',
-        description: 'Application URL'
-      },
-      listed: 'Listed',
-      pinned: 'Pinned',
-      config: {
-        label: 'Configuration',
-        description: 'Application configuration (JSON)'
-      }
+    filter: {
+      from: 'Starting from',
+      to: 'Ending at',
+      'choose-date': 'Choose a date',
+      'no-time': 'No time selected',
+      today: 'Today',
+      resource: 'Resource',
+      action: 'Action',
+      actor: 'User ID',
+      search: 'Search'
+    },
+    details: {
+      'id': 'ID',
+      'header': 'Details',
+      'timestamp': 'Timestamp',
+      'requestOrigin': 'Request Origin',
+      'requestID': 'Request ID',
+      'actorIPAddr': 'Actor/User',
+      'actor': 'User',
+      'actorID': 'User ID',
+      'severity': 'Severity',
+      'resource': 'Resource',
+      'action': 'Action',
+      'headerAdditional': 'Additional information',
+      'description': 'Description',
+      'error': 'Error'
     }
   }
 };
