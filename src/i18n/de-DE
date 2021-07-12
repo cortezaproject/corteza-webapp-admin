@@ -1,80 +1,65 @@
 export default {
-  navItem: { label: 'Settings' },
-  editor: {
-    title: 'System settings',
-    auth: {
-      title: 'Authentication',
-      internal: {
-        title: 'Internal',
-        enabled: 'Internal authentication enabled',
-        'password-reset': { enabled: 'Password reset enabled' },
-        signup: {
-          enabled: 'Signup enabled',
-          'email-confirmation-required': 'Signup email confirmation required'
-        }
+  navItem: { label: 'Applications' },
+  list: {
+    title: 'Applications',
+    new: 'New',
+    permissions: 'Permissions',
+    yaml: 'YAML',
+    loading: 'Loading applications',
+    numFound: `{{count}} application found`,
+    numFound_plural: `{{count}} applications found`,
+    filterForm: {
+      query: {
+        label: 'Filter applications list',
+        placeholder: 'Filter applications by name'
       },
-      mfa: {
-        title: 'Multi-factor authentication',
-        emailOTP: {
-          enabled: 'Allow users to use one-time-password over email',
-          enforced: 'Force users to use one-time-password over email',
-          expires: {
-            label: 'Valid for',
-            description: 'How long will password be valid before it expires.'
-          }
-        },
-        TOTP: {
-          enabled: 'Allow users to use time based one-time-password',
-          enforced: 'Force users to use one-time-password over email',
-          issuer: {
-            label: 'Issuer',
-            description: 'Issuer name will be send to authenticator app when user configures it.'
-          }
-        }
-      },
-      mail: {
-        title: 'Authentication email sender mail',
-        'validate-email': 'Please enter valid email address.',
-        'from-address': 'Sender\'s address',
-        'from-name': 'Sender\'s name'
-      },
-      url: 'URL'
+      excluded: { label: 'Without' },
+      inclusive: { label: 'Including' },
+      exclusive: { label: 'Only' },
+      deleted: { label: 'deleted applications' }
     },
-    external: {
-      title: 'External Authentication Providers',
-      handle: 'Handle',
-      external: 'External',
-      enabled: 'Enable external authentication',
-      'client-key': 'Client key',
-      secret: 'Secret',
-      issuer: 'OIDC Issuer URL',
-      'provider-enabled': 'Enable this external authentication provider',
-      certificate: 'Certificate',
-      oidc: 'OpenID Connect',
-      google: 'Google',
-      facebook: 'Facebook',
-      github: 'GitHub',
-      linkedin: 'LinkedIn',
-      saml: {
-        title: 'SAML',
-        cert: 'Certificate public key',
-        'cert-key': 'Certificate private key',
-        idp: {
-          title: 'Identity provider',
-          url: 'URL',
-          'ident-name': 'Identity payload name',
-          'ident-handle': 'Identity payload handle',
-          'ident-identifier': 'Identity payload default identifier'
-        },
-        desc: {
-          cert: 'Content will be minimized',
-          'cert-key': 'Content will be minimized',
-          idp: {
-            'ident-name': 'Name field coming from idp',
-            'ident-handle': 'Handle field coming from idp',
-            'ident-identifier': 'Determines by which field do we match, usually email'
-          }
-        }
+    columns: {
+      name: 'Name',
+      createdAt: 'Created',
+      enabled: 'Enabled',
+      actions: ''
+    }
+  },
+  editor: {
+    title: 'Edit application',
+    new: 'New',
+    permissions: 'Permissions',
+    info: {
+      title: 'Basic information',
+      id: 'ID',
+      name: 'Name',
+      enabled: 'Enabled',
+      delete: 'Delete',
+      undelete: 'Undelete',
+      deletedAt: 'Deleted at',
+      updatedAt: 'Updated at',
+      createdAt: 'Created at'
+    },
+    unify: {
+      title: 'Unify app selector',
+      name: {
+        label: 'Name',
+        description: 'Name used in the application selector'
+      },
+      logo: {
+        label: 'Logo',
+        description: 'Logo used in the application selector',
+        placeholder: 'Choose a logo or drop it here...'
+      },
+      url: {
+        label: 'URL',
+        description: 'Application URL'
+      },
+      listed: 'Listed',
+      pinned: 'Pinned',
+      config: {
+        label: 'Configuration',
+        description: 'Application configuration (JSON)'
       }
     }
   }
