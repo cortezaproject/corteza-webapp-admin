@@ -16,7 +16,7 @@
         <section class="d-flex w-100">
           <div class="d-flex flex-column w-35">
             <c-functions-dropdown
-              :avaliable-functions="filterAvaliableFunctionsByKind(step.kind)"
+              :avaliable-functions="getAvaliableFunctionsByStep"
               @addFunction="onAddFunction"
               @functionSelect="onFunctionSelect"
             />
@@ -29,9 +29,10 @@
             />
           </div>
           <c-functions-table
+            ref="functionTable"
             class="w-60 ml-5"
-            :avaliable-functions="filterAvaliableFunctionsByKind(step.kind)"
-            :functions="filterSelectedFunctionsByKind(step.kind)"
+            :avaliable-functions="getAvaliableFunctionsByStep"
+            :functions="getSelectedFunctionsByStep"
             :selected-row="step.selectedRow"
             @functionSelect="onFunctionSelect"
             @removeFunction="onRemoveFunction"
@@ -104,16 +105,24 @@ export default {
 
   computed: {
     disabled () {
-      // return !this.steps.find(step => step.functions.length > 0)
       return !this.functions.length
     },
+
     getSelectedFunction () {
       return this.selectedFunction ? this.selectedFunction : null
     },
-  },
 
-  created () {
-  //  this.avaliableFunctions = this.getAvaliableFunctionsStatic()
+    getAvaliableFunctionsByStep () {
+      return (this.avaliableFunctions || []).filter(f => {
+        return f.step === this.selectedTab
+      })
+    },
+
+    getSelectedFunctionsByStep () {
+      return (this.functions || []).filter(f => {
+        return f.step === this.selectedTab
+      })
+    },
   },
 
   methods: {
@@ -122,6 +131,7 @@ export default {
         this.functions.push({ ...func })
       }
       this.selectedFunction = { ...func }
+      this.$refs.functionTable[this.selectedTab].onSelectLastRow()
     },
 
     onUpdateFunction (func) {
@@ -133,234 +143,21 @@ export default {
         this.deletedFunctions.push(func.functionID)
       }
       this.functions.splice(this.functions.findIndex(f => f.ref === func.ref), 1)
-      if (!this.functions.filter(f => f.step === this.selectedTab).length) {
-        console.log('null')
-        this.selectedFunction = null
-      }
+      this.selectFirstOrDefaultFunction()
     },
 
     onFunctionSelect (func = {}) {
       this.selectedFunction = { ...func }
     },
 
-    selectFirstFunction () {
-      this.selectedFunction = (this.filterSelectedFunctionsByKind(this.steps[this.selectedTab].kind) || [])[0]
+    selectFirstOrDefaultFunction () {
+      this.selectedFunction = this.getSelectedFunctionsByStep.length ? this.getSelectedFunctionsByStep[0] : null
+      this.$refs.functionTable[this.selectedTab].onSelectFirstRow()
     },
 
-    filterAvaliableFunctionsByKind (kind) {
-      return (this.avaliableFunctions || []).filter(f => {
-        return f.kind === kind
-      })
-    },
-
-    filterSelectedFunctionsByKind (kind) {
-      return (this.functions || []).filter(f => {
-        return f.kind === kind
-      })
-    },
-    updateSelectedFunction (index) {
-      this.selectedFunction = (this.functions || []).some(f => f.step === index) ? this.functions.find(f => f.step === index) : null
-      console.log(this.selectedFunction)
-    },
     onActivateTab (index) {
-      this.selectedFunction = (this.functions || []).some(f => f.step === index) ? this.functions.find(f => f.step === index) : null
-      console.log(this.selectedFunction)
       this.selectedTab = index
-    },
-
-    getAvaliableFunctionsStatic () {
-      return [
-        {
-          'ref': 'verifierQueryParam',
-          'kind': 'verifier',
-          'step': 0,
-          'label': 'Verifier Query Param',
-          'scope': [
-            {
-              'type': 'string',
-              'label': 'query',
-              'example': "query.testParamFromUrl = 'static value'",
-            },
-          ],
-          'params': [
-            {
-              'label': 'expr',
-              'type': 'expr',
-              'options': {},
-            },
-          ],
-        },
-        {
-          'ref': 'verifierOrigin',
-          'kind': 'verifier',
-          'step': 0,
-          'label': 'Verifier Origin',
-          'scope': [
-            {
-              'type': 'string',
-              'label': 'request',
-              'example': "request.origin = '192.168.0.1'",
-            },
-          ],
-          'params': [
-            {
-              'label': 'expr',
-              'type': 'expr',
-              'options': {},
-            },
-          ],
-        },
-        {
-          'ref': 'verifierOauth2Token',
-          'kind': 'verifier',
-          'step': 0,
-          'label': 'OAUTH2 token matcher',
-          'params': [
-            {
-              'label': 'expr',
-              'type': 'expr',
-              'options': {},
-            },
-          ],
-        },
-        {
-          'ref': 'verifierAuthHeader',
-          'kind': 'verifier',
-          'step': 0,
-          'label': 'Verifier Auth Header',
-          'scope': [
-            {
-              'type': 'string',
-              'label': 'request',
-              'example': "request.authHeader = 'base64(user:pass)'",
-            },
-          ],
-          'params': [
-            {
-              'label': 'expr',
-              'type': 'expr',
-              'options': {},
-            },
-          ],
-        },
-        {
-          'ref': 'validatorRateLimit',
-          'kind': 'validator',
-          'step': 1,
-          'scope': [
-            {
-              'type': 'string',
-              'label': 'request',
-              'example': 'request.limit = 1',
-            },
-          ],
-          'label': 'Rate limiting validator',
-          'params': [
-            {
-              'label': 'expr',
-              'type': 'expr',
-              'options': {},
-            },
-          ],
-        },
-        {
-          'ref': 'validatorSchema',
-          'kind': 'validator',
-          'step': 1,
-          'label': 'Schema validator',
-          'params': [
-            {
-              'label': 'schema',
-              'type': 'textarea',
-              'options': {
-                'rteSettingsExample': '',
-              },
-            },
-          ],
-        },
-        {
-          'ref': 'validatorContentLength',
-          'kind': 'validator',
-          'step': 1,
-          'label': 'Content length validator',
-          'scope': [
-            {
-              'type': 'string',
-              'label': 'request',
-              'example': 'request.length > 1024',
-            },
-          ],
-          'params': [
-            {
-              'label': 'expr',
-              'type': 'expr',
-              'options': {
-                'placeholder': 'expression placeholder here...',
-              },
-            },
-          ],
-        },
-        {
-          'ref': 'processerWorkflow',
-          'kind': 'processer',
-          'step': 2,
-          'label': 'Workflow processer',
-          'params': [
-            {
-              'label': 'workflow',
-              'type': 'workflow',
-              'options': {
-                'options': [],
-              },
-            },
-          ],
-        },
-        {
-          'ref': 'expediterRedirection',
-          'kind': 'expediter',
-          'step': 3,
-          'label': 'Redirection expediter',
-          'params': [
-            {
-              'label': 'location',
-              'type': 'string',
-              'options': [],
-            },
-            {
-              'label': 'status',
-              'type': 'status',
-              'options': {
-                'options': [
-                  'http 500',
-                  'http 404',
-                ],
-              },
-            },
-          ],
-        },
-        {
-          'ref': 'expediterJsonEncoder - TODO',
-          'kind': 'expediter',
-          'step': 3,
-          'label': 'Json encoder expediter',
-        },
-        {
-          'ref': 'expediterCompresser',
-          'kind': 'expediter',
-          'step': 3,
-          'label': 'Gzip compresser expediter',
-          'params': [
-            {
-              'label': 'setHeaders',
-              'type': 'bool',
-            },
-            {
-              'label': 'level',
-              'type': 'int',
-            },
-          ],
-        },
-      ]
+      this.selectFirstOrDefaultFunction()
     },
 
     setAvaliableFunctions (functions) {
@@ -368,6 +165,7 @@ export default {
         return { name, ...f, ref: f.name }
       })
     },
+
     setRouteFunctions (routeFunctions = []) {
       this.functions = (routeFunctions || []).map(func => {
         const f = this.avaliableFunctions.find(af => af.ref === func.ref)
@@ -375,15 +173,16 @@ export default {
         f.functionID = func.functionID
         return { ...f }
       })
-      this.selectFirstFunction()
+      this.selectFirstOrDefaultFunction()
     },
+
     decodeParams (params) {
       return Object.entries(params).map(p => {
         return { label: p[0], value: p[1], type: 'string' }
       })
     },
+
     isFunctionAlreadyAdded () {
-    // console.log((this.functions || []).some(f => f.ref === this.selectedFunction.ref))
       return (this.functions || []).some(f => f.ref === this.selectedFunction.ref)
     },
   },

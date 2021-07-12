@@ -98,8 +98,8 @@ export default {
         this.fetchEffective()
         if (this.routeID) {
           this.fetchRoute()
-          this.fetchFunctions()
           this.fetchAllAvaliableFunctions()
+          this.fetchFunctions()
         } else {
           this.route = {}
         }
