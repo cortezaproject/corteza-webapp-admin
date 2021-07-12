@@ -1,55 +1,48 @@
 export default {
-  navItem: { label: 'Workflows' },
+  navItem: { label: 'Sessions' },
   list: {
-    title: 'Workflows',
-    new: 'New',
-    permissions: 'Permissions',
-    yaml: 'YAML',
-    loading: 'Loading workflows',
-    numFound: `{{count}} workflow found`,
-    numFound_plural: `{{count}} workflows found`,
+    title: 'Sessions',
+    loading: 'Loading sessions',
+    numFound: `{{count}} session found`,
+    numFound_plural: `{{count}} sessions found`,
     filterForm: {
-      query: {
-        label: 'Filter workflows list',
-        placeholder: 'Filter workflows by name'
-      },
       excluded: { label: 'Without' },
       inclusive: { label: 'Including' },
       exclusive: { label: 'Only' },
-      deleted: { label: 'deleted workflows' }
+      inProgress: { label: 'completed sessions' },
+      all: { label: 'All' },
+      started: { label: 'Started' },
+      prompted: { label: 'Prompted' },
+      suspended: { label: 'Suspended' },
+      failed: { label: 'Failed' },
+      completed: { label: 'Completed' },
+      sessions: { label: 'sessions' }
     },
     columns: {
-      handle: 'Name',
-      createdAt: 'Created',
-      enabled: 'Enabled',
+      sessionID: 'SessionID',
+      workflowID: 'WorkflowID',
+      status: 'Status',
+      eventType: 'Event type',
+      createdAt: 'Created At',
       actions: ''
     }
   },
   editor: {
-    title: 'Edit workflow',
-    new: 'New',
-    permissions: 'Permissions',
+    title: 'Session',
     info: {
       title: 'Basic information',
       id: 'ID',
-      name: 'Name',
-      handle: 'Handle',
-      enabled: 'Enabled',
-      openBuilder: 'Open builder',
+      workflowID: 'WorkflowID',
+      resourceType: 'Resource type',
+      eventType: 'Event type',
+      status: 'Status',
+      error: 'Error',
       delete: 'Delete',
-      undelete: 'Undelete',
       deletedAt: 'Deleted at',
-      updatedAt: 'Updated at',
-      createdAt: 'Created at'
-    },
-    triggers: {
-      title: 'Triggers',
-      columns: {
-        resourceType: 'Resource',
-        eventType: 'Event',
-        constraints: 'Constraints'
-      },
-      and: 'and'
+      completedAt: 'Completed at',
+      createdAt: 'Created at',
+      createdByUserID: 'Created by - ID',
+      createdByUserName: 'Created by - Name'
     }
   }
 };
