@@ -1,3 +1,9 @@
 files:
   - source: /src/i18n/en
+    ignore:
+      - /src/i18n/en/index.js
+      - /src/i18n/en/automation/index.js
+      - /src/i18n/en/compose/index.js
+      - /src/i18n/en/federation/index.js
+      - /src/i18n/en/system/index.js
     translation: /src/i18n/%locale%
