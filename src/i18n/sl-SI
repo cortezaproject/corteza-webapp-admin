@@ -1,56 +1,66 @@
 export default {
-  navItem: { label: 'Roles' },
+  navItem: { label: 'Applications' },
   list: {
-    title: 'Roles',
+    title: 'Applications',
     new: 'New',
     permissions: 'Permissions',
     yaml: 'YAML',
-    loading: 'Loading roles',
-    numFound: `{{count}} role found`,
-    numFound_plural: `{{count}} roles found`,
+    loading: 'Loading applications',
+    numFound: `{{count}} application found`,
+    numFound_plural: `{{count}} applications found`,
     filterForm: {
       query: {
-        label: 'Filter roles list',
-        placeholder: 'Filter roles by name'
+        label: 'Filter applications list',
+        placeholder: 'Filter applications by name'
       },
       excluded: { label: 'Without' },
       inclusive: { label: 'Including' },
       exclusive: { label: 'Only' },
-      archived: { label: 'archived roles' },
-      deleted: { label: 'deleted roles' }
+      deleted: { label: 'deleted applications' }
     },
     columns: {
       name: 'Name',
       createdAt: 'Created',
-      handle: 'Handle',
       enabled: 'Enabled',
       actions: ''
     }
   },
   editor: {
-    title: 'Edit role',
+    title: 'Edit application',
     new: 'New',
     permissions: 'Permissions',
     info: {
       title: 'Basic information',
-      name: 'Role name',
-      handle: 'Handle',
-      archive: 'Archive',
-      unarchive: 'Unarchive',
-      archivedAt: 'Archived at',
+      id: 'ID',
+      name: 'Name',
+      enabled: 'Enabled',
       delete: 'Delete',
       undelete: 'Undelete',
       deletedAt: 'Deleted at',
       updatedAt: 'Updated at',
       createdAt: 'Created at'
     },
-    members: {
-      title: 'Role members',
-      count: 'Members ({{count}})',
-      unnamed: 'Unnamed user',
-      add: 'Add',
-      remove: 'Remove',
-      searchUsers: 'Search users'
+    unify: {
+      title: 'Unify app selector',
+      name: {
+        label: 'Name',
+        description: 'Name used in the application selector'
+      },
+      logo: {
+        label: 'Logo',
+        description: 'Logo used in the application selector',
+        placeholder: 'Choose a logo or drop it here...'
+      },
+      url: {
+        label: 'URL',
+        description: 'Application URL'
+      },
+      listed: 'Listed',
+      pinned: 'Pinned',
+      config: {
+        label: 'Configuration',
+        description: 'Application configuration (JSON)'
+      }
     }
   }
 };
