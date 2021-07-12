@@ -103,8 +103,8 @@ export default {
       handler () {
         if (this.routeID) {
           this.fetchRoute()
-          this.fetchFunctions()
           this.fetchAllAvaliableFunctions()
+          this.fetchFunctions()
         } else {
           this.route = {}
         }

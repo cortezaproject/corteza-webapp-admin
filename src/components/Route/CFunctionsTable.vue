@@ -80,6 +80,12 @@ export default {
       this.selectedRow = index
       this.$emit('functionSelect', func)
     },
+    onSelectLastRow () {
+      this.selectedRow = this.functions.length
+    },
+    onSelectFirstRow () {
+      this.selectedRow = 0
+    },
   },
 }
 </script>
