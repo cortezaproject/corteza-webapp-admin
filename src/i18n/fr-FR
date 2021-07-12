@@ -1,7 +1,25 @@
-import nodes from './nodes';
-import permissions from './permissions';
 export default {
-  federation: { navGroup: { label: 'Federation' } },
-  'federation.nodes': nodes,
-  'federation.permissions': permissions
+  navItem: { label: 'Settings' },
+  editor: {
+    title: 'Compose settings',
+    basic: {
+      title: 'Basic',
+      ui: {
+        title: 'User Interface',
+        'namespace-switcher': {
+          enabled: 'Enable namespace switcher',
+          defaultOpen: 'Namespace switcher open by default'
+        }
+      },
+      attachments: {
+        page: 'Page attachments',
+        record: 'Record attachments',
+        'max-size': 'Max size (MB)',
+        type: {
+          whitelist: 'File type whitelist',
+          description: 'MIME types, separated with ",". Example: "text/plain,text/csv"'
+        }
+      }
+    }
+  }
 };
