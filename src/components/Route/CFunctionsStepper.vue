@@ -18,9 +18,13 @@
             <c-functions-dropdown
               :avaliable-functions="filterAvaliableFunctionsByKind(step.kind)"
               @addFunction="onAddFunction"
+              @functionSelect="onFunctionSelect"
             />
             <c-function
-              :func="getSelectedFunction()"
+              v-if="getSelectedFunction"
+              :func="selectedFunction"
+              :added="isFunctionAlreadyAdded()"
+              @addFunction="onAddFunction"
               @updateFunction="onUpdateFunction"
             />
           </div>
@@ -28,6 +32,7 @@
             class="w-60 ml-5"
             :avaliable-functions="filterAvaliableFunctionsByKind(step.kind)"
             :functions="filterSelectedFunctionsByKind(step.kind)"
+            :selected-row="step.selectedRow"
             @functionSelect="onFunctionSelect"
             @removeFunction="onRemoveFunction"
           />
@@ -93,6 +98,7 @@ export default {
       avaliableFunctions: [],
       deletedFunctions: [],
       functions: [],
+      selectedTab: 0,
     }
   },
 
@@ -101,10 +107,13 @@ export default {
       // return !this.steps.find(step => step.functions.length > 0)
       return !this.functions.length
     },
+    getSelectedFunction () {
+      return this.selectedFunction ? this.selectedFunction : null
+    },
   },
 
   created () {
-    this.avaliableFunctions = this.getAvaliableFunctionsStatic()
+  //  this.avaliableFunctions = this.getAvaliableFunctionsStatic()
   },
 
   methods: {
@@ -114,22 +123,28 @@ export default {
       }
       this.selectedFunction = { ...func }
     },
+
     onUpdateFunction (func) {
       this.functions[this.functions.findIndex(f => f.ref === func.ref)] = { ...func }
     },
+
     onRemoveFunction (func) {
       if (func.functionID) {
         this.deletedFunctions.push(func.functionID)
       }
       this.functions.splice(this.functions.findIndex(f => f.ref === func.ref), 1)
+      if (!this.functions.filter(f => f.step === this.selectedTab).length) {
+        console.log('null')
+        this.selectedFunction = null
+      }
     },
 
     onFunctionSelect (func = {}) {
       this.selectedFunction = { ...func }
     },
 
-    getSelectedFunction () {
-      return this.selectedFunction ? this.selectedFunction : null
+    selectFirstFunction () {
+      this.selectedFunction = (this.filterSelectedFunctionsByKind(this.steps[this.selectedTab].kind) || [])[0]
     },
 
     filterAvaliableFunctionsByKind (kind) {
@@ -143,9 +158,14 @@ export default {
         return f.kind === kind
       })
     },
-
+    updateSelectedFunction (index) {
+      this.selectedFunction = (this.functions || []).some(f => f.step === index) ? this.functions.find(f => f.step === index) : null
+      console.log(this.selectedFunction)
+    },
     onActivateTab (index) {
       this.selectedFunction = (this.functions || []).some(f => f.step === index) ? this.functions.find(f => f.step === index) : null
+      console.log(this.selectedFunction)
+      this.selectedTab = index
     },
 
     getAvaliableFunctionsStatic () {
@@ -355,11 +375,16 @@ export default {
         f.functionID = func.functionID
         return { ...f }
       })
+      this.selectFirstFunction()
     },
     decodeParams (params) {
       return Object.entries(params).map(p => {
         return { label: p[0], value: p[1], type: 'string' }
       })
+    },
+    isFunctionAlreadyAdded () {
+    // console.log((this.functions || []).some(f => f.ref === this.selectedFunction.ref))
+      return (this.functions || []).some(f => f.ref === this.selectedFunction.ref)
     },
   },
 }

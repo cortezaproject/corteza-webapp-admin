@@ -1,50 +1,48 @@
 <template>
-  <div>
-    <table
-      class="my-3 w-100"
-    >
-      <th>
-        <span>Functions</span>
-      </th><th>
-        Status
-      </th>
-      <th class="text-center">
-        Actions
-      </th>
-      <template v-if="functions.length">
-        <tr
-          v-for="(func, index) in functions"
-          :key="index"
-          class="pointer"
-          :class="[selectedRow===index ? 'row-selected' : 'row-not-selected']"
-          active
-          @click="onRowClick(func,index)"
-        >
-          <td>
-            {{ func.label }}
-          </td>
-          <td>
-            Active
-          </td>
-          <td class="text-center">
-            <b-button
-              variant="danger"
-              class="my-1"
-              size="sm"
-              @click="onRemoveFunction(func)"
-            >
-              Remove
-            </b-button>
-          </td>
-        </tr>
-      </template>
-      <template v-else>
-        <tr class="mt-2 text-danger">
-          Please add a function!
-        </tr>
-      </template>
-    </table>
-  </div>
+  <table
+    class="my-3 w-100"
+  >
+    <th>
+      Functions
+    </th><th>
+      Status
+    </th>
+    <th class="text-center">
+      Actions
+    </th>
+    <template v-if="functions.length">
+      <tr
+        v-for="(func, index) in functions"
+        :key="index"
+        class="pointer"
+        :class="[selectedRow===index ? 'row-selected' : 'row-not-selected']"
+        active
+        @click="onRowClick(func,index)"
+      >
+        <td>
+          {{ func.label }}
+        </td>
+        <td>
+          Active
+        </td>
+        <td class="text-center">
+          <b-button
+            variant="danger"
+            class="my-1"
+            size="sm"
+            @click="onRemoveFunction(func)"
+          >
+            Remove
+          </b-button>
+        </td>
+      </tr>
+    </template>
+    <template v-else>
+      <tr class="mt-2 text-danger">
+        Please add a function!
+      </tr>
+    </template>
+  </table>
 </template>
 
 <script>
