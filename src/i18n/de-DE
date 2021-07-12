@@ -1,56 +1,46 @@
 export default {
-  navItem: { label: 'Roles' },
+  navItem: { label: 'Messaging Queues' },
   list: {
-    title: 'Roles',
+    title: 'Messaging queues',
     new: 'New',
-    permissions: 'Permissions',
-    yaml: 'YAML',
-    loading: 'Loading roles',
-    numFound: `{{count}} role found`,
-    numFound_plural: `{{count}} roles found`,
+    loading: 'Loading messaging queues',
+    columns: {
+      queue: 'Queue',
+      consumer: 'Consumer',
+      createdAt: 'Created At',
+      actions: 'Actions'
+    },
     filterForm: {
-      query: {
-        label: 'Filter roles list',
-        placeholder: 'Filter roles by name'
+      handle: {
+        label: 'Filter queues list',
+        placeholder: 'Filter queues by name'
       },
       excluded: { label: 'Without' },
       inclusive: { label: 'Including' },
       exclusive: { label: 'Only' },
-      archived: { label: 'archived roles' },
-      deleted: { label: 'deleted roles' }
-    },
-    columns: {
-      name: 'Name',
-      createdAt: 'Created',
-      handle: 'Handle',
-      enabled: 'Enabled',
-      actions: ''
+      deleted: { label: 'deleted queues' }
     }
   },
   editor: {
-    title: 'Edit role',
     new: 'New',
-    permissions: 'Permissions',
+    title: {
+      new: 'Add a queue',
+      edit: 'Edit queue'
+    },
     info: {
       title: 'Basic information',
-      name: 'Role name',
-      handle: 'Handle',
-      archive: 'Archive',
-      unarchive: 'Unarchive',
-      archivedAt: 'Archived at',
-      delete: 'Delete',
-      undelete: 'Undelete',
+      consumer: 'Consumer',
+      name: 'Queue name',
+      dispatch_events: 'Dispatch events',
+      dispatch_events_desc: 'Dispatch events notifies the eventbus of queue message changes (new, processed, ...)',
+      poll_delay: 'Polling changes delay',
+      poll_delay_empty: 'Poll delay will not be used; to enable, use duration format (ie: 1h / 1m15s / 1h90s)',
+      poll_delay_set: 'Poll delay will be used; if empty, it will not be used.',
       deletedAt: 'Deleted at',
       updatedAt: 'Updated at',
-      createdAt: 'Created at'
-    },
-    members: {
-      title: 'Role members',
-      count: 'Members ({{count}})',
-      unnamed: 'Unnamed user',
-      add: 'Add',
-      remove: 'Remove',
-      searchUsers: 'Search users'
+      createdAt: 'Created at',
+      delete: 'Delete',
+      undelete: 'Undelete'
     }
   }
 };
