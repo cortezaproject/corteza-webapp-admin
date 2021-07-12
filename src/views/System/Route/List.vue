@@ -81,6 +81,7 @@
 <script>
 import * as moment from 'moment'
 import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
+import { mapGetters } from 'vuex'
 
 export default {
   mixins: [
@@ -95,9 +96,6 @@ export default {
   data () {
     return {
       id: 'routes',
-
-      canCreate: false,
-      canGrant: false,
 
       filter: {
         query: '',
@@ -130,28 +128,24 @@ export default {
     }
   },
 
-  created () {
-    this.fetchEffective()
+  computed: {
+    ...mapGetters({
+      can: 'rbac/can',
+    }),
+    canCreate () {
+      return true
+    },
+    canGrant () {
+      return true
+    },
+    canPin () {
+      return true
+    },
   },
 
   methods: {
     items () {
-      return this.procListResults(this.$SystemAPI.routeList(this.encodeListParams()))
-    },
-
-    fetchEffective () {
-      this.incLoader()
-
-      this.$SystemAPI.permissionsEffective()
-        .then(rules => {
-          // TODO add permissions for routes
-          this.canCreate = rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'application.create').allow
-          this.canGrant = rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'grant').allow
-        })
-        .catch(this.stdReject)
-        .finally(() => {
-          this.decLoader()
-        })
+      return this.procListResults(this.$SystemAPI.apigwRouteList(this.encodeListParams()))
     },
   },
 }

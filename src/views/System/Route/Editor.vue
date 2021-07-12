@@ -1,19 +1,13 @@
 <template>
-  <b-container
-    class="py-3"
-  >
-    <c-content-header
-      :title="$t('title')"
-    >
-      <span
-        class="text-nowrap"
-      >
+  <b-container class="py-3">
+    <c-content-header :title="$t('title')">
+      <span class="text-nowrap">
         <b-button
           v-if="routeID && canCreate"
           variant="primary"
           :to="{ name: 'system.route.new' }"
         >
-          {{ $t('new') }}
+          {{ $t("new") }}
         </b-button>
         <c-permissions-button
           v-if="routeID && canGrant"
@@ -24,7 +18,7 @@
           class="ml-2"
         >
           <font-awesome-icon :icon="['fas', 'lock']" />
-          {{ $t('permissions') }}
+          {{ $t("permissions") }}
         </c-permissions-button>
       </span>
     </c-content-header>
@@ -50,6 +44,7 @@
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CRouteEditorInfo from 'corteza-webapp-admin/src/components/Route/CRouteEditorInfo'
 import CFunctionsStepper from 'corteza-webapp-admin/src/components/Route/CFunctionsStepper'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -58,13 +53,11 @@ export default {
   },
 
   i18nOptions: {
-    namespaces: [ 'system.routes' ],
+    namespaces: ['system.routes'],
     keyPrefix: 'editor',
   },
 
-  mixins: [
-    editorHelpers,
-  ],
+  mixins: [editorHelpers],
 
   props: {
     routeID: {
@@ -77,8 +70,6 @@ export default {
   data () {
     return {
       route: {},
-      canCreate: false,
-      canGrant: false,
 
       info: {
         processing: false,
@@ -91,11 +82,25 @@ export default {
     }
   },
 
+  computed: {
+    ...mapGetters({
+      can: 'rbac/can',
+    }),
+    canCreate () {
+      return true
+    },
+    canGrant () {
+      return true
+    },
+    canPin () {
+      return true
+    },
+  },
+
   watch: {
     routeID: {
       immediate: true,
       handler () {
-        this.fetchEffective()
         if (this.routeID) {
           this.fetchRoute()
           this.fetchFunctions()
@@ -110,24 +115,10 @@ export default {
     fetchRoute () {
       this.incLoader()
 
-      this.$SystemAPI.routeRead({ routeID: this.routeID, incFlags: 1 })
-        .then(api => {
+      this.$SystemAPI
+        .apigwRouteRead({ routeID: this.routeID, incFlags: 1 })
+        .then((api) => {
           this.route = api
-        })
-        .catch(this.stdReject)
-        .finally(() => {
-          this.decLoader()
-        })
-    },
-
-    fetchEffective () {
-      this.incLoader()
-
-      this.$SystemAPI.permissionsEffective()
-        .then(rules => {
-          // TODO add permissions for routes
-          this.canCreate = rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'application.create').allow
-          this.canGrant = rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'grant').allow
         })
         .catch(this.stdReject)
         .finally(() => {
@@ -138,7 +129,8 @@ export default {
     onInfoSubmit (route) {
       this.info.processing = true
       if (this.routeID) {
-        this.$SystemAPI.routeUpdate(route)
+        this.$SystemAPI
+          .apigwRouteUpdate(route)
           .then(() => {
             this.animateSuccess('info')
             this.fetchRoute()
@@ -148,10 +140,14 @@ export default {
             this.info.processing = false
           })
       } else {
-        this.$SystemAPI.routeCreate(route)
+        this.$SystemAPI
+          .apigwRouteCreate(route)
           .then(({ routeID }) => {
             this.animateSuccess('info')
-            this.$router.push({ name: 'system.route.edit', params: { routeID } })
+            this.$router.push({
+              name: 'system.route.edit',
+              params: { routeID },
+            })
           })
           .catch(this.stdReject)
           .finally(() => {
@@ -182,7 +178,8 @@ export default {
     },
 
     createFunction (func) {
-      this.$SystemAPI.functionCreate({ ...func, routeID: this.routeID })
+      this.$SystemAPI
+        .apigwFunctionCreate({ ...func, routeID: this.routeID })
         .then(() => {
           this.animateSuccess('stepper')
         })
@@ -193,7 +190,8 @@ export default {
     },
 
     updateFunction (func) {
-      this.$SystemAPI.functionUpdate({ ...func, routeID: this.routeID })
+      this.$SystemAPI
+        .apigwFunctionUpdate({ ...func, routeID: this.routeID })
         .then(() => {
           this.animateSuccess('stepper')
         })
@@ -204,8 +202,9 @@ export default {
     },
 
     deleteFunctions (functionsToDelete) {
-      functionsToDelete.forEach(id => {
-        this.$SystemAPI.functionDelete({ functionID: id })
+      functionsToDelete.forEach((id) => {
+        this.$SystemAPI
+          .apigwFunctionDelete({ functionID: id })
           .then(() => {
             this.animateSuccess('stepper')
           })
@@ -218,8 +217,9 @@ export default {
 
     fetchFunctions () {
       this.incLoader()
-      this.$SystemAPI.functionList({ routeID: this.routeID })
-        .then(api => {
+      this.$SystemAPI
+        .apigwFunctionList({ routeID: this.routeID })
+        .then((api) => {
           this.$refs.stepper.setRouteFunctions(api.set)
         })
         .catch(this.stdReject)
@@ -231,8 +231,9 @@ export default {
     fetchAllAvaliableFunctions () {
       this.incLoader()
 
-      this.$SystemAPI.functionDefinitions()
-        .then(api => {
+      this.$SystemAPI
+        .apigwFunctionDefinitions()
+        .then((api) => {
           this.$refs.stepper.setAvaliableFunctions(api)
         })
         .catch(this.stdReject)
@@ -244,7 +245,8 @@ export default {
     onFunctionDelete (functionID) {
       this.incLoader()
 
-      this.$SystemAPI.routeDelete({ functionID: functionID })
+      this.$SystemAPI
+        .apigwRouteDelete({ functionID: functionID })
         .then(() => {
           console.log('Function deleted successfuly!')
         })
@@ -257,7 +259,8 @@ export default {
       this.incLoader()
 
       if (this.route.deletedAt) {
-        this.$SystemAPI.routeUndelete({ routeID: this.routeID })
+        this.$SystemAPI
+          .apigwRouteUndelete({ routeID: this.routeID })
           .then(() => {
             this.fetchRoute()
           })
@@ -266,7 +269,8 @@ export default {
             this.decLoader()
           })
       } else {
-        this.$SystemAPI.routeDelete({ routeID: this.routeID })
+        this.$SystemAPI
+          .apigwRouteDelete({ routeID: this.routeID })
           .then(() => {
             this.fetchRoute()
           })
