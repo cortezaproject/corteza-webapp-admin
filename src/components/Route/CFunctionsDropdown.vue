@@ -25,7 +25,8 @@ export default {
   },
   methods: {
     onAddFunction (func) {
-      this.$emit('addFunction', func)
+      //    this.$emit('addFunction', func)
+      this.$emit('functionSelect', func)
     },
   },
 }
