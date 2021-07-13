@@ -78,6 +78,13 @@ export default {
         active: 'Active',
         noFunctionsMsg: 'Please add a function!',
       },
+      labels: {
+        expr: 'Expression',
+        location: 'Location',
+        workflow: 'Workflow',
+        status: 'HTTP Status',
+      },
+
       add: 'Add',
       addFunction: 'Add function',
       params: 'Params',
