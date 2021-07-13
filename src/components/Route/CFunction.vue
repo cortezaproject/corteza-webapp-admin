@@ -20,7 +20,7 @@
           size="sm"
           class="mr-1"
         />
-        Add {{ func.label }}
+        {{ $t('functions.add') }} {{ func.label }}
       </span>
     </b-button>
   </div>
