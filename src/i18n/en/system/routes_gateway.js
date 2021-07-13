@@ -1,21 +1,21 @@
 export default {
   navItem: {
-    label: 'API gateways',
+    label: 'API Gateway',
   },
 
   list: {
-    title: 'API gateways',
+    title: 'API Gateway',
     new: 'New',
     permissions: 'Permissions',
     yaml: 'YAML',
-    loading: 'Loading API gateways',
+    loading: 'Loading API Gateway',
     numFound: `{{count}} API gateway found`,
     numFound_plural: `{{count}} API gateways found`,
 
     filterForm: {
       query: {
-        label: 'Filter API gateways list',
-        placeholder: 'Filter API gateways by name',
+        label: 'Filter API Gateway list',
+        placeholder: 'Filter routes by name',
       },
 
       excluded: {
@@ -31,7 +31,7 @@ export default {
       },
 
       deleted: {
-        label: 'deleted API gateways',
+        label: 'Deleted routes',
       },
     },
 
@@ -44,7 +44,7 @@ export default {
   },
 
   editor: {
-    title: 'Edit API gateway',
+    title: 'Edit route',
     new: 'New',
     permissions: 'Permissions',
 
@@ -63,5 +63,25 @@ export default {
       updatedAt: 'Updated at',
       createdAt: 'Created at',
     },
+    functions: {
+      steps: {
+        title_1: 'Access control',
+        title_2: 'Validation',
+        title_3: 'Processing',
+        title_4: 'Expediting',
+      },
+      list: {
+        remove: 'Remove',
+        functions: 'Functions',
+        status: 'Status',
+        actions: 'Actions',
+        active: 'Active',
+        noFunctionsMsg: 'Please add a function!',
+      },
+      add: 'Add',
+      addFunction: 'Add function',
+      params: 'Params',
+    },
   },
+
 }

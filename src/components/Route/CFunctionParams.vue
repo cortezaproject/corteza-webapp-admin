@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-form-group
-      label="Params"
+      :label="$t('functions.params')"
       class="w-100 mt-3 mb-0 font-weight-bold"
     >
       <template

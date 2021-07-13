@@ -79,19 +79,19 @@ export default {
       route: {},
       steps: [
         {
-          title: 'Access control',
+          title: this.$t('functions.steps.title_1'),
           kind: 'verifier',
         },
         {
-          title: 'Validation',
+          title: this.$t('functions.steps.title_2'),
           kind: 'validator',
         },
         {
-          title: 'Processing',
+          title: this.$t('functions.steps.title_3'),
           kind: 'processer',
         },
         {
-          title: 'Expediting',
+          title: this.$t('functions.steps.title_4'),
           kind: 'expediter',
         },
       ],

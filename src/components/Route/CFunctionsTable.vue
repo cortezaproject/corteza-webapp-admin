@@ -3,12 +3,12 @@
     class="my-3 w-100"
   >
     <th>
-      Functions
+      {{ $t('functions.list.functions') }}
     </th><th>
-      Status
+      {{ $t('functions.list.status') }}
     </th>
     <th class="text-center">
-      Actions
+      {{ $t('functions.list.actions') }}
     </th>
     <template v-if="functions.length">
       <tr
@@ -23,7 +23,7 @@
           {{ func.label }}
         </td>
         <td>
-          Active
+          {{ $t('functions.list.active') }}
         </td>
         <td class="text-center">
           <b-button
@@ -32,14 +32,14 @@
             size="sm"
             @click.stop="onRemoveFunction(func)"
           >
-            Remove
+            {{ $t('functions.list.remove') }}
           </b-button>
         </td>
       </tr>
     </template>
     <template v-else>
       <tr class="mt-2 text-danger">
-        Please add a function!
+        {{ $t('functions.list.noFunctionsMsg') }}
       </tr>
     </template>
   </table>
