@@ -163,7 +163,7 @@ export default {
     },
 
     isValidSlug () {
-      return this.queue.queue ? /^\w{2,}$/.test(this.queue.queue) : null
+      return this.queue.queue ? /^[A-Za-z][0-9A-Za-z_\-.]*[A-Za-z0-9]$/.test(this.queue.queue) : null
     },
 
     isValidConsumer () {

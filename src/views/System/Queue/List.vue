@@ -72,6 +72,7 @@
 <script>
 import * as moment from 'moment'
 import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
+import { mapGetters } from 'vuex'
 
 export default {
   mixins: [
@@ -86,8 +87,6 @@ export default {
   data () {
     return {
       id: 'queues',
-
-      canCreate: false,
 
       filter: {
         handle: '',
@@ -123,26 +122,19 @@ export default {
     }
   },
 
-  created () {
-    this.fetchEffective()
+  computed: {
+    ...mapGetters({
+      can: 'rbac/can',
+    }),
+
+    canCreate () {
+      return this.can('system/', 'queue.create')
+    },
   },
 
   methods: {
     items () {
       return this.procListResults(this.$SystemAPI.queuesList(this.encodeListParams()))
-    },
-
-    fetchEffective () {
-      this.incLoader()
-
-      this.$SystemAPI.permissionsEffective()
-        .then(rules => {
-          this.canCreate = rules.find(({ resource, operation }) => resource === 'system' && operation === 'messagebus-queue.create').allow
-        })
-        .catch(this.stdReject)
-        .finally(() => {
-          this.decLoader()
-        })
     },
   },
 }

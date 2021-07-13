@@ -19,6 +19,7 @@
 <script>
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CComposeEditorBasic from 'corteza-webapp-admin/src/components/Settings/Compose/CComposeEditorBasic'
+import { mapGetters } from 'vuex'
 
 const prefix = 'compose.'
 
@@ -40,13 +41,21 @@ export default {
     return {
       settings: {},
 
-      canManage: false,
-
       basic: {
         processing: false,
         success: false,
       },
     }
+  },
+
+  computed: {
+    ...mapGetters({
+      can: 'rbac/can',
+    }),
+
+    canManage () {
+      return this.can('system/', 'settings.manage')
+    },
   },
 
   created () {
@@ -79,11 +88,6 @@ export default {
           settings.forEach(({ name, value }) => {
             this.$set(this.settings, name, value)
           })
-
-          this.$ComposeAPI.permissionsEffective()
-            .then(rules => {
-              this.canManage = rules.find(({ resource, operation, allow }) => resource === 'compose' && operation === 'settings.manage').allow
-            })
         })
         .catch(this.stdReject)
         .finally(() => {

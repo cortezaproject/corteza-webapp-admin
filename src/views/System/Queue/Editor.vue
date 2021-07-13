@@ -34,6 +34,7 @@
 <script>
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CQueueEditorInfo from 'corteza-webapp-admin/src/components/Queues/CQueueEditorInfo'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -63,8 +64,6 @@ export default {
 
       consumers: [],
 
-      canCreate: false,
-
       info: {
         processing: false,
         success: false,
@@ -73,6 +72,14 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      can: 'rbac/can',
+    }),
+
+    canCreate () {
+      return this.can('system/', 'queue.create')
+    },
+
     title () {
       return this.queue.queueID ? this.$t('title.edit') : this.$t('title.new')
     },
@@ -82,7 +89,6 @@ export default {
     queueID: {
       immediate: true,
       handler () {
-        this.fetchEffective()
         this.fetchQueueConsumers()
 
         if (this.queueID) {
@@ -122,19 +128,6 @@ export default {
       ]
 
       this.decLoader()
-    },
-
-    fetchEffective () {
-      this.incLoader()
-
-      this.$SystemAPI.permissionsEffective()
-        .then(rules => {
-          this.canCreate = rules.find(({ resource, operation }) => resource === 'system' && operation === 'messagebus-queue.create').allow
-        })
-        .catch(this.stdReject)
-        .finally(() => {
-          this.decLoader()
-        })
     },
 
     onSubmit (queue) {

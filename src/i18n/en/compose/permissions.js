@@ -4,7 +4,7 @@ export default {
   },
 
   list: {
-    title: 'Compose permissions',
+    type: { label: 'Compose permissions' },
 
     rules: {
       title: 'List of rules',
@@ -17,72 +17,64 @@ export default {
       tip2: 'Use Alt-Click to set explicit deny on operation',
       submit: 'Submit',
 
-      compose: {
-        title: 'Compose service',
+      component: {
+        type: { label: 'Compose service' },
+        operations: {
+          grant: 'Grant permissions on compose service',
+          namespaceCreate: 'Create namespaces',
+          settingsRead: 'Access all settings',
+          settingsManage: 'Manage all settings',
+        },
+      },
 
-        access: 'Access to compose',
-        grant: 'Grant permissions on compose service',
-        namespace: {
-          title: 'Namespaces',
-
-          create: 'Create namespaces',
+      namespace: {
+        type: { label: 'Namespaces' },
+        operations: {
           read: 'Access any namespace',
           manage: 'Manage any namespace',
           update: 'Update any namespace',
           delete: 'Delete any namespace',
-          module: {
-            create: 'Create modules under any namespace',
-          },
-          chart: {
-            create: 'Create charts under any namespace',
-          },
-          page: {
-            create: 'Create pages under any namespace',
-          },
-          'automation-script': {
-            create: 'Create automation script under any namespace',
-          },
-        },
-        settings: {
-          read: 'Access all settings',
-          manage: 'Manage all settings',
-        },
-        module: {
-          title: 'Modules',
 
+          moduleCreate: 'Create modules under any namespace',
+          chartCreate: 'Create charts under any namespace',
+          pageCreate: 'Create pages under any namespace',
+        },
+      },
+      module: {
+        type: { label: 'Modules' },
+        operations: {
           read: 'Read any module',
           update: 'Update any module',
           delete: 'Delete any module',
-          record: {
-            create: 'Create record under any module',
-            read: 'Read records under any module',
-            update: 'Update records under any module',
-            delete: 'Delete records under any module',
-          },
-          'automation-trigger': {
-            manage: 'Manage any automation trigger',
-          },
+          recordCreate: 'Create record under any module',
         },
-        'module-field': {
-          title: 'Module fields',
-
-          record: {
-            value: {
-              read: 'Read any module field',
-              update: 'Update any module field',
-            },
-          },
+      },
+      moduleField: {
+        type: { label: 'Module fields' },
+        operations: {
+          recordValueRead: 'Read any module field',
+          recordValueUpdate: 'Update any module field',
         },
-        page: {
-          title: 'Pages',
-
+      },
+      page: {
+        type: { label: 'Pages' },
+        operations: {
           read: 'Read any page',
           update: 'Update any page',
           delete: 'Delete any page',
         },
-        chart: {
-          title: 'Charts',
-
+      },
+      record: {
+        type: { label: 'Records' },
+        operations: {
+          read: 'Read any record',
+          update: 'Update any record',
+          delete: 'Delete any record',
+        },
+      },
+      chart: {
+        type: { label: 'Charts' },
+        operations: {
           read: 'Read any chart',
           update: 'Update any chart',
           delete: 'Delete any chart',

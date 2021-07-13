@@ -20,7 +20,7 @@
           v-if="templateID && canGrant"
           :title="template.handle"
           :target="template.handle"
-          :resource="'system:template:'+templateID"
+          :resource="'corteza::system:template/'+templateID"
           button-variant="light"
         >
           <font-awesome-icon :icon="['fas', 'lock']" />
@@ -65,6 +65,7 @@ import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CTemplateEditorInfo from 'corteza-webapp-admin/src/components/Template/CTemplateEditorInfo'
 import CTemplateEditorContent from 'corteza-webapp-admin/src/components/Template/CTemplateEditorContent/Index'
 import { system } from '@cortezaproject/corteza-js'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -93,9 +94,6 @@ export default {
     return {
       template: new system.Template(),
 
-      canCreate: false,
-      canGrant: false,
-
       info: {
         processing: false,
         success: false,
@@ -105,11 +103,24 @@ export default {
     }
   },
 
+  computed: {
+    ...mapGetters({
+      can: 'rbac/can',
+    }),
+
+    canCreate () {
+      return this.can('system/', 'queue.create')
+    },
+
+    canGrant () {
+      return this.can('system/', 'grant')
+    },
+  },
+
   watch: {
     templateID: {
       immediate: true,
       handler () {
-        this.fetchEffective()
         this.fetchPartials()
         if (this.templateID) {
           this.fetchTemplate()
@@ -140,20 +151,6 @@ export default {
       this.$SystemAPI.templateList({ partial: true })
         .then(({ set: tt }) => {
           this.partials = tt.map(t => new system.Template(t))
-        })
-        .catch(this.stdReject)
-        .finally(() => {
-          this.decLoader()
-        })
-    },
-
-    fetchEffective () {
-      this.incLoader()
-
-      this.$SystemAPI.permissionsEffective()
-        .then(rules => {
-          this.canCreate = rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'template.create').allow
-          this.canGrant = rules.find(({ resource, operation, allow }) => resource === 'system' && operation === 'grant').allow
         })
         .catch(this.stdReject)
         .finally(() => {

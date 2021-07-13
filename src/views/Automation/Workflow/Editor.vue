@@ -19,7 +19,7 @@
           v-if="workflowID && canGrant"
           :title="workflow.handle"
           :target="workflow.handle"
-          :resource="'automation:workflow:'+workflowID"
+          :resource="'corteza::automation:workflow/'+workflowID"
           button-variant="light"
           class="ml-2"
         >
@@ -50,6 +50,7 @@
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CWorkflowEditorInfo from 'corteza-webapp-admin/src/components/Workflow/CWorkflowEditorInfo'
 import CWorkflowEditorTriggers from 'corteza-webapp-admin/src/components/Workflow/CWorkflowEditorTriggers'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -79,9 +80,6 @@ export default {
       workflow: {},
       triggers: [],
 
-      canCreate: false,
-      canGrant: false,
-
       info: {
         processing: false,
         success: false,
@@ -90,6 +88,18 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      can: 'rbac/can',
+    }),
+
+    canCreate () {
+      return this.can('system/', 'queue.create')
+    },
+
+    canGrant () {
+      return this.can('system/', 'grant')
+    },
+
     userID () {
       if (this.$auth.user) {
         return this.$auth.user.userID
@@ -102,7 +112,6 @@ export default {
     workflowID: {
       immediate: true,
       handler () {
-        this.fetchEffective()
         if (this.workflowID) {
           this.fetchWorkflow()
           this.fetchTriggers()
@@ -137,20 +146,6 @@ export default {
 
       this.$AutomationAPI.triggerList({ workflowID: this.workflowID, disabled: 1 })
         .then(({ set = [] }) => { this.triggers = set })
-        .catch(this.stdReject)
-        .finally(() => {
-          this.decLoader()
-        })
-    },
-
-    fetchEffective () {
-      this.incLoader()
-
-      this.$AutomationAPI.permissionsEffective()
-        .then(rules => {
-          this.canCreate = rules.find(({ resource, operation }) => resource === 'automation' && operation === 'workflow.create').allow
-          this.canGrant = rules.find(({ resource, operation }) => resource === 'automation' && operation === 'grant').allow
-        })
         .catch(this.stdReject)
         .finally(() => {
           this.decLoader()

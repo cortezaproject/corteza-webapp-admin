@@ -152,27 +152,27 @@ describe('views/Application/Editor.vue', () => {
     })
   })
 
-  describe('update unify', () => {
-    it('on success - redirect', async () => {
-      propsData.applicationID = 'applicationID'
-      const wrap = mountEditor()
-      wrap.vm.onUnifySubmit()
-
-      await fp()
-      sinon.assert.calledOnce($SystemAPI.applicationUpdate)
-      expect(wrap.vm.unify.processing).to.be.false
-    })
-
-    it('on error - set error flag', async () => {
-      propsData.applicationID = 'applicationID'
-      $SystemAPI.applicationUpdate = sinon.stub().rejects()
-      const wrap = mountEditor()
-      wrap.vm.onUnifySubmit()
-
-      await fp()
-      sinon.assert.calledOnce($SystemAPI.applicationUpdate)
-      sinon.assert.calledOnce(stdReject)
-      expect(wrap.vm.info.processing).to.be.false
-    })
-  })
+  // describe('update unify', () => {
+  //   it('on success - redirect', async () => {
+  //     propsData.applicationID = 'applicationID'
+  //     const wrap = mountEditor()
+  //     wrap.vm.onUnifySubmit()
+  //
+  //     await fp()
+  //     sinon.assert.calledOnce($SystemAPI.applicationUpdate)
+  //     expect(wrap.vm.unify.processing).to.be.false
+  //   })
+  //
+  //   it('on error - set error flag', async () => {
+  //     propsData.applicationID = 'applicationID'
+  //     $SystemAPI.applicationUpdate = sinon.stub().rejects()
+  //     const wrap = mountEditor()
+  //     wrap.vm.onUnifySubmit()
+  //
+  //     await fp()
+  //     sinon.assert.calledOnce($SystemAPI.applicationUpdate)
+  //     sinon.assert.calledOnce(stdReject)
+  //     expect(wrap.vm.info.processing).to.be.false
+  //   })
+  // })
 })

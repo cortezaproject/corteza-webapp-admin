@@ -78,6 +78,7 @@ export default [
     component: () => import('./Layout.vue'),
     redirect: 'dashboard',
     children: [
+      { path: 'test', name: 'test', component: () => import('../components/Application/CSurprise.vue') },
       r('dashboard', 'dashboard', 'Dashboard'),
       {
         ...wrap(`system`, `/system`),

@@ -18,7 +18,7 @@
         <c-permissions-button
           v-if="canGrant"
           :title="$t('title')"
-          resource="automation:workflow:*"
+          resource="corteza::automation:workflow/*"
           button-variant="light"
           class="ml-2"
         >
@@ -81,6 +81,7 @@
 <script>
 import * as moment from 'moment'
 import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
+import { mapGetters } from 'vuex'
 
 export default {
   mixins: [
@@ -95,9 +96,6 @@ export default {
   data () {
     return {
       id: 'workflow',
-
-      canCreate: false,
-      canGrant: false,
 
       filter: {
         query: '',
@@ -132,27 +130,23 @@ export default {
     }
   },
 
-  created () {
-    this.fetchEffective()
+  computed: {
+    ...mapGetters({
+      can: 'rbac/can',
+    }),
+
+    canCreate () {
+      return this.can('system/', 'queue.create')
+    },
+
+    canGrant () {
+      return this.can('system/', 'grant')
+    },
   },
 
   methods: {
     items () {
       return this.procListResults(this.$AutomationAPI.workflowList(this.encodeListParams()))
-    },
-
-    fetchEffective () {
-      this.incLoader()
-
-      this.$AutomationAPI.permissionsEffective()
-        .then(rules => {
-          this.canGrant = rules.find(({ resource, operation }) => resource === 'automation' && operation === 'grant').allow
-          this.canCreate = rules.find(({ resource, operation }) => resource === 'automation' && operation === 'workflow.create').allow
-        })
-        .catch(this.stdReject)
-        .finally(() => {
-          this.decLoader()
-        })
     },
   },
 }

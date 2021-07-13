@@ -11,7 +11,7 @@
       :roles-excluded="rolesExcluded"
       :permissions="permissions"
       :role-permissions="rolePermissions"
-      :effective="effective"
+      :can-grant="canGrant"
       :loaded="isLoaded"
       :processing="permission.processing"
       :success="permission.success"
@@ -24,6 +24,7 @@
 <script>
 import permissionHelpers from 'corteza-webapp-admin/src/mixins/permissionHelpers'
 import CPermissionList from 'corteza-webapp-admin/src/components/Permissions/CPermissionList'
+import { mapGetters } from 'vuex'
 
 export default {
   i18nOptions: {
@@ -39,7 +40,21 @@ export default {
     permissionHelpers,
   ],
 
+  computed: {
+    ...mapGetters({
+      can: 'rbac/can',
+    }),
+
+    canGrant () {
+      return this.can('automation/', 'grant')
+    },
+  },
+
   created () {
+    /**
+     * With this, we tell permissionHelpers mixin
+     * what API it should use
+     */
     this.api = this.$FederationAPI
 
     this.fetchPermissions()

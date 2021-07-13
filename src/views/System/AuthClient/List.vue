@@ -19,7 +19,7 @@
         <c-permissions-button
           v-if="canGrant"
           :title="$t('title')"
-          resource="system:auth-client:*"
+          resource="corteza::system:auth-client/*"
           button-variant="light"
         >
           <font-awesome-icon :icon="['fas', 'lock']" />
@@ -58,6 +58,7 @@
 <script>
 import * as moment from 'moment'
 import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
+import { mapGetters } from 'vuex'
 
 export default {
   mixins: [
@@ -72,9 +73,6 @@ export default {
   data () {
     return {
       id: 'authclient',
-
-      canCreate: false,
-      canGrant: false,
 
       filter: {
         query: '',
@@ -111,27 +109,23 @@ export default {
     }
   },
 
-  created () {
-    this.fetchEffective()
+  computed: {
+    ...mapGetters({
+      can: 'rbac/can',
+    }),
+
+    canCreate () {
+      return this.can('system/', 'auth-client.create')
+    },
+
+    canGrant () {
+      return this.can('system/', 'grant')
+    },
   },
 
   methods: {
     items () {
       return this.procListResults(this.$SystemAPI.authClientList(this.encodeListParams()))
-    },
-
-    fetchEffective () {
-      this.incLoader()
-
-      this.$SystemAPI.permissionsEffective()
-        .then(rules => {
-          this.canCreate = rules.find(({ resource, operation }) => resource === 'system' && operation === 'auth-client.create').allow
-          this.canGrant = rules.find(({ resource, operation }) => resource === 'system' && operation === 'grant').allow
-        })
-        .catch(this.stdReject)
-        .finally(() => {
-          this.decLoader()
-        })
     },
   },
 }

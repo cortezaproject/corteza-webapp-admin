@@ -10,6 +10,7 @@
         class="text-nowrap"
       >
         <b-button
+          v-if="canCreate"
           variant="primary"
           class="mr-2"
           :to="{ name: 'system.user.new' }"
@@ -17,9 +18,10 @@
           {{ $t('new') }}
         </b-button>
         <c-permissions-button
+          v-if="userID && canGrant"
           :title="user.name || user.handle || user.email"
           :target="user.name || user.handle || user.email"
-          :resource="'system:user:'+userID"
+          :resource="'corteza::system:user/'+userID"
           button-variant="light"
         >
           <font-awesome-icon :icon="['fas', 'lock']" />
@@ -82,6 +84,7 @@ import CUserEditorInfo from 'corteza-webapp-admin/src/components/User/CUserEdito
 import CUserEditorPassword from 'corteza-webapp-admin/src/components/User/CUserEditorPassword'
 import CUserEditorMfa from 'corteza-webapp-admin/src/components/User/CUserEditorMFA'
 import CUserEditorRoles from 'corteza-webapp-admin/src/components/User/CUserEditorRoles'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -131,6 +134,20 @@ export default {
         success: false,
       },
     }
+  },
+
+  computed: {
+    ...mapGetters({
+      can: 'rbac/can',
+    }),
+
+    canCreate () {
+      return this.can('system/', 'user.create')
+    },
+
+    canGrant () {
+      return this.can('system/', 'grant')
+    },
   },
 
   watch: {

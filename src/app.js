@@ -14,6 +14,7 @@ import router from './router'
 
 import { system } from '@cortezaproject/corteza-js'
 import { mixins, corredor, websocket } from '@cortezaproject/corteza-vue'
+import { mapGetters } from 'vuex'
 
 const notProduction = (process.env.NODE_ENV !== 'production')
 
@@ -21,7 +22,7 @@ export default (options = {}) => {
   options = {
     el: '#app',
     name: 'admin',
-    template: '<div v-if="loaded"><router-view/><vue-progress-bar /></div>',
+    template: '<div v-if="loaded && isRbacLoaded"><router-view/><vue-progress-bar /></div>',
 
     mixins: [
       mixins.corredor,
@@ -31,6 +32,12 @@ export default (options = {}) => {
 
     mounted () {
       this.$Progress.finish()
+    },
+
+    computed: {
+      ...mapGetters({
+        isRbacLoaded: 'rbac/isLoaded',
+      }),
     },
 
     async created () {
@@ -71,6 +78,9 @@ export default (options = {}) => {
 
         // Load all pending prompts:
         this.$store.dispatch('wfPrompts/update')
+
+        // Load effective permissions
+        this.$store.dispatch('rbac/load')
 
         return this.loadBundle(bundleLoaderOpt)
           .then(() => this.$SystemAPI.automationList({ excludeInvalid: true }))

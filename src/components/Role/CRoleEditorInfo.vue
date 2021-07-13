@@ -172,7 +172,7 @@ export default {
 
     // 2+ alpha-numeric + _
     checkHandle () {
-      return this.role.handle ? /^\w{2,}$/.test(this.role.handle) : null
+      return this.role.handle ? /^[A-Za-z][0-9A-Za-z_\-.]*[A-Za-z0-9]$/.test(this.role.handle) : null
     },
 
     getDeleteStatus () {
