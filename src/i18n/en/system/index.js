@@ -9,7 +9,7 @@ import authclients from './authclients'
 import permissions from './permissions'
 import actionlog from './actionlog'
 import queues from './queues'
-import routes from './routes_gateway'
+import routes from './apigw'
 
 export default {
   system: {

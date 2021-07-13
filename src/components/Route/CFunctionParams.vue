@@ -1,7 +1,6 @@
 <template>
   <div>
     <b-form-group
-      :label="$t('functions.params')"
       class="w-100 mt-3 mb-0 font-weight-bold"
     >
       <template
@@ -9,7 +8,7 @@
       >
         <b-form-group
           :key="index"
-          :label="param.label"
+          :label="$t(`functions.labels.${param.label}`)"
           label-cols="4"
         >
           <!-- TODO create multi field component-->

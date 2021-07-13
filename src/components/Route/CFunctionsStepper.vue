@@ -4,9 +4,7 @@
     header-bg-variant="white"
     footer-bg-variant="white"
   >
-    <b-tabs
-      content-class="border-bottom"
-    >
+    <b-tabs content-class="border-bottom">
       <b-tab
         v-for="(step, index) in steps"
         :key="index"
@@ -15,28 +13,41 @@
       >
         <section class="d-flex w-100">
           <div class="d-flex flex-column w-35">
-            <c-functions-dropdown
-              :avaliable-functions="getAvaliableFunctionsByStep"
-              @addFunction="onAddFunction"
-              @functionSelect="onFunctionSelect"
-            />
-            <c-function
-              v-if="getSelectedFunction"
-              :func="selectedFunction"
-              :added="isFunctionAlreadyAdded()"
-              @addFunction="onAddFunction"
-              @updateFunction="onUpdateFunction"
-            />
+            <b-card
+              class="shadow-sm mt-5 p-3"
+            >
+              <c-functions-dropdown
+                :avaliable-functions="getAvaliableFunctionsByStep"
+                @addFunction="onAddFunction"
+                @functionSelect="onFunctionSelect"
+              />
+              <c-function
+                v-if="getSelectedFunction"
+                :func="selectedFunction"
+                :added="isFunctionAlreadyAdded()"
+                @addFunction="onAddFunction"
+                @updateFunction="onUpdateFunction"
+              />
+            </b-card>
           </div>
-          <c-functions-table
-            ref="functionTable"
-            class="w-60 ml-5"
-            :avaliable-functions="getAvaliableFunctionsByStep"
-            :functions="getSelectedFunctionsByStep"
-            :selected-row="step.selectedRow"
-            @functionSelect="onFunctionSelect"
-            @removeFunction="onRemoveFunction"
-          />
+
+          <div class="d-flex flex-column w-60">
+            <b-card
+              class="shadow-sm ml-5 mt-5"
+              header-bg-variant="primary"
+              footer-bg-variant="light"
+            >
+              <c-functions-table
+                ref="functionTable"
+                class="w-50"
+                :avaliable-functions="getAvaliableFunctionsByStep"
+                :functions="getSelectedFunctionsByStep"
+                :selected-row="step.selectedRow"
+                @functionSelect="onFunctionSelect"
+                @removeFunction="onRemoveFunction"
+              />
+            </b-card>
+          </div>
         </section>
       </b-tab>
     </b-tabs>
@@ -72,7 +83,6 @@ export default {
       type: Boolean,
       value: false,
     },
-
   },
   data () {
     return {
@@ -113,13 +123,13 @@ export default {
     },
 
     getAvaliableFunctionsByStep () {
-      return (this.avaliableFunctions || []).filter(f => {
+      return (this.avaliableFunctions || []).filter((f) => {
         return f.step === this.selectedTab
       })
     },
 
     getSelectedFunctionsByStep () {
-      return (this.functions || []).filter(f => {
+      return (this.functions || []).filter((f) => {
         return f.step === this.selectedTab
       })
     },
@@ -127,7 +137,7 @@ export default {
 
   methods: {
     onAddFunction (func) {
-      if (!this.functions.find(f => f.ref === func.ref)) {
+      if (!this.functions.find((f) => f.ref === func.ref)) {
         this.functions.push({ ...func })
       }
       this.selectedFunction = { ...func }
@@ -135,14 +145,19 @@ export default {
     },
 
     onUpdateFunction (func) {
-      this.functions[this.functions.findIndex(f => f.ref === func.ref)] = { ...func }
+      this.functions[this.functions.findIndex((f) => f.ref === func.ref)] = {
+        ...func,
+      }
     },
 
     onRemoveFunction (func) {
       if (func.functionID) {
         this.deletedFunctions.push(func.functionID)
       }
-      this.functions.splice(this.functions.findIndex(f => f.ref === func.ref), 1)
+      this.functions.splice(
+        this.functions.findIndex((f) => f.ref === func.ref),
+        1
+      )
       this.selectFirstOrDefaultFunction()
     },
 
@@ -151,7 +166,9 @@ export default {
     },
 
     selectFirstOrDefaultFunction () {
-      this.selectedFunction = this.getSelectedFunctionsByStep.length ? this.getSelectedFunctionsByStep[0] : null
+      this.selectedFunction = this.getSelectedFunctionsByStep.length
+        ? this.getSelectedFunctionsByStep[0]
+        : null
       this.$refs.functionTable[this.selectedTab].onSelectFirstRow()
     },
 
@@ -161,14 +178,14 @@ export default {
     },
 
     setAvaliableFunctions (functions) {
-      this.avaliableFunctions = functions.map(f => {
+      this.avaliableFunctions = functions.map((f) => {
         return { name, ...f, ref: f.name }
       })
     },
 
     setRouteFunctions (routeFunctions = []) {
-      this.functions = (routeFunctions || []).map(func => {
-        const f = this.avaliableFunctions.find(af => af.ref === func.ref)
+      this.functions = (routeFunctions || []).map((func) => {
+        const f = this.avaliableFunctions.find((af) => af.ref === func.ref)
         f.params = this.decodeParams({ ...func.params })
         f.functionID = func.functionID
         return { ...f }
@@ -177,23 +194,25 @@ export default {
     },
 
     decodeParams (params) {
-      return Object.entries(params).map(p => {
+      return Object.entries(params).map((p) => {
         return { label: p[0], value: p[1], type: 'string' }
       })
     },
 
     isFunctionAlreadyAdded () {
-      return (this.functions || []).some(f => f.ref === this.selectedFunction.ref)
+      return (this.functions || []).some(
+        (f) => f.ref === this.selectedFunction.ref
+      )
     },
   },
 }
 </script>
 
 <style scoped>
-.w-35{
+.w-35 {
   width: 35%;
 }
-.w-60{
+.w-60 {
   width: 60%;
 }
 </style>
