@@ -9,7 +9,7 @@
         :value="true"
         :unchecked-value="false"
       >
-        {{ $t('provider-enabled') }}
+        {{ $t('providerEnabled') }}
       </b-form-checkbox>
     </b-form-group>
 
