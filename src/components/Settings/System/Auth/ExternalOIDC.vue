@@ -1,20 +1,19 @@
 <template>
-  <b-form-group
-    v-if="value.enabled"
-    :label="`${title}: ${value.handle}`"
-    label-size="lg"
-  >
+  <div>
+    <h3 class="mb-2">
+      {{ title }}{{ value.handle ? `: ${value.handle}` : '' }}
+    </h3>
+
     <b-form-group label-cols="2">
       <b-form-checkbox
         v-model="value.enabled"
         :value="true"
         :unchecked-value="false"
       >
-        {{ $t('provider-enabled') }}
+        {{ $t('providerEnabled') }}
       </b-form-checkbox>
     </b-form-group>
     <b-form-group
-      v-if="value.enabled"
       :label="$t('handle')"
       label-cols="2"
     >
@@ -26,17 +25,21 @@
       </b-input-group>
     </b-form-group>
     <b-form-group
-      v-if="value.enabled"
       :label="$t('issuer')"
       label-cols="2"
     >
       <b-input-group>
-        <b-form-input v-model.trim="value.issuer" />
+        <b-form-input
+          v-model.trim="value.issuer"
+          :placeholder="$t('issuerPlaceholder')"
+        />
       </b-input-group>
+      <b-form-text
+        v-html="$t('issuerHint')"
+      />
     </b-form-group>
     <b-form-group
-      v-if="value.enabled"
-      :label="$t('key')"
+      :label="$t('clientKey')"
       label-cols="2"
     >
       <b-input-group>
@@ -44,15 +47,14 @@
       </b-input-group>
     </b-form-group>
     <b-form-group
-      v-if="value.enabled"
-      :label="$t('secret')"
+      :label="$t('clientSecret')"
       label-cols="2"
     >
       <b-input-group>
         <b-form-input v-model.trim="value.secret" />
       </b-input-group>
     </b-form-group>
-  </b-form-group>
+  </div>
 </template>
 <script>
 

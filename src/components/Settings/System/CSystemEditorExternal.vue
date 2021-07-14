@@ -7,19 +7,14 @@
     <b-form
       @submit.prevent="$emit('submit', changes)"
     >
-      <b-form-group
-        :label="$t('external')"
-        label-size="lg"
-      >
-        <b-form-group label-cols="2">
-          <b-form-checkbox
-            v-model="enabled"
-            :value="true"
-            :unchecked-value="false"
-          >
-            {{ $t('enabled') }}
-          </b-form-checkbox>
-        </b-form-group>
+      <b-form-group>
+        <b-form-checkbox
+          v-model="enabled"
+          :value="true"
+          :unchecked-value="false"
+        >
+          {{ $t('enabled') }}
+        </b-form-checkbox>
       </b-form-group>
 
       <div v-if="enabled">
@@ -29,6 +24,12 @@
           v-model="oidc[i]"
           :title="$t('oidc')"
         />
+
+        <b-button
+          @click="oidc.push({ handle: '', issuer: '', key: '', secret: '', enabled: true})"
+        >
+          {{ $t('addOidcProvider') }}
+        </b-button>
 
         <hr>
 
@@ -43,12 +44,14 @@
           v-model="standard.facebook"
           :title="$t('facebook')"
         />
+
         <hr>
 
         <standard-external
           v-model="standard.github"
           :title="$t('github')"
         />
+
         <hr>
 
         <standard-external
@@ -183,6 +186,10 @@ export default {
 
       for (let provider of this.oidc) {
         const { handle } = provider
+        if (!handle.trim()) {
+          continue
+        }
+
         for (let k of ['key', 'secret', 'enabled', 'issuer']) {
           name = `auth.external.providers.openid-connect.${handle}.${k}`
           value = provider[k]
@@ -211,7 +218,7 @@ export default {
         }
 
         this.oidc = []
-        for (let handle of (this.oidcProviders || ['didmos2'])) {
+        for (let handle of (this.oidcProviders)) {
           this.oidc.push(this.extractKeys('openid-connect.' + handle, this.external, {
             handle,
             enabled: false,
