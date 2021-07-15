@@ -15,10 +15,12 @@
           <b-form-checkbox
             v-if="param.type==='bool'"
             v-model="param.value"
+            @change="paramsUpdated()"
           />
           <b-form-input
             v-else
             v-model="param.value"
+            @change="paramsUpdated()"
           />
         </b-form-group>
       </template>
@@ -38,12 +40,9 @@ export default {
       default: () => '',
     },
   },
-  watch: {
-    params: {
-      handler () {
-        this.$emit('paramsUpdated')
-      },
-      deep: true,
+  methods: {
+    paramsUpdated () {
+      this.$emit('paramsUpdated')
     },
   },
 }

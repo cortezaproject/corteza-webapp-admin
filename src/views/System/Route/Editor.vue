@@ -36,6 +36,9 @@
       ref="stepper"
       :processing="stepper.processing"
       :success="stepper.success"
+      :functions.sync="functions"
+      :functions-to-delete.sync="functionsToDelete"
+      :avaliable-functions="avaliableFunctions"
       @submit="onFunctionsSubmit"
     />
   </b-container>
@@ -79,6 +82,9 @@ export default {
         processing: false,
         success: false,
       },
+      functionsToDelete: [],
+      functions: [],
+      avaliableFunctions: [],
     }
   },
 
@@ -155,33 +161,32 @@ export default {
           })
       }
     },
-    onFunctionsSubmit (functions = [], functionsToDelete = []) {
-      if (functionsToDelete.length) {
-        this.deleteFunctions(functionsToDelete)
+    onFunctionsSubmit () {
+      if (this.functionsToDelete.length) {
+        this.deleteFunctions(this.functionsToDelete)
       }
       if (this.routeID) {
-        functions.forEach(({ ...func }) => {
+        this.functions.forEach(({ ...func }, index) => {
           this.stepper.processing = true
-          func.params = func.params.reduce(function (result, p) {
-            result[p.label] = p.value
-            return result
-          }, {})
+          func.params = this.encodeParams(func.params)
           if (func.updated) {
             if (func.functionID) {
-              this.updateFunction(func)
+              this.updateFunction(func, index)
             } else {
-              this.createFunction(func)
+              this.createFunction(func, index)
             }
           }
         })
       }
     },
 
-    createFunction (func) {
+    createFunction (func, index) {
       this.$SystemAPI
         .apigwFunctionCreate({ ...func, routeID: this.routeID })
-        .then(() => {
+        .then(({ functionID }) => {
           this.animateSuccess('stepper')
+          this.functions[index].updated = false
+          this.functions[index].functionID = functionID
         })
         .catch(this.stdReject)
         .finally(() => {
@@ -189,11 +194,12 @@ export default {
         })
     },
 
-    updateFunction (func) {
+    updateFunction (func, index) {
       this.$SystemAPI
         .apigwFunctionUpdate({ ...func, routeID: this.routeID })
         .then(() => {
           this.animateSuccess('stepper')
+          this.functions[index].updated = false
         })
         .catch(this.stdReject)
         .finally(() => {
@@ -202,11 +208,12 @@ export default {
     },
 
     deleteFunctions (functionsToDelete) {
-      functionsToDelete.forEach((id) => {
+      functionsToDelete.forEach((functionID, index) => {
         this.$SystemAPI
-          .apigwFunctionDelete({ functionID: id })
+          .apigwFunctionDelete({ functionID: functionID })
           .then(() => {
             this.animateSuccess('stepper')
+            this.functionsToDelete.splice(index, 1)
           })
           .catch(this.stdReject)
           .finally(() => {
@@ -220,21 +227,47 @@ export default {
       this.$SystemAPI
         .apigwFunctionList({ routeID: this.routeID })
         .then((api) => {
-          this.$refs.stepper.setRouteFunctions(api.set)
+          this.setRouteFunctions(api.set)
         })
         .catch(this.stdReject)
         .finally(() => {
           this.decLoader()
         })
+    },
+
+    setRouteFunctions (routeFunctions = []) {
+      this.functions = (routeFunctions || []).map((func) => {
+        const f = { ...this.avaliableFunctions.find((af) => af.ref === func.ref) }
+        f.params = this.decodeParams({ ...func.params })
+        f.functionID = func.functionID
+        return { ...f }
+      })
+      this.$nextTick(() => {
+        this.$refs.stepper.selectFirstOrDefaultFunction()
+      })
+    },
+
+    decodeParams (params) {
+      return Object.entries(params).map((p) => {
+        return { label: p[0], value: p[1], type: 'string' }
+      })
+    },
+
+    encodeParams (params) {
+      return params.reduce(function (result, p) {
+        result[p.label] = p.value
+        return result
+      }, {})
     },
 
     fetchAllAvaliableFunctions () {
       this.incLoader()
-
       this.$SystemAPI
         .apigwFunctionDefinitions()
         .then((api) => {
-          this.$refs.stepper.setAvaliableFunctions(api)
+          this.avaliableFunctions = api.map((f) => {
+            return { name, ...f, ref: f.name }
+          })
         })
         .catch(this.stdReject)
         .finally(() => {
@@ -242,19 +275,6 @@ export default {
         })
     },
 
-    onFunctionDelete (functionID) {
-      this.incLoader()
-
-      this.$SystemAPI
-        .apigwRouteDelete({ functionID: functionID })
-        .then(() => {
-          console.log('Function deleted successfuly!')
-        })
-        .catch(this.stdReject)
-        .finally(() => {
-          this.decLoader()
-        })
-    },
     onInfoDelete () {
       this.incLoader()
 

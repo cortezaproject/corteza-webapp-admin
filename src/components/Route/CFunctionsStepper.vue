@@ -56,7 +56,7 @@
       :processing="processing"
       :success="success"
       :disabled="disabled"
-      @submit="$emit('submit', [...functions], deletedFunctions)"
+      @submit="$emit('submit')"
     />
   </b-card>
 </template>
@@ -78,10 +78,21 @@ export default {
       type: Boolean,
       value: false,
     },
-
     success: {
       type: Boolean,
       value: false,
+    },
+    functions: {
+      type: Array,
+      required: true,
+    },
+    functionsToDelete: {
+      type: Array,
+      required: true,
+    },
+    avaliableFunctions: {
+      type: Array,
+      required: true,
     },
   },
   data () {
@@ -106,16 +117,13 @@ export default {
         },
       ],
       selectedFunction: null,
-      avaliableFunctions: [],
-      deletedFunctions: [],
-      functions: [],
       selectedTab: 0,
     }
   },
 
   computed: {
     disabled () {
-      return !this.functions.length
+      return !(this.functions.some(f => f.updated === true) || this.functionsToDelete.length)
     },
 
     getSelectedFunction () {
@@ -145,19 +153,18 @@ export default {
     },
 
     onUpdateFunction (func) {
-      this.functions[this.functions.findIndex((f) => f.ref === func.ref)] = {
-        ...func,
+      const index = this.functions.findIndex((f) => f.ref === func.ref)
+      if (index >= 0) {
+        this.$set(this.functions[index], 'params', func.params)
+        this.$set(this.functions[index], 'updated', true)
       }
     },
 
     onRemoveFunction (func) {
       if (func.functionID) {
-        this.deletedFunctions.push(func.functionID)
+        this.functionsToDelete.push(func.functionID)
       }
-      this.functions.splice(
-        this.functions.findIndex((f) => f.ref === func.ref),
-        1
-      )
+      this.functions.splice(this.functions.findIndex((f) => f.ref === func.ref), 1)
       this.selectFirstOrDefaultFunction()
     },
 
@@ -175,28 +182,6 @@ export default {
     onActivateTab (index) {
       this.selectedTab = index
       this.selectFirstOrDefaultFunction()
-    },
-
-    setAvaliableFunctions (functions) {
-      this.avaliableFunctions = functions.map((f) => {
-        return { name, ...f, ref: f.name }
-      })
-    },
-
-    setRouteFunctions (routeFunctions = []) {
-      this.functions = (routeFunctions || []).map((func) => {
-        const f = this.avaliableFunctions.find((af) => af.ref === func.ref)
-        f.params = this.decodeParams({ ...func.params })
-        f.functionID = func.functionID
-        return { ...f }
-      })
-      this.selectFirstOrDefaultFunction()
-    },
-
-    decodeParams (params) {
-      return Object.entries(params).map((p) => {
-        return { label: p[0], value: p[1], type: 'string' }
-      })
     },
 
     isFunctionAlreadyAdded () {
