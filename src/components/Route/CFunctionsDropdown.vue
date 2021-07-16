@@ -5,7 +5,7 @@
     variant="light"
   >
     <b-dropdown-item
-      v-for="(func, index) in avaliableFunctions"
+      v-for="(func, index) in availableFunctions"
       :key="index"
       href="#"
       @click="onAddFunction(func)"
@@ -18,7 +18,7 @@
 <script>
 export default {
   props: {
-    avaliableFunctions: {
+    availableFunctions: {
       type: Array,
       required: true,
     },

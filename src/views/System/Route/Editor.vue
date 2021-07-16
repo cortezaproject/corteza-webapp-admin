@@ -38,7 +38,8 @@
       :success="stepper.success"
       :functions.sync="functions"
       :functions-to-delete.sync="functionsToDelete"
-      :avaliable-functions="avaliableFunctions"
+      :available-functions="availableFunctions"
+      :steps="steps"
       @submit="onFunctionsSubmit"
     />
   </b-container>
@@ -84,7 +85,8 @@ export default {
       },
       functionsToDelete: [],
       functions: [],
-      avaliableFunctions: [],
+      availableFunctions: [],
+      steps: [],
     }
   },
 
@@ -108,8 +110,9 @@ export default {
       immediate: true,
       handler () {
         if (this.routeID) {
+          this.fetchSteps()
           this.fetchRoute()
-          this.fetchAllAvaliableFunctions()
+          this.fetchAllAvailableFunctions()
           this.fetchFunctions()
         } else {
           this.route = {}
@@ -237,7 +240,7 @@ export default {
 
     setRouteFunctions (routeFunctions = []) {
       this.functions = (routeFunctions || []).map((func) => {
-        const f = { ...this.avaliableFunctions.find((af) => af.ref === func.ref) }
+        const f = { ...this.availableFunctions.find((af) => af.ref === func.ref) }
         f.params = this.decodeParams({ ...func.params })
         f.functionID = func.functionID
         return { ...f }
@@ -260,12 +263,12 @@ export default {
       }, {})
     },
 
-    fetchAllAvaliableFunctions () {
+    fetchAllAvailableFunctions () {
       this.incLoader()
       this.$SystemAPI
         .apigwFunctionDefinitions()
         .then((api) => {
-          this.avaliableFunctions = api.map((f) => {
+          this.availableFunctions = api.map((f) => {
             return { name, ...f, ref: f.name }
           })
         })
@@ -299,6 +302,11 @@ export default {
             this.decLoader()
           })
       }
+    },
+
+    fetchSteps () {
+      this.incLoader()
+      this.steps = ['verifier', 'validator', 'processer', 'expediter']
     },
   },
 }

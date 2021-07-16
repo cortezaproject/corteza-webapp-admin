@@ -65,11 +65,11 @@ export default {
       validEndpoint: 'Invalid endpoint format',
     },
     functions: {
-      steps: {
-        title_1: 'Access control',
-        title_2: 'Validation',
-        title_3: 'Processing',
-        title_4: 'Expediting',
+      step_title: {
+        verifier: 'Access control',
+        validator: 'Validation',
+        processer: 'Processing',
+        expediter: 'Expediting',
       },
       list: {
         remove: 'Remove',

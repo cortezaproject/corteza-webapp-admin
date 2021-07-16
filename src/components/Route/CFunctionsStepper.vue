@@ -8,7 +8,7 @@
       <b-tab
         v-for="(step, index) in steps"
         :key="index"
-        :title="step.title"
+        :title="$t(`functions.step_title.${step}`)"
         @click="onActivateTab(index)"
       >
         <section class="d-flex w-100">
@@ -17,7 +17,7 @@
               class="shadow-sm mt-5 p-3"
             >
               <c-functions-dropdown
-                :avaliable-functions="getAvaliableFunctionsByStep"
+                :available-functions="getAvailableFunctionsByStep"
                 @addFunction="onAddFunction"
                 @functionSelect="onFunctionSelect"
               />
@@ -40,7 +40,6 @@
               <c-functions-table
                 ref="functionTable"
                 class="w-50"
-                :avaliable-functions="getAvaliableFunctionsByStep"
                 :functions="getSelectedFunctionsByStep"
                 :selected-row="step.selectedRow"
                 @functionSelect="onFunctionSelect"
@@ -90,32 +89,17 @@ export default {
       type: Array,
       required: true,
     },
-    avaliableFunctions: {
+    availableFunctions: {
+      type: Array,
+      required: true,
+    },
+    steps: {
       type: Array,
       required: true,
     },
   },
   data () {
     return {
-      route: {},
-      steps: [
-        {
-          title: this.$t('functions.steps.title_1'),
-          kind: 'verifier',
-        },
-        {
-          title: this.$t('functions.steps.title_2'),
-          kind: 'validator',
-        },
-        {
-          title: this.$t('functions.steps.title_3'),
-          kind: 'processer',
-        },
-        {
-          title: this.$t('functions.steps.title_4'),
-          kind: 'expediter',
-        },
-      ],
       selectedFunction: null,
       selectedTab: 0,
     }
@@ -130,8 +114,8 @@ export default {
       return this.selectedFunction ? this.selectedFunction : null
     },
 
-    getAvaliableFunctionsByStep () {
-      return (this.avaliableFunctions || []).filter((f) => {
+    getAvailableFunctionsByStep () {
+      return (this.availableFunctions || []).filter((f) => {
         return f.step === this.selectedTab
       })
     },

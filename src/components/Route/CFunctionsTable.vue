@@ -48,10 +48,6 @@
 <script>
 export default {
   props: {
-    avaliableFunctions: {
-      type: Array,
-      required: true,
-    },
     functions: {
       type: Array,
       required: true,
