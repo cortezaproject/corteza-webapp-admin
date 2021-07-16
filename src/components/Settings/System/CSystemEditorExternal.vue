@@ -26,7 +26,7 @@
         />
 
         <b-button
-          @click="oidc.push({ handle: '', issuer: '', key: '', secret: '', enabled: true})"
+          @click="oidc.push({ handle: '', issuer: '', key: '', secret: '', enabled: true, fresh: true })"
         >
           {{ $t('addOidcProvider') }}
         </b-button>
@@ -201,7 +201,7 @@ export default {
 
       for (let provider of this.oidc) {
         const { handle } = provider
-        if (!handle.trim()) {
+        if (!handle || !handle.trim()) {
           continue
         }
 

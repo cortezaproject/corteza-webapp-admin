@@ -21,6 +21,7 @@
         <b-form-input
           v-model.trim="value.handle"
           :formatter="alphanum"
+          :disabled="!fresh"
         />
       </b-input-group>
     </b-form-group>
@@ -70,6 +71,12 @@ export default {
     value: {
       type: Object,
       required: true,
+    },
+  },
+
+  computed: {
+    fresh () {
+      return this.value.hasOwnProperty('fresh') && this.value.fresh
     },
   },
 
