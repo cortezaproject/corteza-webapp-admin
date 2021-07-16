@@ -22,9 +22,12 @@
       <b-form-group
         :label="$t('endpoint')"
         label-cols="2"
+        :description="routeEndpointDescription"
       >
         <b-form-input
+          id="endpoint"
           v-model="route.endpoint"
+          :state="isValidEndpoint"
           required
         />
         <input
@@ -40,6 +43,7 @@
         <b-form-select
           v-model="route.method"
           :options="methods"
+          required
         />
       </b-form-group>
 
@@ -103,7 +107,7 @@
         class="float-right"
         :processing="processing"
         :success="success"
-        :disabled="!canCreate"
+        :disabled="!isValidEndpoint || !isValidMethod || !canCreate"
         @submit="$emit('submit', route)"
       />
 
@@ -165,6 +169,18 @@ export default {
   computed: {
     getDeleteStatus () {
       return this.route.deletedAt ? this.$t('undelete') : this.$t('delete')
+    },
+    isValidEndpoint () {
+      return this.route.endpoint ? /^\/\w+$/.test(this.route.endpoint) : null
+    },
+    isValidMethod () {
+      return !!this.route.method
+    },
+    routeEndpointDescription () {
+      if (this.isValidEndpoint === false) {
+        return this.$t('validEndpoint')
+      }
+      return ''
     },
   },
 }

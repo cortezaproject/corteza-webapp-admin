@@ -62,6 +62,7 @@ export default {
 
       updatedAt: 'Updated at',
       createdAt: 'Created at',
+      validEndpoint: 'Invalid endpoint format',
     },
     functions: {
       steps: {
