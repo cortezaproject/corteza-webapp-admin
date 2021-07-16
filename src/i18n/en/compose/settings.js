@@ -8,14 +8,6 @@ export default {
 
     basic: {
       title: 'Basic',
-
-      ui: {
-        title: 'User Interface',
-        'namespace-switcher': {
-          enabled: 'Enable namespace switcher',
-          defaultOpen: 'Namespace switcher open by default',
-        },
-      },
       attachments: {
         page: 'Page attachments',
 

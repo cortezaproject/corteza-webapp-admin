@@ -7,22 +7,6 @@
     <b-form
       @submit.prevent="$emit('submit', basic)"
     >
-      <h4>{{ $t('ui.title') }}</h4>
-      <b-form-checkbox
-        v-model="basic['compose.ui.namespace-switcher.enabled']"
-        :value="true"
-        :unchecked-value="false"
-      >
-        {{ $t('ui.namespace-switcher.enabled') }}
-      </b-form-checkbox>
-      <b-form-checkbox
-        v-model="basic['compose.ui.namespace-switcher.defaultOpen']"
-        :value="true"
-        :unchecked-value="false"
-      >
-        {{ $t('ui.namespace-switcher.defaultOpen') }}
-      </b-form-checkbox>
-      <hr>
       <h4>{{ $t('attachments.page') }}</h4>
       <b-form-group
         :label="$t('attachments.max-size')"
