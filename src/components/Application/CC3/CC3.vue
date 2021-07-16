@@ -31,20 +31,24 @@
             @submit="onInfoSubmit"
             @delete="onDelete"
           />
+          <c-application-editor-unify
+            v-if="props.unify && props.application.applicationID"
+            class="mt-3"
+            v-bind="props"
+            @submit="onUnifySubmit"
+            @delete="onDelete"
+          />
         </b-col>
       </b-row>
       <b-row
-        class="mw-50"
+        class="w-50 my-0 mx-auto"
       >
-        <b-col
-          cols="3"
-        />
         <b-col>
           <h3>Pre-set Controls</h3>
-
           <ul>
             <li
               v-for="(s) in scenarios"
+              :key="scenarios[s]"
               @click="props=s.props"
             >
               {{ s.label }}
@@ -53,16 +57,18 @@
         </b-col>
         <b-col>
           <h3>Controls</h3>
-
           <b-form-group
             v-for="(c) in controls"
+            :key="controls[c]"
             :label="c.label"
+            content-cols-lg="8"
           >
-            <b-form-input
-              @change="c.handle(props, value)"
+            <component
+              :is="c.type"
+              v-model="c.value"
+              @change="c.handle(props, $event)"
             />
           </b-form-group>
-
           {{ controls }}
         </b-col>
       </b-row>
@@ -72,58 +78,33 @@
 
 <script>
 import CApplicationEditorInfo from '../CApplicationEditorInfo.vue'
-import data from './formData'
+import CApplicationEditorUnify from '../CApplicationEditorUnify.vue'
+
+import data from './dataInstances'
 
 export default {
   name: 'CC3',
   components: {
     CApplicationEditorInfo,
+    CApplicationEditorUnify,
   },
 
   data () {
     return {
-      props: data.fullForm,
+      props: data.props,
       scenarios: data.scenarios,
       controls: data.controls,
-
-      // emptyForm: data.emptyForm,
-      // appData: data.appData,
-
       components: this.$options.components,
-      isEmptyFormPopulated: false,
-      isFullFormPopulated: false,
       isPropertyClicked: false,
     }
   },
 
   methods: {
-    update (objectName, propertyName, value) {
-      if (typeof (value) === 'boolean') {
-        value = !value
-      }
-
-      this.$set(objectName, propertyName, value)
-    },
-    editProperty () {
-      this.isPropertyClicked = !this.isPropertyClicked
-    },
-    populateEmptyForm () {
-      this.isEmptyFormPopulated = !this.isEmptyFormPopulated
-
-      if (this.isFullFormPopulated) {
-        this.isFullFormPopulated = !this.isFullFormPopulated
-      }
-    },
-    populateFullForm () {
-      this.isFullFormPopulated = !this.isFullFormPopulated
-
-      if (this.isEmptyFormPopulated) {
-        this.isEmptyFormPopulated = !this.isEmptyFormPopulated
-      }
-    },
     onInfoSubmit (application) {
     },
     onDelete () {
+    },
+    onUnifySubmit () {
     },
   },
 }
