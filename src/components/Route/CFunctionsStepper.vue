@@ -11,10 +11,12 @@
         :title="$t(`functions.step_title.${step}`)"
         @click="onActivateTab(index)"
       >
-        <section class="d-flex w-100">
-          <div class="d-flex flex-column w-35">
+        <b-row class="d-flex w-100 m-0">
+          <b-col
+            class="d-flex flex-column"
+          >
             <b-card
-              class="shadow-sm mt-5 p-3"
+              class="shadow-sm my-4 flex-grow-1"
             >
               <c-functions-dropdown
                 :available-functions="getAvailableFunctionsByStep"
@@ -29,25 +31,28 @@
                 @updateFunction="onUpdateFunction"
               />
             </b-card>
-          </div>
+          </b-col>
 
-          <div class="d-flex flex-column w-60">
+          <b-col
+            cols="12"
+            lg="8"
+            class="d-flex"
+          >
             <b-card
-              class="shadow-sm ml-5 mt-5"
+              class="shadow-sm my-4 flex-grow-1"
               header-bg-variant="primary"
               footer-bg-variant="light"
             >
               <c-functions-table
                 ref="functionTable"
-                class="w-50"
                 :functions="getSelectedFunctionsByStep"
                 :selected-row="step.selectedRow"
                 @functionSelect="onFunctionSelect"
                 @removeFunction="onRemoveFunction"
               />
             </b-card>
-          </div>
-        </section>
+          </b-col>
+        </b-row>
       </b-tab>
     </b-tabs>
     <c-submit-button
@@ -176,12 +181,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-.w-35 {
-  width: 35%;
-}
-.w-60 {
-  width: 60%;
-}
-</style>

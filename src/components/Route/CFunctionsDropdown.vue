@@ -1,7 +1,7 @@
 <template>
   <b-dropdown
     :text="$t('functions.addFunction')"
-    class="mt-3 dropdown-function min-content"
+    class="min-content"
     variant="light"
   >
     <b-dropdown-item

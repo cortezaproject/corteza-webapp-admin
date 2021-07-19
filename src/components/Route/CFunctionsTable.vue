@@ -1,31 +1,26 @@
 <template>
-  <table
-    class="my-3 w-100"
+  <b-table-simple
+    class="function-table"
+    hover
   >
-    <th>
-      {{ $t('functions.list.functions') }}
-    </th><th>
-      {{ $t('functions.list.status') }}
-    </th>
-    <th class="text-center">
-      {{ $t('functions.list.actions') }}
-    </th>
-    <template v-if="functions.length">
-      <tr
+    <b-thead>
+      <b-tr>
+        <b-th>{{ $t('functions.list.functions') }}</b-th>
+        <b-th>{{ $t('functions.list.status') }}</b-th>
+        <b-th>{{ $t('functions.list.actions') }}</b-th>
+      </b-tr>
+    </b-thead>
+    <b-tbody v-if="functions.length">
+      <b-tr
         v-for="(func, index) in functions"
         :key="index"
         class="pointer"
         :class="[selectedRow===index ? 'row-selected' : 'row-not-selected']"
-        active
         @click.stop="onRowClick(func,index)"
       >
-        <td>
-          {{ func.label }}
-        </td>
-        <td>
-          {{ $t('functions.list.active') }}
-        </td>
-        <td class="text-center">
+        <b-td>{{ func.ref }}</b-td>
+        <b-td>{{ $t('functions.list.active') }}</b-td>
+        <b-td>
           <b-button
             variant="danger"
             class="my-1"
@@ -34,15 +29,15 @@
           >
             {{ $t('functions.list.remove') }}
           </b-button>
-        </td>
-      </tr>
-    </template>
-    <template v-else>
-      <tr class="mt-2 text-danger">
+        </b-td>
+      </b-tr>
+    </b-tbody>
+    <b-tbody v-else>
+      <b-tr class="mt-2 text-danger">
         {{ $t('functions.list.noFunctionsMsg') }}
-      </tr>
-    </template>
-  </table>
+      </b-tr>
+    </b-tbody>
+  </b-table-simple>
 </template>
 
 <script>
@@ -86,19 +81,8 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-th{
-    border-top: 1px solid #dee2e6;
-    border-bottom: 1px solid #dee2e6;
-    padding: 0.7rem 0;
-}
-td{
-    border-top: 1px solid #dee2e6;
-}
-tr:hover{
-        background: rgba(240,240,240,0.5);
-}
-.row-selected{
-  background: rgba(240,240,240,1) !important;
-}
+<style lang="scss">
+  .function-table .row-selected{
+    background: #F3F3F5;
+  }
 </style>
