@@ -9,16 +9,17 @@
             >
               Component Catalogue
             </h4>
+            // this loop is wrong, please figure out and redo it
             <ul
-              v-for="(value, key, index) in components"
-              :key="index"
+              v-for="value in components"
+              :key="value.cmp.name"
               style="list-style: none"
             >
               <li
-                v-if="index !== Object.keys(components).length - 1"
                 class="ml-list h5 mt-0"
+                @click="current=value"
               >
-                - {{ value.name }}
+                - {{ value.cmp.name }}
               </li>
             </ul>
           </aside>
@@ -26,29 +27,24 @@
         <b-col
           cols="8"
         >
-          <c-application-editor-info
-            v-bind="props"
-            @submit="onInfoSubmit"
-            @delete="onDelete"
-          />
-          <c-application-editor-unify
-            v-if="props.unify && props.application.applicationID"
-            class="mt-3"
-            v-bind="props"
-            @submit="onUnifySubmit"
-            @delete="onDelete"
+          <component
+            :is="current.cmp"
+            v-if="current"
+            v-bind="current.def.props"
           />
         </b-col>
       </b-row>
       <b-row
+        v-if="current"
         class="w-50 my-0 mx-auto"
       >
+        {{ current.def }}
         <b-col>
           <h3>Pre-set Controls</h3>
           <ul>
             <li
-              v-for="(s) in scenarios"
-              :key="scenarios[s]"
+              v-for="(s) in current.def.scenarios"
+              :key="current.def.scenarios[s]"
               @click="props=s.props"
             >
               {{ s.label }}
@@ -58,18 +54,18 @@
         <b-col>
           <h3>Controls</h3>
           <b-form-group
-            v-for="(c) in controls"
-            :key="controls[c]"
+            v-for="(c) in current.def.controls"
+            :key="current.def.controls[c]"
             :label="c.label"
             content-cols-lg="8"
           >
             <component
               :is="c.type"
               v-model="c.value"
-              @change="c.handle(props, $event)"
+              @change="c.handle(current.def.props, $event)"
             />
           </b-form-group>
-          {{ controls }}
+          {{ current.def.controls }}
         </b-col>
       </b-row>
     </b-container>
@@ -77,25 +73,25 @@
 </template>
 
 <script>
-import CApplicationEditorInfo from '../CApplicationEditorInfo.vue'
-import CApplicationEditorUnify from '../CApplicationEditorUnify.vue'
-
-import data from './dataInstances'
-
+import CApplicationEditorInfo, { C3 as CC3ApplicationEditorInfo } from '../../components/Application/CApplicationEditorInfo.vue'
+import CApplicationEditorUnify, { C3 as CC3ApplicationEditorUnify } from '../../components/Application/CApplicationEditorUnify.vue'
 export default {
   name: 'CC3',
-  components: {
-    CApplicationEditorInfo,
-    CApplicationEditorUnify,
-  },
 
   data () {
     return {
-      props: data.props,
-      scenarios: data.scenarios,
-      controls: data.controls,
-      components: this.$options.components,
+      components: [
+        {
+          cmp: CApplicationEditorInfo,
+          def: CC3ApplicationEditorInfo,
+        },
+        {
+          cmp: CApplicationEditorUnify,
+          def: CC3ApplicationEditorUnify,
+        },
+      ],
       isPropertyClicked: false,
+      current: null,
     }
   },
 

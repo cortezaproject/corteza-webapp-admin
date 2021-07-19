@@ -120,6 +120,29 @@
 <script>
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 
+export const C3 = {
+  props: {
+    application: {
+      applicationID: '234900176853008386',
+      createdAt: '2021-06-09T12:03:36Z',
+      enabled: true,
+      name: 'Low Code',
+    },
+    unify: {
+      config: '',
+      listed: true,
+      logo: '/applications/low-code-platform.png',
+      pinned: false,
+      name: 'Low Code',
+      url: '/compose',
+    },
+    canPin: true,
+    processing: false,
+    success: false,
+    canCreate: true,
+  },
+}
+
 export default {
   name: 'CApplicationEditorUnify',
 
