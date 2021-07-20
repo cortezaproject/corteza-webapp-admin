@@ -172,6 +172,7 @@ export default {
         this.functions.forEach(({ ...func }, index) => {
           this.stepper.processing = true
           func.params = this.encodeParams(func.params)
+          func.weight = func.weight.toString()
           if (func.updated) {
             if (func.functionID) {
               this.updateFunction(func, index)
@@ -242,6 +243,7 @@ export default {
       this.functions = (routeFunctions || []).map((func) => {
         const f = { ...this.availableFunctions.find((af) => af.ref === func.ref) }
         f.params = this.decodeParams({ ...func.params })
+        f.weight = parseInt(func.weight)
         f.functionID = func.functionID
         return { ...f }
       })

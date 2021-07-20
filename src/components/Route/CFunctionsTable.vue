@@ -10,15 +10,22 @@
         <b-th>{{ $t('functions.list.actions') }}</b-th>
       </b-tr>
     </b-thead>
-    <b-tbody v-if="functions.length">
+
+    <draggable
+      v-if="sortableFunctions.length"
+      v-model="sortableFunctions"
+      tag="b-tbody"
+      @end="checkMove"
+    >
       <b-tr
-        v-for="(func, index) in functions"
+        v-for="(func, index) in sortableFunctions"
+
         :key="index"
         class="pointer"
         :class="[selectedRow===index ? 'row-selected' : 'row-not-selected']"
         @click.stop="onRowClick(func,index)"
       >
-        <b-td>{{ func.ref }}</b-td>
+        <b-td>{{ func.label }}</b-td>
         <b-td>{{ $t('functions.list.active') }}</b-td>
         <b-td>
           <b-button
@@ -31,7 +38,7 @@
           </b-button>
         </b-td>
       </b-tr>
-    </b-tbody>
+    </draggable>
     <b-tbody v-else>
       <b-tr class="mt-2 text-danger">
         {{ $t('functions.list.noFunctionsMsg') }}
@@ -41,7 +48,11 @@
 </template>
 
 <script>
+import draggable from 'vuedraggable'
 export default {
+  components: {
+    draggable,
+  },
   props: {
     functions: {
       type: Array,
@@ -54,7 +65,16 @@ export default {
       selectedRow: 0,
     }
   },
-
+  computed: {
+    sortableFunctions: {
+      get: function () {
+        return this.functions
+      },
+      set: function (v) {
+        this.$emit('sortFunctions', v)
+      },
+    },
+  },
   methods: {
     onAddFunction (func) {
       if (!this.functions.find(f => f.ref === func.ref)) {
@@ -76,6 +96,10 @@ export default {
     },
     onSelectFirstRow () {
       this.selectedRow = 0
+    },
+    checkMove (evt) {
+      this.selectedRow = evt.newDraggableIndex
+      this.$emit('functionSelect', this.sortableFunctions[evt.newDraggableIndex])
     },
   },
 }

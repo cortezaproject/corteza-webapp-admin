@@ -49,6 +49,7 @@
                 :selected-row="step.selectedRow"
                 @functionSelect="onFunctionSelect"
                 @removeFunction="onRemoveFunction"
+                @sortFunctions="onSortFunctions"
               />
             </b-card>
           </b-col>
@@ -128,14 +129,14 @@ export default {
     getSelectedFunctionsByStep () {
       return (this.functions || []).filter((f) => {
         return f.step === this.selectedTab
-      })
+      }).sort((a, b) => a.weight - b.weight)
     },
   },
 
   methods: {
     onAddFunction (func) {
       if (!this.functions.find((f) => f.ref === func.ref)) {
-        this.functions.push({ ...func })
+        this.functions.push({ ...func, weight: this.getSelectedFunctionsByStep.length })
       }
       this.selectedFunction = { ...func }
       this.$refs.functionTable[this.selectedTab].onSelectLastRow()
@@ -147,6 +148,14 @@ export default {
         this.$set(this.functions[index], 'params', func.params)
         this.$set(this.functions[index], 'updated', true)
       }
+    },
+
+    onSortFunctions (sortedFunctions) {
+      this.functions.forEach(func => {
+        func.weight = sortedFunctions.findIndex((f) => f.ref === func.ref)
+        func.updated = true
+      })
+      this.functions.sort((a, b) => a.weight - b.weight)
     },
 
     onRemoveFunction (func) {
