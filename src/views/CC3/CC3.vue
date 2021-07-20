@@ -11,8 +11,8 @@
             </h4>
             // this loop is wrong, please figure out and redo it
             <ul
-              v-for="value in components"
-              :key="value.cmp.name"
+              v-for="value in componentData.components"
+              :key="value.cmp.name[value]"              
               style="list-style: none"
             >
               <li
@@ -38,14 +38,13 @@
         v-if="current"
         class="w-50 my-0 mx-auto"
       >
-        {{ current.def }}
         <b-col>
           <h3>Pre-set Controls</h3>
           <ul>
             <li
-              v-for="(s) in current.def.scenarios"
+              v-for="s in current.def.scenarios"
               :key="current.def.scenarios[s]"
-              @click="props=s.props"
+              @click="current.def.props=s.props"
             >
               {{ s.label }}
             </li>
@@ -54,7 +53,7 @@
         <b-col>
           <h3>Controls</h3>
           <b-form-group
-            v-for="(c) in current.def.controls"
+            v-for="c in current.def.controls"
             :key="current.def.controls[c]"
             :label="c.label"
             content-cols-lg="8"
@@ -65,7 +64,6 @@
               @change="c.handle(current.def.props, $event)"
             />
           </b-form-group>
-          {{ current.def.controls }}
         </b-col>
       </b-row>
     </b-container>
@@ -73,24 +71,14 @@
 </template>
 
 <script>
-import CApplicationEditorInfo, { C3 as CC3ApplicationEditorInfo } from '../../components/Application/CApplicationEditorInfo.vue'
-import CApplicationEditorUnify, { C3 as CC3ApplicationEditorUnify } from '../../components/Application/CApplicationEditorUnify.vue'
+import componentData from './dataInstances'
+
 export default {
   name: 'CC3',
 
   data () {
     return {
-      components: [
-        {
-          cmp: CApplicationEditorInfo,
-          def: CC3ApplicationEditorInfo,
-        },
-        {
-          cmp: CApplicationEditorUnify,
-          def: CC3ApplicationEditorUnify,
-        },
-      ],
-      isPropertyClicked: false,
+      componentData,
       current: null,
     }
   },
