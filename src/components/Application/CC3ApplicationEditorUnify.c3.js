@@ -16,59 +16,9 @@ const props = {
   canPin: true,
   processing: false,
   success: false,
-  canCreate: true,
 }
 
 const controls = [
-  {
-    label: 'Name',
-    type: 'b-form-input',
-    value: props.application.name,
-    handle: (props, value) => {
-      props.application.name = value
-    },
-  },
-  {
-    label: 'createdAt',
-    type: 'b-form-input',
-    value: props.application.createdAt,
-    handle: (props, value) => {
-      props.application.createdAt = value
-    },
-  },
-  {
-    label: 'Enabled',
-    type: 'b-form-checkbox',
-    value: props.application.enabled,
-    handle: (props, value) => {
-      props.application.enabled = value
-    },
-  },
-  {
-    label: 'Processing',
-    type: 'b-form-checkbox',
-    value: props.processing,
-    handle: (props, value) => {
-      props.processing = value
-    },
-  },
-  {
-    label: 'Success',
-    type: 'b-form-checkbox',
-    value: props.success,
-    handle: (props, value) => {
-      props.success = value
-    },
-  },
-  {
-    label: 'CanCreate',
-    type: 'b-form-checkbox',
-    value: props.canCreate,
-    handle: (props, value) => {
-      props.canCreate = value
-    },
-  },
-  // unify comp
   {
     label: 'Name',
     type: 'b-form-input',
