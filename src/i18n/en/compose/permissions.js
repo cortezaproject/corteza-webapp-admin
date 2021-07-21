@@ -4,7 +4,7 @@ export default {
   },
 
   list: {
-    type: { label: 'Compose permissions' },
+    title: 'Compose permissions',
 
     rules: {
       title: 'List of rules',

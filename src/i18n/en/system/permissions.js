@@ -81,7 +81,7 @@ export default {
         },
 
         operations: {
-          read: 'Access any application',
+          read: 'Read any application',
           update: 'Update any application',
           delete: 'Delete any application',
         },
