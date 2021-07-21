@@ -19,7 +19,7 @@
         <c-permissions-button
           v-if="canGrant"
           :title="$t('title')"
-          resource="system:application:*"
+          resource="corteza::system:route/*"
           button-variant="light"
         >
           <font-awesome-icon :icon="['fas', 'lock']" />
