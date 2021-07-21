@@ -20,6 +20,7 @@
             >
               <c-functions-dropdown
                 :available-functions="getAvailableFunctionsByStep"
+                :functions="getSelectedFunctionsByStep"
                 @addFunction="onAddFunction"
                 @functionSelect="onFunctionSelect"
               />

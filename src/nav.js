@@ -70,7 +70,7 @@ export default [
       {
         label: 'system.routes:navItem.label',
         route: 'system.route',
-        icon: 'flag',
+        icon: 'archway',
       },
     ],
   },

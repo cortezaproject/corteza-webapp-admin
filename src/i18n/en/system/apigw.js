@@ -8,9 +8,9 @@ export default {
     new: 'New',
     permissions: 'Permissions',
     yaml: 'YAML',
-    loading: 'Loading API Gateway',
-    numFound: `{{count}} API gateway found`,
-    numFound_plural: `{{count}} API gateways found`,
+    loading: 'Loading routes',
+    numFound: `{{count}} route found`,
+    numFound_plural: `{{count}} routes found`,
 
     filterForm: {
       query: {
@@ -89,6 +89,7 @@ export default {
       add: 'Add',
       addFunction: 'Add function',
       params: 'Params',
+      functionListEmpty: 'Function list is empty!',
     },
   },
 

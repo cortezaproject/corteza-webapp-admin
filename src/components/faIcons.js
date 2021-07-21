@@ -38,6 +38,7 @@ import {
   faPuzzlePiece,
   faFlag,
   faCog,
+  faArchway,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -92,4 +93,5 @@ library.add(
   faFlag,
   faTrashAlt,
   faCog,
+  faArchway,
 )

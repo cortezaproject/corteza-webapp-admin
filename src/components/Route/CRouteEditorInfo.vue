@@ -177,10 +177,7 @@ export default {
       return !!this.route.method
     },
     routeEndpointDescription () {
-      if (this.isValidEndpoint === false) {
-        return this.$t('validEndpoint')
-      }
-      return ''
+      return this.isValidEndpoint === false ? this.$t('validEndpoint') : ''
     },
   },
 }
