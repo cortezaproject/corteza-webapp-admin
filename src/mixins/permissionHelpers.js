@@ -161,7 +161,7 @@ export default {
       return (rules || [])
         .reduce((map, { resource, operation, access }) => {
           const [ type ] = resource.split('/', 2)
-          if ((this.permissions[type] || { ops: [] }).ops.indexOf(operation) > 0) {
+          if ((this.permissions[type] || { ops: [] }).ops.indexOf(operation) > -1) {
             map[`${operation}@${resource}`] = access
           }
 
