@@ -9,17 +9,16 @@
             >
               Component Catalogue
             </h4>
-            // this loop is wrong, please figure out and redo it
             <ul
-              v-for="value in componentData.components"
-              :key="value.cmp.name[value]"              
               style="list-style: none"
             >
               <li
+                v-for="value in componentData.components"
+                :key="value.cmp.name"
                 class="ml-list h5 mt-0"
                 @click="current=value"
               >
-                - {{ value.cmp.name }}
+                - {{ value.cmp.name || value.cmpName }}
               </li>
             </ul>
           </aside>
@@ -53,11 +52,13 @@
         <b-col>
           <h3>Controls</h3>
           <b-form-group
-            v-for="c in current.def.controls"
+            v-for="c in current.controls"
             :key="current.def.controls[c]"
             :label="c.label"
             content-cols-lg="8"
           >
+            <!-- // don't cheat with v-model
+            // fix contorls not updating on form population -->
             <component
               :is="c.type"
               v-model="c.value"
@@ -66,30 +67,26 @@
           </b-form-group>
         </b-col>
       </b-row>
+      <!-- <b-row
+        v-else
+      >
+        <h1>Data is unmutable :)</h1>
+      </b-row> -->
     </b-container>
   </div>
 </template>
 
 <script>
-import componentData from './dataInstances'
+import componentData from '../../components/C3'
 
 export default {
-  name: 'CC3',
+  name: 'C3',
 
   data () {
     return {
       componentData,
       current: null,
     }
-  },
-
-  methods: {
-    onInfoSubmit (application) {
-    },
-    onDelete () {
-    },
-    onUnifySubmit () {
-    },
   },
 }
 </script>

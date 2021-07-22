@@ -1,38 +1,41 @@
 const props = {
-  application: {
-    applicationID: '234900176853008386',
+  node: {
+    name: 'Name',
+    baseURL: 'www.google.com',
+    contact: 'Admin',
+    status: 'Unknown',
+    updatedAt: '2021-06-09T12:03:36Z',
+    deletedAt: '',
     createdAt: '2021-06-09T12:03:36Z',
-    enabled: true,
-    name: 'Low Code',
+    nodeID: '234900176853008386',
   },
   processing: false,
   success: false,
-  canCreate: true,
 }
 
 const controls = [
   {
     label: 'Name',
     type: 'b-form-input',
-    value: props.application.name,
+    value: props.node.name,
     handle: (props, value) => {
-      props.application.name = value
+      props.node.name = value
     },
   },
   {
-    label: 'createdAt',
+    label: 'BaseURL',
     type: 'b-form-input',
-    value: props.application.createdAt,
+    value: props.node.baseURL,
     handle: (props, value) => {
-      props.application.createdAt = value
+      props.node.baseURL = value
     },
   },
   {
-    label: 'Enabled',
-    type: 'b-form-checkbox',
-    value: props.application.enabled,
+    label: 'contact',
+    type: 'b-form-input',
+    value: props.node.contact,
     handle: (props, value) => {
-      props.application.enabled = value
+      props.node.contact = value
     },
   },
   {
@@ -51,14 +54,6 @@ const controls = [
       props.success = value
     },
   },
-  {
-    label: 'CanCreate',
-    type: 'b-form-checkbox',
-    value: props.canCreate,
-    handle: (props, value) => {
-      props.canCreate = value
-    },
-  },
 ]
 
 const scenarios = [
@@ -68,12 +63,11 @@ const scenarios = [
   { label: 'empty form',
     props: {
       ...props,
-      application: {
-        ...props.application,
-        enabled: false,
+      node: {
         name: '',
+        baseURL: '',
+        contact: '',
       },
-      canCreate: false,
     },
   },
 ]

@@ -81,7 +81,7 @@ export default [
       {
         path: 'test/',
         name: 'test',
-        component: () => import('./CC3/CC3.vue'),
+        component: () => import('./C3/C3.vue'),
       },
       r('dashboard', 'dashboard', 'Dashboard'),
       {
