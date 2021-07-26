@@ -14,7 +14,7 @@
         >
           <b-col
             class="border-bottom py-2"
-            cols="3"
+            cols="4"
           />
           <b-col
             v-for="role in roles"
@@ -28,7 +28,7 @@
             </div>
           </b-col>
           <b-col
-            v-if="roles.length < 9"
+            v-if="roles.length < 8"
             class="border-bottom border-left py-2 overflow-hidden text-nowrap"
           >
             <div
@@ -50,7 +50,7 @@
             class="bg-secondary"
           >
             <b-col
-              cols="3"
+              cols="4"
               class="py-2 text-left font-weight-bold "
             >
               {{ getTranslation(type) }}
@@ -68,7 +68,7 @@
           >
             <b-col
               class="border-bottom text-left py-2 text-truncate"
-              cols="3"
+              cols="4"
             >
               <span :title="getTranslation(type, operation)">{{ getTranslation(type, operation) }}</span>
             </b-col>
@@ -94,7 +94,7 @@
               />
             </b-col>
             <b-col
-              v-if="roles.length < 9"
+              v-if="roles.length < 8"
               class="border-bottom border-left py-2 not-allowed bg-light"
             />
           </b-row>
