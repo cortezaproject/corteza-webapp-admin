@@ -22,6 +22,7 @@ export default {
         operations: {
           grant: 'Grant permissions on compose service',
           namespaceCreate: 'Create namespaces',
+          namespacesSearch: 'List and search namespaces',
           settingsRead: 'Access all settings',
           settingsManage: 'Manage all settings',
         },
@@ -36,8 +37,11 @@ export default {
           delete: 'Delete any namespace',
 
           moduleCreate: 'Create modules under any namespace',
+          modulesSearch: 'List and search modules under any namespace',
           chartCreate: 'Create charts under any namespace',
+          chartsSearch: 'List and search charts under any namespace',
           pageCreate: 'Create pages under any namespace',
+          pagesSearch: 'List and search pages under any namespace',
         },
       },
       module: {
@@ -47,6 +51,7 @@ export default {
           update: 'Update any module',
           delete: 'Delete any module',
           recordCreate: 'Create record under any module',
+          recordsSearch: 'List and search records under any module',
         },
       },
       moduleField: {

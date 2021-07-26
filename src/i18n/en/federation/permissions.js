@@ -25,6 +25,7 @@ export default {
         operations: {
           grant: 'Grant permissions on federation service',
           nodeCreate: 'Create nodes',
+          nodesSearch: 'List or create nodes',
           pair: 'Pair nodes',
           settingsRead: 'Access all settings',
           settingsManage: 'Manage all settings',

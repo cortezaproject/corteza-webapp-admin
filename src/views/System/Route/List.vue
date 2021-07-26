@@ -19,7 +19,7 @@
         <c-permissions-button
           v-if="canGrant"
           :title="$t('title')"
-          resource="corteza::system:route/*"
+          resource="corteza::system:apigw-route/*"
           button-variant="light"
         >
           <font-awesome-icon :icon="['fas', 'lock']" />
@@ -133,10 +133,10 @@ export default {
       can: 'rbac/can',
     }),
     canCreate () {
-      return true
+      return this.can('system/', 'api-gw-route.create')
     },
     canGrant () {
-      return true
+      return this.can('system/', 'grant')
     },
     canPin () {
       return true

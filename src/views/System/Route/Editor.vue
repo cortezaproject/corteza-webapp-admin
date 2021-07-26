@@ -13,7 +13,7 @@
           v-if="routeID && canGrant"
           :title="route.endpoint"
           :target="route.endpoint"
-          :resource="'corteza::system:route/'+routeID"
+          :resource="'corteza::system:apigw-route/'+routeID"
           button-variant="light"
           class="ml-2"
         >
