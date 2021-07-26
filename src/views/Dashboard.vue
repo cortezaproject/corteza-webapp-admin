@@ -15,6 +15,7 @@
     </c-content-header>
     <b-row>
       <b-col
+        v-show="users.total"
         cols="12"
       >
         <b-card
@@ -90,6 +91,7 @@
         </b-card>
       </b-col>
       <b-col
+        v-show="roles.total"
         cols="12"
         md="6"
       >
@@ -161,6 +163,7 @@
         </b-card>
       </b-col>
       <b-col
+        v-show="applications.total"
         cols="12"
         md="6"
       >
@@ -276,17 +279,14 @@ export default {
     },
   },
 
-  async created () {
-    await this.$SystemAPI.statsList().then(({ users, roles, applications }) => {
+  mounted () {
+    this.$SystemAPI.statsList().then(({ users, roles, applications }) => {
       this.users = users
       this.roles = roles
       this.applications = applications
-
       this.initUserChart()
     })
-  },
 
-  mounted () {
     // this.$nextTick(() => {
     //   this.$EventBus.Dispatch({
     //     resourceType: 'ui:admin:dashboard',
@@ -296,15 +296,15 @@ export default {
     // })
   },
 
-  updated () {
-    // this.$nextTick(() => {
-    //   this.$EventBus.Dispatch({
-    //     resourceType: 'ui:admin:dashboard',
-    //     eventType: 'afterUpdate',
-    //     args: { data: this.users, $el: this.$el },
-    //   })
-    // })
-  },
+  // updated () {
+  //   this.$nextTick(() => {
+  //     this.$EventBus.Dispatch({
+  //       resourceType: 'ui:admin:dashboard',
+  //       eventType: 'afterUpdate',
+  //       args: { data: this.users, $el: this.$el },
+  //     })
+  //   })
+  // },
 
   methods: {
     initUserChart () {
