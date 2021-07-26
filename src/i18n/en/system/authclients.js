@@ -55,7 +55,10 @@ export default {
       title: 'Basic information',
 
       name: 'Name',
-      handle: 'Handle',
+      handle: {
+        label: 'Handle',
+        disabledFootnote: 'Unable to change the handle of the default auth client',
+      },
 
       redirectURI: 'Redirect URI\'s',
       secret: 'Secret',
@@ -67,7 +70,10 @@ export default {
         label: 'Trusted',
         description: 'When client is trusted users do not see authorization step',
       },
-      enabled: 'Enabled',
+      enabled: {
+        label: 'Enabled',
+        disabledFootnote: 'Unable to disable the default client',
+      },
 
       validFrom: {
         label: 'Valid from',
