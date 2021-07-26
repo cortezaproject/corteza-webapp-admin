@@ -18,12 +18,19 @@
       </b-form-group>
 
       <b-form-group
-        :label="$t('handle')"
+        :label="$t('handle.label')"
         label-cols="2"
       >
         <b-form-input
           v-model="authclient.handle"
+          :disabled="authclient.isDefault"
         />
+        <template
+          v-if="authclient.isDefault"
+          #description
+        >
+          {{ $t('handle.disabledFootnote') }}
+        </template>
       </b-form-group>
 
       <b-form-group
@@ -207,9 +214,17 @@
       >
         <b-form-checkbox
           v-model="authclient.enabled"
+          :disabled="authclient.isDefault"
         >
-          {{ $t('enabled') }}
+          {{ $t('enabled.label') }}
         </b-form-checkbox>
+
+        <template
+          v-if="authclient.isDefault"
+          #description
+        >
+          {{ $t('enabled.disabledFootnote') }}
+        </template>
       </b-form-group>
 
       <b-form-group
@@ -310,7 +325,7 @@
       />
 
       <confirmation-toggle
-        v-if="authclient && authclient.authClientID"
+        v-if="!authclient.isDefault && authclient && authclient.authClientID"
         @confirmed="$emit('delete')"
       >
         {{ getDeleteStatus }}
