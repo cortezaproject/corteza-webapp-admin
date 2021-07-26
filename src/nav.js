@@ -17,21 +17,25 @@ export default [
         label: 'system.users:navItem.label',
         route: 'system.user',
         icon: 'users',
+        can: ['system/', 'users.search'],
       },
       {
         label: 'system.roles:navItem.label',
         route: 'system.role',
         icon: 'hat-cowboy',
+        can: ['system/', 'roles.search'],
       },
       {
         label: 'system.applications:navItem.label',
         route: 'system.application',
         icon: 'th-large',
+        can: ['system/', 'applications.search'],
       },
       {
         label: 'system.templates:navItem.label',
         route: 'system.template',
         icon: 'file-code',
+        can: ['system/', 'templates.search'],
       },
       {
         label: 'system.settings:navItem.label',
@@ -49,17 +53,19 @@ export default [
         label: 'system.authclients:navItem.label',
         route: 'system.authClient',
         icon: 'key',
+        can: ['system/', 'auth-clients.search'],
       },
       {
         label: 'system.actionlog:navItem.label',
         route: 'system.actionlog',
         icon: 'glasses',
-        can: ['system/', 'grant'],
+        can: ['system/', 'action-log.read'],
       },
       {
         label: 'system.queues:navItem.label',
         route: 'system.queue',
         icon: 'stream',
+        can: ['system/', 'queues.search'],
       },
     ],
   },
@@ -104,6 +110,7 @@ export default [
         label: 'automation.scripts:navItem.label',
         route: 'automation.scripts',
         icon: 'scroll',
+        can: ['automation/', 'workflows.search'],
       },
 
       {
