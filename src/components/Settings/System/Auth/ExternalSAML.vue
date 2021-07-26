@@ -14,77 +14,74 @@
     </b-form-group>
 
     <div v-if="value.enabled">
+      <h5>
+        {{ $t('certificate') }}
+      </h5>
+
       <b-form-group
-        :label="$t('certificate')"
-        label-size="lg"
-        label-class="pt-1"
+        :label="$t('saml.cert')"
+        label-cols="2"
+        :description="$t('saml.desc.cert')"
       >
-        <b-form-group
-          :label="$t('saml.cert')"
-          label-cols="2"
-          :description="$t('saml.desc.cert')"
-        >
-          <b-input-group>
-            <b-form-textarea
-              v-model.trim="value.cert"
-            />
-          </b-input-group>
-        </b-form-group>
-        <b-form-group
-          :label="$t('saml.cert-key')"
-          label-cols="2"
-          :description="$t('saml.desc.cert-key')"
-        >
-          <b-input-group>
-            <b-form-textarea v-model.trim="value.key" />
-          </b-input-group>
-        </b-form-group>
+        <b-input-group>
+          <b-form-textarea
+            v-model.trim="value.cert"
+          />
+        </b-input-group>
+      </b-form-group>
+      <b-form-group
+        :label="$t('saml.cert-key')"
+        label-cols="2"
+        :description="$t('saml.desc.cert-key')"
+      >
+        <b-input-group>
+          <b-form-textarea v-model.trim="value.key" />
+        </b-input-group>
+      </b-form-group>
+
+      <h5
+        class="mt-2"
+      >
+        {{ $t('saml.idp.title') }}
+      </h5>
+
+      <b-form-group
+        :label="$t('saml.idp.url')"
+        label-cols="2"
+      >
+        <b-input-group>
+          <b-form-input v-model.trim="value.idp.url" />
+        </b-input-group>
       </b-form-group>
 
       <b-form-group
-        :label="$t('saml.idp.title')"
-        label-size="lg"
-        label-class="pt-1"
-        class="mb-0"
+        :label="$t('saml.idp.ident-name')"
+        :description="$t('saml.desc.idp.ident-name')"
+        label-cols="2"
       >
-        <b-form-group
-          :label="$t('saml.idp.url')"
-          label-cols="2"
-        >
-          <b-input-group>
-            <b-form-input v-model.trim="value.idp.url" />
-          </b-input-group>
-        </b-form-group>
+        <b-input-group>
+          <b-form-input v-model.trim="value.idp['ident-name']" />
+        </b-input-group>
+      </b-form-group>
 
-        <b-form-group
-          :label="$t('saml.idp.ident-name')"
-          :description="$t('saml.desc.idp.ident-name')"
-          label-cols="2"
-        >
-          <b-input-group>
-            <b-form-input v-model.trim="value.idp['ident-name']" />
-          </b-input-group>
-        </b-form-group>
+      <b-form-group
+        :label="$t('saml.idp.ident-handle')"
+        :description="$t('saml.desc.idp.ident-handle')"
+        label-cols="2"
+      >
+        <b-input-group>
+          <b-form-input v-model.trim="value.idp['ident-handle']" />
+        </b-input-group>
+      </b-form-group>
 
-        <b-form-group
-          :label="$t('saml.idp.ident-handle')"
-          :description="$t('saml.desc.idp.ident-handle')"
-          label-cols="2"
-        >
-          <b-input-group>
-            <b-form-input v-model.trim="value.idp['ident-handle']" />
-          </b-input-group>
-        </b-form-group>
-
-        <b-form-group
-          :label="$t('saml.idp.ident-identifier')"
-          :description="$t('saml.desc.idp.ident-identifier')"
-          label-cols="2"
-        >
-          <b-input-group>
-            <b-form-input v-model.trim="value.idp['ident-identifier']" />
-          </b-input-group>
-        </b-form-group>
+      <b-form-group
+        :label="$t('saml.idp.ident-identifier')"
+        :description="$t('saml.desc.idp.ident-identifier')"
+        label-cols="2"
+      >
+        <b-input-group>
+          <b-form-input v-model.trim="value.idp['ident-identifier']" />
+        </b-input-group>
       </b-form-group>
     </div>
   </b-form-group>

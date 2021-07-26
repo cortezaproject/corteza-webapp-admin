@@ -26,37 +26,25 @@
         />
       </b-form-group>
 
-      <b-form-group>
-        <template #label>
-          <b-row
-            no-gutters
-          >
-            <b-col
-              cols="2"
-            >
-              {{ $t('redirectURI') }}
-            </b-col>
-            <b-col>
-              <b-button
-                variant="light"
-                class="align-top"
-                @click="redirectURI.push('')"
-              >
-                + {{ $t('add') }}
-              </b-button>
-            </b-col>
-          </b-row>
-        </template>
+      <b-form-group
+        :label="$t('redirectURI')"
+        label-cols="2"
+      >
+        <b-button
+          variant="light"
+          class="align-top"
+          @click="redirectURI.push('')"
+        >
+          + {{ $t('add') }}
+        </b-button>
 
-        <b-form-group
+        <div
           v-if="redirectURI.length"
-          label-cols="2"
-          class="mb-0"
         >
           <b-input-group
             v-for="(value, index) in redirectURI"
             :key="index"
-            class="mb-2"
+            class="mt-2"
           >
             <b-form-input
               v-model="redirectURI[index]"
@@ -73,7 +61,7 @@
               />
             </b-button>
           </b-input-group>
-        </b-form-group>
+        </div>
       </b-form-group>
 
       <b-form-group
@@ -270,6 +258,7 @@
           disabled
         />
       </b-form-group>
+
       <b-form-group
         v-if="authclient.updatedAt"
         :label="$t('updatedAt')"

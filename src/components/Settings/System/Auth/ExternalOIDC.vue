@@ -13,6 +13,7 @@
         {{ $t('providerEnabled') }}
       </b-form-checkbox>
     </b-form-group>
+
     <b-form-group
       :label="$t('handle')"
       label-cols="2"
@@ -25,6 +26,7 @@
         />
       </b-input-group>
     </b-form-group>
+
     <b-form-group
       :label="$t('issuer')"
       label-cols="2"
@@ -39,6 +41,7 @@
         v-html="$t('issuerHint')"
       />
     </b-form-group>
+
     <b-form-group
       :label="$t('clientKey')"
       label-cols="2"
@@ -47,6 +50,7 @@
         <b-form-input v-model.trim="value.key" />
       </b-input-group>
     </b-form-group>
+
     <b-form-group
       :label="$t('clientSecret')"
       label-cols="2"
