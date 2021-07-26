@@ -61,10 +61,10 @@ export default {
       this.incLoader()
 
       return this.$SystemAPI.roleList()
-        .then(({ set }) => {
+        .then(({ set }) => set.filter(({ isBypass }) => !isBypass))
+        .then(set => {
           this.roles = set
             .filter(r => this.rolesIncluded.includes(r.roleID))
-            .filter(({ bypassRBAC }) => !bypassRBAC)
           this.rolePermissions = []
           this.rolesExcluded = []
 
