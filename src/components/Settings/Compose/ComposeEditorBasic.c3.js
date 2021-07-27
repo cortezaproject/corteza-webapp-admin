@@ -16,7 +16,9 @@ const controls = [
   {
     label: 'Enable namespace switcher',
     type: 'b-form-checkbox',
-    value: props.basic['compose.ui.namespace-switcher.enabled'],
+    value: (props) => {
+      return props.basic['compose.ui.namespace-switcher.enabled']
+    },
     handle: (props, value) => {
       props.basic['compose.ui.namespace-switcher.enabled'] = value
     },
@@ -24,39 +26,49 @@ const controls = [
   {
     label: 'Namespace switcher open by default',
     type: 'b-form-checkbox',
-    value: props.basic['compose.ui.namespace-switcher.defaultOpen'],
+    value: (props) => {
+      return props.basic['compose.ui.namespace-switcher.defaultOpen']
+    },
     handle: (props, value) => {
       props.basic['compose.ui.namespace-switcher.defaultOpen'] = value
     },
   },
   {
-    label: 'Max size (MB)',
+    label: 'Max page size (MB)',
     type: 'b-form-input',
-    value: props.basic['compose.page.attachments.max-size'],
+    value: (props) => {
+      return props.basic['compose.page.attachments.max-size']
+    },
     handle: (props, value) => {
       props.basic['compose.page.attachments.max-size'] = value
     },
   },
   {
-    label: 'File type whitelist',
+    label: 'File page type whitelist',
     type: 'b-form-input',
-    value: props.basic['compose.page.attachments.mimetypes'],
+    value: (props) => {
+      return props.basic['compose.page.attachments.mimetypes']
+    },
     handle: (props, value) => {
       props.basic['compose.page.attachments.mimetypes'] = value
     },
   },
   {
-    label: 'Max size (MB)',
+    label: 'Max record size (MB)',
     type: 'b-form-input',
-    value: props.basic['compose.record.attachments.max-size'],
+    value: (props) => {
+      return props.basic['compose.record.attachments.max-size']
+    },
     handle: (props, value) => {
       props.basic['compose.record.attachments.max-size'] = value
     },
   },
   {
-    label: 'File type whitelist',
+    label: 'File record type whitelist',
     type: 'b-form-input',
-    value: props.basic['compose.record.attachments.mimetypes'],
+    value: (props) => {
+      return props.basic['compose.record.attachments.mimetypes']
+    },
     handle: (props, value) => {
       props.basic['compose.record.attachments.mimetypes'] = value
     },
@@ -64,7 +76,9 @@ const controls = [
   {
     label: 'Processing',
     type: 'b-form-checkbox',
-    value: props.processing,
+    value: (props) => {
+      return props.processing
+    },
     handle: (props, value) => {
       props.processing = value
     },
@@ -72,7 +86,9 @@ const controls = [
   {
     label: 'Success',
     type: 'b-form-checkbox',
-    value: props.success,
+    value: (props) => {
+      return props.success
+    },
     handle: (props, value) => {
       props.success = value
     },
@@ -80,7 +96,9 @@ const controls = [
   {
     label: 'CanManage',
     type: 'b-form-checkbox',
-    value: props.canManage,
+    value: (props) => {
+      return props.canManage
+    },
     handle: (props, value) => {
       props.canManage = value
     },

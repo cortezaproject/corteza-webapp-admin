@@ -17,7 +17,9 @@ const controls = [
   {
     label: 'Name',
     type: 'b-form-input',
-    value: props.node.name,
+    value: (props) => {
+      return props.node.name
+    },
     handle: (props, value) => {
       props.node.name = value
     },
@@ -25,7 +27,9 @@ const controls = [
   {
     label: 'BaseURL',
     type: 'b-form-input',
-    value: props.node.baseURL,
+    value: (props) => {
+      return props.node.baseURL
+    },
     handle: (props, value) => {
       props.node.baseURL = value
     },
@@ -33,7 +37,9 @@ const controls = [
   {
     label: 'contact',
     type: 'b-form-input',
-    value: props.node.contact,
+    value: (props) => {
+      return props.node.contact
+    },
     handle: (props, value) => {
       props.node.contact = value
     },
@@ -41,7 +47,9 @@ const controls = [
   {
     label: 'Processing',
     type: 'b-form-checkbox',
-    value: props.processing,
+    value: (props) => {
+      return props.processing
+    },
     handle: (props, value) => {
       props.processing = value
     },

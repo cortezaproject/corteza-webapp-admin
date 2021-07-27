@@ -42,7 +42,7 @@
           <ul>
             <li
               v-for="s in current.def.scenarios"
-              :key="current.def.scenarios[s]"
+              :key="s.label"
               @click="current.def.props=s.props"
             >
               {{ s.label }}
@@ -52,26 +52,32 @@
         <b-col>
           <h3>Controls</h3>
           <b-form-group
-            v-for="c in current.controls"
-            :key="current.def.controls[c]"
+            v-for="c in current.def.controls"
+            :key="c.label"
             :label="c.label"
             content-cols-lg="8"
           >
-            <!-- // don't cheat with v-model
-            // fix contorls not updating on form population -->
-            <component
+            <!-- <component
               :is="c.type"
               v-model="c.value"
               @change="c.handle(current.def.props, $event)"
+            /> -->
+            <component
+              :is="c.type"
+              v-if="c.type === 'b-form-checkbox'"
+              :checked="c.value(current.def.props)"
+              @change="c.handle(current.def.props, $event)"
+            />
+            <component
+              :is="c.type"
+              v-else
+              :value="typeof c.value === 'function' ? c.value(current.def.props) : c.value"
+              v-bind="current.def.props"
+              @update="c.handle(current.def.props, $event)"
             />
           </b-form-group>
         </b-col>
       </b-row>
-      <!-- <b-row
-        v-else
-      >
-        <h1>Data is unmutable :)</h1>
-      </b-row> -->
     </b-container>
   </div>
 </template>
