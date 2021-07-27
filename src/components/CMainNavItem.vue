@@ -2,6 +2,7 @@
   <b-list-group-item
     tag="li"
     class="p-2 border-0 text-nowrap bg-transparent"
+    @click="closeSidebar()"
   >
     <router-link
       :to="to"
@@ -35,6 +36,14 @@ export default {
     icon: {
       type: Array,
       required: true,
+    },
+  },
+
+  methods: {
+    closeSidebar () {
+      if (window.innerWidth < 576) {
+        this.$root.$emit('close-sidebar')
+      }
     },
   },
 }

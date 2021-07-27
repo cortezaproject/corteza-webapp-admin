@@ -81,8 +81,8 @@ export default {
   data () {
     return {
       error: null,
-      expanded: true,
-      pinned: true,
+      expanded: window.innerWidth > 576,
+      pinned: window.innerWidth > 576,
     }
   },
 
