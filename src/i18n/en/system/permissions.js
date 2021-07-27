@@ -35,6 +35,10 @@ export default {
           applicationFlagGlobal: 'Can pin application for everyone',
           authClientCreate: 'Create new auth client',
           authClientsSearch: 'List and search auth clients',
+          apiGwRouteCreate: 'Create new route',
+          apiGwRoutesSearch: 'List and search routes',
+          apiGwFunctionCreate: 'Create new function',
+          apiGwFunctionsSearch: 'List and search functions',
           queueCreate: 'Create new messaging queue',
           queuesSearch: 'List and search messaging queues',
           templateCreate: 'Create new template',
@@ -84,6 +88,28 @@ export default {
           read: 'Read any application',
           update: 'Update any application',
           delete: 'Delete any application',
+        },
+      },
+      apigwRoute: {
+        type: {
+          label: 'API gateway Routes',
+        },
+
+        operations: {
+          read: 'Read any route',
+          update: 'Update any route',
+          delete: 'Delete any route',
+        },
+      },
+      apigwFunction: {
+        type: {
+          label: 'API gateway functions',
+        },
+
+        operations: {
+          read: 'Read any function',
+          update: 'Update any function',
+          delete: 'Delete any function',
         },
       },
       template: {
