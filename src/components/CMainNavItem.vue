@@ -5,11 +5,12 @@
   >
     <router-link
       :to="to"
-      class="nav-item"
-      active-class="text-primary"
+      class="w-100 text-left text-dark text-decoration-none p-0"
+      active-class="nav-active"
     >
       <font-awesome-icon
         :icon="icon"
+        class="icon"
       />
       <span
         class="label"
@@ -44,7 +45,13 @@ export default {
   width: 30px;
 }
 
-.nav-item {
-  color: black;
+.nav-active {
+  .label {
+    font-family: $semibold;
+  }
+
+  .icon {
+    color: $primary;
+  }
 }
 </style>
