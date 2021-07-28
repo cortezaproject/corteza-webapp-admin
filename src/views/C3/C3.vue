@@ -10,15 +10,18 @@
               Component Catalogue
             </h4>
             <ul
-              style="list-style: none"
+              class="pl-0 list-unstyled"
             >
               <li
                 v-for="value in componentData.components"
                 :key="value.cmp.name"
-                class="ml-list h5 mt-0"
+                class="h5 mt-0"
                 @click="current=value"
               >
-                - {{ value.cmp.name || value.cmpName }}
+                <font-awesome-icon
+                  :icon="['fas', 'puzzle-piece']"
+                />
+                {{ value.cmp.name || value.cmpName }}
               </li>
             </ul>
           </aside>
@@ -39,12 +42,29 @@
       >
         <b-col>
           <h3>Pre-set Controls</h3>
-          <ul>
+          <ul
+            class="pl-0"
+          >
             <li
               v-for="s in current.def.scenarios"
               :key="s.label"
+              class="mb-1 h5 list-unstyled"
               @click="current.def.props=s.props"
             >
+              <span
+                v-if="s.label === 'Full form'"
+              >
+                <font-awesome-icon
+                  :icon="['fas', 'file-alt']"
+                />
+              </span>
+              <span
+                v-else
+              >
+                <font-awesome-icon
+                  :icon="['fas', 'file']"
+                />
+              </span>
               {{ s.label }}
             </li>
           </ul>
@@ -65,6 +85,7 @@
             <component
               :is="c.type"
               v-if="c.type === 'b-form-checkbox'"
+              class="pl-1 form-check-input text-center"
               :checked="c.value(current.def.props)"
               @change="c.handle(current.def.props, $event)"
             />
@@ -96,35 +117,3 @@ export default {
   },
 }
 </script>
-
-<style scoped lang="scss">
-.ml-list {
-  margin-left: -30px;
-}
-
-.forms:hover,
-.form-container {
-  background-color: rgb(231, 231, 231);
-}
-
-.form,
-.form-container {
-  border-radius: 5px;
-}
-
-.forms {
-  cursor: pointer;
-  padding: 5px 0 5px 5px;
-}
-
-.form-container {
-  border-radius: 5px;
-  margin-bottom: 5px;
-
-  .m-ul {
-    list-style-type: none;
-    margin-left: -40px;
-    margin-bottom: -3px;
-  }
-}
-</style>
