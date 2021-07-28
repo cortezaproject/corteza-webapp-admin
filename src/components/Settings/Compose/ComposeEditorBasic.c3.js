@@ -14,26 +14,6 @@ const props = {
 
 const controls = [
   {
-    label: 'Enable namespace switcher',
-    type: 'b-form-checkbox',
-    value: (props) => {
-      return props.basic['compose.ui.namespace-switcher.enabled']
-    },
-    handle: (props, value) => {
-      props.basic['compose.ui.namespace-switcher.enabled'] = value
-    },
-  },
-  {
-    label: 'Namespace switcher open by default',
-    type: 'b-form-checkbox',
-    value: (props) => {
-      return props.basic['compose.ui.namespace-switcher.defaultOpen']
-    },
-    handle: (props, value) => {
-      props.basic['compose.ui.namespace-switcher.defaultOpen'] = value
-    },
-  },
-  {
     label: 'Max page size (MB)',
     type: 'b-form-input',
     value: (props) => {
@@ -74,6 +54,26 @@ const controls = [
     },
   },
   {
+    label: 'Enable namespace switcher',
+    type: 'b-form-checkbox',
+    value: (props) => {
+      return props.basic['compose.ui.namespace-switcher.enabled']
+    },
+    handle: (props, value) => {
+      props.basic['compose.ui.namespace-switcher.enabled'] = value
+    },
+  },
+  {
+    label: 'Namespace switcher open by default',
+    type: 'b-form-checkbox',
+    value: (props) => {
+      return props.basic['compose.ui.namespace-switcher.defaultOpen']
+    },
+    handle: (props, value) => {
+      props.basic['compose.ui.namespace-switcher.defaultOpen'] = value
+    },
+  },
+  {
     label: 'Processing',
     type: 'b-form-checkbox',
     value: (props) => {
@@ -106,10 +106,10 @@ const controls = [
 ]
 
 const scenarios = [
-  { label: 'full form',
+  { label: 'Full form',
     props,
   },
-  { label: 'empty form',
+  { label: 'Empty form',
     props: {
       basic: {
         'compose.ui.namespace-switcher.enabled': false,

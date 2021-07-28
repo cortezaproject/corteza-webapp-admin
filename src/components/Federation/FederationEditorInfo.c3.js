@@ -1,9 +1,9 @@
 const props = {
   node: {
     name: 'Name',
-    baseURL: 'www.google.com',
+    baseURL: 'https://google.com/federation',
     contact: 'Admin',
-    status: 'Unknown',
+    status: 'Good',
     updatedAt: '2021-06-09T12:03:36Z',
     deletedAt: '',
     createdAt: '2021-06-09T12:03:36Z',
@@ -35,7 +35,7 @@ const controls = [
     },
   },
   {
-    label: 'contact',
+    label: 'Contact',
     type: 'b-form-input',
     value: (props) => {
       return props.node.contact
@@ -57,7 +57,9 @@ const controls = [
   {
     label: 'Success',
     type: 'b-form-checkbox',
-    value: props.success,
+    value: (props) => {
+      return props.success
+    },
     handle: (props, value) => {
       props.success = value
     },
@@ -65,13 +67,14 @@ const controls = [
 ]
 
 const scenarios = [
-  { label: 'full form',
+  { label: 'Full form',
     props,
   },
-  { label: 'empty form',
+  { label: 'Empty form',
     props: {
       ...props,
       node: {
+        ...props.node,
         name: '',
         baseURL: '',
         contact: '',

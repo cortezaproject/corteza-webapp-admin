@@ -18,7 +18,6 @@ const controls = [
       return props.application.name
     },
     handle: (props, value) => {
-      // this.$emit('change', props.application.name = value)
       props.application.name = value
     },
   },
@@ -65,10 +64,10 @@ const controls = [
 ]
 
 const scenarios = [
-  { label: 'full form',
+  { label: 'Full form',
     props,
   },
-  { label: 'empty form',
+  { label: 'Empty form',
     props: {
       ...props,
       application: {

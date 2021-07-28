@@ -51,6 +51,16 @@ const controls = [
     },
   },
   {
+    label: 'Config',
+    type: 'b-form-textarea',
+    value: (props) => {
+      return props.unify.config
+    },
+    handle: (props, value) => {
+      props.unify.config = value
+    },
+  },
+  {
     label: 'Listed',
     type: 'b-form-checkbox',
     value: (props) => {
@@ -80,23 +90,13 @@ const controls = [
       props.unify.pinned = value
     },
   },
-  {
-    label: 'Config',
-    type: 'b-form-textarea',
-    value: (props) => {
-      return props.unify.config
-    },
-    handle: (props, value) => {
-      props.unify.config = value
-    },
-  },
 ]
 
 const scenarios = [
-  { label: 'full form',
+  { label: 'Full form',
     props,
   },
-  { label: 'empty form',
+  { label: 'Empty form',
     props: {
       ...props,
       unify: {

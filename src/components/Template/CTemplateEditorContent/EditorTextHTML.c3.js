@@ -18,22 +18,13 @@ const props = {
   },
 }
 
-const controls = [
-  // {
-  //   label: 'Poll delay',
-  //   type: 'b-form-input',
-  //   value: props.,
-  //   handle: (props, value) => {
-  //     props. = value
-  //   },
-  // },
-]
+const controls = []
 
 const scenarios = [
-  { label: 'full form',
+  { label: 'Full form',
     props,
   },
-  { label: 'empty form',
+  { label: 'Empty form',
     props: {
       ...props,
       canCreate: false,

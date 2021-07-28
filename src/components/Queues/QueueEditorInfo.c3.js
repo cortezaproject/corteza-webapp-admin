@@ -3,13 +3,10 @@ const props = {
     queueID: '234900180359446530',
     queue: 'Name',
     meta: {
-      poll_delay: '2021-06-09T12:03:38Z',
+      poll_delay: '1h',
       dispatch_events: 'test',
-      createdAt: '2021-06-09T12:03:38Z',
-      updatedAt: '2021-06-09T12:03:38Z',
-      deletedAt: '',
     },
-    // consumer: not a string,
+    consumer: null,
   },
   processing: false,
   success: false,
@@ -24,9 +21,16 @@ const props = {
 
 const controls = [
   {
+    label: 'Consumer',
+    type: 'b-form-select',
+    options: props.consumers,
+  },
+  {
     label: 'Queue name',
     type: 'b-form-input',
-    value: props.queue.queue,
+    value: (props) => {
+      return props.queue.queue
+    },
     handle: (props, value) => {
       props.queue.queue = value
     },
@@ -34,7 +38,9 @@ const controls = [
   {
     label: 'Poll delay',
     type: 'b-form-input',
-    value: props.queue.meta.poll_delay,
+    value: (props) => {
+      return props.queue.meta.poll_delay
+    },
     handle: (props, value) => {
       props.queue.meta.poll_delay = value
     },
@@ -42,7 +48,9 @@ const controls = [
   {
     label: 'Processing',
     type: 'b-form-checkbox',
-    value: props.processing,
+    value: (props) => {
+      return props.processing
+    },
     handle: (props, value) => {
       props.processing = value
     },
@@ -50,7 +58,9 @@ const controls = [
   {
     label: 'Success',
     type: 'b-form-checkbox',
-    value: props.success,
+    value: (props) => {
+      return props.success
+    },
     handle: (props, value) => {
       props.success = value
     },
@@ -58,27 +68,20 @@ const controls = [
   {
     label: 'CanCreate',
     type: 'b-form-checkbox',
-    value: props.canCreate,
+    value: (props) => {
+      return props.canCreate
+    },
     handle: (props, value) => {
       props.canCreate = value
     },
   },
-  // {
-  //   label: 'Store',
-  //   type: 'b-form-select',
-  //   value: props.consumers,
-  //   text: props.consumers,
-  //   handle: (props, value) => {
-  //     props.consumers[0].value = value
-  //   },
-  // },
 ]
 
 const scenarios = [
-  { label: 'full form',
+  { label: 'Full form',
     props,
   },
-  { label: 'empty form',
+  { label: 'Empty form',
     props: {
       ...props,
       queue: {
@@ -86,6 +89,7 @@ const scenarios = [
         meta: {
           poll_delay: '',
         },
+        consumer: null,
       },
       canCreate: false,
     },

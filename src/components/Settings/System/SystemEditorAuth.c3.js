@@ -95,23 +95,7 @@ const controls = [
     },
   },
   {
-    label: 'Multi factor email OTP enforced',
-    type: 'b-form-checkbox',
-    value: props.settings['auth.multi-factor.email-otp.enforced'],
-    handle: (props, value) => {
-      props.settings['auth.multi-factor.email-otp.enforced'] = value
-    },
-  },
-  {
-    label: 'Multi factor email OTP expires',
-    type: 'b-form-input',
-    value: props.settings['auth.multi-factor.email-otp.expires'],
-    handle: (props, value) => {
-      props.settings['auth.multi-factor.email-otp.expires'] = value
-    },
-  },
-  {
-    label: 'Multi factor email OTP enabled',
+    label: 'Multi factor email TOTP enabled',
     type: 'b-form-checkbox',
     value: props.settings['auth.multi-factor.totp.enabled'],
     handle: (props, value) => {
@@ -119,7 +103,7 @@ const controls = [
     },
   },
   {
-    label: 'Multi factor email OTP enforced',
+    label: 'Multi factor email TOTP enforced',
     type: 'b-form-checkbox',
     value: props.settings['auth.multi-factor.totp.enforced'],
     handle: (props, value) => {

@@ -7,7 +7,7 @@
             <h4
               class="font-weight-bold"
             >
-              Component Catalogue
+              {{ catalogue }}
             </h4>
             <ul
               class="pl-0 list-unstyled"
@@ -27,6 +27,7 @@
           </aside>
         </b-col>
         <b-col
+          v-if="current"
           cols="8"
         >
           <component
@@ -35,13 +36,24 @@
             v-bind="current.def.props"
           />
         </b-col>
+        <b-col
+          v-else
+          class="d-flex align-items-center justify-content-center"
+          cols="7"
+        >
+          <h3>
+            {{ cmpSelect }}
+          </h3>
+        </b-col>
       </b-row>
       <b-row
         v-if="current"
         class="w-50 my-0 mx-auto"
       >
         <b-col>
-          <h3>Pre-set Controls</h3>
+          <h3>
+            {{ presetControls }}
+          </h3>
           <ul
             class="pl-0"
           >
@@ -70,18 +82,15 @@
           </ul>
         </b-col>
         <b-col>
-          <h3>Controls</h3>
+          <h3>
+            {{ populatedControls }}
+          </h3>
           <b-form-group
             v-for="c in current.def.controls"
             :key="c.label"
             :label="c.label"
             content-cols-lg="8"
           >
-            <!-- <component
-              :is="c.type"
-              v-model="c.value"
-              @change="c.handle(current.def.props, $event)"
-            /> -->
             <component
               :is="c.type"
               v-if="c.type === 'b-form-checkbox'"
@@ -91,7 +100,21 @@
             />
             <component
               :is="c.type"
-              v-else
+              v-if="c.type === 'b-form-radio'"
+              class="pl-1 form-check-input text-center"
+              :value="c.value(current.def.props)"
+              @change="c.handle(current.def.props, $event)"
+            />
+            <component
+              :is="c.type"
+              v-if="c.type === 'b-form-select'"
+              v-model="current.def.props.queue.consumer"
+              :options="current.def.props.consumers"
+              :value="current.def.props.queue.consumer"
+            />
+            <component
+              :is="c.type"
+              v-if="c.type === 'b-form-input' || c.type === 'b-form-textarea'"
               :value="typeof c.value === 'function' ? c.value(current.def.props) : c.value"
               v-bind="current.def.props"
               @update="c.handle(current.def.props, $event)"
@@ -113,6 +136,10 @@ export default {
     return {
       componentData,
       current: null,
+      populatedControls: 'Controls',
+      catalogue: 'Component Catalogue',
+      presetControls: 'Pre-set Controls',
+      cmpSelect: 'Select a component from the Component Catalogue and start hacking :)',
     }
   },
 }
