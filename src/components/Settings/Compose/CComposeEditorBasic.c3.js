@@ -1,4 +1,6 @@
-const props = {
+export { default as component } from './CComposeEditorBasic.vue'
+
+export const props = {
   basic: {
     'compose.ui.namespace-switcher.enabled': true,
     'compose.ui.namespace-switcher.defaultOpen': true,
@@ -12,7 +14,7 @@ const props = {
   canManage: true,
 }
 
-const controls = [
+export const controls = [
   {
     label: 'Max page size (MB)',
     type: 'b-form-input',
@@ -105,7 +107,7 @@ const controls = [
   },
 ]
 
-const scenarios = [
+export const scenarios = [
   { label: 'Full form',
     props,
   },
@@ -123,9 +125,3 @@ const scenarios = [
     },
   },
 ]
-
-export default {
-  props,
-  controls,
-  scenarios,
-}

@@ -1,4 +1,4 @@
-const props = {
+export const props = {
   roles: [
     {
       canDeleteRole: false,
@@ -56,7 +56,7 @@ const props = {
   success: false,
 }
 
-const controls = [
+export const controls = [
   {
     label: 'CanGrant',
     type: 'b-form-checkbox',
@@ -91,7 +91,7 @@ const controls = [
   },
 ]
 
-const scenarios = [
+export const scenarios = [
   { label: 'full form',
     props,
   },
@@ -102,9 +102,3 @@ const scenarios = [
     },
   },
 ]
-
-export default {
-  props,
-  controls,
-  scenarios,
-}

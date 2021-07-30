@@ -1,44 +1,62 @@
-import * as c3Controls from '../C3Controls'
-export { default as component } from './CApplicationEditorInfo.vue'
+export { default as component } from './CQueueEditorInfo.vue'
 
 export const props = {
-  application: {
-    applicationID: '234900176853008386',
-    createdAt: '2021-06-09T12:03:36Z',
-    enabled: true,
-    name: 'Low Code',
+  queue: {
+    queueID: '234900180359446530',
+    queue: 'Name',
+    meta: {
+      poll_delay: '1h',
+      dispatch_events: 'test',
+    },
+    consumer: null,
   },
   processing: false,
   success: false,
   canCreate: true,
+  consumers: [
+    { value: 'store', text: 'Store' },
+    { value: 'eventbus', text: 'Eventbus' },
+    { value: 'corteza', text: 'Corteza' },
+    { value: 'redis', text: 'Redis' },
+  ],
+}
+
+function selectControl (label, value) {
+  return {
+    label,
+    type: 'b-form-input',
+    // options
+  }
 }
 
 export const controls = [
-  c3Controls.inputControl('Name', 'application.name'),
-  c3Controls.checkboxControl('Enabled', 'application.enabled'),
-  c3Controls.checkboxControl('Processing', 'processing'),
-  c3Controls.checkboxControl('Success', 'success'),
-  c3Controls.checkboxControl('CanCreate', 'canCreate'),
+  selectControl('Consumers', 'consumers'),
 ]
+
 // export const controls = [
 //   {
-//     label: 'Name',
+//     label: 'Consumer',
+//     type: 'b-form-select',
+//     options: props.consumers,
+//   },
+//   {
+//     label: 'Queue name',
 //     type: 'b-form-input',
 //     value: (props) => {
-//       return props.application.name
+//       return props.queue.queue
 //     },
 //     handle: (props, value) => {
-//       props.application.name = value
+//       props.queue.queue = value
 //     },
 //   },
 //   {
-//     label: 'Enabled',
-//     type: 'b-form-checkbox',
+//     label: 'Poll delay',
+//     type: 'b-form-input',
 //     value: (props) => {
-//       return props.application.enabled
+//       return props.queue.meta.poll_delay
 //     },
 //     handle: (props, value) => {
-//       props.application.enabled = value
+//       props.queue.meta.poll_delay = value
 //     },
 //   },
 //   {
@@ -80,10 +98,12 @@ export const scenarios = [
   { label: 'Empty form',
     props: {
       ...props,
-      application: {
-        ...props.application,
-        enabled: false,
-        name: '',
+      queue: {
+        queue: '',
+        meta: {
+          poll_delay: '',
+        },
+        consumer: null,
       },
       canCreate: false,
     },

@@ -1,15 +1,6 @@
-const props = {
-  // info
-  role: {
-    roleID: '234900180359446530',
-    name: 'Name',
-    handle: 'Handle',
-    createdAt: '2021-06-09T12:03:36Z',
-    updatedAt: '2021-06-09T12:03:36Z',
-    archivedAt: '',
-    deletedAt: '',
-  },
-  // members
+export { default as component } from './CRoleEditorInfo.vue'
+
+export const props = {
   members: {
     processing: false,
     success: false,
@@ -23,13 +14,12 @@ const props = {
       userID: '241120280292884482',
     },
   ],
-  // for both components
   processing: false,
   success: false,
   canCreate: true,
 }
 
-const controls = [
+export const controls = [
   {
     label: 'Processing',
     type: 'b-form-checkbox',
@@ -56,7 +46,7 @@ const controls = [
   },
 ]
 
-const scenarios = [
+export const scenarios = [
   { label: 'full form',
     props,
   },
@@ -67,9 +57,3 @@ const scenarios = [
     },
   },
 ]
-
-export default {
-  props,
-  controls,
-  scenarios,
-}

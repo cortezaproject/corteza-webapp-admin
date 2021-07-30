@@ -7,21 +7,21 @@
             <h4
               class="font-weight-bold"
             >
-              {{ labels.catalogue }}
+              Component Catalogue
             </h4>
             <ul
               class="pl-0 list-unstyled"
             >
               <li
                 v-for="(cmp, i) in catalogue"
-                :key="`component-${i}`"
+                :key="i"
                 class="h5 mt-0"
-                @click="current=cmp"
+                @click="setCurrent(cmp)"
               >
                 <font-awesome-icon
                   :icon="['fas', 'puzzle-piece']"
                 />
-                {{ cmp.component.name || cmp.name || 'untitled' }}
+                {{ cmp.component.name || cmp.name || 'Untitled' }}
               </li>
             </ul>
           </aside>
@@ -42,7 +42,7 @@
           cols="7"
         >
           <h3>
-            {{ labels.cmpSelect }}
+            Select a component from the Component Catalogue and start hacking :)
           </h3>
         </b-col>
       </b-row>
@@ -52,16 +52,16 @@
       >
         <b-col>
           <h3>
-            {{ labels.presetControls }}
+            Pre-set Controls
           </h3>
           <ul
             class="pl-0"
           >
             <li
               v-for="(s, i) in current.scenarios"
-              :key="`scenarios-${i}`"
+              :key="i"
               class="mb-1 h5 list-unstyled"
-              @click="current.props=s.props"
+              @click="setScenario(s)"
             >
               <span
                 v-if="s.label === 'Full form'"
@@ -83,41 +83,18 @@
         </b-col>
         <b-col>
           <h3>
-            {{ labels.populatedControls }}
+            Controls
           </h3>
           <b-form-group
             v-for="(c, i) in current.controls"
-            :key="`controls-${i}`"
+            :key="i"
             :label="c.label"
             content-cols-lg="8"
           >
-            <component
-              :is="c.type"
-              v-if="c.type === 'b-form-checkbox'"
-              class="pl-1 form-check-input text-center"
-              :checked="c.value(current.props)"
-              @change="c.handle(current.props, $event)"
-            />
-            <component
-              :is="c.type"
-              v-if="c.type === 'b-form-radio'"
-              class="pl-1 form-check-input text-center"
-              :value="c.value(current.props)"
-              @change="c.handle(current.props, $event)"
-            />
-            <component
-              :is="c.type"
-              v-if="c.type === 'b-form-select'"
-              v-model="current.props.queue.consumer"
-              :options="current.props.consumers"
-              :value="current.props.queue.consumer"
-            />
-            <component
-              :is="c.type"
-              v-if="c.type === 'b-form-input' || c.type === 'b-form-textarea'"
-              :value="typeof c.value === 'function' ? c.value(current.props) : c.value"
-              v-bind="current.props"
-              @update="c.handle(current.props, $event)"
+            <c3-list
+              :controls="c"
+              :current-props="current.props"
+              v-bind="c.props"
             />
           </b-form-group>
         </b-col>
@@ -126,10 +103,13 @@
   </div>
 </template>
 <script>
+import C3List from './Controls/C3List.vue'
 
 export default {
   name: 'C3',
-
+  components: {
+    C3List,
+  },
   props: {
     catalogue: {
       required: true,
@@ -139,15 +119,20 @@ export default {
 
   data () {
     return {
-      current: null,
-
-      labels: {
-        populatedControls: 'Controls',
-        catalogue: 'Component Catalogue',
-        presetControls: 'Pre-set Controls',
-        cmpSelect: 'Select a component from the Component Catalogue and start hacking :)',
-      },
+      current: {},
     }
+  },
+
+  methods: {
+    setCurrent (component) {
+      this.current = { props: {}, ...component }
+      this.setScenario(this.current)
+    },
+
+    setScenario ({ props = {} }) {
+      // do a deep copy and loose all references
+      this.current.props = JSON.parse(JSON.stringify(props))
+    },
   },
 }
 </script>
