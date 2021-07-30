@@ -1,4 +1,6 @@
-const props = {
+export { default as component } from './CApplicationEditorInfo.vue'
+
+export const props = {
   application: {
     applicationID: '234900176853008386',
     createdAt: '2021-06-09T12:03:36Z',
@@ -10,7 +12,7 @@ const props = {
   canCreate: true,
 }
 
-const controls = [
+export const controls = [
   {
     label: 'Name',
     type: 'b-form-input',
@@ -63,7 +65,7 @@ const controls = [
   },
 ]
 
-const scenarios = [
+export const scenarios = [
   { label: 'Full form',
     props,
   },
@@ -80,9 +82,3 @@ const scenarios = [
     },
   },
 ]
-
-export default {
-  props,
-  controls,
-  scenarios,
-}

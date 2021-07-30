@@ -1,3 +1,5 @@
+import c3catalogue from '../components/C3'
+
 /**
  * Simple route generator
  *
@@ -82,6 +84,7 @@ export default [
         path: 'test/',
         name: 'test',
         component: () => import('./C3/C3.vue'),
+        props: { catalogue: c3catalogue },
       },
       r('dashboard', 'dashboard', 'Dashboard'),
       {

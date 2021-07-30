@@ -7,21 +7,21 @@
             <h4
               class="font-weight-bold"
             >
-              {{ catalogue }}
+              {{ labels.catalogue }}
             </h4>
             <ul
               class="pl-0 list-unstyled"
             >
               <li
-                v-for="value in componentData.components"
-                :key="value.cmp.name"
+                v-for="(cmp, i) in catalogue"
+                :key="`component-${i}`"
                 class="h5 mt-0"
-                @click="current=value"
+                @click="current=cmp"
               >
                 <font-awesome-icon
                   :icon="['fas', 'puzzle-piece']"
                 />
-                {{ value.cmp.name || value.cmpName }}
+                {{ cmp.component.name || cmp.name || 'untitled' }}
               </li>
             </ul>
           </aside>
@@ -31,9 +31,9 @@
           cols="8"
         >
           <component
-            :is="current.cmp"
+            :is="current.component"
             v-if="current"
-            v-bind="current.def.props"
+            v-bind="current.props"
           />
         </b-col>
         <b-col
@@ -42,7 +42,7 @@
           cols="7"
         >
           <h3>
-            {{ cmpSelect }}
+            {{ labels.cmpSelect }}
           </h3>
         </b-col>
       </b-row>
@@ -52,16 +52,16 @@
       >
         <b-col>
           <h3>
-            {{ presetControls }}
+            {{ labels.presetControls }}
           </h3>
           <ul
             class="pl-0"
           >
             <li
-              v-for="s in current.def.scenarios"
-              :key="s.label"
+              v-for="(s, i) in current.scenarios"
+              :key="`scenarios-${i}`"
               class="mb-1 h5 list-unstyled"
-              @click="current.def.props=s.props"
+              @click="current.props=s.props"
             >
               <span
                 v-if="s.label === 'Full form'"
@@ -83,11 +83,11 @@
         </b-col>
         <b-col>
           <h3>
-            {{ populatedControls }}
+            {{ labels.populatedControls }}
           </h3>
           <b-form-group
-            v-for="c in current.def.controls"
-            :key="c.label"
+            v-for="(c, i) in current.controls"
+            :key="`controls-${i}`"
             :label="c.label"
             content-cols-lg="8"
           >
@@ -95,29 +95,29 @@
               :is="c.type"
               v-if="c.type === 'b-form-checkbox'"
               class="pl-1 form-check-input text-center"
-              :checked="c.value(current.def.props)"
-              @change="c.handle(current.def.props, $event)"
+              :checked="c.value(current.props)"
+              @change="c.handle(current.props, $event)"
             />
             <component
               :is="c.type"
               v-if="c.type === 'b-form-radio'"
               class="pl-1 form-check-input text-center"
-              :value="c.value(current.def.props)"
-              @change="c.handle(current.def.props, $event)"
+              :value="c.value(current.props)"
+              @change="c.handle(current.props, $event)"
             />
             <component
               :is="c.type"
               v-if="c.type === 'b-form-select'"
-              v-model="current.def.props.queue.consumer"
-              :options="current.def.props.consumers"
-              :value="current.def.props.queue.consumer"
+              v-model="current.props.queue.consumer"
+              :options="current.props.consumers"
+              :value="current.props.queue.consumer"
             />
             <component
               :is="c.type"
               v-if="c.type === 'b-form-input' || c.type === 'b-form-textarea'"
-              :value="typeof c.value === 'function' ? c.value(current.def.props) : c.value"
-              v-bind="current.def.props"
-              @update="c.handle(current.def.props, $event)"
+              :value="typeof c.value === 'function' ? c.value(current.props) : c.value"
+              v-bind="current.props"
+              @update="c.handle(current.props, $event)"
             />
           </b-form-group>
         </b-col>
@@ -125,21 +125,28 @@
     </b-container>
   </div>
 </template>
-
 <script>
-import componentData from '../../components/C3'
 
 export default {
   name: 'C3',
 
+  props: {
+    catalogue: {
+      required: true,
+      type: Object,
+    },
+  },
+
   data () {
     return {
-      componentData,
       current: null,
-      populatedControls: 'Controls',
-      catalogue: 'Component Catalogue',
-      presetControls: 'Pre-set Controls',
-      cmpSelect: 'Select a component from the Component Catalogue and start hacking :)',
+
+      labels: {
+        populatedControls: 'Controls',
+        catalogue: 'Component Catalogue',
+        presetControls: 'Pre-set Controls',
+        cmpSelect: 'Select a component from the Component Catalogue and start hacking :)',
+      },
     }
   },
 }
