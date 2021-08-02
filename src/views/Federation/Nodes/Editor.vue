@@ -3,7 +3,7 @@
     class="py-3"
   >
     <c-content-header
-      :title="$t('title')"
+      :title="title"
     >
       <b-button-group
         v-if="nodeID"
@@ -176,6 +176,10 @@ export default {
   computed: {
     userLabel () {
       return this.$auth.user.name || this.$auth.user.email
+    },
+
+    title () {
+      return this.nodeID ? this.$t('title.edit') : this.$t('title.create')
     },
   },
 

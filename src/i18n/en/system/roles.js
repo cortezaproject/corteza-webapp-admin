@@ -49,7 +49,10 @@ export default {
   },
 
   editor: {
-    title: 'Edit role',
+    title: {
+      edit: 'Edit role',
+      create: 'Create role',
+    },
     new: 'New',
     permissions: 'Permissions',
 

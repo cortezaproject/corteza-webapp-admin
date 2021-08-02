@@ -3,7 +3,7 @@
     class="py-3"
   >
     <c-content-header
-      :title="$t('title')"
+      :title="title"
     >
       <span
         class="text-nowrap"
@@ -91,6 +91,10 @@ export default {
 
     canGrant () {
       return this.can('system/', 'grant')
+    },
+
+    title () {
+      return this.authClientID ? this.$t('title.edit') : this.$t('title.create')
     },
   },
 

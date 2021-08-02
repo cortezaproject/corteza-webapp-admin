@@ -44,7 +44,10 @@ export default {
   },
 
   editor: {
-    title: 'Edit application',
+    title: {
+      edit: 'Edit application',
+      create: 'Create application',
+    },
     new: 'New',
     permissions: 'Permissions',
 

@@ -47,7 +47,10 @@ export default {
   },
 
   editor: {
-    title: 'Edit client',
+    title: {
+      edit: 'Edit client',
+      create: 'Create client',
+    },
     new: 'New',
     permissions: 'Permissions',
 

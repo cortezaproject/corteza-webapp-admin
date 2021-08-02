@@ -50,7 +50,10 @@ export default {
   },
 
   editor: {
-    title: 'Edit user',
+    title: {
+      edit: 'Edit user',
+      create: 'Create user',
+    },
     new: 'New',
     permissions: 'Permissions',
 

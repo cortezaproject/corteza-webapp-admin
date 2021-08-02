@@ -51,7 +51,10 @@ export default {
   },
 
   editor: {
-    title: 'Edit Federated Node',
+    title: {
+      edit: 'Edit Federated Node',
+      create: 'Create Federated Node',
+    },
     generateUri: 'Generate Federation Link',
 
     info: {

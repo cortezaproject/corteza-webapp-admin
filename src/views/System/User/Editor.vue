@@ -3,7 +3,7 @@
     class="py-3"
   >
     <c-content-header
-      :title="$t('title')"
+      :title="title"
     >
       <span
         v-if="userID"
@@ -147,6 +147,10 @@ export default {
 
     canGrant () {
       return this.can('system/', 'grant')
+    },
+
+    title () {
+      return this.userID ? this.$t('title.edit') : this.$t('title.create')
     },
   },
 

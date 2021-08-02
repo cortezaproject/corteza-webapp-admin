@@ -3,7 +3,7 @@
     class="py-3"
   >
     <c-content-header
-      :title="$t('title')"
+      :title="title"
     >
       <span
         class="text-nowrap"
@@ -105,6 +105,10 @@ export default {
         return this.$auth.user.userID
       }
       return undefined
+    },
+
+    title () {
+      return this.workflowID ? this.$t('title.edit') : this.$t('title.create')
     },
   },
 

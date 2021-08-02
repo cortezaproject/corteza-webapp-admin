@@ -44,7 +44,10 @@ export default {
   },
 
   editor: {
-    title: 'Edit workflow',
+    title: {
+      edit: 'Edit workflow',
+      create: 'Create workflow',
+    },
     new: 'New',
     permissions: 'Permissions',
 

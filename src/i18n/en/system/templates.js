@@ -47,7 +47,10 @@ export default {
   },
 
   editor: {
-    title: 'Edit template',
+    title: {
+      edit: 'Edit template',
+      create: 'Create template',
+    },
     new: 'New',
     permissions: 'Permissions',
 

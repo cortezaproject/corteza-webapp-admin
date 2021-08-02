@@ -3,7 +3,7 @@
     class="py-3"
   >
     <c-content-header
-      :title="$t('title')"
+      :title="title"
     >
       <span
         class="text-nowrap"
@@ -110,6 +110,10 @@ export default {
 
     canPin () {
       return this.can('system/', 'pin')
+    },
+
+    title () {
+      return this.applicationID ? this.$t('title.edit') : this.$t('title.create')
     },
   },
 
