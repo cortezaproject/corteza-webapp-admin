@@ -1,21 +1,23 @@
 <template>
-  <b-form-checkbox
-    class="pl-1 form-check-input text-center"
-    :checked="controls.value(currentProps)"
-    @change="controls.handle(currentProps, $event)"
-  />
+  <b-form-group>
+    <b-form-checkbox
+      :checked="value"
+      @change="$emit('update', $event)"
+    >
+      {{ label }}
+    </b-form-checkbox>
+  </b-form-group>
 </template>
-
 <script>
 export default {
   props: {
-    controls: {
+    label: {
       required: true,
-      type: Object,
+      type: String,
     },
-    currentProps: {
-      required: true,
-      type: Object,
+    value: {
+      type: Boolean,
+      default: () => false,
     },
   },
 }

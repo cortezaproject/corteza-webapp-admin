@@ -85,31 +85,22 @@
           <h3>
             Controls
           </h3>
-          <b-form-group
+          <component
+            :is="c.component"
             v-for="(c, i) in current.controls"
             :key="i"
             :label="c.label"
-            content-cols-lg="8"
-          >
-            <c3-list
-              :controls="c"
-              :current-props="current.props"
-              v-bind="c.props"
-            />
-          </b-form-group>
+            :value="c.value(current.props)"
+            @update="c.update(current.props, $event)"
+          />
         </b-col>
       </b-row>
     </b-container>
   </div>
 </template>
 <script>
-import C3List from './Controls/C3List.vue'
-
 export default {
   name: 'C3',
-  components: {
-    C3List,
-  },
   props: {
     catalogue: {
       required: true,

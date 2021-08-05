@@ -1,7 +1,2 @@
-import * as CApplicationEditorInfo from './CApplicationEditorInfo.c3'
-import * as CApplicationEditorUnify from './CApplicationEditorUnify.c3'
-
-export {
-  CApplicationEditorInfo,
-  CApplicationEditorUnify,
-}
+export { default as CApplicationEditorInfo } from './CApplicationEditorInfo.c3'
+export { default as CApplicationEditorUnify } from './CApplicationEditorUnify.c3'

@@ -1,7 +1,7 @@
-import * as c3Controls from '../C3Controls'
-export { default as component } from './CApplicationEditorInfo.vue'
+import * as c3Controls from '../../views/C3/Controls'
+import { default as component } from './CApplicationEditorInfo.vue'
 
-export const props = {
+const props = {
   application: {
     applicationID: '234900176853008386',
     createdAt: '2021-06-09T12:03:36Z',
@@ -13,79 +13,32 @@ export const props = {
   canCreate: true,
 }
 
-export const controls = [
-  c3Controls.inputControl('Name', 'application.name'),
-  c3Controls.checkboxControl('Enabled', 'application.enabled'),
-  c3Controls.checkboxControl('Processing', 'processing'),
-  c3Controls.checkboxControl('Success', 'success'),
-  c3Controls.checkboxControl('CanCreate', 'canCreate'),
-]
-// export const controls = [
-//   {
-//     label: 'Name',
-//     type: 'b-form-input',
-//     value: (props) => {
-//       return props.application.name
-//     },
-//     handle: (props, value) => {
-//       props.application.name = value
-//     },
-//   },
-//   {
-//     label: 'Enabled',
-//     type: 'b-form-checkbox',
-//     value: (props) => {
-//       return props.application.enabled
-//     },
-//     handle: (props, value) => {
-//       props.application.enabled = value
-//     },
-//   },
-//   {
-//     label: 'Processing',
-//     type: 'b-form-checkbox',
-//     value: (props) => {
-//       return props.processing
-//     },
-//     handle: (props, value) => {
-//       props.processing = value
-//     },
-//   },
-//   {
-//     label: 'Success',
-//     type: 'b-form-checkbox',
-//     value: (props) => {
-//       return props.success
-//     },
-//     handle: (props, value) => {
-//       props.success = value
-//     },
-//   },
-//   {
-//     label: 'CanCreate',
-//     type: 'b-form-checkbox',
-//     value: (props) => {
-//       return props.canCreate
-//     },
-//     handle: (props, value) => {
-//       props.canCreate = value
-//     },
-//   },
-// ]
+export default {
+  component,
+  props,
 
-export const scenarios = [
-  { label: 'Full form',
-    props,
-  },
-  { label: 'Empty form',
-    props: {
-      ...props,
-      application: {
-        ...props.application,
-        enabled: false,
-        name: '',
-      },
-      canCreate: false,
+  controls: [
+    c3Controls.input('Name', 'application.name'),
+    c3Controls.checkbox('Enabled', 'application.enabled'),
+    c3Controls.checkbox('Processing', 'processing'),
+    c3Controls.checkbox('Success', 'success'),
+    c3Controls.checkbox('CanCreate', 'canCreate'),
+  ],
+
+  scenarios: [
+    { label: 'Full form',
+      props,
     },
-  },
-]
+    { label: 'Empty form',
+      props: {
+        ...props,
+        application: {
+          ...props.application,
+          enabled: false,
+          name: '',
+        },
+        canCreate: false,
+      },
+    },
+  ],
+}

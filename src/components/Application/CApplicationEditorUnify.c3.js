@@ -1,12 +1,9 @@
-export { default as component } from './CApplicationEditorUnify.vue'
+import * as c3Controls from '../../views/C3/Controls'
+import { default as component } from './CApplicationEditorUnify.vue'
 
-export const props = {
-  application: {
-    applicationID: '234900176853008386',
-    createdAt: '2021-06-09T12:03:36Z',
-    enabled: true,
-    name: 'Low Code',
-  },
+const props = {
+  application: {},
+
   unify: {
     config: '"data"',
     listed: true,
@@ -15,27 +12,34 @@ export const props = {
     name: 'Low Code',
     url: '/compose',
   },
+
   canPin: true,
   processing: false,
   success: false,
   canCreate: true,
 }
 
-function textareaControl (label, value) {
-  return {
-    label,
-    type: 'b-form-textarea',
-    value: (props) => {
-      // return eval(value)
-    },
-    handle: (props, currentValue) => {
-    },
-  }
+export default {
+  component,
+  props,
+
+  controls: [
+    c3Controls.checkbox('Processing', 'processing'),
+    c3Controls.checkbox('Success', 'success'),
+  ],
 }
 
-export const controls = [
-  textareaControl('Config', 'unify.config'),
-]
+// function textareaControl (label, value) {
+//   return {
+//     label,
+//     type: 'b-form-textarea',
+//     value: (props) => {
+//       // return eval(value)
+//     },
+//     handle: (props, currentValue) => {
+//     },
+//   }
+// }
 
 // export const controls = [
 //   {
@@ -109,22 +113,3 @@ export const controls = [
 //     },
 //   },
 // ]
-
-export const scenarios = [
-  { label: 'Full form',
-    props,
-  },
-  { label: 'Empty form',
-    props: {
-      ...props,
-      unify: {
-        ...props.unify,
-        listed: false,
-        name: '',
-        config: '',
-      },
-      canPin: false,
-      canCreate: false,
-    },
-  },
-]
