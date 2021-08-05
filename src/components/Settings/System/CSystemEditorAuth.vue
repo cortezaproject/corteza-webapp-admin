@@ -47,6 +47,18 @@
             {{ $t('internal.signup.enabled') }}
           </b-form-checkbox>
         </b-form-group>
+        <b-form-group
+          label-cols="2"
+          :description="$t('internal.signup.split-credentials-check.description')"
+        >
+          <b-form-checkbox
+            v-model="settings['auth.internal.split-credentials-check']"
+            :value="true"
+            :unchecked-value="false"
+          >
+            {{ $t('internal.signup.split-credentials-check.label') }}
+          </b-form-checkbox>
+        </b-form-group>
       </b-form-group>
 
       <hr>
