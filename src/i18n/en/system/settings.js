@@ -19,6 +19,11 @@ export default {
         signup: {
           enabled: 'Signup enabled',
           'email-confirmation-required': 'Signup email confirmation required',
+          'split-credentials-check': {
+            label: 'Enable split-credentials check',
+            description: 'Split login into two steps: collect the email input first and show the input for the password on the 2nd screen. ' +
+             'Automatically forward user to external identity provider when user does not have his password set and there is only one IdP present',
+          },
         },
       },
 
@@ -34,8 +39,8 @@ export default {
         },
 
         TOTP: {
-          enabled: 'Allow users to use time based one-time-password',
-          enforced: 'Force users to use one-time-password over email',
+          enabled: 'Allow users to use time based one-time-password (using mobile application)',
+          enforced: 'Force users to use time based one-time-password (using mobile application)',
           issuer: {
             label: 'Issuer',
             description: 'Issuer name will be send to authenticator app when user configures it.',
