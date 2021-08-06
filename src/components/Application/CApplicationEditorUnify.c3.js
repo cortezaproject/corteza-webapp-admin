@@ -24,92 +24,31 @@ export default {
   props,
 
   controls: [
+    c3Controls.input('Name', 'unify.name'),
+    c3Controls.input('URL', 'unify.url'),
+    c3Controls.textarea('Configuration', 'unify.config'),
+    c3Controls.checkbox('Listed', 'unify.listed'),
+    c3Controls.checkbox('Pinned', 'unify.pinned'),
     c3Controls.checkbox('Processing', 'processing'),
     c3Controls.checkbox('Success', 'success'),
   ],
+
+  scenarios: [
+    { label: 'Full form',
+      props,
+    },
+    { label: 'Empty form',
+      props: {
+        ...props,
+        unify: {
+          ...props.unify,
+          listed: false,
+          name: '',
+          config: '',
+        },
+        canPin: false,
+        canCreate: false,
+      },
+    },
+  ],
 }
-
-// function textareaControl (label, value) {
-//   return {
-//     label,
-//     type: 'b-form-textarea',
-//     value: (props) => {
-//       // return eval(value)
-//     },
-//     handle: (props, currentValue) => {
-//     },
-//   }
-// }
-
-// export const controls = [
-//   {
-//     label: 'Unify name',
-//     type: 'b-form-input',
-//     value: (props) => {
-//       return props.unify.name
-//     },
-//     handle: (props, value) => {
-//       props.unify.name = value
-//     },
-//   },
-//   {
-//     label: 'Logo',
-//     type: 'b-form-input',
-//     value: (props) => {
-//       return props.unify.logo
-//     },
-//     handle: (props, value) => {
-//       props.unify.logo = value
-//     },
-//   },
-//   {
-//     label: 'URL',
-//     type: 'b-form-input',
-//     value: (props) => {
-//       return props.unify.url
-//     },
-//     handle: (props, value) => {
-//       props.unify.url = value
-//     },
-//   },
-//   {
-//     label: 'Config',
-//     type: 'b-form-textarea',
-//     value: (props) => {
-//       return props.unify.config
-//     },
-//     handle: (props, value) => {
-//       props.unify.config = value
-//     },
-//   },
-//   {
-//     label: 'Listed',
-//     type: 'b-form-checkbox',
-//     value: (props) => {
-//       return props.unify.listed
-//     },
-//     handle: (props, value) => {
-//       props.unify.listed = value
-//     },
-//   },
-//   {
-//     label: 'CanPin',
-//     type: 'b-form-checkbox',
-//     value: (props) => {
-//       return props.canPin
-//     },
-//     handle: (props, value) => {
-//       props.canPin = value
-//     },
-//   },
-//   {
-//     label: 'Pinned',
-//     type: 'b-form-checkbox',
-//     value: (props) => {
-//       return props.unify.pinned
-//     },
-//     handle: (props, value) => {
-//       props.unify.pinned = value
-//     },
-//   },
-// ]

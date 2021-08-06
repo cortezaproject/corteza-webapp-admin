@@ -1,6 +1,7 @@
-export { default as component } from './CQueueEditorInfo.vue'
+import * as c3Controls from '../../views/C3/Controls'
+import { default as component } from './CQueueEditorInfo.vue'
 
-export const props = {
+const props = {
   queue: {
     queueID: '234900180359446530',
     queue: 'Name',
@@ -21,91 +22,42 @@ export const props = {
   ],
 }
 
-function selectControl (label, value) {
-  return {
-    label,
-    type: 'b-form-input',
-    // options
-  }
+export default {
+  component,
+  props,
+
+  controls: [
+    c3Controls.select('Consumer', 'consumers'),
+    c3Controls.input('Queue name', 'queue.queue'),
+    c3Controls.input('Poll delay', 'queue.meta.poll_delay'),
+    c3Controls.checkbox('Processing', 'processing'),
+    c3Controls.checkbox('Success', 'success'),
+    c3Controls.checkbox('CanCreate', 'canCreate'),
+  ],
+
+  scenarios: [
+    { label: 'Full form',
+      props,
+    },
+    { label: 'Empty form',
+      props: {
+        ...props,
+        queue: {
+          queue: '',
+          meta: {
+            poll_delay: '',
+          },
+          consumer: null,
+        },
+        canCreate: false,
+      },
+    },
+  ],
 }
-
-export const controls = [
-  selectControl('Consumers', 'consumers'),
-]
-
 // export const controls = [
 //   {
 //     label: 'Consumer',
 //     type: 'b-form-select',
 //     options: props.consumers,
 //   },
-//   {
-//     label: 'Queue name',
-//     type: 'b-form-input',
-//     value: (props) => {
-//       return props.queue.queue
-//     },
-//     handle: (props, value) => {
-//       props.queue.queue = value
-//     },
-//   },
-//   {
-//     label: 'Poll delay',
-//     type: 'b-form-input',
-//     value: (props) => {
-//       return props.queue.meta.poll_delay
-//     },
-//     handle: (props, value) => {
-//       props.queue.meta.poll_delay = value
-//     },
-//   },
-//   {
-//     label: 'Processing',
-//     type: 'b-form-checkbox',
-//     value: (props) => {
-//       return props.processing
-//     },
-//     handle: (props, value) => {
-//       props.processing = value
-//     },
-//   },
-//   {
-//     label: 'Success',
-//     type: 'b-form-checkbox',
-//     value: (props) => {
-//       return props.success
-//     },
-//     handle: (props, value) => {
-//       props.success = value
-//     },
-//   },
-//   {
-//     label: 'CanCreate',
-//     type: 'b-form-checkbox',
-//     value: (props) => {
-//       return props.canCreate
-//     },
-//     handle: (props, value) => {
-//       props.canCreate = value
-//     },
-//   },
 // ]
-
-export const scenarios = [
-  { label: 'Full form',
-    props,
-  },
-  { label: 'Empty form',
-    props: {
-      ...props,
-      queue: {
-        queue: '',
-        meta: {
-          poll_delay: '',
-        },
-        consumer: null,
-      },
-      canCreate: false,
-    },
-  },
-]

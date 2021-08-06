@@ -1,22 +1,30 @@
 <template>
   <!-- <b-form-select
     v-model="current.props.queue.consumer"
+    // array of consumers
     :options="current.props.consumers"
+    // currently selected consumer
     :value="current.props.queue.consumer"
   /> -->
-  <div />
+  <b-form-group
+    :label="label"
+  >
+    <b-form-select
+      :options="value"
+    />
+  </b-form-group>
 </template>
 
 <script>
 export default {
   props: {
-    data: {
+    label: {
       required: true,
-      type: Object,
+      type: String,
     },
-    currentProps: {
-      required: true,
-      type: Object,
+    value: {
+      default: () => [],
+      type: Array,
     },
   },
 }
