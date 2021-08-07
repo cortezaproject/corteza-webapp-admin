@@ -1,5 +1,6 @@
-import * as c3Controls from '../../views/C3/Controls'
 import { default as component } from './CApplicationEditorUnify.vue'
+import { components } from '@cortezaproject/corteza-vue'
+const { checkbox } = components.C3.controls
 
 const props = {
   application: {},
@@ -20,17 +21,23 @@ const props = {
 }
 
 export default {
+  name: 'Unify editor',
+  group: ['Applications'],
   component,
   props,
 
   controls: [
-    c3Controls.input('Name', 'unify.name'),
-    c3Controls.input('URL', 'unify.url'),
-    c3Controls.textarea('Configuration', 'unify.config'),
-    c3Controls.checkbox('Listed', 'unify.listed'),
-    c3Controls.checkbox('Pinned', 'unify.pinned'),
-    c3Controls.checkbox('Processing', 'processing'),
-    c3Controls.checkbox('Success', 'success'),
+    checkbox('Processing', 'processing'),
+    checkbox('Success', 'success'),
+
+    // no need for the following controls, user can change the
+    // values via component inputs anyway..
+
+    // input('Name', 'unify.name'),
+    // input('URL', 'unify.url'),
+    // textarea('Configuration', 'unify.config'),
+    // checkbox('Listed', 'unify.listed'),
+    // checkbox('Pinned', 'unify.pinned'),
   ],
 
   scenarios: [

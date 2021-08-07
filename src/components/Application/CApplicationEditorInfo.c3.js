@@ -1,28 +1,34 @@
-import * as c3Controls from '../../views/C3/Controls'
 import { default as component } from './CApplicationEditorInfo.vue'
+import { components } from '@cortezaproject/corteza-vue'
+const { checkbox } = components.C3.controls
 
 const props = {
-  application: {
-    applicationID: '234900176853008386',
-    createdAt: '2021-06-09T12:03:36Z',
-    enabled: true,
-    name: 'Low Code',
-  },
+  application: { applicationID: '' },
   processing: false,
   success: false,
   canCreate: true,
 }
 
 export default {
+  name: 'Info editor',
+  group: ['Applications'],
   component,
   props,
 
   controls: [
-    c3Controls.input('Name', 'application.name'),
-    c3Controls.checkbox('Enabled', 'application.enabled'),
-    c3Controls.checkbox('Processing', 'processing'),
-    c3Controls.checkbox('Success', 'success'),
-    c3Controls.checkbox('CanCreate', 'canCreate'),
+    checkbox('Processing', 'processing'),
+    checkbox('Success', 'success'),
+    checkbox('CanCreate', 'canCreate'),
+    checkbox('Enable delete', {
+      value (p) { return p.application.applicationID.length > 0 },
+      update (p, val) { p.application.applicationID = val ? '123456789' : '' },
+    }),
+
+    // no need for the following controls, user can change the
+    // values via component inputs anyway..
+
+    // input('Name', 'application.name'),
+    // checkbox('Enabled', 'application.enabled'),
   ],
 
   scenarios: [

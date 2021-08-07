@@ -1,16 +1,10 @@
-import * as c3Controls from '../../views/C3/Controls'
 import { default as component } from './CQueueEditorInfo.vue'
-
-const consumers = [
-  { value: 'store', text: 'Store' },
-  { value: 'eventbus', text: 'Eventbus' },
-  { value: 'corteza', text: 'Corteza' },
-  { value: 'redis', text: 'Redis' },
-]
+import { components } from '@cortezaproject/corteza-vue'
+const { checkbox } = components.C3.controls
 
 const props = {
   queue: {
-    queueID: '234900180359446530',
+    queueID: '',
     queue: 'Name',
     meta: {
       poll_delay: '1h',
@@ -21,45 +15,25 @@ const props = {
   processing: false,
   success: false,
   canCreate: true,
-  consumers,
+  consumers: [
+    { value: 'dummy', text: 'Dummy' },
+  ],
 }
 
 export default {
+  name: 'Editor',
+  group: ['Queues'],
+
   component,
   props,
 
   controls: [
-    c3Controls.select('Consumer', 'queue.consumer', consumers),
-    c3Controls.input('Queue name', 'queue.queue'),
-    c3Controls.input('Poll delay', 'queue.meta.poll_delay'),
-    c3Controls.checkbox('Processing', 'processing'),
-    c3Controls.checkbox('Success', 'success'),
-    c3Controls.checkbox('CanCreate', 'canCreate'),
-  ],
-
-  scenarios: [
-    { label: 'Full form',
-      props,
-    },
-    { label: 'Empty form',
-      props: {
-        ...props,
-        queue: {
-          queue: '',
-          meta: {
-            poll_delay: '',
-          },
-          consumer: null,
-        },
-        canCreate: false,
-      },
-    },
+    checkbox('Processing', 'processing'),
+    checkbox('Success', 'success'),
+    checkbox('CanCreate', 'canCreate'),
+    checkbox('Enable delete', {
+      value (p) { return p.queue.queueID.length > 0 },
+      update (p, val) { p.queue.queueID = val ? '123456789' : '' },
+    }),
   ],
 }
-// export const controls = [
-//   {
-//     label: 'Consumer',
-//     type: 'b-form-select',
-//     options: props.consumers,
-//   },
-// ]
