@@ -1,16 +1,11 @@
 <template>
-  <!-- <b-form-select
-    v-model="current.props.queue.consumer"
-    // array of consumers
-    :options="current.props.consumers"
-    // currently selected consumer
-    :value="current.props.queue.consumer"
-  /> -->
   <b-form-group
     :label="label"
   >
     <b-form-select
-      :options="value"
+      :value="value"
+      :options="options"
+      @input="$emit('update', $event)"
     />
   </b-form-group>
 </template>
@@ -23,6 +18,10 @@ export default {
       type: String,
     },
     value: {
+      type: String,
+      default: () => undefined,
+    },
+    options: {
       default: () => [],
       type: Array,
     },

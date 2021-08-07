@@ -1,6 +1,13 @@
 import * as c3Controls from '../../views/C3/Controls'
 import { default as component } from './CQueueEditorInfo.vue'
 
+const consumers = [
+  { value: 'store', text: 'Store' },
+  { value: 'eventbus', text: 'Eventbus' },
+  { value: 'corteza', text: 'Corteza' },
+  { value: 'redis', text: 'Redis' },
+]
+
 const props = {
   queue: {
     queueID: '234900180359446530',
@@ -14,12 +21,7 @@ const props = {
   processing: false,
   success: false,
   canCreate: true,
-  consumers: [
-    { value: 'store', text: 'Store' },
-    { value: 'eventbus', text: 'Eventbus' },
-    { value: 'corteza', text: 'Corteza' },
-    { value: 'redis', text: 'Redis' },
-  ],
+  consumers,
 }
 
 export default {
@@ -27,7 +29,7 @@ export default {
   props,
 
   controls: [
-    c3Controls.select('Consumer', 'consumers'),
+    c3Controls.select('Consumer', 'queue.consumer', consumers),
     c3Controls.input('Queue name', 'queue.queue'),
     c3Controls.input('Poll delay', 'queue.meta.poll_delay'),
     c3Controls.checkbox('Processing', 'processing'),

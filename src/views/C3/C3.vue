@@ -89,8 +89,8 @@
             :is="c.component"
             v-for="(c, i) in current.controls"
             :key="i"
-            :label="c.label"
             :value="c.value(current.props)"
+            v-bind="c.props"
             @update="c.update(current.props, $event)"
           />
         </b-col>

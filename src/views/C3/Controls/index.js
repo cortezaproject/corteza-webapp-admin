@@ -3,8 +3,8 @@ import cmpTextarea from './C3Textarea'
 import cmpCheckbox from './C3Checkbox'
 import cmpSelect from './C3Select.vue'
 
-function generic (component, label, prop) {
-  let handlers = {
+function makeHandler (prop) {
+  return {
     value: (props) => {
       // eslint-disable-next-line no-eval
       return eval('props.' + prop)
@@ -13,28 +13,40 @@ function generic (component, label, prop) {
     // eslint-disable-next-line no-eval
     update: (props, value) => eval('props.' + prop + '= value'),
   }
+}
+
+function generic (component, { handler, props }) {
+  if (typeof handler === 'string') {
+    handler = makeHandler(handler)
+  }
 
   return {
-    label,
     component,
-    ...handlers,
+    props,
+    ...handler,
   }
 }
 
 export default generic
 
-export function input (label, prop) {
-  return generic(cmpInput, label, prop)
+export function input (label, handler) {
+  return generic(cmpInput, { handler, props: { label } })
 }
 
-export function textarea (label, prop) {
-  return generic(cmpTextarea, label, prop)
+export function textarea (label, handler) {
+  return generic(cmpTextarea, { handler, props: { label } })
 }
 
-export function checkbox (label, prop) {
-  return generic(cmpCheckbox, label, prop)
+export function checkbox (label, handler) {
+  return generic(cmpCheckbox, { handler, props: { label } })
 }
 
-export function select (label, prop) {
-  return generic(cmpSelect, label, prop)
+export function select (label, handler, options) {
+  return generic(cmpSelect, {
+    handler,
+    props: {
+      label,
+      options,
+    },
+  })
 }

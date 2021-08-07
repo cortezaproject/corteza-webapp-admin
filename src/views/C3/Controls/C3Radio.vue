@@ -1,6 +1,5 @@
 <template>
   <b-form-radio
-    class="pl-1 form-check-input text-center"
     :value="data.value(currentProps)"
     @change="data.handle(currentProps, $event)"
   />

@@ -10,10 +10,6 @@
 </template>
 
 <script>
-// <b-form-input
-//   :value="typeof controls.value === 'function' ? controls.value(currentProps) : controls.value"
-//   @update="controls.handle(currentProps, $event)"
-// />
 export default {
   props: {
     label: {
