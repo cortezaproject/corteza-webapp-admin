@@ -14,24 +14,23 @@
         {{ $t(grp.header.label) }}
       </h2>
 
-      <c-main-nav-item
-        v-for="(itm, i) in grp.items"
-        :key="i"
-        :label="$t(itm.label)"
-        :to="itm.route"
-        :icon="itm.icon"
+      <c-sidebar-nav-items
+        :items="grp.items"
+        default-route-name="dashboard"
+        class="overflow-auto h-100"
       />
     </b-list-group>
   </div>
 </template>
 <script>
-import CMainNavItem from 'corteza-webapp-admin/src/components/CMainNavItem'
 import def from 'corteza-webapp-admin/src/nav'
 import { mapGetters } from 'vuex'
+import { components } from '@cortezaproject/corteza-vue'
+const { CSidebarNavItems } = components
 
 export default {
   components: {
-    CMainNavItem,
+    CSidebarNavItems,
   },
 
   computed: {
@@ -43,14 +42,10 @@ export default {
       return def.map(grp => {
         grp.items = grp.items
           .map(itm => {
-            if (itm.icon && typeof itm.icon === 'string') {
-              // default to FAS icons
-              itm.icon = [ 'fas', itm.icon ]
-            }
-
-            if (itm.route && typeof itm.route === 'string') {
-              // assume name of the route if string
-              itm.route = { name: itm.route }
+            const page = {
+              name: itm.route,
+              title: this.$t(itm.label),
+              icon: [ 'fas', itm.icon ],
             }
 
             if (!itm.can) {
@@ -63,7 +58,7 @@ export default {
               itm.can = this.can(...itm.can)
             }
 
-            return itm
+            return { page, can: itm.can }
           })
           .filter(({ can }) => can)
 
