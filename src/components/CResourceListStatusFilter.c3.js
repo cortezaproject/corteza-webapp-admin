@@ -21,7 +21,8 @@ const controls = [
 ]
 
 export default {
-  name: 'Resource List status filter',
+  name: 'Resource list status filter',
+  group: ['Root components'],
   component,
   controls,
 }

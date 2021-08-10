@@ -21,7 +21,7 @@ const props = {
 }
 
 export default {
-  name: 'Editor',
+  name: 'Editor info',
   group: ['Queues'],
 
   component,

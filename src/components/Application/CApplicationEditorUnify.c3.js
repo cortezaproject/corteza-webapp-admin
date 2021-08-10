@@ -21,7 +21,7 @@ const props = {
 }
 
 export default {
-  name: 'Unify editor',
+  name: 'Editor unify',
   group: ['Applications'],
   component,
   props,
@@ -29,15 +29,6 @@ export default {
   controls: [
     checkbox('Processing', 'processing'),
     checkbox('Success', 'success'),
-
-    // no need for the following controls, user can change the
-    // values via component inputs anyway..
-
-    // input('Name', 'unify.name'),
-    // input('URL', 'unify.url'),
-    // textarea('Configuration', 'unify.config'),
-    // checkbox('Listed', 'unify.listed'),
-    // checkbox('Pinned', 'unify.pinned'),
   ],
 
   scenarios: [

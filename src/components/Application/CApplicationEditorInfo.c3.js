@@ -10,7 +10,7 @@ const props = {
 }
 
 export default {
-  name: 'Info editor',
+  name: 'Editor info',
   group: ['Applications'],
   component,
   props,
@@ -23,12 +23,6 @@ export default {
       value (p) { return p.application.applicationID.length > 0 },
       update (p, val) { p.application.applicationID = val ? '123456789' : '' },
     }),
-
-    // no need for the following controls, user can change the
-    // values via component inputs anyway..
-
-    // input('Name', 'application.name'),
-    // checkbox('Enabled', 'application.enabled'),
   ],
 
   scenarios: [

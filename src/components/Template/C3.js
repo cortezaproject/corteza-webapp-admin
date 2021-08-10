@@ -1,12 +1,15 @@
-import { default as component } from './CRoleEditorInfo.vue'
+import { default as component } from './CTemplateEditorInfo.vue'
 import { components } from '@cortezaproject/corteza-vue'
 const { checkbox } = components.C3.controls
 
 const props = {
-  role: {
-    roleID: '',
-    name: 'Federation',
-    handle: 'federation',
+  template: {
+    templateID: '',
+    meta: {
+      short: 'Name',
+      description: 'Desc',
+    },
+    handle: 'Handle',
   },
   processing: false,
   success: false,
@@ -15,7 +18,7 @@ const props = {
 
 export default {
   name: 'Editor info',
-  group: ['Role'],
+  group: ['Templates'],
   component,
   props,
 
@@ -23,9 +26,9 @@ export default {
     checkbox('Processing', 'processing'),
     checkbox('Success', 'success'),
     checkbox('CanCreate', 'canCreate'),
-    checkbox('Enable delete and archive', {
-      value (p) { return p.role.roleID.length > 0 },
-      update (p, val) { p.role.roleID = val ? '123456789' : '' },
+    checkbox('Enable delete', {
+      value (p) { return p.template.templateID.length > 0 },
+      update (p, val) { p.template.templateID = val ? '123456789' : '' },
     }),
   ],
 
@@ -36,9 +39,12 @@ export default {
     { label: 'Empty form',
       props: {
         ...props,
-        role: {
-          ...props.role,
-          name: '',
+        template: {
+          ...props.template,
+          meta: {
+            short: '',
+            description: '',
+          },
           handle: '',
         },
         canCreate: false,

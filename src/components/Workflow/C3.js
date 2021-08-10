@@ -1,12 +1,15 @@
-import { default as component } from './CRoleEditorInfo.vue'
+import { default as component } from './CWorkflowEditorInfo.vue'
 import { components } from '@cortezaproject/corteza-vue'
 const { checkbox } = components.C3.controls
 
 const props = {
-  role: {
-    roleID: '',
-    name: 'Federation',
-    handle: 'federation',
+  workflow: {
+    workflowID: '',
+    meta: {
+      name: 'CRM-Test',
+    },
+    handle: 'CRMT',
+    enabled: true,
   },
   processing: false,
   success: false,
@@ -15,7 +18,7 @@ const props = {
 
 export default {
   name: 'Editor info',
-  group: ['Role'],
+  group: ['Workflow'],
   component,
   props,
 
@@ -23,9 +26,9 @@ export default {
     checkbox('Processing', 'processing'),
     checkbox('Success', 'success'),
     checkbox('CanCreate', 'canCreate'),
-    checkbox('Enable delete and archive', {
-      value (p) { return p.role.roleID.length > 0 },
-      update (p, val) { p.role.roleID = val ? '123456789' : '' },
+    checkbox('Enable delete', {
+      value (p) { return p.workflow.workflowID.length > 0 },
+      update (p, val) { p.workflow.workflowID = val ? '123456789' : '' },
     }),
   ],
 
@@ -36,10 +39,13 @@ export default {
     { label: 'Empty form',
       props: {
         ...props,
-        role: {
-          ...props.role,
-          name: '',
+        workflow: {
+          ...props.workflow,
+          meta: {
+            name: '',
+          },
           handle: '',
+          enabled: false,
         },
         canCreate: false,
       },

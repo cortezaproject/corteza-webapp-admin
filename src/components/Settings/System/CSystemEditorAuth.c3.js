@@ -1,11 +1,11 @@
-import { default as component } from './CComposeEditorBasic.vue'
+import { default as component } from './CSystemEditorAuth.vue'
 import { components } from '@cortezaproject/corteza-vue'
 const { checkbox } = components.C3.controls
 
 const props = {
-  basic: {
-    'compose.page.attachments.max-size': 22,
-    'compose.record.attachments.max-size': 22,
+  settings: {
+    'auth.internal.enabled': true,
+    'auth.internal.signup.enabled': true,
   },
   processing: false,
   success: false,
@@ -13,11 +13,10 @@ const props = {
 }
 
 export default {
-  name: 'Compose editor basic',
+  name: 'System editor auth',
   group: ['Settings'],
   component,
   props,
-
   controls: [
     checkbox('Processing', 'processing'),
     checkbox('Success', 'success'),
@@ -31,12 +30,11 @@ export default {
     { label: 'Empty form',
       props: {
         ...props,
-        basic: {
-          ...props.basic,
-          'compose.page.attachments.max-size': '',
-          'compose.record.attachments.max-size': '',
+        settings: {
+          'auth.internal.enabled': false,
+          'auth.internal.signup.enabled': false,
         },
-        canCreate: false,
+        canManage: false,
       },
     },
   ],

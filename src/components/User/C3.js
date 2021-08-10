@@ -1,31 +1,33 @@
-import { default as component } from './CRoleEditorInfo.vue'
+import { default as component } from './CUserEditorInfo.vue'
 import { components } from '@cortezaproject/corteza-vue'
 const { checkbox } = components.C3.controls
 
 const props = {
-  role: {
-    roleID: '',
-    name: 'Federation',
-    handle: 'federation',
+  user: {
+    userID: '',
+    email: 'email@mail.bg',
+    name: 'Stefan',
+    handle: 'SS',
   },
+  uiPage: 'user/editor',
+  resourceType: 'system:user',
+  uiSlot: 'infoFooter',
   processing: false,
   success: false,
-  canCreate: true,
 }
 
 export default {
   name: 'Editor info',
-  group: ['Role'],
+  group: ['User'],
   component,
   props,
 
   controls: [
     checkbox('Processing', 'processing'),
     checkbox('Success', 'success'),
-    checkbox('CanCreate', 'canCreate'),
-    checkbox('Enable delete and archive', {
-      value (p) { return p.role.roleID.length > 0 },
-      update (p, val) { p.role.roleID = val ? '123456789' : '' },
+    checkbox('Enable delete and suspend', {
+      value (p) { return p.user.userID.length > 0 },
+      update (p, val) { p.user.userID = val ? '123456789' : '' },
     }),
   ],
 
@@ -36,12 +38,12 @@ export default {
     { label: 'Empty form',
       props: {
         ...props,
-        role: {
-          ...props.role,
+        user: {
+          ...props.user,
+          email: '',
           name: '',
           handle: '',
         },
-        canCreate: false,
       },
     },
   ],
