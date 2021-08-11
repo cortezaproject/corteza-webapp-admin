@@ -28,7 +28,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   i18nOptions: {
-    namespaces: [ 'automation.permissions' ],
+    namespaces: 'automation.permissions',
     keyPrefix: 'list',
   },
 

@@ -41,7 +41,7 @@ export default {
   name: 'CWorkflowEditorTriggers',
 
   i18nOptions: {
-    namespaces: [ 'automation.workflows' ],
+    namespaces: 'automation.workflows',
     keyPrefix: 'editor.triggers',
   },
 

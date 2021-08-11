@@ -202,6 +202,7 @@ export default {
 
     navigation () {
       return this.nav.map(grp => {
+        grp = JSON.parse(JSON.stringify(grp))
         grp.items = grp.items
           .map(itm => {
             const page = {

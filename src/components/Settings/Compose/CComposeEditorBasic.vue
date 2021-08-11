@@ -77,7 +77,7 @@ export default {
   name: 'CComposeEditorBasic',
 
   i18nOptions: {
-    namespaces: [ 'compose.settings' ],
+    namespaces: 'compose.settings',
     keyPrefix: 'editor.basic',
   },
 

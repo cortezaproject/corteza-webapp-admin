@@ -110,7 +110,7 @@ export default {
   name: 'CQueueEditorInfo',
 
   i18nOptions: {
-    namespaces: ['system.queues'],
+    namespaces: 'system.queues',
     keyPrefix: 'editor.info',
   },
 

@@ -229,7 +229,7 @@ import * as moment from 'moment'
 
 export default {
   i18nOptions: {
-    namespaces: [ 'dashboard' ],
+    namespaces: 'dashboard',
   },
 
   data () {

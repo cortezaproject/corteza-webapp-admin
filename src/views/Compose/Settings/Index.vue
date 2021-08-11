@@ -25,7 +25,7 @@ const prefix = 'compose.'
 
 export default {
   i18nOptions: {
-    namespaces: [ 'compose.settings' ],
+    namespaces: 'compose.settings',
     keyPrefix: 'editor',
   },
 

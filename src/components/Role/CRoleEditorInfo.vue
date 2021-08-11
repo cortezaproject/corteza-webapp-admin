@@ -129,7 +129,7 @@ export default {
   name: 'CRoleEditorInfo',
 
   i18nOptions: {
-    namespaces: [ 'system.roles' ],
+    namespaces: 'system.roles',
     keyPrefix: 'editor.info',
   },
 

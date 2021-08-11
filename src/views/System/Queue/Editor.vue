@@ -42,7 +42,7 @@ export default {
   },
 
   i18nOptions: {
-    namespaces: [ 'system.queues' ],
+    namespaces: 'system.queues',
     keyPrefix: 'editor',
   },
 

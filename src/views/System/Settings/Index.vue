@@ -32,7 +32,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   i18nOptions: {
-    namespaces: [ 'system.settings' ],
+    namespaces: 'system.settings',
     keyPrefix: 'editor',
   },
 

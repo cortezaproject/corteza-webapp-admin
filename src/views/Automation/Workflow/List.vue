@@ -89,7 +89,7 @@ export default {
   ],
 
   i18nOptions: {
-    namespaces: [ 'automation.workflows' ],
+    namespaces: 'automation.workflows',
     keyPrefix: 'list',
   },
 

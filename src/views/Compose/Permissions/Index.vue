@@ -28,7 +28,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   i18nOptions: {
-    namespaces: [ 'compose.permissions' ],
+    namespaces: 'compose.permissions',
     keyPrefix: 'list',
   },
 

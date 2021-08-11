@@ -300,7 +300,7 @@ export default {
   ],
 
   i18nOptions: {
-    namespaces: [ 'system.actionlog' ],
+    namespaces: 'system.actionlog',
     keyPrefix: 'list',
   },
 

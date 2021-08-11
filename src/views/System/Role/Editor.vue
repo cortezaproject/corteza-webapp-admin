@@ -71,7 +71,7 @@ export default {
   },
 
   i18nOptions: {
-    namespaces: [ 'system.roles' ],
+    namespaces: 'system.roles',
     keyPrefix: 'editor',
   },
 

@@ -159,7 +159,7 @@ export default {
   name: 'CSessionEditorInfo',
 
   i18nOptions: {
-    namespaces: [ 'automation.sessions' ],
+    namespaces: 'automation.sessions',
     keyPrefix: 'editor.info',
   },
 

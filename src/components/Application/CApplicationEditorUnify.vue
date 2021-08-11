@@ -124,7 +124,7 @@ export default {
   name: 'CApplicationEditorUnify',
 
   i18nOptions: {
-    namespaces: [ 'system.applications' ],
+    namespaces: 'system.applications',
     keyPrefix: 'editor.unify',
   },
 

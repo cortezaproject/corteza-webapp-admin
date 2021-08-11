@@ -188,7 +188,7 @@ export default {
   ],
 
   i18nOptions: {
-    namespaces: [ 'automation.scripts' ],
+    namespaces: 'automation.scripts',
     keyPrefix: 'list',
   },
 

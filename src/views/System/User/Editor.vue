@@ -96,7 +96,7 @@ export default {
   },
 
   i18nOptions: {
-    namespaces: [ 'system.users' ],
+    namespaces: 'system.users',
     keyPrefix: 'editor',
   },
 

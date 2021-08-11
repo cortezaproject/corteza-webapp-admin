@@ -132,7 +132,7 @@ import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 
 export default {
   i18nOptions: {
-    namespaces: [ 'federation.nodes' ],
+    namespaces: 'federation.nodes',
     keyPrefix: 'editor',
   },
 

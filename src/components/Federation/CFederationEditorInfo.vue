@@ -159,7 +159,7 @@ export default {
   name: 'CFederationEditorInfo',
 
   i18nOptions: {
-    namespaces: [ 'federation.nodes' ],
+    namespaces: 'federation.nodes',
     keyPrefix: 'editor.info',
   },
 
