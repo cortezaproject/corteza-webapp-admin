@@ -8,12 +8,11 @@ import './mixins'
 import './components'
 import './filters'
 
-import i18n from './i18n'
 import store from './store'
 import router from './router'
 
 import { system } from '@cortezaproject/corteza-js'
-import { mixins, corredor, websocket } from '@cortezaproject/corteza-vue'
+import { mixins, corredor, websocket, i18n } from '@cortezaproject/corteza-vue'
 import { mapGetters } from 'vuex'
 
 const notProduction = (process.env.NODE_ENV !== 'production')
@@ -22,13 +21,16 @@ export default (options = {}) => {
   options = {
     el: '#app',
     name: 'admin',
-    template: '<div v-if="loaded && isRbacLoaded"><router-view/><vue-progress-bar /></div>',
+    template: '<div><router-view v-if="loaded && i18nLoaded && isRbacLoaded" /><vue-progress-bar /></div>',
 
     mixins: [
       mixins.corredor,
     ],
 
-    data: () => ({ loaded: false }),
+    data: () => ({
+      loaded: false,
+      i18nLoaded: false,
+    }),
 
     mounted () {
       this.$Progress.finish()
@@ -41,6 +43,12 @@ export default (options = {}) => {
     },
 
     async created () {
+      this.$Progress.start()
+
+      this.$i18n.i18next.on('loaded', () => {
+        this.i18nLoaded = true
+      })
+
       // cross link auth & websocket so that ws
       // can use the right access token
       websocket.init(this)
@@ -49,7 +57,6 @@ export default (options = {}) => {
 
       return this.$auth.vue(this).handle().then(({ accessTokenFn, user }) => {
         // Setup the progress bar
-        this.$Progress.start()
         this.$router.beforeEach((to, from, next) => {
           this.$Progress.start()
           next()
@@ -144,7 +151,34 @@ export default (options = {}) => {
 
     router,
     store,
-    i18n: i18n(),
+    i18n: i18n(Vue,
+      'admin',
+      'dashboard',
+      'system',
+      'system.stats',
+      'system.applications',
+      'system.users',
+      'system.roles',
+      'system.templates',
+      'system.scripts',
+      'system.settings',
+      'system.authclients',
+      'system.permissions',
+      'system.actionlog',
+      'system.queues',
+      'compose',
+      'compose.settings',
+      'compose.permissions',
+      'compose.automation',
+      'federation',
+      'federation.nodes',
+      'federation.permissions',
+      'automation',
+      'automation.workflows',
+      'automation.scripts',
+      'automation.sessions',
+      'automation.permissions',
+    ),
 
     // Any additional options we want to merge
     ...options,

@@ -125,7 +125,7 @@ export default {
   name: 'CTemplateEditorInfo',
 
   i18nOptions: {
-    namespaces: [ 'system.templates' ],
+    namespaces: 'system.templates',
     keyPrefix: 'editor.info',
   },
 

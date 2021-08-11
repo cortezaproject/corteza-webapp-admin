@@ -40,6 +40,7 @@ export default {
 
     navigation () {
       return def.map(grp => {
+        grp = JSON.parse(JSON.stringify(grp))
         grp.items = grp.items
           .map(itm => {
             const page = {

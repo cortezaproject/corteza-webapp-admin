@@ -160,7 +160,7 @@ export default {
   name: 'FederationList',
 
   i18nOptions: {
-    namespaces: [ 'federation.nodes' ],
+    namespaces: 'federation.nodes',
     keyPrefix: 'list',
   },
 

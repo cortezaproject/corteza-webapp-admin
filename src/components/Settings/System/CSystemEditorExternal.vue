@@ -95,7 +95,7 @@ export default {
   name: 'CSystemEditorExternal',
 
   i18nOptions: {
-    namespaces: [ 'system.settings' ],
+    namespaces: 'system.settings',
     keyPrefix: 'editor.external',
   },
 

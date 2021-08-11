@@ -343,7 +343,7 @@ export default {
   name: 'CAuthclientEditorInfo',
 
   i18nOptions: {
-    namespaces: [ 'system.authclients' ],
+    namespaces: 'system.authclients',
     keyPrefix: 'editor.info',
   },
 

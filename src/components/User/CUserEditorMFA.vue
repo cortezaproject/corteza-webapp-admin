@@ -75,7 +75,7 @@ export default {
   name: 'CUserEditorMFA',
 
   i18nOptions: {
-    namespaces: [ 'system.users' ],
+    namespaces: 'system.users',
     keyPrefix: 'editor.mfa',
   },
 

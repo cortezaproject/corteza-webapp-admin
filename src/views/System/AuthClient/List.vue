@@ -66,7 +66,7 @@ export default {
   ],
 
   i18nOptions: {
-    namespaces: [ 'system.authclients' ],
+    namespaces: 'system.authclients',
     keyPrefix: 'list',
   },
 

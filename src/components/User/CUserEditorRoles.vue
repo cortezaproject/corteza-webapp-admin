@@ -35,7 +35,7 @@ import CRolePicker from 'corteza-webapp-admin/src/components/CRolePicker'
 
 export default {
   i18nOptions: {
-    namespaces: [ 'system.users' ],
+    namespaces: 'system.users',
     keyPrefix: 'editor.roles',
   },
 

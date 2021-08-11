@@ -24,7 +24,7 @@ export default {
   },
 
   i18nOptions: {
-    namespaces: [ 'automation.sessions' ],
+    namespaces: 'automation.sessions',
     keyPrefix: 'editor',
   },
 

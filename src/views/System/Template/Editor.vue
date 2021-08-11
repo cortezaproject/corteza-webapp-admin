@@ -74,7 +74,7 @@ export default {
   },
 
   i18nOptions: {
-    namespaces: [ 'system.templates' ],
+    namespaces: 'system.templates',
     keyPrefix: 'editor',
   },
 

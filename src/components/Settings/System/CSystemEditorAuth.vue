@@ -177,7 +177,7 @@ export default {
   name: 'CSystemEditorAuth',
 
   i18nOptions: {
-    namespaces: [ 'system.settings' ],
+    namespaces: 'system.settings',
     keyPrefix: 'editor.auth',
   },
 

@@ -64,7 +64,7 @@ export default {
   },
 
   i18nOptions: {
-    namespaces: [ 'system.applications' ],
+    namespaces: 'system.applications',
     keyPrefix: 'editor',
   },
 

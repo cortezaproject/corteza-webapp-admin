@@ -32,7 +32,7 @@ export default {
   name: 'CSubmitButton',
 
   i18nOptions: {
-    namespaces: [ 'admin' ],
+    namespaces: 'admin',
   },
 
   props: {
