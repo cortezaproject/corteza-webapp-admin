@@ -65,6 +65,11 @@ export default {
       validEndpoint: 'Invalid endpoint format',
     },
     functions: {
+      title: 'Function list',
+      modal: {
+        title: 'Query parameters verifier',
+        ok: 'Save & Close',
+      },
       step_title: {
         verifier: 'Access control',
         validator: 'Validation',

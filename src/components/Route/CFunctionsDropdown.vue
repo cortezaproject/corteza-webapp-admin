@@ -2,7 +2,7 @@
   <b-dropdown
     :text="$t('functions.addFunction')"
     class="min-content"
-    variant="light"
+    variant="primary"
   >
     <template v-if="functionList.length">
       <b-dropdown-item
@@ -17,7 +17,7 @@
     </template>
     <b-dropdown-item
       v-else
-      disabled="true"
+      disabled
       href="#"
     >
       <span class="text-danger">
@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     onAddFunction (func) {
-      this.$emit('functionSelect', func)
+      this.$emit('addFunction', func)
     },
   },
 }

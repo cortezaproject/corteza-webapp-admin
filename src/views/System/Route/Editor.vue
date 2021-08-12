@@ -271,7 +271,7 @@ export default {
         .apigwFunctionDefinitions()
         .then((api) => {
           this.availableFunctions = api.map((f) => {
-            return { name, ...f, ref: f.name }
+            return { name, ...f, ref: f.name, status: 'Active', options: { checked: false } }
           })
         })
         .catch(this.stdReject)

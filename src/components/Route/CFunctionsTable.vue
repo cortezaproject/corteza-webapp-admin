@@ -1,56 +1,84 @@
 <template>
-  <b-table-simple
-    class="function-table"
-    hover
-  >
-    <b-thead>
-      <b-tr>
-        <b-th>{{ $t('functions.list.functions') }}</b-th>
-        <b-th>{{ $t('functions.list.status') }}</b-th>
-        <b-th>{{ $t('functions.list.actions') }}</b-th>
-      </b-tr>
-    </b-thead>
-
-    <draggable
-      v-if="sortableFunctions.length"
-      v-model="sortableFunctions"
-      tag="b-tbody"
-      @end="checkMove"
+  <div>
+    <b-table-simple
+      class="function-table"
+      hover
     >
-      <b-tr
-        v-for="(func, index) in sortableFunctions"
+      <b-thead>
+        <b-tr>
+          <b-th>
+            <b-form-checkbox
+              v-model="checkAll"
+              class="light"
+              @change="functionCheckAll()"
+            />
+          </b-th>
+          <b-th>{{ $t('functions.list.functions') }}</b-th>
+          <b-th>{{ $t('functions.list.status') }}</b-th>
+          <b-th>{{ $t('functions.list.actions') }}</b-th>
+        </b-tr>
+      </b-thead>
 
-        :key="index"
-        class="pointer"
-        :class="[selectedRow===index ? 'row-selected' : 'row-not-selected']"
-        @click.stop="onRowClick(func,index)"
+      <draggable
+        v-if="sortableFunctions.length"
+        v-model="sortableFunctions"
+        tag="b-tbody"
+        @end="checkMove"
       >
-        <b-td>{{ func.label }}</b-td>
-        <b-td>{{ $t('functions.list.active') }}</b-td>
-        <b-td>
-          <b-button
-            variant="danger"
-            class="my-1"
-            size="sm"
-            @click.stop="onRemoveFunction(func)"
+        <b-tr
+          v-for="(func, index) in sortableFunctions"
+          :key="index"
+          class="pointer"
+          :class="[selectedRow===index ? 'row-selected' : 'row-not-selected']"
+          @click.stop="onRowClick(func,index)"
+        >
+          <b-td
+            class="cursor-default"
+            @click.stop
           >
-            {{ $t('functions.list.remove') }}
-          </b-button>
-        </b-td>
-      </b-tr>
-    </draggable>
-    <b-tbody v-else>
-      <b-tr class="mt-2 text-danger">
-        {{ $t('functions.list.noFunctionsMsg') }}
-      </b-tr>
-    </b-tbody>
-  </b-table-simple>
+            <b-form-checkbox
+              v-model="func.options.checked"
+              class="light"
+              @change.stop="functionChecked(index)"
+            />
+          </b-td>
+          <b-td>
+            {{ func.label }}
+          </b-td>
+          <b-td>{{ $t('functions.list.active') }}</b-td>
+          <b-td>
+            <b-button
+              variant="danger"
+              class="my-1"
+              size="sm"
+              @click.stop="onRemoveFunction(func)"
+            >
+              {{ $t('functions.list.remove') }}
+            </b-button>
+          </b-td>
+        </b-tr>
+      </draggable>
+      <b-tbody v-else>
+        <b-tr class="mt-2 text-danger">
+          {{ $t('functions.list.noFunctionsMsg') }}
+        </b-tr>
+      </b-tbody>
+    </b-table-simple>
+    <c-function-modal
+      :func="selectedFunction"
+      :step="step"
+      @addFunction="onAddFunction"
+      @updateFunction="onUpdateFunction"
+    />
+  </div>
 </template>
 
 <script>
+import CFunctionModal from 'corteza-webapp-admin/src/components/Route/CFunctionModal'
 import draggable from 'vuedraggable'
 export default {
   components: {
+    CFunctionModal,
     draggable,
   },
   props: {
@@ -58,11 +86,16 @@ export default {
       type: Array,
       required: true,
     },
+    step: {
+      type: Number,
+      default: () => 0,
+    },
   },
 
   data () {
     return {
       selectedRow: 0,
+      selectedFunction: {},
     }
   },
   computed: {
@@ -74,8 +107,19 @@ export default {
         this.$emit('sortFunctions', v)
       },
     },
+    checkAll: {
+      get: function () {
+        return this.functions.every(f => f.options.checked === true)
+      },
+      set: function () {
+      },
+    },
   },
   methods: {
+
+    onUpdateFunction (func) {
+      this.$emit('updateFunction', func)
+    },
     onAddFunction (func) {
       if (!this.functions.find(f => f.ref === func.ref)) {
         this.functions.push({ ...func })
@@ -90,6 +134,8 @@ export default {
     onRowClick (func, index) {
       this.selectedRow = index
       this.$emit('functionSelect', func)
+      this.selectedFunction = func
+      this.$bvModal.show('functionModal' + this.step)
     },
     onSelectLastRow () {
       this.selectedRow = this.functions.length
@@ -101,12 +147,25 @@ export default {
       this.selectedRow = evt.newDraggableIndex
       this.$emit('functionSelect', this.sortableFunctions[evt.newDraggableIndex])
     },
+    functionChecked (index) {
+      this.functions[index].options.checked = !this.functions[index].options.checked
+    },
+    functionCheckAll () {
+      if (this.checkAll) {
+        this.functions.forEach(f => { f.options.checked = false })
+      } else {
+        this.functions.forEach(f => { f.options.checked = true })
+      }
+    },
   },
 }
 </script>
 
 <style lang="scss">
-  .function-table .row-selected{
-    background: #F3F3F5;
-  }
+.function-table .row-selected{
+  background: #F3F3F5;
+}
+.cursor-default{
+  cursor: default;
+}
 </style>

@@ -9,7 +9,6 @@
         <b-form-group
           :key="index"
           :label="$t(`functions.labels.${param.label}`)"
-          label-cols="4"
         >
           <!-- TODO create multi field component-->
           <b-form-checkbox
