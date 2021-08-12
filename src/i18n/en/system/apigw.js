@@ -64,25 +64,24 @@ export default {
       createdAt: 'Created at',
       validEndpoint: 'Invalid endpoint format',
     },
-    functions: {
-      title: 'Function list',
+    filters: {
+      title: 'Filter list',
       modal: {
         title: 'Query parameters verifier',
         ok: 'Save & Close',
       },
       step_title: {
-        verifier: 'Access control',
-        validator: 'Validation',
+        prefilter: 'Prefiltering',
         processer: 'Processing',
-        expediter: 'Expediting',
+        postfilter: 'Postfiltering',
       },
       list: {
         remove: 'Remove',
-        functions: 'Functions',
+        filters: 'Filters',
         status: 'Status',
         actions: 'Actions',
         active: 'Active',
-        noFunctionsMsg: 'Please add a function!',
+        noFiltersMsg: 'Please add a filter!',
       },
       labels: {
         expr: 'Expression',
@@ -92,9 +91,9 @@ export default {
       },
 
       add: 'Add',
-      addFunction: 'Add function',
+      addFilter: 'Add filter',
       params: 'Params',
-      functionListEmpty: 'Function list is empty!',
+      filterListEmpty: 'Filter list is empty!',
     },
   },
 

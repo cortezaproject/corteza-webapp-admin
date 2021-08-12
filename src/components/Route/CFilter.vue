@@ -2,7 +2,7 @@
   <div
     class="form d-flex flex-column"
   >
-    <c-function-params
+    <c-filter-params
       :params="func.params"
       :label="func.label"
       @paramsUpdated="onParamsUpdated"
@@ -12,7 +12,7 @@
       :disabled="added"
       class="mb-2 d-flex mr-auto align-items-center"
       size="md"
-      @click="onFunctionAdd"
+      @click="onFilterAdd"
     >
       <span>
         <font-awesome-icon
@@ -20,17 +20,17 @@
           size="sm"
           class="mr-1"
         />
-        {{ $t('functions.add') }}
+        {{ $t('filters.add') }}
       </span>
     </b-button>
   </div>
 </template>
 <script>
-import CFunctionParams from 'corteza-webapp-admin/src/components/Route/CFunctionParams'
+import CFilterParams from 'corteza-webapp-admin/src/components/Route/CFilterParams'
 
 export default {
   components: {
-    CFunctionParams,
+    CFilterParams,
   },
   props: {
     func: {
@@ -48,10 +48,10 @@ export default {
   },
   methods: {
     onParamsUpdated () {
-      this.$emit('updateFunction', { ...this.func, updated: true })
+      this.$emit('updateFilter', { ...this.func, updated: true })
     },
-    onFunctionAdd () {
-      this.$emit('addFunction', { ...this.func, updated: true })
+    onFilterAdd () {
+      this.$emit('addFilter', { ...this.func, updated: true })
     },
   },
 }

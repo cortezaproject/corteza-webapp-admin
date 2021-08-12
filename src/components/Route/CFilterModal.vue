@@ -1,11 +1,11 @@
 <template>
   <div>
     <b-modal
-      :id="'functionModal'+step"
+      :id="'filterModal'+step"
       ok-only
       size="lg"
       :title="(func || {}).label"
-      :ok-title="$t('functions.modal.ok')"
+      :ok-title="$t('filters.modal.ok')"
       body-class="p-0"
       @ok="onSave"
     >
@@ -17,7 +17,7 @@
             cols="6"
           >
             <b-form-group
-              label="Function name"
+              label="Filter name"
             >
               <b-form-input
                 v-model="(func || {}).label"
@@ -40,7 +40,7 @@
             </b-form-group>
           </b-col>
         </b-row>
-        <c-function-params
+        <c-filter-params
           :params="(func || {}).params"
           :label="(func || {}).label"
           @paramsUpdated="onParamsUpdated"
@@ -51,11 +51,11 @@
 </template>
 
 <script>
-import CFunctionParams from 'corteza-webapp-admin/src/components/Route/CFunctionParams'
+import CFilterParams from 'corteza-webapp-admin/src/components/Route/CFilterParams'
 
 export default {
   components: {
-    CFunctionParams,
+    CFilterParams,
   },
 
   props: {
@@ -91,7 +91,7 @@ export default {
   methods: {
     onSave () {
       if (this.updated) {
-        this.$emit('updateFunction', { ...this.func, updated: true })
+        this.$emit('updateFilter', { ...this.func, updated: true })
       }
       this.showModal = false
     },

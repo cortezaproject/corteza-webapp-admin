@@ -71,7 +71,7 @@ export default [
         label: 'system.routes:navItem.label',
         route: 'system.route',
         icon: 'archway',
-        can: ['system/', 'api-gw-routes.search'],
+        can: ['system/', 'apigw-routes.search'],
       },
     ],
   },

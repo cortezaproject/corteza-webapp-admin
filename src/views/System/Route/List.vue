@@ -133,7 +133,7 @@ export default {
       can: 'rbac/can',
     }),
     canCreate () {
-      return this.can('system/', 'api-gw-route.create')
+      return this.can('system/', 'apigw-route.create')
     },
     canGrant () {
       return this.can('system/', 'grant')

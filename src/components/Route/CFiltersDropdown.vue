@@ -1,16 +1,16 @@
 <template>
   <b-dropdown
-    :text="$t('functions.addFunction')"
+    :text="$t('filters.addFilter')"
     class="min-content"
     variant="primary"
   >
-    <template v-if="functionList.length">
+    <template v-if="filterList.length">
       <b-dropdown-item
-        v-for="(func, index) in functionList"
+        v-for="(func, index) in filterList"
         :key="index"
         :disabled="func.disabled"
         href="#"
-        @click="onAddFunction(func)"
+        @click="onAddFilter(func)"
       >
         {{ func.label }}
       </b-dropdown-item>
@@ -21,7 +21,7 @@
       href="#"
     >
       <span class="text-danger">
-        {{ $t('functions.functionListEmpty') }}
+        {{ $t('filters.filterListEmpty') }}
       </span>
     </b-dropdown-item>
   </b-dropdown>
@@ -30,25 +30,25 @@
 <script>
 export default {
   props: {
-    availableFunctions: {
+    availableFilters: {
       type: Array,
       required: true,
     },
-    functions: {
+    filters: {
       type: Array,
       required: true,
     },
   },
   computed: {
-    functionList () {
-      return this.availableFunctions.map(f => {
-        return { ...f, disabled: !!(this.functions || []).some(func => func.ref === f.ref) }
+    filterList () {
+      return this.availableFilters.map(f => {
+        return { ...f, disabled: !!(this.filters || []).some(func => func.ref === f.ref) }
       })
     },
   },
   methods: {
-    onAddFunction (func) {
-      this.$emit('addFunction', func)
+    onAddFilter (func) {
+      this.$emit('addFilter', func)
     },
   },
 }

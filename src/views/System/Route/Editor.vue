@@ -31,29 +31,29 @@
       @submit="onInfoSubmit"
       @delete="onInfoDelete"
     />
-    <c-functions-stepper
+    <c-filters-stepper
       v-if="routeID"
       ref="stepper"
       :processing="stepper.processing"
       :success="stepper.success"
-      :functions.sync="functions"
-      :functions-to-delete.sync="functionsToDelete"
-      :available-functions="availableFunctions"
+      :filters.sync="filters"
+      :filters-to-delete.sync="filtersToDelete"
+      :available-filters="availableFilters"
       :steps="steps"
-      @submit="onFunctionsSubmit"
+      @submit="onFiltersSubmit"
     />
   </b-container>
 </template>
 <script>
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CRouteEditorInfo from 'corteza-webapp-admin/src/components/Route/CRouteEditorInfo'
-import CFunctionsStepper from 'corteza-webapp-admin/src/components/Route/CFunctionsStepper'
+import CFiltersStepper from 'corteza-webapp-admin/src/components/Route/CFiltersStepper'
 import { mapGetters } from 'vuex'
 
 export default {
   components: {
     CRouteEditorInfo,
-    CFunctionsStepper,
+    CFiltersStepper,
   },
 
   i18nOptions: {
@@ -83,9 +83,9 @@ export default {
         processing: false,
         success: false,
       },
-      functionsToDelete: [],
-      functions: [],
-      availableFunctions: [],
+      filtersToDelete: [],
+      filters: [],
+      availableFilters: [],
       steps: [],
     }
   },
@@ -112,8 +112,8 @@ export default {
         if (this.routeID) {
           this.fetchSteps()
           this.fetchRoute()
-          this.fetchAllAvailableFunctions()
-          this.fetchFunctions()
+          this.fetchAllAvailableFilters()
+          this.fetchFilters()
         } else {
           this.route = {}
         }
@@ -164,33 +164,33 @@ export default {
           })
       }
     },
-    onFunctionsSubmit () {
-      if (this.functionsToDelete.length) {
-        this.deleteFunctions(this.functionsToDelete)
+    onFiltersSubmit () {
+      if (this.filtersToDelete.length) {
+        this.deleteFilters(this.filtersToDelete)
       }
       if (this.routeID) {
-        this.functions.forEach(({ ...func }, index) => {
+        this.filters.forEach(({ ...func }, index) => {
           this.stepper.processing = true
           func.params = this.encodeParams(func.params)
           func.weight = func.weight.toString()
           if (func.updated) {
-            if (func.functionID) {
-              this.updateFunction(func, index)
+            if (func.filterID) {
+              this.updateFilter(func, index)
             } else {
-              this.createFunction(func, index)
+              this.createFilter(func, index)
             }
           }
         })
       }
     },
 
-    createFunction (func, index) {
+    createFilter (func, index) {
       this.$SystemAPI
-        .apigwFunctionCreate({ ...func, routeID: this.routeID })
-        .then(({ functionID }) => {
+        .apigwFilterCreate({ ...func, routeID: this.routeID })
+        .then(({ filterID }) => {
           this.animateSuccess('stepper')
-          this.functions[index].updated = false
-          this.functions[index].functionID = functionID
+          this.filters[index].updated = false
+          this.filters[index].filterID = filterID
         })
         .catch(this.stdReject)
         .finally(() => {
@@ -198,12 +198,12 @@ export default {
         })
     },
 
-    updateFunction (func, index) {
+    updateFilter (func, index) {
       this.$SystemAPI
-        .apigwFunctionUpdate({ ...func, routeID: this.routeID })
+        .apigwFilterUpdate({ ...func, routeID: this.routeID })
         .then(() => {
           this.animateSuccess('stepper')
-          this.functions[index].updated = false
+          this.filters[index].updated = false
         })
         .catch(this.stdReject)
         .finally(() => {
@@ -211,13 +211,13 @@ export default {
         })
     },
 
-    deleteFunctions (functionsToDelete) {
-      functionsToDelete.forEach((functionID, index) => {
+    deleteFilters (filtersToDelete) {
+      filtersToDelete.forEach((ffilterID, index) => {
         this.$SystemAPI
-          .apigwFunctionDelete({ functionID: functionID })
+          .apigwFilterDelete({ ffilterID: ffilterID })
           .then(() => {
             this.animateSuccess('stepper')
-            this.functionsToDelete.splice(index, 1)
+            this.filtersToDelete.splice(index, 1)
           })
           .catch(this.stdReject)
           .finally(() => {
@@ -226,12 +226,12 @@ export default {
       })
     },
 
-    fetchFunctions () {
+    fetchFilters () {
       this.incLoader()
       this.$SystemAPI
-        .apigwFunctionList({ routeID: this.routeID })
+        .apigwFilterList({ routeID: this.routeID })
         .then((api) => {
-          this.setRouteFunctions(api.set)
+          this.setRouteFilters(api.set)
         })
         .catch(this.stdReject)
         .finally(() => {
@@ -239,16 +239,16 @@ export default {
         })
     },
 
-    setRouteFunctions (routeFunctions = []) {
-      this.functions = (routeFunctions || []).map((func) => {
-        const f = { ...this.availableFunctions.find((af) => af.ref === func.ref) }
+    setRouteFilters (routeFilters = []) {
+      this.filters = (routeFilters || []).map((func) => {
+        const f = { ...this.availableFilters.find((af) => af.ref === func.ref) }
         f.params = this.decodeParams({ ...func.params })
         f.weight = parseInt(func.weight)
-        f.functionID = func.functionID
+        f.filterID = func.filterID
         return { ...f }
       })
       this.$nextTick(() => {
-        this.$refs.stepper.selectFirstOrDefaultFunction()
+        this.$refs.stepper.selectFirstOrDefaultFilter()
       })
     },
 
@@ -265,12 +265,12 @@ export default {
       }, {})
     },
 
-    fetchAllAvailableFunctions () {
+    fetchAllAvailableFilters () {
       this.incLoader()
       this.$SystemAPI
-        .apigwFunctionDefinitions()
+        .apigwFilterDefFilter()
         .then((api) => {
-          this.availableFunctions = api.map((f) => {
+          this.availableFilters = api.map((f) => {
             return { name, ...f, ref: f.name, status: 'Active', options: { checked: false } }
           })
         })
@@ -308,7 +308,7 @@ export default {
 
     fetchSteps () {
       this.incLoader()
-      this.steps = ['verifier', 'validator', 'processer', 'expediter']
+      this.steps = ['prefilter', 'processer', 'postfilter']
     },
   },
 }
