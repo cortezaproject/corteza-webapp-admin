@@ -48,7 +48,7 @@ export default {
   props: {
     func: {
       type: Object,
-      default: () => {},
+      default: () => ({}),
     },
 
     visible: {
