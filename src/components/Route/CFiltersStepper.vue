@@ -4,6 +4,13 @@
     header-bg-variant="white"
     footer-bg-variant="white"
   >
+    <c-filter-modal
+      :visible="!!selectedFilter"
+      :func="selectedFilter"
+      @submit="onSubmit"
+      @reset="onReset"
+    />
+
     <b-form
       @submit.prevent="$emit('submit', route)"
     >
@@ -26,17 +33,7 @@
                 :available-filters="getAvailableFiltersByStep"
                 :filters="getSelectedFiltersByStep"
                 @addFilter="onAddFilter"
-                @filterSelect="onFilterSelect"
               />
-              <b-button
-                ref="deleteButton"
-                :disabled="disabledRemoveButton"
-                class="ml-2"
-                variant="light"
-                @click="onRemoveCheckedFilters()"
-              >
-                {{ $t('filters.list.remove') }}
-              </b-button>
             </div>
             <c-filters-table
               ref="filterTable"
@@ -46,7 +43,6 @@
               @filterSelect="onFilterSelect"
               @removeFilter="onRemoveFilter"
               @sortFilters="onSortFilters"
-              @updateFilter="onUpdateFilter"
             />
           </b-row>
         </b-tab>
@@ -67,6 +63,7 @@
   </b-card>
 </template>
 <script>
+import CFilterModal from 'corteza-webapp-admin/src/components/Route/CFilterModal'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 import CFiltersTable from 'corteza-webapp-admin/src/components/Route/CFiltersTable'
 import CFiltersDropdown from 'corteza-webapp-admin/src/components/Route/CFiltersDropdown'
@@ -79,6 +76,7 @@ const mapKindToStep = {
 
 export default {
   components: {
+    CFilterModal,
     CSubmitButton,
     CFiltersTable,
     CFiltersDropdown,
@@ -118,8 +116,7 @@ export default {
 
   computed: {
     disabled () {
-      return false
-      // return !(this.filters.some(f => f.updated === true) || this.filtersToDelete.length)
+      return !(this.filters.some(f => f.updated === true) || this.filtersToDelete.length)
     },
 
     getSelectedFilter () {
@@ -145,19 +142,29 @@ export default {
 
   methods: {
     onAddFilter (func) {
-      if (!this.filters.find((f) => f.ref === func.ref)) {
-        this.filters.push({ ...func, weight: this.getSelectedFiltersByStep.length })
+      const i = this.filters.findIndex(({ ref }) => ref === func.ref)
+      if (i < 0) {
+        this.selectedFilter = func
+      } else {
+        this.selectedFilter = this.filters[i]
       }
-      this.selectedFilter = { ...func }
-      this.$refs.filterTable[this.selectedTab].onSelectLastRow()
     },
 
-    onUpdateFilter (func) {
-      const index = this.filters.findIndex((f) => f.ref === func.ref)
-      if (index >= 0) {
-        this.$set(this.filters[index], 'params', func.params)
-        this.$set(this.filters[index], 'updated', true)
+    onSubmit (func) {
+      const i = this.filters.findIndex(f => f.ref === func.ref)
+      const out = [...this.filters]
+      if (i < 0) {
+        func.weight = this.getSelectedFiltersByStep.length
+        out.push(func)
+      } else {
+        func.weight = this.filters[i].weight
+        out[i] = func
       }
+      this.$emit('update:filters', out)
+    },
+
+    onReset () {
+      this.selectedFilter = undefined
     },
 
     onSortFilters (sortedFilters) {
@@ -173,7 +180,7 @@ export default {
         this.filtersToDelete.push(func.filterID)
       }
       this.filters.splice(this.filters.findIndex((f) => f.ref === func.ref), 1)
-      this.selectFirstOrDefaultFilter()
+      this.$emit('update:filters', this.filters)
     },
 
     onRemoveCheckedFilters () {
@@ -188,16 +195,8 @@ export default {
       this.selectedFilter = { ...func }
     },
 
-    selectFirstOrDefaultFilter () {
-      this.selectedFilter = this.getSelectedFiltersByStep.length
-        ? this.getSelectedFiltersByStep[0]
-        : null
-      this.$refs.filterTable[this.selectedTab].onSelectFirstRow()
-    },
-
     onActivateTab (index) {
       this.selectedTab = index
-      this.selectFirstOrDefaultFilter()
     },
 
     isFilterAlreadyAdded () {

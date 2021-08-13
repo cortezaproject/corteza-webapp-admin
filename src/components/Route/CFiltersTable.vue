@@ -6,13 +6,6 @@
     >
       <b-thead>
         <b-tr>
-          <b-th>
-            <b-form-checkbox
-              v-model="checkAll"
-              class="light"
-              @change="filterCheckAll()"
-            />
-          </b-th>
           <b-th>{{ $t('filters.list.filters') }}</b-th>
           <b-th>{{ $t('filters.list.status') }}</b-th>
           <b-th>{{ $t('filters.list.actions') }}</b-th>
@@ -32,16 +25,6 @@
           :class="[selectedRow===index ? 'row-selected' : 'row-not-selected']"
           @click.stop="onRowClick(func,index)"
         >
-          <b-td
-            class="cursor-default"
-            @click.stop
-          >
-            <b-form-checkbox
-              v-model="func.options.checked"
-              class="light"
-              @change.stop="filterChecked(index)"
-            />
-          </b-td>
           <b-td>
             {{ func.label }}
           </b-td>
@@ -64,21 +47,13 @@
         </b-tr>
       </b-tbody>
     </b-table-simple>
-    <c-filter-modal
-      :func="selectedFilter"
-      :step="step"
-      @addFilter="onAddFilter"
-      @updateFilter="onUpdateFilter"
-    />
   </div>
 </template>
 
 <script>
-import CFilterModal from 'corteza-webapp-admin/src/components/Route/CFilterModal'
 import draggable from 'vuedraggable'
 export default {
   components: {
-    CFilterModal,
     draggable,
   },
   props: {
@@ -116,10 +91,6 @@ export default {
     },
   },
   methods: {
-
-    onUpdateFilter (func) {
-      this.$emit('updateFilter', func)
-    },
     onAddFilter (func) {
       if (!this.filters.find(f => f.ref === func.ref)) {
         this.filters.push({ ...func })
@@ -135,27 +106,10 @@ export default {
       this.selectedRow = index
       this.$emit('filterSelect', func)
       this.selectedFilter = func
-      this.$bvModal.show('filterModal' + this.step)
-    },
-    onSelectLastRow () {
-      this.selectedRow = this.filters.length
-    },
-    onSelectFirstRow () {
-      this.selectedRow = 0
     },
     checkMove (evt) {
       this.selectedRow = evt.newDraggableIndex
       this.$emit('filterSelect', this.sortableFilters[evt.newDraggableIndex])
-    },
-    filterChecked (index) {
-      this.filters[index].options.checked = !this.filters[index].options.checked
-    },
-    filterCheckAll () {
-      if (this.checkAll) {
-        this.filters.forEach(f => { f.options.checked = false })
-      } else {
-        this.filters.forEach(f => { f.options.checked = true })
-      }
     },
   },
 }

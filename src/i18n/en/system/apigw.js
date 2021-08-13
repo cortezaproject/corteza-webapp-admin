@@ -69,6 +69,8 @@ export default {
       modal: {
         title: 'Query parameters verifier',
         ok: 'Save & Close',
+        statusActive: 'Active',
+        statusDisabled: 'Disabled',
       },
       step_title: {
         prefilter: 'Prefiltering',

@@ -1,33 +1,20 @@
 <template>
   <div>
     <b-modal
-      :id="'filterModal'+step"
-      ok-only
+      :visible="visible"
       size="lg"
       :title="(func || {}).label"
       :ok-title="$t('filters.modal.ok')"
       body-class="p-0"
+      cancel-variant="link"
       @ok="onSave"
+      @hidden="onHidden"
     >
       <div
         class="card-body"
       >
         <b-row>
-          <b-col
-            cols="6"
-          >
-            <b-form-group
-              label="Filter name"
-            >
-              <b-form-input
-                v-model="(func || {}).label"
-                class="w-100"
-              />
-            </b-form-group>
-          </b-col>
-          <b-col
-            cols="6"
-          >
+          <b-col>
             <b-form-group
               label="Status"
             >
@@ -59,14 +46,15 @@ export default {
   },
 
   props: {
-
     func: {
       type: Object,
       default: () => {},
     },
-    step: {
-      type: Number,
-      default: () => 0,
+
+    visible: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
   },
   data () {
@@ -75,26 +63,25 @@ export default {
       statusList: [
         {
           value: 'Active',
-          text: 'Active',
+          text: this.$t('filters.modal.statusActive'),
         },
         {
           value: 'Disabled',
-          text: 'Disabled',
+          text: this.$t('filters.modal.statusDisabled'),
         },
       ],
       updated: false,
     }
   },
-  created () {
 
-  },
   methods: {
     onSave () {
-      if (this.updated) {
-        this.$emit('updateFilter', { ...this.func, updated: true })
-      }
-      this.showModal = false
+      this.$emit('submit', { ...this.func, updated: this.updated })
     },
+    onHidden () {
+      this.$emit('reset')
+    },
+
     onParamsUpdated () {
       this.onUpdated()
     },

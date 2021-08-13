@@ -49,6 +49,7 @@ import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CRouteEditorInfo from 'corteza-webapp-admin/src/components/Route/CRouteEditorInfo'
 import CFiltersStepper from 'corteza-webapp-admin/src/components/Route/CFiltersStepper'
 import { mapGetters } from 'vuex'
+import { NoID } from '@cortezaproject/corteza-js'
 
 export default {
   components: {
@@ -174,7 +175,7 @@ export default {
           func.params = this.encodeParams(func.params)
           func.weight = func.weight.toString()
           if (func.updated) {
-            if (func.filterID) {
+            if (func.filterID && func.filterID !== NoID) {
               this.updateFilter(func, index)
             } else {
               this.createFilter(func, index)
@@ -246,9 +247,6 @@ export default {
         f.weight = parseInt(func.weight)
         f.filterID = func.filterID
         return { ...f }
-      })
-      this.$nextTick(() => {
-        this.$refs.stepper.selectFirstOrDefaultFilter()
       })
     },
 
