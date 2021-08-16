@@ -9,6 +9,7 @@ import authclients from './authclients'
 import permissions from './permissions'
 import actionlog from './actionlog'
 import queues from './queues'
+import routes from './apigw'
 
 export default {
   system: {
@@ -29,4 +30,5 @@ export default {
   'system.permissions': permissions,
   'system.actionlog': actionlog,
   'system.queues': queues,
+  'system.routes': routes,
 }

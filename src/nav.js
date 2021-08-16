@@ -67,6 +67,12 @@ export default [
         icon: 'stream',
         can: ['system/', 'queues.search'],
       },
+      {
+        label: 'system.routes:navItem.label',
+        route: 'system.route',
+        icon: 'archway',
+        can: ['system/', 'apigw-routes.search'],
+      },
     ],
   },
 

@@ -159,6 +159,28 @@ export default {
         },
       },
     },
+    systemApigwRoute: {
+      all: 'all routes',
+      specific: 'route "{{target}}"',
+
+      operations: {
+        read: {
+          title: 'Read any route',
+          specific: 'Read {{target}}',
+          description: 'Default: deny',
+        },
+        update: {
+          title: 'Update any route',
+          specific: 'Update {{target}}',
+          description: 'Default: deny',
+        },
+        'delete': {
+          title: 'Delete any route',
+          specific: 'Delete {{target}}',
+          description: 'Default: deny',
+        },
+      },
+    },
     systemAuthClient: {
       all: 'all auth clients',
       specific: 'auth client "{{target}}"',
