@@ -90,6 +90,9 @@ export default (options = {}) => {
             system.TriggerSystemServerScriptOnManual(this.$SystemAPI),
           ))
           .then(() => {
+            return this.$Settings.init({ api: this.$SystemAPI })
+          })
+          .then(() => {
             this.loaded = true
 
             // This bit removes code from the query params
@@ -125,7 +128,6 @@ export default (options = {}) => {
         // All
         this.$on('websocket-message', ({ data }) => {
           const msg = JSON.parse(data)
-          console.log(msg)
           switch (msg['@type']) {
             case 'workflowSessionPrompt':
               this.$store.dispatch('wfPrompts/new', msg['@value'])

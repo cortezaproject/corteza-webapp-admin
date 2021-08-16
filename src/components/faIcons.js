@@ -94,4 +94,5 @@ library.add(
   faTrashAlt,
   faCog,
   faArchway,
+  faEye,
 )

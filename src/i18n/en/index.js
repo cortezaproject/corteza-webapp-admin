@@ -4,6 +4,7 @@ import compose from './compose'
 import federation from './federation'
 import automation from './automation'
 import dashboard from './dashboard'
+import ui from './ui'
 
 export default {
   admin,
@@ -11,5 +12,6 @@ export default {
   ...system,
   ...compose,
   ...federation,
+  ...ui,
   ...automation,
 }

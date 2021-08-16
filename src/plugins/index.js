@@ -46,3 +46,5 @@ Vue.use(plugins.UIHooks(), {
   app: 'admin',
   verbose: verboseUIHooks,
 })
+
+Vue.use(plugins.Settings, { api: Vue.prototype.$SystemAPI })

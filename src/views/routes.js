@@ -132,6 +132,10 @@ export default [
           r('federation.permissions', 'permissions', 'Federation/Permissions/Index'),
         ],
       },
+
+      {
+        ...r('ui.settings', 'ui', 'UI/Index'),
+      },
     ],
   },
 

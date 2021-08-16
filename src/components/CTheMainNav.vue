@@ -180,6 +180,17 @@ export default {
             },
           ],
         },
+        {
+          header: { label: 'ui:navGroup.label' },
+          items: [
+            {
+              label: 'ui.settings:navItem.label',
+              route: 'ui.settings',
+              icon: 'eye',
+              can: ['system/', 'settings.read'],
+            },
+          ],
+        },
       ],
     }
   },

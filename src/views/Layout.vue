@@ -20,6 +20,7 @@
       <c-sidebar
         :expanded.sync="expanded"
         :pinned.sync="pinned"
+        :logo="logo"
         expand-on-hover
       >
         <template #header-expanded>
@@ -63,6 +64,8 @@
 <script>
 import CTheMainNav from 'corteza-webapp-admin/src/components/CTheMainNav'
 import { components, mixins } from '@cortezaproject/corteza-vue'
+import icon from 'corteza-webapp-admin/src/themes/corteza-base/img/icon.png'
+
 const { CPermissionsModal, CPrompts, CTopbar, CSidebar } = components
 
 export default {
@@ -90,6 +93,10 @@ export default {
     appName () {
       /* eslint-disable no-undef */
       return WEBAPP
+    },
+
+    logo () {
+      return this.$Settings.attachment('ui.headerLogo', icon)
     },
   },
 }

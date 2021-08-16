@@ -69,19 +69,6 @@ th {
   display: inline-flex;
 }
 
-.ns-logo {
-  i {
-    background-image: url($logo);
-  }
-}
-
-.logo {
-  background-image: url($logo);
-}
-
-.icon-logo {
-  background-image: url($icon-logo);
-}
 
 .loader {
   height: calc(100vh - 2 * #{$topbar-height});

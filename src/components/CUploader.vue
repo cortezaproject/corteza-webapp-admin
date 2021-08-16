@@ -15,11 +15,11 @@
       <template v-if="active">
         <div
           class="bg-primary h-100 progress-bar position-absolute"
-          :style="progresBarStyle"
+          :style="progressBarStyle"
         />
 
         <span class="d-flex align-items-center h-100 w-100 uploading justify-content-center position-relative py-2">
-          {{ $t('general.label.uploading') }} {{ active.file.name }} ({{ size(active.file) }})
+          {{ labels.uploading || 'Uploading files' }} {{ active.file.name }} ({{ size(active.file) }})
         </span>
       </template>
       <div
@@ -27,7 +27,7 @@
         class="d-flex align-items-center h-100 w-100 p-2 droparea justify-content-center"
         :class="{ 'bg-danger': error }"
       >
-        {{ error || label || $t('general.label.dropFiles') }}
+        {{ error || labels.instructions || 'Click or drop files here to upload' }}
       </div>
     </div>
   </vue-dropzone>
@@ -52,17 +52,25 @@ export default {
       type: String,
       required: true,
     },
+
+    disabled: {
+      type: Boolean,
+      default: () => false,
+    },
+
     acceptedFiles: {
       type: Array,
       default: () => [],
     },
+
     maxFilesize: {
       type: Number,
       default: 100,
     },
-    label: {
-      type: String,
-      default: null,
+
+    labels: {
+      type: Object,
+      default: () => ({}),
     },
   },
 
@@ -89,7 +97,7 @@ export default {
         maxFiles: 1000,
         withCredentials: true,
         autoProcessQueue: true,
-        disablePreview: true,
+        disablePreview: false,
         uploadMultiple: false,
         parallelUploads: 1,
         acceptedFiles: null,
@@ -107,7 +115,7 @@ export default {
       return this.$SystemAPI.baseURL
     },
 
-    progresBarStyle () {
+    progressBarStyle () {
       return {
         width: this.active.progress + '%',
       }
@@ -122,7 +130,7 @@ export default {
     onSuccess (file, { response }) {
       this.active = null
       this.error = null
-      this.$emit('uploaded', response, file)
+      this.$emit('upload', response, file)
     },
 
     onFileAdded (file) {
