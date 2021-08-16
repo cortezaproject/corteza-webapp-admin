@@ -359,6 +359,8 @@ export default {
     noAccess: 'You do not have permissions to access Admin panel',
     logout: 'Logout',
 
+    notFound: 'Not found',
+
     pagination: {
       prev: 'Prev',
       next: 'Next',

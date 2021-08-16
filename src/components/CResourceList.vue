@@ -18,6 +18,8 @@
         :sort-desc.sync="sorting.sortDesc"
         :items="items"
         :fields="fields"
+        :empty-text="$t('notFound')"
+        show-empty
         no-sort-reset
       >
         <template #table-busy>

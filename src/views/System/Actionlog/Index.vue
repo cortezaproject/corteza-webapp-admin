@@ -114,6 +114,8 @@
           :items="items"
           :fields="fields"
           :tbody-tr-class="trClass"
+          :empty-text="$t('notFound')"
+          show-empty
           @row-clicked="item=>$set(item, '_showDetails', !item._showDetails)"
         >
           <template #table-busy>

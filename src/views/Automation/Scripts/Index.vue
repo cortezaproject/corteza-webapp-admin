@@ -88,6 +88,8 @@
           head-variant="light"
           :items="filtered"
           :fields="fields"
+          :empty-text="$t('notFound')"
+          show-empty
           no-sort-reset
         >
           <template #table-busy>

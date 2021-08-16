@@ -6,6 +6,8 @@ export default {
   list: {
     title: 'Corredor Scripts',
 
+    notFound: 'Not found',
+
     columns: {
       updatedAt: 'Last update',
     },
