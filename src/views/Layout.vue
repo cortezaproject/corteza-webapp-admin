@@ -20,7 +20,7 @@
       <c-sidebar
         :expanded.sync="expanded"
         :pinned.sync="pinned"
-        :logo="logo"
+        :icon="icon"
         expand-on-hover
       >
         <template #header-expanded>
@@ -95,7 +95,7 @@ export default {
       return WEBAPP
     },
 
-    logo () {
+    icon () {
       return this.$Settings.attachment('ui.headerLogo', icon)
     },
   },
