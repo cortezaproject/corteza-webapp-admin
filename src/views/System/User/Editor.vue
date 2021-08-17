@@ -72,6 +72,7 @@
       class="mt-3"
       :processing="password.processing"
       :success="password.success"
+      :user-i-d="userID"
       @submit="onPasswordSubmit"
     />
   </b-container>
@@ -286,7 +287,7 @@ export default {
      *
      * @param password {String}
      */
-    onPasswordSubmit (password) {
+    onPasswordSubmit (password = '') {
       this.password.processing = true
 
       this.$SystemAPI.userSetPassword({ userID: this.userID, password })

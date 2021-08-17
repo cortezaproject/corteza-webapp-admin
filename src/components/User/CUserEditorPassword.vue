@@ -45,6 +45,14 @@
     </template>
 
     <template #footer>
+      <confirmation-toggle
+        class="ml-1"
+        cta-class="light"
+        @confirmed="$emit('submit')"
+      >
+        {{ $t('removePassword') }}
+      </confirmation-toggle>
+
       <c-submit-button
         class="float-right"
         :processing="processing"
@@ -64,6 +72,7 @@
 </template>
 
 <script>
+import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 
 /**
@@ -81,6 +90,7 @@ export default {
   },
 
   components: {
+    ConfirmationToggle,
     CSubmitButton,
   },
 
@@ -92,6 +102,11 @@ export default {
     success: {
       type: Boolean,
       value: false,
+    },
+    userID: {
+      type: String,
+      required: false,
+      default: undefined,
     },
   },
 

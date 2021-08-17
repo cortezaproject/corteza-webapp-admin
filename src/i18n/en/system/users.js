@@ -86,6 +86,7 @@ export default {
       confirm: 'Confirm password',
       missmatch: 'The passwords must match!',
       length: 'The passwords must be at least {{length}} characters long!',
+      removePassword: 'Remove password',
     },
 
     mfa: {
