@@ -12,8 +12,27 @@
       >
         <b-card
           class="shadow-sm"
-          :title="$t('mainLogo.title')"
         >
+          <div
+            class="d-flex justify-content-between"
+          >
+            <h4
+              class="card-title"
+            >
+              {{ $t('mainLogo.title') }}
+            </h4>
+            <b-button
+              v-if="uploadedFile('main-logo')"
+              variant="link"
+              class="d-flex align-items-top text-dark p-1"
+              @click="resetAttachment('ui.main-logo')"
+            >
+              <font-awesome-icon
+                :icon="['far', 'trash-alt']"
+              />
+            </b-button>
+          </div>
+
           <c-uploader-with-preview
             :value="uploadedFile('main-logo')"
             :endpoint="'/settings/ui.main-logo'"
@@ -28,14 +47,34 @@
       >
         <b-card
           class="shadow-sm"
-          :title="$t('headerLogo.title')"
         >
+          <div
+            class="d-flex justify-content-between"
+          >
+            <h4
+              class="card-title"
+            >
+              {{ $t('headerLogo.title') }}
+            </h4>
+            <b-button
+              v-if="uploadedFile('header-logo')"
+              variant="link"
+              class="d-flex align-items-top text-dark p-1"
+              @click="resetAttachment('ui.header-logo')"
+            >
+              <font-awesome-icon
+                :icon="['far', 'trash-alt']"
+              />
+            </b-button>
+          </div>
+
           <c-uploader-with-preview
             :value="uploadedFile('header-logo')"
             :endpoint="'/settings/ui.header-logo'"
             :disabled="!canManage"
             :labels="$t('headerLogo.uploader', { returnObjects: true })"
             @upload="onUpload($event)"
+            @clear="resetAttachment('ui.header-logo')"
           />
         </b-card>
       </b-col>
@@ -102,6 +141,13 @@ export default {
 
     onUpload ({ name, value }) {
       this.$set(this.settings, name.substring(prefix.length), value)
+    },
+
+    resetAttachment (name) {
+      this.$SystemAPI.settingsUpdate({ values: [{ name, value: undefined }], upload: {} })
+        .then(() => {
+          this.$set(this.settings, name.substring(prefix.length), undefined)
+        })
     },
 
     uploadedFile (name) {

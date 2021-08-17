@@ -72,7 +72,7 @@ export default {
 .preview {
   overflow: hidden;
   height: 300px;
-  background: $dark;
+  background: transparent;
   display: grid;
   align-items: center;
   img {
