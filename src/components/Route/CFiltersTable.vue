@@ -25,11 +25,13 @@
           :class="[selectedRow===index ? 'row-selected' : 'row-not-selected']"
           @click.stop="onRowClick(func,index)"
         >
-          <b-td>
+          <b-td class="align-baseline">
             {{ func.label }}
           </b-td>
-          <b-td>{{ $t('filters.list.active') }}</b-td>
-          <b-td>
+          <b-td class="align-baseline">
+            {{ $t('filters.list.active') }}
+          </b-td>
+          <b-td class="align-baseline">
             <b-button
               variant="danger"
               class="my-1"
