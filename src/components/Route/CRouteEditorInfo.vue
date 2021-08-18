@@ -171,7 +171,7 @@ export default {
       return this.route.deletedAt ? this.$t('undelete') : this.$t('delete')
     },
     isValidEndpoint () {
-      return this.route.endpoint ? /^\/\w+$/.test(this.route.endpoint) : null
+      return this.route.endpoint ? /^(\/[\w-]+)+$/.test(this.route.endpoint) : null
     },
     isValidMethod () {
       return !!this.route.method
