@@ -15,12 +15,12 @@ export default {
       },
     },
 
-    headerLogo: {
-      title: 'Header logo',
+    iconLogo: {
+      title: 'Iconn logo',
 
       uploader: {
-        instructions: 'Click or drop header logo image here to upload',
-        uploading: 'Uploading header logo',
+        instructions: 'Click or drop icon logo image here to upload',
+        uploading: 'Uploading icon logo',
       },
     },
 
