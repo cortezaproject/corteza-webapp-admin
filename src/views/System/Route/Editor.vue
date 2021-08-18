@@ -213,9 +213,9 @@ export default {
     },
 
     deleteFilters (filtersToDelete) {
-      filtersToDelete.forEach((ffilterID, index) => {
+      filtersToDelete.forEach((filterID, index) => {
         this.$SystemAPI
-          .apigwFilterDelete({ ffilterID: ffilterID })
+          .apigwFilterDelete({ filterID })
           .then(() => {
             this.animateSuccess('stepper')
             this.filtersToDelete.splice(index, 1)
