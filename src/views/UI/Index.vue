@@ -54,13 +54,13 @@
             <h4
               class="card-title"
             >
-              {{ $t('headerLogo.title') }}
+              {{ $t('iconLogo.title') }}
             </h4>
             <b-button
-              v-if="uploadedFile('header-logo')"
+              v-if="uploadedFile('icon-logo')"
               variant="link"
               class="d-flex align-items-top text-dark p-1"
-              @click="resetAttachment('ui.header-logo')"
+              @click="resetAttachment('ui.icon-logo')"
             >
               <font-awesome-icon
                 :icon="['far', 'trash-alt']"
@@ -69,12 +69,12 @@
           </div>
 
           <c-uploader-with-preview
-            :value="uploadedFile('header-logo')"
-            :endpoint="'/settings/ui.header-logo'"
+            :value="uploadedFile('icon-logo')"
+            :endpoint="'/settings/ui.icon-logo'"
             :disabled="!canManage"
-            :labels="$t('headerLogo.uploader', { returnObjects: true })"
+            :labels="$t('iconLogo.uploader', { returnObjects: true })"
             @upload="onUpload($event)"
-            @clear="resetAttachment('ui.header-logo')"
+            @clear="resetAttachment('ui.icon-logo')"
           />
         </b-card>
       </b-col>
