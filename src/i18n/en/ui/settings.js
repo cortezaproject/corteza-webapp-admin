@@ -16,7 +16,7 @@ export default {
     },
 
     iconLogo: {
-      title: 'Iconn logo',
+      title: 'Icon logo',
 
       uploader: {
         instructions: 'Click or drop icon logo image here to upload',
