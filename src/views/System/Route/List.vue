@@ -89,7 +89,7 @@ export default {
   ],
 
   i18nOptions: {
-    namespaces: [ 'system.routes' ],
+    namespaces: [ 'system.apigw' ],
     keyPrefix: 'list',
   },
 

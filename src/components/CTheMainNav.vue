@@ -104,7 +104,7 @@ export default {
               can: ['system/', 'queues.search'],
             },
             {
-              label: 'system.routes:navItem.label',
+              label: 'system.apigw:navItem.label',
               route: 'system.route',
               icon: 'archway',
               can: ['system/', 'apigw-routes.search'],

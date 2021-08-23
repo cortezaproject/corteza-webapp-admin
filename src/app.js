@@ -169,6 +169,7 @@ export default (options = {}) => {
       'system.permissions',
       'system.actionlog',
       'system.queues',
+      'system.apigw',
       'compose',
       'compose.settings',
       'compose.permissions',
@@ -182,6 +183,7 @@ export default (options = {}) => {
       'automation.sessions',
       'automation.permissions',
       'ui',
+      'ui.settings',
     ),
 
     // Any additional options we want to merge
