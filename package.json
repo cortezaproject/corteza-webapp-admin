@@ -33,7 +33,7 @@
     "flush-promises": "^1.0.2",
     "fstream": "^1.0.12",
     "kind-of": "^6.0.3",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "minimalist": "^1.0.0",
     "minimist": "^1.2.3",
     "moment": "2.25.3",
