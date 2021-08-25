@@ -88,7 +88,7 @@
           head-variant="light"
           :items="filtered"
           :fields="fields"
-          :empty-text="$t('notFound')"
+          :empty-text="$t('admin:general.notFound')"
           show-empty
           no-sort-reset
         >

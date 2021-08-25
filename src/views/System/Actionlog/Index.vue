@@ -114,7 +114,7 @@
           :items="items"
           :fields="fields"
           :tbody-tr-class="trClass"
-          :empty-text="$t('notFound')"
+          :empty-text="$t('admin:general.notFound')"
           show-empty
           @row-clicked="item=>$set(item, '_showDetails', !item._showDetails)"
         >
