@@ -218,7 +218,7 @@
                     {{ $t('details.severity') }}
                   </b-col>
                   <b-col cols="8">
-                    {{ a.severity | severityLabel }}
+                    {{ $t(`severity.${a.severity}`) }}
                   </b-col>
                 </b-row>
                 <b-row>
@@ -289,12 +289,6 @@ import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
 const defSeverity = 6
 
 export default {
-  filters: {
-    severityLabel (s) {
-      return this.severity[s].label
-    },
-  },
-
   mixins: [
     listHelpers,
   ],
