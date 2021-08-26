@@ -49,6 +49,7 @@
 
 <script>
 import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
+import { fmt } from '@cortezaproject/corteza-js'
 
 export default {
   mixins: [
@@ -93,7 +94,7 @@ export default {
         {
           key: 'createdAt',
           sortable: true,
-          formatter: (v) => new Date(v).toLocaleString('en-EN'),
+          formatter: (v) => fmt.dateTime(new Date(v)),
         },
         {
           key: 'actions',
