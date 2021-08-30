@@ -5,7 +5,7 @@
         <b-button
           v-if="routeID && canCreate"
           variant="primary"
-          :to="{ name: 'system.route.new' }"
+          :to="{ name: 'system.apigw.new' }"
         >
           {{ $t("new") }}
         </b-button>
@@ -46,8 +46,8 @@
 </template>
 <script>
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
-import CRouteEditorInfo from 'corteza-webapp-admin/src/components/Route/CRouteEditorInfo'
-import CFiltersStepper from 'corteza-webapp-admin/src/components/Route/CFiltersStepper'
+import CRouteEditorInfo from 'corteza-webapp-admin/src/components/Apigw/CRouteEditorInfo'
+import CFiltersStepper from 'corteza-webapp-admin/src/components/Apigw/CFiltersStepper'
 import { mapGetters } from 'vuex'
 import { NoID } from '@cortezaproject/corteza-js'
 
@@ -155,7 +155,7 @@ export default {
           .then(({ routeID }) => {
             this.animateSuccess('info')
             this.$router.push({
-              name: 'system.route.edit',
+              name: 'system.apigw.edit',
               params: { routeID },
             })
           })

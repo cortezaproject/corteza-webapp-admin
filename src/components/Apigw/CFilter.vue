@@ -26,7 +26,7 @@
   </div>
 </template>
 <script>
-import CFilterParams from 'corteza-webapp-admin/src/components/Route/CFilterParams'
+import CFilterParams from 'corteza-webapp-admin/src/components/Apigw/CFilterParams'
 
 export default {
   components: {

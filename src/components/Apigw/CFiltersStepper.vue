@@ -63,10 +63,10 @@
   </b-card>
 </template>
 <script>
-import CFilterModal from 'corteza-webapp-admin/src/components/Route/CFilterModal'
+import CFilterModal from 'corteza-webapp-admin/src/components/Apigw/CFilterModal'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
-import CFiltersTable from 'corteza-webapp-admin/src/components/Route/CFiltersTable'
-import CFiltersDropdown from 'corteza-webapp-admin/src/components/Route/CFiltersDropdown'
+import CFiltersTable from 'corteza-webapp-admin/src/components/Apigw/CFiltersTable'
+import CFiltersDropdown from 'corteza-webapp-admin/src/components/Apigw/CFiltersDropdown'
 
 const mapKindToStep = {
   prefilter: 0,

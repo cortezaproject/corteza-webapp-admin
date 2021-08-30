@@ -12,7 +12,7 @@
           v-if="canCreate"
           variant="primary"
           class="mr-2"
-          :to="{ name: 'system.route.new' }"
+          :to="{ name: 'system.apigw.new' }"
         >
           {{ $t('new') }}
         </b-button>
@@ -40,7 +40,7 @@
     </c-content-header>
     <c-resource-list
       primary-key="routeID"
-      edit-route="system.route.edit"
+      edit-route="system.apigw.edit"
       :loading-text="$t('loading')"
       :paging="paging"
       :sorting="sorting"

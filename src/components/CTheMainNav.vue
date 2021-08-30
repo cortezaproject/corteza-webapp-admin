@@ -105,7 +105,7 @@ export default {
             },
             {
               label: 'system.apigw:navItem.label',
-              route: 'system.route',
+              route: 'system.apigw',
               icon: 'archway',
               can: ['system/', 'apigw-routes.search'],
             },
