@@ -4,11 +4,12 @@
   >
     <div
       v-if="value"
-      class="preview mb-1 p-2"
+      class="preview d-flex justify-content-center align-items-center w-100 mb-2"
     >
-      <img
+      <b-img
         :src="value"
-      >
+        class="mh-100 mw-100 h-auto"
+      />
     </div>
 
     <c-uploader
@@ -70,15 +71,7 @@ export default {
 </script>
 <style lang="scss">
 .preview {
-  overflow: hidden;
   height: 300px;
   background: transparent;
-  display: grid;
-  align-items: center;
-  img {
-    margin: 0 auto;
-    max-height: 100%;
-    max-width: 100%;
-  }
 }
 </style>
