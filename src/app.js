@@ -154,7 +154,12 @@ export default (options = {}) => {
     router,
     store,
     i18n: i18n(Vue,
-      'corteza-webapp-admin',
+      {
+        app: 'corteza-webapp-admin',
+        // @todo remove when we properly detect language
+        //       and compare it to the list of available languages
+        lng: 'en',
+      },
       'admin',
       'dashboard',
       'system',
