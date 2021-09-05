@@ -109,11 +109,6 @@ export default {
       return user.name || user.handle || user.email || ''
     },
 
-    appName () {
-      /* eslint-disable no-undef */
-      return WEBAPP
-    },
-
     icon () {
       return this.$Settings.attachment('ui.iconLogo', icon)
     },
