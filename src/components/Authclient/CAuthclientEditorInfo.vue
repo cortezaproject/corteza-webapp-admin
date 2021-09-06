@@ -1,6 +1,6 @@
 <template>
   <b-card
-    class="shadow-sm"
+    class="shadow-sm auth-clients"
     header-bg-variant="white"
     footer-bg-variant="white"
   >
@@ -79,16 +79,16 @@
       >
         <b-input-group>
           <b-form-input
-            v-model="secret.value"
+            v-model="secret"
             disabled
             placeholder="****************************************************************"
           />
 
           <b-button
-            v-if="!secret.show"
+            v-if="!secretVisible"
             class="ml-1 text-primary"
             variant="link"
-            @click="showSecret()"
+            @click="fetchSecret()"
           >
             <font-awesome-icon
               :icon="['fas', 'eye']"
@@ -227,18 +227,91 @@
         </template>
       </b-form-group>
 
-      <b-form-group
-        v-if="authclient.grant === 'client_credentials'"
-        label-cols="2"
-        :label="$t('security.impersonateUser.label')"
-        :description="$t('security.impersonateUser.description')"
-      >
-        <b-form-input
-          v-model="authclient.security.impersonateUser"
-          type="number"
-          class="mb-3"
-        />
-      </b-form-group>
+      <div v-if="authclient.grant === 'client_credentials'">
+        <b-form-group
+          label-cols="2"
+          :label="$t('security.impersonateUser.label')"
+          :description="$t('security.impersonateUser.description')"
+        >
+          <c-select-user
+            :user-i-d="authclient.security.impersonateUser"
+            @updateUser="onUpdateUser"
+          />
+        </b-form-group>
+        <div v-if="authclient.authClientID">
+          <b-form-group label-cols="2">
+            <b-button
+              variant="light"
+              class="align-top"
+              @click="toggleCurlSnippet()"
+            >
+              <template v-if="curlVisible">
+                {{ $t('hideCurl') }}
+              </template>
+              <template v-else>
+                {{ $t('generateCurl') }}
+              </template>
+            </b-button>
+          </b-form-group>
+          <b-form-group
+            v-if="curlVisible"
+            :label="$t('cUrl')"
+            label-cols="2"
+            class="mb-0 curl"
+          >
+            <b-input-group>
+              <div class="w-100">
+                <div class="d-flex">
+                  <pre
+                    ref="cUrl"
+                    class="mr-2"
+                  >
+        curl -X POST {{ curlURL }} \
+        -d grant_type=client_credentials \
+        -d scope='profile api' \
+        -u {{ authclient.authClientID }}:{{ secret }}</pre>
+                  <b-button
+                    variant="link"
+                    class="align-top ml-auto fit-content text-secondary"
+                    @click="copyToClipboard('cUrl')"
+                  >
+                    <font-awesome-icon
+                      :icon="['far', 'copy']"
+                    />
+                  </b-button>
+                </div>
+                <div class="d-flex">
+                  <div
+                    class="overflow-wrap mr-2 mb-2"
+                    :class="[tokenRequest.token ? 'text-success' : 'text-danger']"
+                  >
+                    {{ tokenRequest.token || tokenRequest.error }}
+                  </div>
+                  <b-button
+                    v-if="tokenRequest.token"
+                    variant="link"
+                    class="align-top ml-auto fit-content text-secondary"
+                    @click="copyToClipboard('token')"
+                  >
+                    <font-awesome-icon
+                      :icon="['far', 'copy']"
+                    />
+                  </b-button>
+                </div>
+              </div>
+            </b-input-group>
+            <div class="d-flex mb-3">
+              <b-button
+                variant="light"
+                class="align-top fit-content"
+                @click="getAccessTokenAPI()"
+              >
+                {{ $t('testCurl') }}
+              </b-button>
+            </div>
+          </b-form-group>
+        </div>
+      </div>
 
       <c-role-picker
         label="security.permittedRoles.label"
@@ -338,6 +411,9 @@
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 import CRolePicker from 'corteza-webapp-admin/src/components/CRolePicker'
+import CSelectUser from 'corteza-webapp-admin/src/components/Authclient/CSelectUser'
+import copy from 'copy-to-clipboard'
+import axios from 'axios'
 
 export default {
   name: 'CAuthclientEditorInfo',
@@ -351,6 +427,7 @@ export default {
     ConfirmationToggle,
     CSubmitButton,
     CRolePicker,
+    CSelectUser,
   },
 
   props: {
@@ -380,10 +457,7 @@ export default {
     return {
       redirectURI: [],
 
-      secret: {
-        show: false,
-        value: '',
-      },
+      secret: '',
 
       validFrom: {
         date: undefined,
@@ -398,6 +472,13 @@ export default {
       permittedRoles: [],
       forbiddenRoles: [],
       forcedRoles: [],
+
+      curlVisible: false,
+      curlURL: '',
+      tokenRequest: {
+        token: '',
+        error: '',
+      },
     }
   },
 
@@ -409,6 +490,11 @@ export default {
     isValid () {
       return !!this.authclient.handle
     },
+
+    secretVisible () {
+      return this.secret.length > 0
+    },
+
   },
 
   watch: {
@@ -454,6 +540,42 @@ export default {
   },
 
   methods: {
+    onUpdateUser (user) {
+      console.log(user)
+      this.authclient.security.impersonateUser = (user || {}).userID
+    },
+
+    getAccessTokenAPI () {
+      const params = new URLSearchParams()
+      params.append('grant_type', 'client_credentials')
+      params.append('scope', 'profile api')
+      axios.post(
+        this.curlURL,
+        params,
+        { auth: { username: this.authclient.authClientID, password: this.secret } }
+      ).then(response => {
+        this.tokenRequest.token = (response.data || {}).access_token
+      }).catch(error => {
+        this.tokenRequest.error = error
+      })
+    },
+
+    copyToClipboard (name) {
+      if (name === 'cUrl') {
+        copy(this.$refs.cUrl.innerHTML)
+      } else {
+        copy(this.tokenRequest.token)
+      }
+    },
+
+    toggleCurlSnippet () {
+      if (!this.curlVisible) {
+        this.fetchSecret()
+        this.curlURL = this.$auth.cortezaAuthURL + '/oauth2/token'
+      }
+      this.curlVisible = !this.curlVisible
+    },
+
     submit () {
       if (this.validFrom.date && this.validFrom.time) {
         this.authclient.validFrom = new Date(`${this.validFrom.date} ${this.validFrom.time}`).toISOString()
@@ -497,20 +619,19 @@ export default {
       this.authclient.scope = items.join(' ')
     },
 
-    showSecret () {
-      this.$SystemAPI.authClientExposeSecret(({ clientID: this.authclient.authClientID }))
-        .then(secret => {
-          this.secret = {
-            show: true,
-            value: secret,
-          }
-        })
+    fetchSecret () {
+      if (!this.secret) {
+        this.$SystemAPI.authClientExposeSecret(({ clientID: this.authclient.authClientID }))
+          .then(secret => {
+            this.secret = secret
+          })
+      }
     },
 
     regenerateSecret () {
       this.$SystemAPI.authClientRegenerateSecret(({ clientID: this.authclient.authClientID }))
         .then(newSecret => {
-          this.secret.value = newSecret
+          this.secret = newSecret
         })
     },
 
@@ -539,3 +660,19 @@ export default {
   },
 }
 </script>
+<style lang="scss">
+.auth-clients{
+  .fit-content{
+    height:fit-content;
+  }
+  .overflow-wrap{
+      overflow-wrap: anywhere;
+  }
+  .curl .form-row{
+    flex-wrap: nowrap !important;
+    .col{
+      max-width: 84.3%;
+    }
+  }
+}
+</style>
