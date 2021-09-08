@@ -114,7 +114,7 @@
         class="mb-0"
       >
         <b-form-input
-          :value="session.completedAt | locLongDate"
+          :value="session.completedAt | locFullDateTime"
           plaintext
           disabled
         />
@@ -127,7 +127,7 @@
         class="mb-0"
       >
         <b-form-input
-          :value="session.createdAt | locLongDate"
+          :value="session.createdAt | locFullDateTime"
           plaintext
           disabled
         />
@@ -139,7 +139,7 @@
         label-cols="2"
       >
         <b-form-input
-          :value="session.deletedAt | locLongDate"
+          :value="session.deletedAt | locFullDateTime"
           plaintext
           disabled
         />

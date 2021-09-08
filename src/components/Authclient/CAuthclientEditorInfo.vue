@@ -268,7 +268,7 @@
         class="mb-0"
       >
         <b-form-input
-          :value="authclient.createdAt | locLongDate"
+          :value="authclient.createdAt | locFullDateTime"
           plaintext
           disabled
         />
@@ -280,7 +280,7 @@
         label-cols="2"
       >
         <b-form-input
-          :value="authclient.updatedAt | locLongDate"
+          :value="authclient.updatedAt | locFullDateTime"
           plaintext
           disabled
         />
@@ -292,7 +292,7 @@
         label-cols="2"
       >
         <b-form-input
-          :value="authclient.deletedAt | locLongDate"
+          :value="authclient.deletedAt | locFullDateTime"
           plaintext
           disabled
         />

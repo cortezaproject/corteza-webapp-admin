@@ -94,7 +94,7 @@
         label-cols="2"
       >
         <b-form-input
-          :value="node.updatedAt | locLongDate"
+          :value="node.updatedAt | locFullDateTime"
           plaintext
           disabled
         />
@@ -106,7 +106,7 @@
         label-cols="2"
       >
         <b-form-input
-          :value="node.deletedAt | locLongDate"
+          :value="node.deletedAt | locFullDateTime"
           plaintext
           disabled
         />
@@ -119,7 +119,7 @@
         class="mb-0"
       >
         <b-form-input
-          :value="node.createdAt | locLongDate"
+          :value="node.createdAt | locFullDateTime"
           plaintext
           disabled
         />

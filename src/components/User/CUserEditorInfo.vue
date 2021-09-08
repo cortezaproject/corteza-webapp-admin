@@ -44,7 +44,7 @@
         label-cols="2"
       >
         <b-form-input
-          :value="user.updatedAt | locLongDate"
+          :value="user.updatedAt | locFullDateTime"
           plaintext
           disabled
         />
@@ -56,7 +56,7 @@
         label-cols="2"
       >
         <b-form-input
-          :value="user.suspendedAt | locLongDate"
+          :value="user.suspendedAt | locFullDateTime"
           plaintext
           disabled
         />
@@ -68,7 +68,7 @@
         label-cols="2"
       >
         <b-form-input
-          :value="user.deletedAt | locLongDate"
+          :value="user.deletedAt | locFullDateTime"
           plaintext
           disabled
         />
@@ -81,7 +81,7 @@
         class="mb-0"
       >
         <b-form-input
-          :value="user.createdAt | locLongDate"
+          :value="user.createdAt | locFullDateTime"
           plaintext
           disabled
         />

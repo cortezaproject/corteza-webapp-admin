@@ -130,7 +130,7 @@
             </div>
           </template>
           <template #cell(timestamp)="{ item: a }">
-            {{ a.timestamp | locLongDate }}
+            {{ a.timestamp | locFullDateTime }}
           </template>
           <template #cell(actor)="{ item: a }">
             <router-link
