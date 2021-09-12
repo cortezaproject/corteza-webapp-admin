@@ -402,12 +402,14 @@
       >
         <confirmation-toggle
           v-if="isDeleted"
+          :disabled="processing"
           @confirmed="$emit('undelete', authclient.authClientID)"
         >
           {{ $t('undelete') }}
         </confirmation-toggle>
         <confirmation-toggle
           v-else
+          :disabled="processing"
           @confirmed="$emit('delete', authclient.authClientID)"
         >
           {{ $t('delete') }}
@@ -516,21 +518,6 @@ export default {
     'authclient.authClientID': {
       immediate: true,
       handler (authClientID) {
-        // New authclient
-        if (!authClientID) {
-          this.authclient.scope = 'profile api'
-          this.authclient.enabled = true
-          this.redirectURI = ['']
-          this.authclient.security = {}
-          this.authclient.grant = 'authorization_code'
-        } else {
-          if (this.authclient.redirectURI) {
-            this.redirectURI = this.authclient.redirectURI.split(' ')
-          } else {
-            this.redirectURI = []
-          }
-        }
-
         if (this.authclient.validFrom) {
           this.validFrom.date = new Date(this.authclient.validFrom).toISOString()
           this.validFrom.time = new Date(this.authclient.validFrom).toTimeString().split(' ')[0]

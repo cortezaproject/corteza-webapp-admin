@@ -47,6 +47,15 @@ import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CAuthclientEditorInfo from 'corteza-webapp-admin/src/components/Authclient/CAuthclientEditorInfo'
 import { mapGetters } from 'vuex'
 
+// @todo move this to corteza-js and follow the pattern we use with other resource types
+const makeNewAuthClient = () => JSON.parse(JSON.stringify({
+  scope: 'profile api',
+  enabled: true,
+  redirectURI: [],
+  security: {},
+  grant: 'authorization_code',
+}))
+
 export default {
   components: {
     CAuthclientEditorInfo,
@@ -108,7 +117,7 @@ export default {
             this.fetchAuthclient()
           })
         } else {
-          this.authclient = {}
+          this.authclient = makeNewAuthClient()
         }
       },
     },
