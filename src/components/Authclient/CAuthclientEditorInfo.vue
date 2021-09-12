@@ -301,7 +301,10 @@
                 </div>
               </div>
             </b-input-group>
-            <div class="d-flex mb-3">
+            <div
+              class="d-flex mb-3"
+              v-if="secretVisible"
+            >
               <b-button
                 variant="light"
                 class="align-top fit-content"
@@ -500,6 +503,7 @@ export default {
         },
 
         security: {
+          impersonateUser: '',
           permittedRoles: [],
           forbiddenRoles: [],
           forcedRoles: [],
