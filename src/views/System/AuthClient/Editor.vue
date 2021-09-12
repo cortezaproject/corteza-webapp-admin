@@ -31,7 +31,7 @@
 
     <c-authclient-editor-info
       v-if="authclient"
-      :authclient="authclient"
+      :resource="authclient"
       :roles="roles"
       :processing="info.processing"
       :success="info.success"
@@ -51,8 +51,6 @@ import { mapGetters } from 'vuex'
 const makeNewAuthClient = () => JSON.parse(JSON.stringify({
   scope: 'profile api',
   enabled: true,
-  redirectURI: [],
-  security: {},
   grant: 'authorization_code',
 }))
 
@@ -150,7 +148,7 @@ export default {
         })
     },
 
-    onInfoSubmit (authclient) {
+    onSubmit (authclient) {
       this.info.processing = true
 
       if (this.authClientID) {

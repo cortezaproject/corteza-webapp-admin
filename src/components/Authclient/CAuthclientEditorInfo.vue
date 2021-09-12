@@ -12,7 +12,7 @@
         label-cols="2"
       >
         <b-form-input
-          v-model="(authclient.meta || {}).name"
+          v-model="authclient.meta.name"
           required
         />
       </b-form-group>
@@ -443,7 +443,7 @@ export default {
   },
 
   props: {
-    authclient: {
+    resource: {
       type: Object,
       required: true,
     },
@@ -473,6 +473,8 @@ export default {
   data () {
     return {
       redirectURI: [],
+
+      authclient: undefined,
 
       secret: '',
 
@@ -511,30 +513,53 @@ export default {
     secretVisible () {
       return this.secret.length > 0
     },
+  },
 
+  beforeMount () {
+    // setup all object props we need (reactivity)
+    // when we migrat it to corteza-js using a proper Class
+    // this can remove it
+    this.authclient = {
+      trusted: false,
+      handle: '',
+      meta: {
+        name: '',
+        description: '',
+      },
+
+      security: {
+        permittedRoles: [],
+        forbiddenRoles: [],
+        forcedRoles: [],
+      },
+
+      redirectURI: '',
+      grant: '',
+
+      // make sure all references are destroyed
+      ...JSON.parse(JSON.stringify(this.resource)),
+
+    }
+
+    if (this.authclient.validFrom) {
+      // @todo do we need this or can we connect date/time picker directly (or via computed prop) to auth-client prop?
+      this.validFrom.date = new Date(this.authclient.validFrom).toISOString()
+      this.validFrom.time = new Date(this.authclient.validFrom).toTimeString().split(' ')[0]
+    }
+
+    if (this.authclient.expiresAt) {
+      // @todo do we need this or can we connect date/time picker directly (or via computed prop) to auth-client prop?
+      this.expiresAt.date = new Date(this.authclient.expiresAt).toISOString()
+      this.expiresAt.time = new Date(this.authclient.expiresAt).toTimeString().split(' ')[0]
+    }
+
+    this.permittedRoles = this.transformRoles(this.authclient.security.permittedRoles)
+    this.forbiddenRoles = this.transformRoles(this.authclient.security.forbiddenRoles)
+    this.forcedRoles = this.transformRoles(this.authclient.security.forcedRoles)
   },
 
   watch: {
-    'authclient.authClientID': {
-      immediate: true,
-      handler (authClientID) {
-        if (this.authclient.validFrom) {
-          this.validFrom.date = new Date(this.authclient.validFrom).toISOString()
-          this.validFrom.time = new Date(this.authclient.validFrom).toTimeString().split(' ')[0]
-        }
-
-        if (this.authclient.expiresAt) {
-          this.expiresAt.date = new Date(this.authclient.expiresAt).toISOString()
-          this.expiresAt.time = new Date(this.authclient.expiresAt).toTimeString().split(' ')[0]
-        }
-
-        this.permittedRoles = this.transformRoles(this.authclient.security.permittedRoles)
-        this.forbiddenRoles = this.transformRoles(this.authclient.security.forbiddenRoles)
-        this.forcedRoles = this.transformRoles(this.authclient.security.forcedRoles)
-      },
-    },
-
-    redirectURI: {
+    'redirectURI': {
       handler (redirectURI) {
         this.authclient.redirectURI = redirectURI.filter(ru => ru).join(' ')
       },
@@ -543,7 +568,6 @@ export default {
 
   methods: {
     onUpdateUser (user) {
-      console.log(user)
       this.authclient.security.impersonateUser = (user || {}).userID
     },
 
