@@ -18,8 +18,8 @@
         </b-button>
         <c-permissions-button
           v-if="authClientID && canGrant"
-          :title="(authclient.meta || {}).name || authclient.handle"
-          :target="(authclient.meta || {}).name || authclient.handle"
+          :title="rbacEditorTitle"
+          :target="rbacEditorTitle"
           :resource="'corteza::system:auth-client/'+authClientID"
           button-variant="light"
         >
@@ -31,6 +31,7 @@
 
     <c-authclient-editor-info
       v-if="authclient"
+      :key="authClientID"
       :resource="authclient"
       :roles="roles"
       :processing="info.processing"
@@ -51,7 +52,7 @@ import { mapGetters } from 'vuex'
 const makeNewAuthClient = () => JSON.parse(JSON.stringify({
   scope: 'profile api',
   enabled: true,
-  grant: 'authorization_code',
+  validGrant: 'authorization_code',
 }))
 
 export default {
@@ -78,7 +79,7 @@ export default {
 
   data () {
     return {
-      authclient: {},
+      authclient: undefined,
       roles: [],
 
       info: {
@@ -103,6 +104,15 @@ export default {
 
     title () {
       return this.authClientID ? this.$t('title.edit') : this.$t('title.create')
+    },
+
+    rbacEditorTitle () {
+      if (this.authclient) {
+        const { meta: { name } = {}, handle } = this.authclient || {}
+        return name || handle
+      }
+
+      return ''
     },
   },
 
@@ -152,7 +162,10 @@ export default {
       this.info.processing = true
 
       if (this.authClientID) {
-        this.$SystemAPI.authClientUpdate({ clientID: this.authClientID, validGrant: this.authclient.grant, ...authclient })
+        // workaround in API client inconsistency:
+        const clientID = this.authClientID
+
+        this.$SystemAPI.authClientUpdate({ clientID, ...authclient })
           .then(ac => {
             this.animateSuccess('info')
             this.authclient = ac
@@ -162,7 +175,7 @@ export default {
             this.info.processing = false
           })
       } else {
-        this.$SystemAPI.authClientCreate({ validGrant: this.authclient.grant, ...authclient })
+        this.$SystemAPI.authClientCreate({ ...authclient })
           .then(({ authClientID }) => {
             this.animateSuccess('info')
             this.$router.push({ name: 'system.authClient.edit', params: { authClientID } })
