@@ -35,9 +35,10 @@
       :roles="roles"
       :processing="info.processing"
       :success="info.success"
-      :can-create="canCreate"
-      @submit="onInfoSubmit"
-      @delete="onDelete"
+      :can-delete="authclient && authclient.authClientID && !authclient.isDefault && authclient.canDeleteAuthClient"
+      @submit="onSubmit($event)"
+      @delete="onDelete($event)"
+      @undelete="onUndelete($event)"
     />
   </b-container>
 </template>
@@ -166,28 +167,20 @@ export default {
       }
     },
 
-    onDelete () {
+    onDelete (clientID) {
       this.incLoader()
+      this.$SystemAPI.authClientDelete({ clientID })
+        .then(() => this.fetchAuthclient())
+        .catch(this.stdReject)
+        .finally(() => this.decLoader())
+    },
 
-      if (this.authclient.deletedAt) {
-        this.$SystemAPI.authClientUndelete({ clientID: this.authClientID })
-          .then(() => {
-            this.fetchAuthclient()
-          })
-          .catch(this.stdReject)
-          .finally(() => {
-            this.decLoader()
-          })
-      } else {
-        this.$SystemAPI.authClientDelete({ clientID: this.authClientID })
-          .then(() => {
-            this.fetchAuthclient()
-          })
-          .catch(this.stdReject)
-          .finally(() => {
-            this.decLoader()
-          })
-      }
+    onUndelete (clientID) {
+      this.incLoader()
+      this.$SystemAPI.authClientUndelete({ clientID })
+        .then(() => this.fetchAuthclient())
+        .catch(this.stdReject)
+        .finally(() => this.decLoader())
     },
   },
 }

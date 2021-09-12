@@ -397,12 +397,22 @@
         @submit="submit"
       />
 
-      <confirmation-toggle
-        v-if="!authclient.isDefault && authclient && authclient.authClientID"
-        @confirmed="$emit('delete')"
+      <template
+        v-if="canDelete"
       >
-        {{ getDeleteStatus }}
-      </confirmation-toggle>
+        <confirmation-toggle
+          v-if="isDeleted"
+          @confirmed="$emit('undelete', authclient.authClientID)"
+        >
+          {{ $t('undelete') }}
+        </confirmation-toggle>
+        <confirmation-toggle
+          v-else
+          @confirmed="$emit('delete', authclient.authClientID)"
+        >
+          {{ $t('delete') }}
+        </confirmation-toggle>
+      </template>
     </template>
   </b-card>
 </template>
@@ -434,6 +444,11 @@ export default {
     authclient: {
       type: Object,
       required: true,
+    },
+
+    canDelete: {
+      type: Boolean,
+      default: () => false,
     },
 
     roles: {
@@ -483,8 +498,8 @@ export default {
   },
 
   computed: {
-    getDeleteStatus () {
-      return this.authclient.deletedAt ? this.$t('undelete') : this.$t('delete')
+    isDeleted () {
+      return this.authclient.deletedAt
     },
 
     isValid () {
