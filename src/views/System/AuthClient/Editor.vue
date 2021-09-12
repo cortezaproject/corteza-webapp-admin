@@ -37,6 +37,9 @@
       :processing="info.processing"
       :success="info.success"
       :can-delete="authclient && authclient.authClientID && !authclient.isDefault && authclient.canDeleteAuthClient"
+      :secret="secret"
+      @regenerate-secret="onRegenerateSecret"
+      @request-secret="onRequestSecret"
       @submit="onSubmit($event)"
       @delete="onDelete($event)"
       @undelete="onUndelete($event)"
@@ -80,6 +83,7 @@ export default {
   data () {
     return {
       authclient: undefined,
+      secret: '',
       roles: [],
 
       info: {
@@ -201,6 +205,18 @@ export default {
         .then(() => this.fetchAuthclient())
         .catch(this.stdReject)
         .finally(() => this.decLoader())
+    },
+
+    onRequestSecret (clientID = this.authClientID) {
+      this.$SystemAPI
+        .authClientExposeSecret(({ clientID }))
+        .then(secret => { this.secret = secret })
+    },
+
+    onRegenerateSecret (clientID = this.authClientID) {
+      this.$SystemAPI
+        .authClientRegenerateSecret(({ clientID }))
+        .then(newSecret => { this.secret = newSecret })
     },
   },
 }

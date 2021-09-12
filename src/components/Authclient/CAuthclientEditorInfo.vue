@@ -89,7 +89,7 @@
             v-if="!secretVisible"
             class="ml-1 text-primary"
             variant="link"
-            @click="fetchSecret()"
+            @click="$emit('request-secret')"
           >
             <font-awesome-icon
               :icon="['fas', 'eye']"
@@ -100,7 +100,7 @@
             v-else
             class="ml-1 text-primary"
             variant="link"
-            @click="regenerateSecret()"
+            @click="$emit('regenerate-secret')"
           >
             <font-awesome-icon
               :icon="['fas', 'sync']"
@@ -270,7 +270,7 @@
         curl -X POST {{ curlURL }} \
         -d grant_type=client_credentials \
         -d scope='profile api' \
-        -u {{ authClient.authClientID }}:{{ secret }}</pre>
+        -u {{ authClient.authClientID }}:{{ secret || 'PLACE-YOUR-CLIENT-SECRET-HERE' }}</pre>
                   <b-button
                     variant="link"
                     class="align-top ml-auto fit-content text-secondary"
@@ -466,6 +466,11 @@ export default {
       value: false,
     },
 
+    secret: {
+      type: String,
+      default: () => '',
+    },
+
     success: {
       type: Boolean,
       value: false,
@@ -507,8 +512,6 @@ export default {
       }, this.resource),
 
       redirectURI: [],
-
-      secret: '',
 
       // @todo should be handled via computed props
       validFrom: this.resource.validFrom ? {
@@ -589,7 +592,6 @@ export default {
 
     toggleCurlSnippet () {
       if (!this.curlVisible) {
-        this.fetchSecret()
         this.curlURL = this.$auth.cortezaAuthURL + '/oauth2/token'
       }
       this.curlVisible = !this.curlVisible
@@ -636,22 +638,6 @@ export default {
       }
 
       this.authClient.scope = items.join(' ')
-    },
-
-    fetchSecret () {
-      if (!this.secret) {
-        this.$SystemAPI.authClientExposeSecret(({ clientID: this.authClient.authClientID }))
-          .then(secret => {
-            this.secret = secret
-          })
-      }
-    },
-
-    regenerateSecret () {
-      this.$SystemAPI.authClientRegenerateSecret(({ clientID: this.authClient.authClientID }))
-        .then(newSecret => {
-          this.secret = newSecret
-        })
     },
 
     transformRoles (currentRoles = []) {
