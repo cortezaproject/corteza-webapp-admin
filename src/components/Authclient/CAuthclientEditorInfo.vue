@@ -258,52 +258,49 @@
             v-if="curlVisible"
             :label="$t('cUrl')"
             label-cols="2"
-            class="mb-0 curl"
+            class="curl"
           >
-            <b-input-group>
-              <div class="w-100">
-                <div class="d-flex">
-                  <pre
-                    ref="cUrl"
-                    class="mr-2"
-                  >
-        curl -X POST {{ curlURL }} \
-        -d grant_type=client_credentials \
-        -d scope='profile api' \
-        -u {{ authClient.authClientID }}:{{ secret || 'PLACE-YOUR-CLIENT-SECRET-HERE' }}</pre>
-                  <b-button
-                    variant="link"
-                    class="align-top ml-auto fit-content text-secondary"
-                    @click="copyToClipboard('cUrl')"
-                  >
-                    <font-awesome-icon
-                      :icon="['far', 'copy']"
-                    />
-                  </b-button>
-                </div>
-                <div class="d-flex">
-                  <div
-                    class="overflow-wrap mr-2 mb-2"
-                    :class="[tokenRequest.token ? 'text-success' : 'text-danger']"
-                  >
-                    {{ tokenRequest.token || tokenRequest.error }}
-                  </div>
-                  <b-button
-                    v-if="tokenRequest.token"
-                    variant="link"
-                    class="align-top ml-auto fit-content text-secondary"
-                    @click="copyToClipboard('token')"
-                  >
-                    <font-awesome-icon
-                      :icon="['far', 'copy']"
-                    />
-                  </b-button>
-                </div>
+            <div class="w-100">
+              <div class="d-flex">
+                <pre
+                  ref="cUrl"
+                >
+curl -X POST {{ curlURL }} \
+-d grant_type=client_credentials \
+-d scope='profile api' \
+-u {{ authClient.authClientID }}:{{ secret || 'PLACE-YOUR-CLIENT-SECRET-HERE' }}</pre>
+                <b-button
+                  variant="link"
+                  class="align-top ml-auto fit-content text-secondary"
+                  @click="copyToClipboard('cUrl')"
+                >
+                  <font-awesome-icon
+                    :icon="['far', 'copy']"
+                  />
+                </b-button>
               </div>
-            </b-input-group>
+              <div class="d-flex">
+                <div
+                  class="overflow-wrap mr-2 mb-2"
+                  :class="[tokenRequest.token ? 'text-success' : 'text-danger']"
+                >
+                  {{ tokenRequest.token || tokenRequest.error }}
+                </div>
+                <b-button
+                  v-if="tokenRequest.token"
+                  variant="link"
+                  class="align-top ml-auto fit-content text-secondary"
+                  @click="copyToClipboard('token')"
+                >
+                  <font-awesome-icon
+                    :icon="['far', 'copy']"
+                  />
+                </b-button>
+              </div>
+            </div>
             <div
-              class="d-flex mb-3"
               v-if="secretVisible"
+              class="d-flex mb-3"
             >
               <b-button
                 variant="light"
