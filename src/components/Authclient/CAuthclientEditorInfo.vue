@@ -500,7 +500,7 @@ export default {
         },
 
         security: {
-          impersonateUser: '',
+          impersonateUser: '0',
           permittedRoles: [],
           forbiddenRoles: [],
           forcedRoles: [],
@@ -512,7 +512,7 @@ export default {
         // make sure all references are destroyed
       }, this.resource),
 
-      redirectURI: [],
+      redirectURI: this.resource.redirectURI ? this.resource.redirectURI.split(' ') : [],
 
       // @todo should be handled via computed props
       validFrom: this.resource.validFrom ? {
