@@ -31,6 +31,7 @@
         :expanded.sync="expanded"
         :pinned.sync="pinned"
         :icon="icon"
+        :logo="logo"
         expand-on-hover
       >
         <template #header-expanded>
@@ -75,6 +76,7 @@
 import CTheMainNav from 'corteza-webapp-admin/src/components/CTheMainNav'
 import { components, mixins } from '@cortezaproject/corteza-vue'
 import icon from 'corteza-webapp-admin/src/themes/corteza-base/img/icon.png'
+import logo from 'corteza-webapp-admin/src/themes/corteza-base/img/logo.png'
 
 const { CPermissionsModal, CPrompts, CTopbar, CSidebar } = components
 
@@ -111,6 +113,22 @@ export default {
 
     icon () {
       return this.$Settings.attachment('ui.iconLogo', icon)
+    },
+
+    logo () {
+      return this.$Settings.attachment('ui.mainLogo', logo)
+    },
+  },
+
+  watch: {
+    icon: {
+      immediate: true,
+      handler (icon) {
+        if (icon) {
+          const favicon = document.getElementById('favicon')
+          favicon.href = icon
+        }
+      },
     },
   },
 }
