@@ -41,6 +41,7 @@ export default {
   },
 
   i18nOptions: {
+    namespaces: 'admin',
     keyPrefix: 'general',
   },
 

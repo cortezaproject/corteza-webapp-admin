@@ -1,5 +1,6 @@
 <template>
   <b-card
+    v-if="authClient"
     class="shadow-sm auth-clients"
     header-bg-variant="white"
     footer-bg-variant="white"
@@ -12,7 +13,7 @@
         label-cols="2"
       >
         <b-form-input
-          v-model="(authclient.meta || {}).name"
+          v-model="authClient.meta.name"
           required
         />
       </b-form-group>
@@ -22,11 +23,11 @@
         label-cols="2"
       >
         <b-form-input
-          v-model="authclient.handle"
-          :disabled="authclient.isDefault"
+          v-model="authClient.handle"
+          :disabled="authClient.isDefault"
         />
         <template
-          v-if="authclient.isDefault"
+          v-if="authClient.isDefault"
           #description
         >
           {{ $t('handle.disabledFootnote') }}
@@ -72,7 +73,7 @@
       </b-form-group>
 
       <b-form-group
-        v-if="authclient.authClientID"
+        v-if="existing"
         :label="$t('secret')"
         label-cols="2"
         class="mb-3"
@@ -88,7 +89,7 @@
             v-if="!secretVisible"
             class="ml-1 text-primary"
             variant="link"
-            @click="fetchSecret()"
+            @click="$emit('request-secret')"
           >
             <font-awesome-icon
               :icon="['fas', 'eye']"
@@ -99,7 +100,7 @@
             v-else
             class="ml-1 text-primary"
             variant="link"
-            @click="regenerateSecret()"
+            @click="$emit('regenerate-secret')"
           >
             <font-awesome-icon
               :icon="['fas', 'sync']"
@@ -112,7 +113,7 @@
         label-cols="2"
       >
         <b-form-radio-group
-          v-model="authclient.grant"
+          v-model="authClient.validGrant"
           value="authorization_code"
           :options="[
             { value: 'authorization_code', text: $t('grant.authorization_code') },
@@ -185,13 +186,13 @@
         label-cols="2"
       >
         <b-form-checkbox
-          :checked="(authclient.scope || []).includes('profile')"
+          :checked="(authClient.scope || []).includes('profile')"
           @change="setScope($event, 'profile')"
         >
           {{ $t('profile') }}
         </b-form-checkbox>
         <b-form-checkbox
-          :checked="(authclient.scope || []).includes('api')"
+          :checked="(authClient.scope || []).includes('api')"
           @change="setScope($event, 'api')"
         >
           {{ $t('api') }}
@@ -202,7 +203,7 @@
         label-cols="2"
       >
         <b-form-checkbox
-          v-model="authclient.trusted"
+          v-model="authClient.trusted"
         >
           {{ $t('trusted.label') }}
         </b-form-checkbox>
@@ -213,32 +214,32 @@
         label-cols="2"
       >
         <b-form-checkbox
-          v-model="authclient.enabled"
-          :disabled="authclient.isDefault"
+          v-model="authClient.enabled"
+          :disabled="authClient.isDefault"
         >
           {{ $t('enabled.label') }}
         </b-form-checkbox>
 
         <template
-          v-if="authclient.isDefault"
+          v-if="authClient.isDefault"
           #description
         >
           {{ $t('enabled.disabledFootnote') }}
         </template>
       </b-form-group>
 
-      <div v-if="authclient.grant === 'client_credentials'">
+      <div v-if="authClient.validGrant === 'client_credentials'">
         <b-form-group
           label-cols="2"
           :label="$t('security.impersonateUser.label')"
           :description="$t('security.impersonateUser.description')"
         >
           <c-select-user
-            :user-i-d="authclient.security.impersonateUser"
+            :user-i-d="authClient.security.impersonateUser"
             @updateUser="onUpdateUser"
           />
         </b-form-group>
-        <div v-if="authclient.authClientID">
+        <div v-if="existing">
           <b-form-group label-cols="2">
             <b-button
               variant="light"
@@ -257,50 +258,50 @@
             v-if="curlVisible"
             :label="$t('cUrl')"
             label-cols="2"
-            class="mb-0 curl"
+            class="curl"
           >
-            <b-input-group>
-              <div class="w-100">
-                <div class="d-flex">
-                  <pre
-                    ref="cUrl"
-                    class="mr-2"
-                  >
-        curl -X POST {{ curlURL }} \
-        -d grant_type=client_credentials \
-        -d scope='profile api' \
-        -u {{ authclient.authClientID }}:{{ secret }}</pre>
-                  <b-button
-                    variant="link"
-                    class="align-top ml-auto fit-content text-secondary"
-                    @click="copyToClipboard('cUrl')"
-                  >
-                    <font-awesome-icon
-                      :icon="['far', 'copy']"
-                    />
-                  </b-button>
-                </div>
-                <div class="d-flex">
-                  <div
-                    class="overflow-wrap mr-2 mb-2"
-                    :class="[tokenRequest.token ? 'text-success' : 'text-danger']"
-                  >
-                    {{ tokenRequest.token || tokenRequest.error }}
-                  </div>
-                  <b-button
-                    v-if="tokenRequest.token"
-                    variant="link"
-                    class="align-top ml-auto fit-content text-secondary"
-                    @click="copyToClipboard('token')"
-                  >
-                    <font-awesome-icon
-                      :icon="['far', 'copy']"
-                    />
-                  </b-button>
-                </div>
+            <div class="w-100">
+              <div class="d-flex">
+                <pre
+                  ref="cUrl"
+                >
+curl -X POST {{ curlURL }} \
+-d grant_type=client_credentials \
+-d scope='profile api' \
+-u {{ authClient.authClientID }}:{{ secret || 'PLACE-YOUR-CLIENT-SECRET-HERE' }}</pre>
+                <b-button
+                  variant="link"
+                  class="align-top ml-auto fit-content text-secondary"
+                  @click="copyToClipboard('cUrl')"
+                >
+                  <font-awesome-icon
+                    :icon="['far', 'copy']"
+                  />
+                </b-button>
               </div>
-            </b-input-group>
-            <div class="d-flex mb-3">
+              <div class="d-flex">
+                <div
+                  class="overflow-wrap mr-2 mb-2"
+                  :class="[tokenRequest.token ? 'text-success' : 'text-danger']"
+                >
+                  {{ tokenRequest.token || tokenRequest.error }}
+                </div>
+                <b-button
+                  v-if="tokenRequest.token"
+                  variant="link"
+                  class="align-top ml-auto fit-content text-secondary"
+                  @click="copyToClipboard('token')"
+                >
+                  <font-awesome-icon
+                    :icon="['far', 'copy']"
+                  />
+                </b-button>
+              </div>
+            </div>
+            <div
+              v-if="secretVisible"
+              class="d-flex mb-3"
+            >
               <b-button
                 variant="light"
                 class="align-top fit-content"
@@ -335,37 +336,37 @@
       />
 
       <b-form-group
-        v-if="authclient.createdAt"
+        v-if="authClient.createdAt"
         :label="$t('createdAt')"
         label-cols="2"
         class="mb-0"
       >
         <b-form-input
-          :value="authclient.createdAt | locFullDateTime"
+          :value="authClient.createdAt | locFullDateTime"
           plaintext
           disabled
         />
       </b-form-group>
 
       <b-form-group
-        v-if="authclient.updatedAt"
+        v-if="authClient.updatedAt"
         :label="$t('updatedAt')"
         label-cols="2"
       >
         <b-form-input
-          :value="authclient.updatedAt | locFullDateTime"
+          :value="authClient.updatedAt | locFullDateTime"
           plaintext
           disabled
         />
       </b-form-group>
 
       <b-form-group
-        v-if="authclient.deletedAt"
+        v-if="authClient.deletedAt"
         :label="$t('deletedAt')"
         label-cols="2"
       >
         <b-form-input
-          :value="authclient.deletedAt | locFullDateTime"
+          :value="authClient.deletedAt | locFullDateTime"
           plaintext
           disabled
         />
@@ -397,17 +398,30 @@
         @submit="submit"
       />
 
-      <confirmation-toggle
-        v-if="!authclient.isDefault && authclient && authclient.authClientID"
-        @confirmed="$emit('delete')"
+      <template
+        v-if="canDelete"
       >
-        {{ getDeleteStatus }}
-      </confirmation-toggle>
+        <confirmation-toggle
+          v-if="isDeleted"
+          :disabled="processing"
+          @confirmed="$emit('undelete', authClient.authClientID)"
+        >
+          {{ $t('undelete') }}
+        </confirmation-toggle>
+        <confirmation-toggle
+          v-else
+          :disabled="processing"
+          @confirmed="$emit('delete', authClient.authClientID)"
+        >
+          {{ $t('delete') }}
+        </confirmation-toggle>
+      </template>
     </template>
   </b-card>
 </template>
 
 <script>
+import Vue from 'vue'
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 import CRolePicker from 'corteza-webapp-admin/src/components/CRolePicker'
@@ -431,9 +445,14 @@ export default {
   },
 
   props: {
-    authclient: {
+    resource: {
       type: Object,
       required: true,
+    },
+
+    canDelete: {
+      type: Boolean,
+      default: () => false,
     },
 
     roles: {
@@ -447,6 +466,11 @@ export default {
       value: false,
     },
 
+    secret: {
+      type: String,
+      default: () => '',
+    },
+
     success: {
       type: Boolean,
       value: false,
@@ -454,24 +478,55 @@ export default {
   },
 
   data () {
+    let roles = {}
+    if (this.resource) {
+      const { permittedRoles = [], forbiddenRoles = [], forcedRoles = [] } = this.resource.security || {}
+      roles = {
+        permittedRoles: this.transformRoles(permittedRoles),
+        forbiddenRoles: this.transformRoles(forbiddenRoles),
+        forcedRoles: this.transformRoles(forcedRoles),
+      }
+    }
+
     return {
-      redirectURI: [],
+      // setup all object props we need (reactivity)
+      // when we migrate it to corteza-js using a proper Class this can remove it
+      authClient: Vue.util.extend({
+        trusted: false,
+        handle: '',
+        meta: {
+          name: '',
+          description: '',
+        },
 
-      secret: '',
+        security: {
+          impersonateUser: '0',
+          permittedRoles: [],
+          forbiddenRoles: [],
+          forcedRoles: [],
+        },
 
-      validFrom: {
-        date: undefined,
-        time: undefined,
-      },
+        redirectURI: '',
+        validGrant: '',
 
-      expiresAt: {
-        date: undefined,
-        time: undefined,
-      },
+        // make sure all references are destroyed
+      }, this.resource),
 
-      permittedRoles: [],
-      forbiddenRoles: [],
-      forcedRoles: [],
+      redirectURI: this.resource.redirectURI ? this.resource.redirectURI.split(' ') : [],
+
+      // @todo should be handled via computed props
+      validFrom: this.resource.validFrom ? {
+        date: new Date(this.resource.validFrom).toISOString(),
+        time: new Date(this.resource.validFrom).toTimeString().split(' ')[0],
+      } : { date: null, time: null },
+
+      // @todo should be handled via computed props
+      expiresAt: this.resource.expiresAt ? {
+        date: new Date(this.resource.expiresAt).toISOString(),
+        time: new Date(this.resource.expiresAt).toTimeString().split(' ')[0],
+      } : { date: null, time: null },
+
+      ...roles,
 
       curlVisible: false,
       curlURL: '',
@@ -483,66 +538,34 @@ export default {
   },
 
   computed: {
-    getDeleteStatus () {
-      return this.authclient.deletedAt ? this.$t('undelete') : this.$t('delete')
+    existing () {
+      return !!this.authClient.authClientID
+    },
+
+    isDeleted () {
+      return this.authClient.deletedAt
     },
 
     isValid () {
-      return !!this.authclient.handle
+      return !!this.authClient.handle
     },
 
     secretVisible () {
       return this.secret.length > 0
     },
-
   },
 
   watch: {
-    'authclient.authClientID': {
-      immediate: true,
-      handler (authClientID) {
-        // New authclient
-        if (!authClientID) {
-          this.authclient.scope = 'profile api'
-          this.authclient.enabled = true
-          this.redirectURI = ['']
-          this.authclient.security = {}
-          this.authclient.grant = 'authorization_code'
-        } else {
-          if (this.authclient.redirectURI) {
-            this.redirectURI = this.authclient.redirectURI.split(' ')
-          } else {
-            this.redirectURI = []
-          }
-        }
-
-        if (this.authclient.validFrom) {
-          this.validFrom.date = new Date(this.authclient.validFrom).toISOString()
-          this.validFrom.time = new Date(this.authclient.validFrom).toTimeString().split(' ')[0]
-        }
-
-        if (this.authclient.expiresAt) {
-          this.expiresAt.date = new Date(this.authclient.expiresAt).toISOString()
-          this.expiresAt.time = new Date(this.authclient.expiresAt).toTimeString().split(' ')[0]
-        }
-
-        this.permittedRoles = this.transformRoles(this.authclient.security.permittedRoles)
-        this.forbiddenRoles = this.transformRoles(this.authclient.security.forbiddenRoles)
-        this.forcedRoles = this.transformRoles(this.authclient.security.forcedRoles)
-      },
-    },
-
-    redirectURI: {
+    'redirectURI': {
       handler (redirectURI) {
-        this.authclient.redirectURI = redirectURI.filter(ru => ru).join(' ')
+        this.authClient.redirectURI = redirectURI.filter(ru => ru).join(' ')
       },
     },
   },
 
   methods: {
     onUpdateUser (user) {
-      console.log(user)
-      this.authclient.security.impersonateUser = (user || {}).userID
+      this.authClient.security.impersonateUser = (user || {}).userID
     },
 
     getAccessTokenAPI () {
@@ -552,7 +575,7 @@ export default {
       axios.post(
         this.curlURL,
         params,
-        { auth: { username: this.authclient.authClientID, password: this.secret } }
+        { auth: { username: this.authClient.authClientID, password: this.secret } }
       ).then(response => {
         this.tokenRequest.token = (response.data || {}).access_token
       }).catch(error => {
@@ -570,7 +593,6 @@ export default {
 
     toggleCurlSnippet () {
       if (!this.curlVisible) {
-        this.fetchSecret()
         this.curlURL = this.$auth.cortezaAuthURL + '/oauth2/token'
       }
       this.curlVisible = !this.curlVisible
@@ -578,37 +600,37 @@ export default {
 
     submit () {
       if (this.validFrom.date && this.validFrom.time) {
-        this.authclient.validFrom = new Date(`${this.validFrom.date} ${this.validFrom.time}`).toISOString()
+        this.authClient.validFrom = new Date(`${this.validFrom.date} ${this.validFrom.time}`).toISOString()
       } else {
-        this.authclient.validFrom = undefined
+        this.authClient.validFrom = undefined
       }
 
       if (this.expiresAt.date && this.expiresAt.time) {
-        this.authclient.expiresAt = new Date(`${this.expiresAt.date} ${this.expiresAt.time}`).toISOString()
+        this.authClient.expiresAt = new Date(`${this.expiresAt.date} ${this.expiresAt.time}`).toISOString()
       } else {
-        this.authclient.expiresAt = undefined
+        this.authClient.expiresAt = undefined
       }
 
-      this.authclient.security.permittedRoles = this.permittedRoles
+      this.authClient.security.permittedRoles = this.permittedRoles
         .filter(({ current, dirty }) => {
           return dirty !== current && dirty
         }).map(({ roleID }) => roleID)
 
-      this.authclient.security.forbiddenRoles = this.forbiddenRoles
+      this.authClient.security.forbiddenRoles = this.forbiddenRoles
         .filter(({ current, dirty }) => {
           return dirty !== current && dirty
         }).map(({ roleID }) => roleID)
 
-      this.authclient.security.forcedRoles = this.forcedRoles
+      this.authClient.security.forcedRoles = this.forcedRoles
         .filter(({ current, dirty }) => {
           return dirty !== current && dirty
         }).map(({ roleID }) => roleID)
 
-      this.$emit('submit', this.authclient)
+      this.$emit('submit', this.authClient)
     },
 
     setScope (value, target) {
-      let items = this.authclient.scope ? this.authclient.scope.split(' ') : []
+      let items = this.authClient.scope ? this.authClient.scope.split(' ') : []
 
       if (value) {
         items.push(target)
@@ -616,23 +638,7 @@ export default {
         items = items.filter(i => i !== target)
       }
 
-      this.authclient.scope = items.join(' ')
-    },
-
-    fetchSecret () {
-      if (!this.secret) {
-        this.$SystemAPI.authClientExposeSecret(({ clientID: this.authclient.authClientID }))
-          .then(secret => {
-            this.secret = secret
-          })
-      }
-    },
-
-    regenerateSecret () {
-      this.$SystemAPI.authClientRegenerateSecret(({ clientID: this.authclient.authClientID }))
-        .then(newSecret => {
-          this.secret = newSecret
-        })
+      this.authClient.scope = items.join(' ')
     },
 
     transformRoles (currentRoles = []) {
