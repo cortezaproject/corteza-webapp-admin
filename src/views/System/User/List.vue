@@ -16,7 +16,6 @@
           {{ $t('new') }}
         </b-button>
         <c-permissions-button
-          :title="$t('title')"
           resource="corteza::system:user/*"
           button-variant="light"
         >

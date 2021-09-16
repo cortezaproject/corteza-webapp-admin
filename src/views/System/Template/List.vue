@@ -18,7 +18,6 @@
         </b-button>
         <c-permissions-button
           v-if="canGrant"
-          :title="$t('title')"
           resource="corteza::system:template/*"
           button-variant="light"
         >

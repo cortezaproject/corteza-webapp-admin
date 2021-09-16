@@ -18,7 +18,6 @@
         </b-button>
         <c-permissions-button
           v-if="canGrant"
-          :title="$t('title')"
           resource="corteza::system:apigw-route/*"
           button-variant="light"
         >

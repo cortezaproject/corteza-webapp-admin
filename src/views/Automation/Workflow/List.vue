@@ -17,7 +17,6 @@
         </b-button>
         <c-permissions-button
           v-if="canGrant"
-          :title="$t('title')"
           resource="corteza::automation:workflow/*"
           button-variant="light"
           class="ml-2"
