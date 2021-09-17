@@ -56,6 +56,12 @@ export default (options = {}) => {
       this.websocketMessageRouter()
 
       return this.$auth.vue(this).handle().then(({ accessTokenFn, user }) => {
+        if (user.meta.preferredLanguage) {
+          // After user is authenticated, get his preferred language
+          // and instruct i18next to change it
+          this.$i18n.i18next.changeLanguage(user.meta.preferredLanguage)
+        }
+
         // Setup the progress bar
         this.$router.beforeEach((to, from, next) => {
           this.$Progress.start()
