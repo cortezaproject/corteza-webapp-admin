@@ -281,9 +281,18 @@ export default {
 
   mounted () {
     this.$SystemAPI.statsList().then(({ users, roles, applications }) => {
-      this.users = users
-      this.roles = roles
-      this.applications = applications
+      if (users) {
+        this.users = users
+      }
+
+      if (roles) {
+        this.roles = roles
+      }
+
+      if (applications) {
+        this.applications = applications
+      }
+
       this.initUserChart()
     })
 
@@ -308,6 +317,10 @@ export default {
 
   methods: {
     initUserChart () {
+      if (this.users.total === 0) {
+        return
+      }
+
       const d = this.users.dailyCreated
       const unit = this.getComfortableTimeUnit(d)
       const ctx = this.$refs.userChart.getContext('2d')
