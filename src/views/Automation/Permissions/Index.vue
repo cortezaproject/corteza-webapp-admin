@@ -3,7 +3,7 @@
     class="py-3"
   >
     <c-content-header
-      :title="$t('title')"
+      :title="$t('ui.title.automation')"
     />
 
     <c-permission-list
@@ -15,6 +15,7 @@
       :loaded="isLoaded"
       :processing="permission.processing"
       :success="permission.success"
+      component="automation"
       @submit="onSubmit"
       @add="addRole"
     />
@@ -28,8 +29,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   i18nOptions: {
-    namespaces: 'automation.permissions',
-    keyPrefix: 'list',
+    namespaces: 'permissions',
   },
 
   components: {

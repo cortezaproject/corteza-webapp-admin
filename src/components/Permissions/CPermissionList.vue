@@ -35,7 +35,7 @@
               v-b-modal.addRole
               class="text-primary text-truncate pointer"
             >
-              {{ $t('rules.add') }}
+              {{ $t('ui.role.add') }}
               <font-awesome-icon
                 :icon="['fas', 'plus']"
               />
@@ -112,14 +112,14 @@
             class="align-middle m-5"
           />
           <div>
-            {{ $t('rules.loading') }}
+            {{ $t('ui.loading') }}
           </div>
         </div>
         <div
           v-else-if="!canGrant"
           class="text-danger"
         >
-          {{ $t('rules.notAllowed') }}
+          {{ $t('ui.not-allowed') }}
         </div>
       </div>
 
@@ -128,9 +128,9 @@
         #footer
       >
         <small class="float-left text-primary">
-          {{ $t('rules.tip1') }}
+          {{ $t('ui.click-on-cell-to-allow') }}
           <br>
-          {{ $t('rules.tip2') }}
+          {{ $t('ui.alt-click-to-deny') }}
         </small>
         <c-submit-button
           class="float-right"
@@ -138,16 +138,16 @@
           :success="success"
           @submit="onSubmit"
         >
-          {{ $t('rules.submit') }}
+          {{ $t('ui.save-changes') }}
         </c-submit-button>
       </template>
     </b-card>
 
     <b-modal
       id="addRole"
-      :title="$t('rules.addRole')"
+      :title="$t('ui.role.add')"
       :ok-only="true"
-      :ok-title="$t('rules.add')"
+      :ok-title="$t('ui.role.add-new')"
       @ok="onAddRole"
     >
       <vue-select
@@ -155,7 +155,7 @@
         v-model="newRole"
         :options="rolesExcluded"
         label="name"
-        :placeholder="$t('rules.noRole')"
+        :placeholder="$t('ui.role.no-role-selected')"
       />
     </b-modal>
   </div>
@@ -167,6 +167,10 @@ import { VueSelect } from 'vue-select'
 import _ from 'lodash'
 
 export default {
+  i18nOptions: {
+    namespaces: 'permissions',
+  },
+
   components: {
     CSubmitButton,
     VueSelect,
@@ -211,6 +215,11 @@ export default {
     success: {
       type: Boolean,
       value: false,
+    },
+
+    component: {
+      type: String,
+      required: true,
     },
   },
 
@@ -277,12 +286,12 @@ export default {
     },
 
     getTranslation (resource, operation = '') {
-      resource = _.camelCase(resource.split(':')[3]) || 'component'
+      resource = _.kebabCase(resource.split(':')[3]) || 'component'
 
       if (operation) {
-        return this.$t(`rules.${resource}.operations.${_.camelCase(operation)}`)
+        return this.$t(`resources.${this.component}.${resource}.operations.${operation}.title`)
       } else {
-        return this.$t(`rules.${resource}.type.label`)
+        return this.$t(`resources.${this.component}.${resource}.label`)
       }
     },
 
