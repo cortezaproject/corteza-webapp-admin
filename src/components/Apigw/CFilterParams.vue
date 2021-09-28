@@ -16,11 +16,19 @@
             v-model="param.value"
             @change="paramsUpdated()"
           />
-          <b-form-input
-            v-else
-            v-model="param.value"
-            @change="paramsUpdated()"
-          />
+          <template v-else>
+            <b-form-textarea
+              v-if="param.label === 'jsfunc'"
+              v-model="param.value"
+              max-rows="6"
+              @change="paramsUpdated()"
+            />
+            <b-form-input
+              v-else
+              v-model="param.value"
+              @change="paramsUpdated()"
+            />
+          </template>
         </b-form-group>
       </template>
     </b-form-group>
