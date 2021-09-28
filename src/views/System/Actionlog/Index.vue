@@ -218,7 +218,7 @@
                     {{ $t('details.severity') }}
                   </b-col>
                   <b-col cols="8">
-                    {{ $t(`severity.${a.severity}`) }}
+                    {{ getSeverityLabel(a.severity) }}
                   </b-col>
                 </b-row>
                 <b-row>
@@ -459,6 +459,12 @@ export default {
     getDateTime ({ date, time }) {
       const datetime = date && time ? `${date} ${time}` : date || time
       return datetime ? new Date(datetime).toISOString() : undefined
+    },
+
+    getSeverityLabel (index = -1) {
+      if (index >= 0) {
+        return this.severity[index] ? this.severity[index].label.toLowerCase() : index
+      }
     },
   },
 }
