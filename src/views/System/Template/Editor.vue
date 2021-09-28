@@ -143,7 +143,7 @@ export default {
         .then(t => {
           this.template = new system.Template(t)
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:template.fetch.error')))
         .finally(() => {
           this.decLoader()
         })
@@ -156,7 +156,7 @@ export default {
         .then(({ set: tt }) => {
           this.partials = tt.map(t => new system.Template(t))
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:template.fetchPartials.error')))
         .finally(() => {
           this.decLoader()
         })
@@ -168,8 +168,10 @@ export default {
         this.$SystemAPI.templateUndelete({ templateID: this.templateID })
           .then(() => {
             this.fetchTemplate()
+
+            this.toastSuccess(this.$t('notification:template.undelete.success'))
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:template.undelete.error')))
           .finally(() => {
             this.decLoader()
           })
@@ -177,8 +179,10 @@ export default {
         this.$SystemAPI.templateDelete({ templateID: this.templateID })
           .then(() => {
             this.fetchTemplate()
+
+            this.toastSuccess(this.$t('notification:template.delete.success'))
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:template.delete.error')))
           .finally(() => {
             this.decLoader()
           })
@@ -191,10 +195,11 @@ export default {
       if (this.templateID) {
         this.$SystemAPI.templateUpdate(template)
           .then(template => {
-            this.animateSuccess('info')
             this.template = template
+
+            this.toastSuccess(this.$t('notification:template.update.success'))
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:template.update.error')))
           .finally(() => {
             this.decLoader()
           })
@@ -202,9 +207,11 @@ export default {
         this.$SystemAPI.templateCreate(template)
           .then(({ templateID }) => {
             this.animateSuccess('info')
+            this.toastSuccess(this.$t('notification:template.create.success'))
+
             this.$router.push({ name: 'system.template.edit', params: { templateID } })
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:template.create.error')))
           .finally(() => {
             this.decLoader()
           })

@@ -8,7 +8,6 @@
       <b-form-group
         :label="$t('consumer')"
         label-cols="2"
-        :class="{ 'mb-0': !queue.queueID }"
       >
         <b-form-select
           v-model="queue.consumer"

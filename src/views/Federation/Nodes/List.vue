@@ -252,8 +252,9 @@ export default {
 
           // Refetch list
           this.$root.$emit('bv::refresh::table', 'resource-list')
+          this.toastSuccess(this.$t('notification:federation.pair.success'))
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:federation.pair.error')))
         .finally(() => {
           this.pair.processing = false
         })
@@ -274,6 +275,7 @@ export default {
 
           // Refetch list
           this.$root.$emit('bv::refresh::table', 'resource-list')
+          this.toastSuccess(this.$t('notification:federation.handshake.success'))
 
           setTimeout(() => {
             this.pair.success = false
@@ -285,7 +287,7 @@ export default {
             this.pair.modal = false
           }, 1000)
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:federation.handshake.error')))
         .finally(() => {
           this.pair.processing = false
         })

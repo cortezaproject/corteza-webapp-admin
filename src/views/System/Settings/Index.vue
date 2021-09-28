@@ -97,8 +97,8 @@ export default {
         .then(settings => {
           this.settings = settings
         })
-        .catch(err => {
-          this.stdReject(err)
+        .catch(e => {
+          this.toastErrorHandler(this.$t('notification:settings.system.fetch.error'))(e)
           this.$router.push({ name: 'dashboard' })
         })
         .finally(() => {
@@ -116,8 +116,9 @@ export default {
       this.$SystemAPI.settingsUpdate({ values })
         .then(() => {
           this.animateSuccess('auth')
+          this.toastSuccess(this.$t('notification:settings.system.auth.success'))
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:settings.system.auth.error')))
         .finally(() => {
           this.auth.processing = false
         })
@@ -129,8 +130,9 @@ export default {
       this.$SystemAPI.settingsUpdate({ values: external })
         .then(() => {
           this.animateSuccess('external')
+          this.toastSuccess(this.$t('notification:settings.system.external.success'))
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:settings.system.external.error')))
         .finally(() => {
           this.external.processing = false
         })

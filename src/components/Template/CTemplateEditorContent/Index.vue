@@ -218,7 +218,7 @@ export default {
   async created () {
     this.availableDrivers = await this.$SystemAPI.templateRenderDrivers()
       .then(rsp => rsp.set)
-      .catch(this.stdReject)
+      .catch(this.toastErrorHandler(this.$t('notification:template.driver.error')))
   },
 
   methods: {
@@ -230,7 +230,7 @@ export default {
         responseType: 'blob',
         url: this.$SystemAPI.templateRenderEndpoint({
           templateID: this.template.templateID,
-          filename: 'preveiw',
+          filename: 'preview',
           ext,
         }),
         data: JSON.parse(this.previewData),
@@ -241,7 +241,7 @@ export default {
           this.previewBlob = window.URL.createObjectURL(r.data)
           this.previewModalVisible = true
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:template.preview.error')))
         .finally(() => {
           this.decLoader()
         })

@@ -130,7 +130,7 @@ export default {
         .then((api) => {
           this.route = api
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:gateway.fetch.error')))
         .finally(() => {
           this.decLoader()
         })
@@ -142,10 +142,12 @@ export default {
         this.$SystemAPI
           .apigwRouteUpdate(route)
           .then(() => {
-            this.animateSuccess('info')
             this.fetchRoute()
+
+            this.animateSuccess('info')
+            this.toastSuccess(this.$t('notification:gateway.update.success'))
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:gateway.update.error')))
           .finally(() => {
             this.info.processing = false
           })
@@ -154,17 +156,50 @@ export default {
           .apigwRouteCreate(route)
           .then(({ routeID }) => {
             this.animateSuccess('info')
+            this.toastSuccess(this.$t('notification:gateway.create.success'))
+
             this.$router.push({
               name: 'system.apigw.edit',
               params: { routeID },
             })
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:gateway.create.error')))
           .finally(() => {
             this.info.processing = false
           })
       }
     },
+
+    onInfoDelete () {
+      this.incLoader()
+
+      if (this.route.deletedAt) {
+        this.$SystemAPI
+          .apigwRouteUndelete({ routeID: this.routeID })
+          .then(() => {
+            this.fetchRoute()
+
+            this.toastSuccess(this.$t('notification:user.undelete.success'))
+          })
+          .catch(this.toastErrorHandler(this.$t('notification:user.undelete.error')))
+          .finally(() => {
+            this.decLoader()
+          })
+      } else {
+        this.$SystemAPI
+          .apigwRouteDelete({ routeID: this.routeID })
+          .then(() => {
+            this.fetchRoute()
+
+            this.toastSuccess(this.$t('notification:user.delete.success'))
+          })
+          .catch(this.toastErrorHandler(this.$t('notification:user.delete.error')))
+          .finally(() => {
+            this.decLoader()
+          })
+      }
+    },
+
     onFiltersSubmit () {
       if (this.filtersToDelete.length) {
         this.deleteFilters(this.filtersToDelete)
@@ -189,11 +224,13 @@ export default {
       this.$SystemAPI
         .apigwFilterCreate({ ...func, routeID: this.routeID })
         .then(({ filterID }) => {
-          this.animateSuccess('stepper')
           this.filters[index].updated = false
           this.filters[index].filterID = filterID
+
+          this.animateSuccess('stepper')
+          this.toastSuccess(this.$t('notification:gateway.filter.create.success'))
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:gateway.filter.create.error')))
         .finally(() => {
           this.stepper.processing = false
         })
@@ -203,10 +240,11 @@ export default {
       this.$SystemAPI
         .apigwFilterUpdate({ ...func, routeID: this.routeID })
         .then(() => {
-          this.animateSuccess('stepper')
           this.filters[index].updated = false
+
+          this.toastSuccess(this.$t('notification:gateway.filter.update.success'))
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:gateway.filter.update.error')))
         .finally(() => {
           this.stepper.processing = false
         })
@@ -217,10 +255,11 @@ export default {
         this.$SystemAPI
           .apigwFilterDelete({ filterID })
           .then(() => {
-            this.animateSuccess('stepper')
             this.filtersToDelete.splice(index, 1)
+
+            this.toastSuccess(this.$t('notification:gateway.filter.delete.success'))
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:gateway.filter.delete.error')))
           .finally(() => {
             this.stepper.processing = false
           })
@@ -234,7 +273,7 @@ export default {
         .then((api) => {
           this.setRouteFilters(api.set)
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:gateway.filter.fetch.error')))
         .finally(() => {
           this.decLoader()
         })
@@ -272,40 +311,13 @@ export default {
             return { name, ...f, ref: f.name, status: 'Active', options: { checked: false } }
           })
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:gateway.filter.fetch.error')))
         .finally(() => {
           this.decLoader()
         })
     },
 
-    onInfoDelete () {
-      this.incLoader()
-
-      if (this.route.deletedAt) {
-        this.$SystemAPI
-          .apigwRouteUndelete({ routeID: this.routeID })
-          .then(() => {
-            this.fetchRoute()
-          })
-          .catch(this.stdReject)
-          .finally(() => {
-            this.decLoader()
-          })
-      } else {
-        this.$SystemAPI
-          .apigwRouteDelete({ routeID: this.routeID })
-          .then(() => {
-            this.fetchRoute()
-          })
-          .catch(this.stdReject)
-          .finally(() => {
-            this.decLoader()
-          })
-      }
-    },
-
     fetchSteps () {
-      this.incLoader()
       this.steps = ['prefilter', 'processer', 'postfilter']
     },
   },

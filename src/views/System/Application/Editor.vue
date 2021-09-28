@@ -131,13 +131,12 @@ export default {
   },
 
   methods: {
-
     fetchApplication () {
       this.incLoader()
 
       this.$SystemAPI.applicationRead({ applicationID: this.applicationID, incFlags: 1 })
         .then(this.prepare)
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:application.fetch.error')))
         .finally(() => {
           this.decLoader()
         })
@@ -149,10 +148,12 @@ export default {
       if (this.applicationID) {
         this.$SystemAPI.applicationUpdate(application)
           .then(() => {
-            this.animateSuccess('info')
             this.fetchApplication()
+
+            this.animateSuccess('info')
+            this.toastSuccess(this.$t('notification:application.update.success'))
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:application.update.error')))
           .finally(() => {
             this.info.processing = false
           })
@@ -160,9 +161,11 @@ export default {
         this.$SystemAPI.applicationCreate(application)
           .then(({ applicationID }) => {
             this.animateSuccess('info')
+            this.toastSuccess(this.$t('notification:application.create.success'))
+
             this.$router.push({ name: 'system.application.edit', params: { applicationID } })
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:application.create.error')))
           .finally(() => {
             this.info.processing = false
           })
@@ -178,7 +181,7 @@ export default {
           const assets = await this.uploadAssets(unifyAssets)
           unify = { ...unify, ...assets }
         } catch (e) {
-          this.stdReject(e)
+          this.toastErrorHandler(this.$t('notification:application.assetsUpload.error'))(e)
           this.unify.processing = false
           return
         }
@@ -201,10 +204,11 @@ export default {
 
         return this.$SystemAPI.applicationUpdate({ ...this.application, unify })
           .then(() => {
-            this.animateSuccess('unify')
             this.fetchApplication()
+
+            this.toastSuccess(this.$t('notification:application.update.success'))
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:application.update.error')))
           .finally(() => {
             this.unify.processing = false
           })
@@ -257,8 +261,10 @@ export default {
         this.$SystemAPI.applicationUndelete({ applicationID: this.applicationID })
           .then(() => {
             this.fetchApplication()
+
+            this.toastSuccess(this.$t('notification:application.undelete.success'))
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:application.undelete.error')))
           .finally(() => {
             this.decLoader()
           })
@@ -266,8 +272,10 @@ export default {
         this.$SystemAPI.applicationDelete({ applicationID: this.applicationID })
           .then(() => {
             this.fetchApplication()
+
+            this.toastSuccess(this.$t('notification:application.delete.success'))
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:application.delete.error')))
           .finally(() => {
             this.decLoader()
           })

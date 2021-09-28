@@ -67,7 +67,6 @@
       </template>
       <router-view />
     </main>
-
     <c-prompts />
     <c-permissions-modal />
   </div>
@@ -129,6 +128,22 @@ export default {
           favicon.href = icon
         }
       },
+    },
+  },
+
+  created () {
+    this.$root.$on('alert', this.displayToast)
+  },
+
+  methods: {
+    displayToast ({ title, message, variant, countdown }) {
+      this.$bvToast.toast(message, {
+        title,
+        variant,
+        solid: true,
+        autoHideDelay: countdown,
+        toaster: 'b-toaster-bottom-right',
+      })
     },
   },
 }

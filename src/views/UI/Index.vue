@@ -133,7 +133,7 @@ export default {
             this.$set(this.settings, name.substring(prefix.length), value)
           })
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:settings.ui.fetch.error')))
         .finally(() => {
           this.decLoader()
         })

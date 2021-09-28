@@ -71,7 +71,7 @@ export default {
           this.prepare(session)
           this.fetchUser()
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:session.fetch.error')))
         .finally(() => {
           this.decLoader()
         })
@@ -84,7 +84,7 @@ export default {
         .then(user => {
           this.user = new system.User(user)
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:user.fetch.error')))
         .finally(() => {
           this.decLoader()
         })

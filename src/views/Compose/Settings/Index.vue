@@ -73,8 +73,9 @@ export default {
       this.$SystemAPI.settingsUpdate({ values })
         .then(() => {
           this.animateSuccess('basic')
+          this.toastSuccess(this.$t('notification:settings.compose.update.success'))
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:settings.compose.update.error')))
         .finally(() => {
           this.basic.processing = false
         })
@@ -89,7 +90,7 @@ export default {
             this.$set(this.settings, name, value)
           })
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:settings.compose.fetch.error')))
         .finally(() => {
           this.decLoader()
         })

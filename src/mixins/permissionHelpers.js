@@ -63,13 +63,12 @@ export default {
       return this.$SystemAPI.roleList()
         .then(({ set }) => set.filter(({ isBypass }) => !isBypass))
         .then(set => {
-          this.roles = set
-            .filter(r => this.rolesIncluded.includes(r.roleID))
+          this.roles = set.filter(r => this.rolesIncluded.includes(r.roleID))
           this.rolePermissions = []
           this.rolesExcluded = []
 
           // We read permissions for included roles
-          Promise.all(set.map(role => {
+          return Promise.all(set.map(role => {
             const { roleID } = role
 
             if (this.rolesIncluded.includes(roleID)) {
@@ -82,13 +81,12 @@ export default {
               this.rolesExcluded.push(role)
             }
           }))
-            .catch(this.stdReject)
-            .finally(() => {
-              this.loaded.roles = true
-              this.decLoader()
-            })
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:user.roles.error')))
+        .finally(() => {
+          this.loaded.roles = true
+          this.decLoader()
+        })
     },
 
     fetchPermissions () {
@@ -107,7 +105,7 @@ export default {
             }, {})
         })
         .then(() => this.fetchRoles())
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:permissions.fetch.system')))
         .finally(() => {
           this.loaded.permissions = true
           this.decLoader()
@@ -124,11 +122,10 @@ export default {
         })
 
         return this.api.permissionsUpdate({ roleID, rules: externalRules })
-          .then(() => {
-            this.animateSuccess('permission')
-          })
-      }))
-        .catch(this.stdReject)
+      })).then(() => {
+        this.animateSuccess('permission')
+        this.toastSuccess(this.$t('notification:permissions.update.success'))
+      }).catch(this.toastErrorHandler(this.$t('notification:permissions.update.error')))
         .finally(() => {
           this.permission.processing = false
         })
@@ -151,7 +148,7 @@ export default {
           this.roles.push(role)
           this.loaded.roles = true
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:permissions.role.error')))
         .finally(() => {
           this.loaded.roles = true
         })

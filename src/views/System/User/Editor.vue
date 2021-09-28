@@ -46,7 +46,7 @@
       @delete="onDelete"
       @status="onStatusChange"
       @patch="onPatch"
-      @sessionsRemove="onSessionsRemove"
+      @sessionsRevoke="onSessionsRevoke"
     />
 
     <c-user-editor-roles
@@ -181,7 +181,7 @@ export default {
         .then(user => {
           this.user = new system.User(user)
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:user.fetch.error')))
         .finally(() => {
           this.decLoader()
         })
@@ -194,7 +194,7 @@ export default {
       const userID = this.userID
 
       this.$SystemAPI.roleList().then(({ set: roles = [] }) => {
-        this.$SystemAPI.userMembershipList({ userID }).then((m = []) => {
+        return this.$SystemAPI.userMembershipList({ userID }).then((m = []) => {
           let userRoles = []
           roles.forEach(r => {
             let { roleID } = r
@@ -207,8 +207,8 @@ export default {
             }
           })
           this.userRoles = userRoles
-        }).catch(this.stdReject)
-      }).catch(this.stdReject)
+        })
+      }).catch(this.toastErrorHandler(this.$t('notification:user.roles.error')))
         .finally(() => {
           this.decLoader()
         })
@@ -229,13 +229,12 @@ export default {
         // On update, reset the user obj
         this.$SystemAPI.userUpdate(payload)
           .then(user => {
-            this.animateSuccess('info')
             this.user = new system.User(user)
 
-            // And showing the toast
-            this.toastSuccess('userInfoOK')
+            this.animateSuccess('info')
+            this.toastSuccess(this.$t('notification:user.update.success'))
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:user.update.error')))
           .finally(() => {
             this.info.processing = false
           })
@@ -244,9 +243,11 @@ export default {
         this.$SystemAPI.userCreate(payload)
           .then(({ userID }) => {
             this.animateSuccess('info')
+            this.toastSuccess(this.$t('notification:user.create.success'))
+
             this.$router.push({ name: 'system.user.edit', params: { userID } })
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:user.create.error')))
           .finally(() => {
             this.info.processing = false
           })
@@ -264,8 +265,10 @@ export default {
         this.$SystemAPI.userUndelete({ userID: this.userID })
           .then(() => {
             this.fetchUser()
+
+            this.toastSuccess(this.$t('notification:user.undelete.success'))
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:user.undelete.error')))
           .finally(() => {
             this.decLoader()
           })
@@ -273,8 +276,10 @@ export default {
         this.$SystemAPI.userDelete({ userID: this.userID })
           .then(() => {
             this.fetchUser()
+
+            this.toastSuccess(this.$t('notification:user.delete.success'))
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:user.delete.error')))
           .finally(() => {
             this.decLoader()
           })
@@ -294,10 +299,9 @@ export default {
         .then(() => {
           this.animateSuccess('password')
 
-          // And showing the toast
-          this.toastSuccess('passwordOK')
+          this.toastSuccess(this.$t('notification:user.passwordChange.success'))
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:user.passwordChange.error')))
         .finally(() => {
           this.password.processing = false
         })
@@ -347,9 +351,9 @@ export default {
           this.animateSuccess('roles')
           this.fetchUserRoles()
 
-          this.toastSuccess('membershipOK')
+          this.toastSuccess(this.$t('notification:user.membershipUpdate.success'))
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:user.membershipUpdate.error')))
         .finally(() => {
           this.roles.processing = false
         })
@@ -368,8 +372,10 @@ export default {
         this.$SystemAPI.userUnsuspend({ userID })
           .then(() => {
             this.fetchUser()
+
+            this.toastSuccess(this.$t('notification:user.unsuspend.success'))
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:user.unsuspend.error')))
           .finally(() => {
             this.decLoader()
           })
@@ -377,8 +383,10 @@ export default {
         this.$SystemAPI.userSuspend({ userID })
           .then(() => {
             this.fetchUser()
+
+            this.toastSuccess(this.$t('notification:user.suspend.success'))
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:user.suspend.error')))
           .finally(() => {
             this.decLoader()
           })
@@ -389,7 +397,7 @@ export default {
      * Handles user logout event, calls user logout API endpoint
      * Removes all active auth session and token of user
      */
-    onSessionsRemove () {
+    onSessionsRevoke () {
       this.incLoader()
 
       const userID = this.userID
@@ -397,18 +405,13 @@ export default {
       this.$SystemAPI.userSessionsRemove({ userID })
         .then(() => {
           this.fetchUser()
+
+          this.toastSuccess(this.$t('notification:user.sessionsRevoke.success'))
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:user.sessionsRevoke.error')))
         .finally(() => {
           this.decLoader()
         })
-    },
-
-    toastSuccess (i18nMessage) {
-      this.$bvToast.toast(this.$t('notifications.' + i18nMessage), {
-        variant: 'primary',
-        title: this.$t('notifications.title'),
-      })
     },
   },
 }

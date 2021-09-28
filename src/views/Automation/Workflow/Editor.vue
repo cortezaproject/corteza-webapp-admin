@@ -139,7 +139,7 @@ export default {
 
       this.$AutomationAPI.workflowRead({ workflowID: this.workflowID })
         .then(this.prepare)
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:workflow.fetch.error')))
         .finally(() => {
           this.decLoader()
         })
@@ -150,7 +150,7 @@ export default {
 
       this.$AutomationAPI.triggerList({ workflowID: this.workflowID, disabled: 1 })
         .then(({ set = [] }) => { this.triggers = set })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:workflow.trigger.error')))
         .finally(() => {
           this.decLoader()
         })
@@ -162,10 +162,12 @@ export default {
       if (this.workflowID) {
         this.$AutomationAPI.workflowUpdate(workflow)
           .then(() => {
-            this.animateSuccess('info')
             this.fetchWorkflow()
+
+            this.animateSuccess('info')
+            this.toastSuccess(this.$t('notification:workflow.update.success'))
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:workflow.update.error')))
           .finally(() => {
             this.info.processing = false
           })
@@ -173,9 +175,11 @@ export default {
         this.$AutomationAPI.workflowCreate(workflow)
           .then(({ workflowID }) => {
             this.animateSuccess('info')
+            this.toastSuccess(this.$t('notification:workflow.create.success'))
+
             this.$router.push({ name: 'automation.workflow.edit', params: { workflowID } })
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:workflow.create.error')))
           .finally(() => {
             this.info.processing = false
           })
@@ -189,8 +193,10 @@ export default {
         this.$AutomationAPI.workflowUndelete({ workflowID: this.workflowID })
           .then(() => {
             this.fetchWorkflow()
+
+            this.toastSuccess(this.$t('notification:workflow.undelete.success'))
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:workflow.undelete.error')))
           .finally(() => {
             this.decLoader()
           })
@@ -198,8 +204,10 @@ export default {
         this.$AutomationAPI.workflowDelete({ workflowID: this.workflowID })
           .then(() => {
             this.fetchWorkflow()
+
+            this.toastSuccess(this.$t('notification:workflow.delete.success'))
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:workflow.delete.error')))
           .finally(() => {
             this.decLoader()
           })

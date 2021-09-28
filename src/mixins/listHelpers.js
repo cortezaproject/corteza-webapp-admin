@@ -148,8 +148,7 @@ export default {
         this.paging.prevPage = filter.prevPage
 
         return set
-      })
-        .catch(this.stdReject)
+      }).catch(this.toastErrorHandler(this.$t('notification:list.load.error')))
         .finally(async () => {
           await new Promise(
             resolve => setTimeout(resolve, 300)
@@ -157,24 +156,6 @@ export default {
 
           this.decLoader()
         })
-    },
-
-    stdReject (error) {
-      // Logging the error
-      console.error(error)
-      let msg = 'An error occurred'
-
-      if (typeof error === 'object' && error.message) {
-        msg = error.message
-      } else {
-        msg = error.toString()
-      }
-
-      // And showing the toast
-      this.$bvToast.toast(msg, {
-        variant: 'danger',
-        title: 'Failed to process request',
-      })
     },
   },
 }

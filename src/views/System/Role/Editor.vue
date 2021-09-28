@@ -149,7 +149,7 @@ export default {
           return this.$SystemAPI.roleMemberList(r)
         })
         .then((mm = []) => { this.roleMembers = mm })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:role.fetch.error')))
         .finally(() => {
           this.decLoader()
         })
@@ -162,8 +162,10 @@ export default {
         this.$SystemAPI.roleUndelete({ roleID: this.roleID })
           .then(() => {
             this.fetchRole()
+
+            this.toastSuccess(this.$t('notification:role.undelete.success'))
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:role.undelete.error')))
           .finally(() => {
             this.decLoader()
           })
@@ -171,8 +173,10 @@ export default {
         this.$SystemAPI.roleDelete({ roleID: this.roleID })
           .then(() => {
             this.fetchRole()
+
+            this.toastSuccess(this.$t('notification:role.delete.success'))
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:role.delete.error')))
           .finally(() => {
             this.decLoader()
           })
@@ -185,10 +189,12 @@ export default {
       if (this.roleID) {
         this.$SystemAPI.roleUpdate(role)
           .then(role => {
-            this.animateSuccess('info')
             this.role = role
+
+            this.animateSuccess('info')
+            this.toastSuccess(this.$t('notification:role.update.success'))
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification.role.update.error')))
           .finally(() => {
             this.info.processing = false
           })
@@ -196,9 +202,11 @@ export default {
         this.$SystemAPI.roleCreate(role)
           .then(({ roleID }) => {
             this.animateSuccess('info')
+            this.toastSuccess(this.$t('notification:role.create.success'))
+
             this.$router.push({ name: 'system.role.edit', params: { roleID } })
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification.role.create.error')))
           .finally(() => {
             this.info.processing = false
           })
@@ -218,8 +226,10 @@ export default {
         this.$SystemAPI.roleUnarchive({ roleID })
           .then(() => {
             this.fetchRole()
+
+            this.toastSuccess(this.$t('notification:role.unarchive.success'))
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification.role.unarchive.error')))
           .finally(() => {
             this.decLoader()
           })
@@ -227,8 +237,10 @@ export default {
         this.$SystemAPI.roleArchive({ roleID })
           .then(() => {
             this.fetchRole()
+
+            this.toastSuccess(this.$t('notification:role.archive.success'))
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification.role.archive.error')))
           .finally(() => {
             this.decLoader()
           })
@@ -241,10 +253,12 @@ export default {
       if (this.roleID) {
         this.$SystemAPI.roleUpdate({ ...this.role, members: this.roleMembers })
           .then(role => {
-            this.animateSuccess('members')
             this.role = role
+
+            this.animateSuccess('members')
+            this.toastSuccess(this.$t('notification:role.membershipUpdate.success'))
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:role.membershipUpdate.error')))
           .finally(() => {
             this.members.processing = false
           })

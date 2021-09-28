@@ -152,7 +152,7 @@ export default {
         this.$SystemAPI.userList({ query, incSuspended: true, incDeleted: true })
           .then(({ set: items = [] }) => {
             this.users = items
-          }).catch(this.stdReject)
+          }).catch(this.toastErrorHandler(this.$t('notification:user.fetch.error')))
       },
     },
   },
@@ -163,7 +163,7 @@ export default {
       this.$SystemAPI.userList({ userID, incSuspended: true, incDeleted: true })
         .then(({ set: items = [] }) => {
           this.memberUsers = items
-        }).catch(this.stdReject)
+        }).catch(this.toastErrorHandler(this.$t('notification:user.fetch.error')))
     }
   },
 

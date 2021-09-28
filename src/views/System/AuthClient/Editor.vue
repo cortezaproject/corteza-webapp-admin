@@ -143,7 +143,7 @@ export default {
         .then(ac => {
           this.authclient = ac
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:authclient.fetch.error')))
         .finally(() => {
           this.decLoader()
         })
@@ -156,7 +156,7 @@ export default {
         .then(({ set: roles = [] }) => {
           this.roles = roles
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:user.roles.error')))
         .finally(() => {
           this.decLoader()
         })
@@ -171,22 +171,25 @@ export default {
 
         this.$SystemAPI.authClientUpdate({ clientID, ...authclient })
           .then(ac => {
-            this.animateSuccess('info')
             this.authclient = ac
+
+            this.toastSuccess(this.$t('notification:authclient.update.success'))
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:authclient.update.error')))
           .finally(() => {
             this.info.processing = false
           })
       } else {
         this.$SystemAPI.authClientCreate({ ...authclient })
           .then((ac) => {
-            this.animateSuccess('info')
             this.authclient = ac
             const { authClientID } = ac
+            this.animateSuccess('info')
+            this.toastSuccess(this.$t('notification:authclient.create.success'))
+
             this.$router.push({ name: 'system.authClient.edit', params: { authClientID } })
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:authclient.create.error')))
           .finally(() => {
             this.info.processing = false
           })
@@ -196,16 +199,24 @@ export default {
     onDelete (clientID) {
       this.incLoader()
       this.$SystemAPI.authClientDelete({ clientID })
-        .then(() => this.fetchAuthclient())
-        .catch(this.stdReject)
+        .then(() => {
+          this.fetchAuthclient()
+
+          this.toastSuccess(this.$t('notification:authclient.delete.success'))
+        })
+        .catch(this.toastErrorHandler(this.$t('notification:authclient.authclient.error')))
         .finally(() => this.decLoader())
     },
 
     onUndelete (clientID) {
       this.incLoader()
       this.$SystemAPI.authClientUndelete({ clientID })
-        .then(() => this.fetchAuthclient())
-        .catch(this.stdReject)
+        .then(() => {
+          this.fetchAuthclient()
+
+          this.toastSuccess(this.$t('notification:authclient.delete.success'))
+        })
+        .catch(this.toastErrorHandler(this.$t('notification:authclient.authclient.error')))
         .finally(() => this.decLoader())
     },
 

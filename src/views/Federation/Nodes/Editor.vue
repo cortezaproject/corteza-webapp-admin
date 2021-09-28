@@ -205,7 +205,7 @@ export default {
         .then(node => {
           this.node = node // new federation.Node(node)
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:federation.fetch.error')))
         .finally(() => {
           this.decLoader()
         })
@@ -218,7 +218,7 @@ export default {
         .then(url => {
           this.generate.url = url
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:federation.url.error')))
         .finally(() => {
           this.decLoader()
         })
@@ -239,10 +239,12 @@ export default {
         // On update, reset the node obj
         this.$FederationAPI.nodeUpdate(payload)
           .then(node => {
-            this.animateSuccess('info')
             this.node = node
+
+            this.animateSuccess('info')
+            this.toastSuccess(this.$t('notification:federation.update.success'))
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:federation.update.error')))
           .finally(() => {
             this.info.processing = false
           })
@@ -251,9 +253,11 @@ export default {
         this.$FederationAPI.nodeCreate(payload)
           .then(({ nodeID }) => {
             this.animateSuccess('info')
+            this.toastSuccess(this.$t('notification:federation.create.success'))
+
             this.$router.push({ name: 'federation.nodes.edit', params: { nodeID } })
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:federation.create.error')))
           .finally(() => {
             this.info.processing = false
           })
@@ -271,8 +275,10 @@ export default {
         this.$FederationAPI.nodeUndelete({ nodeID: this.nodeID })
           .then(() => {
             this.fetchNode()
+
+            this.toastSuccess(this.$t('notification:federation.undelete.success'))
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:federation.undelete.error')))
           .finally(() => {
             this.decLoader()
           })
@@ -280,8 +286,10 @@ export default {
         this.$FederationAPI.nodeDelete({ nodeID: this.nodeID })
           .then(() => {
             this.fetchNode()
+
+            this.toastSuccess(this.$t('notification:federation.delete.success'))
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:federation.delete.error')))
           .finally(() => {
             this.decLoader()
           })
@@ -310,10 +318,12 @@ export default {
       }
       await this.$ComposeAPI.notificationEmailSend(values)
         .then(f => {
-          this.animateSuccess('generate')
           this.generate.email = ''
+
+          this.animateSuccess('generate')
+          this.toastSuccess(this.$t('notification:workflow.email.success'))
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:workflow.email.error')))
         .finally(() => {
           this.generate.processing = false
         })

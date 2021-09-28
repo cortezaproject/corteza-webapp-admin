@@ -132,7 +132,7 @@
         :disabled="user.userID === userID"
         class="ml-1"
         cta-class="secondary"
-        @confirmed="$emit('sessionsRemove')"
+        @confirmed="$emit('sessionsRevoke')"
       >
         {{ $t('revokeAllSession') }}
       </confirmation-toggle>

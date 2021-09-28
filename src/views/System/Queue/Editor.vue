@@ -111,7 +111,7 @@ export default {
 
       this.$SystemAPI.queuesRead({ queueID: this.queueID })
         .then(q => { this.queue = q })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:queue.fetch.error')))
         .finally(() => {
           this.decLoader()
         })
@@ -135,10 +135,12 @@ export default {
       if (this.queueID) {
         this.$SystemAPI.queuesUpdate(queue)
           .then(queue => {
-            this.animateSuccess('info')
             this.queue = queue
+
+            this.animateSuccess('info')
+            this.toastSuccess(this.$t('notification:queue.update.success'))
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:queue.update.error')))
           .finally(() => {
             this.decLoader()
           })
@@ -146,9 +148,11 @@ export default {
         this.$SystemAPI.queuesCreate(queue)
           .then(({ queueID }) => {
             this.animateSuccess('info')
+            this.toastSuccess(this.$t('notification:queue.create.success'))
+
             this.$router.push({ name: 'system.queue.edit', params: { queueID } })
           })
-          .catch(this.stdReject)
+          .catch(this.toastErrorHandler(this.$t('notification:queue.create.error')))
           .finally(() => {
             this.decLoader()
           })
@@ -162,8 +166,9 @@ export default {
       this.$SystemAPI[method]({ queueID: this.queueID })
         .then(() => {
           this.fetchQueue()
+          this.toastSuccess(this.$t('notification:queue.delete.success'))
         })
-        .catch(this.stdReject)
+        .catch(this.toastErrorHandler(this.$t('notification:queue.delete.error')))
         .finally(() => {
           this.decLoader()
         })
