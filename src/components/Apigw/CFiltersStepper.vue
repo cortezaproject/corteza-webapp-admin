@@ -27,14 +27,12 @@
           @click="onActivateTab(index)"
         >
           <b-row class="d-flex flex-column w-100 m-0">
-            <div class="d-flex p-3">
-              <c-filters-dropdown
-                class="h-fit-content"
-                :available-filters="getAvailableFiltersByStep"
-                :filters="getSelectedFiltersByStep"
-                @addFilter="onAddFilter"
-              />
-            </div>
+            <c-filters-dropdown
+              class="px-1 py-2"
+              :available-filters="getAvailableFiltersByStep"
+              :filters="getSelectedFiltersByStep"
+              @addFilter="onAddFilter"
+            />
             <c-filters-table
               ref="filterTable"
               :filters="getSelectedFiltersByStep"

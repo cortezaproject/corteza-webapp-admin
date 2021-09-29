@@ -8,12 +8,11 @@
         <b-tr>
           <b-th>{{ $t('filters.list.filters') }}</b-th>
           <b-th>{{ $t('filters.list.status') }}</b-th>
-          <b-th>{{ $t('filters.list.actions') }}</b-th>
+          <b-th />
         </b-tr>
       </b-thead>
 
       <draggable
-        v-if="sortableFilters.length"
         v-model="sortableFilters"
         tag="b-tbody"
         @end="checkMove"
@@ -31,7 +30,7 @@
           <b-td class="align-baseline">
             {{ $t('filters.list.active') }}
           </b-td>
-          <b-td class="align-baseline">
+          <b-td class="text-right align-baseline">
             <b-button
               variant="danger"
               class="my-1"
@@ -43,12 +42,13 @@
           </b-td>
         </b-tr>
       </draggable>
-      <b-tbody v-else>
-        <b-tr class="mt-2 text-danger">
-          {{ $t('filters.list.noFiltersMsg') }}
-        </b-tr>
-      </b-tbody>
     </b-table-simple>
+    <h6
+      v-if="!sortableFilters.length"
+      class="d-flex justify-content-center align-items-center mb-3"
+    >
+      {{ $t('filters.list.noFilters') }}
+    </h6>
   </div>
 </template>
 
