@@ -98,7 +98,7 @@ export default [
 
           combo('system', 'authClient', { pkey: 'authClientID' }),
 
-          combo('system', 'apigw'),
+          combo('system', 'apigw', { pkey: 'routeID', plural: 'routes' }),
 
           r('system.permissions', 'permissions', 'System/Permissions/Index'),
           r('system.actionlog', 'actionlog', 'System/Actionlog/Index'),
