@@ -49,8 +49,10 @@ export default {
   methods: {
     onAddFilter (func) {
       const add = { ...func, params: [] }
-      for (const p of func.params) {
-        add.params.push({ ...p, options: { ...p.options } })
+      if (func.params) {
+        for (const p of func.params) {
+          add.params.push({ ...p, options: { ...p.options } })
+        }
       }
 
       this.$emit('addFilter', add)
