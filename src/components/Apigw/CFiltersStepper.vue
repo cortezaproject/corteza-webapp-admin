@@ -114,7 +114,7 @@ export default {
 
   computed: {
     disabled () {
-      return !(this.filters.some(f => f.updated === true) || this.filtersToDelete.length)
+      return !(this.filters.some(f => f.updated === true || f.created === true) || this.filtersToDelete.length)
     },
 
     getSelectedFilter () {

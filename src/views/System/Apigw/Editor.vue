@@ -206,10 +206,10 @@ export default {
       }
       if (this.routeID) {
         this.filters.forEach(({ ...func }, index) => {
-          this.stepper.processing = true
-          func.params = this.encodeParams(func.params)
-          func.weight = func.weight.toString()
-          if (func.updated) {
+          if (func.created || func.updated) {
+            this.stepper.processing = true
+            func.params = this.encodeParams(func.params)
+            func.weight = func.weight.toString()
             if (func.filterID && func.filterID !== NoID) {
               this.updateFilter(func, index)
             } else {
@@ -224,6 +224,7 @@ export default {
       this.$SystemAPI
         .apigwFilterCreate({ ...func, routeID: this.routeID })
         .then(({ filterID }) => {
+          this.filters[index].created = false
           this.filters[index].updated = false
           this.filters[index].filterID = filterID
 
@@ -282,7 +283,9 @@ export default {
     setRouteFilters (routeFilters = []) {
       this.filters = (routeFilters || []).map((func) => {
         const f = { ...this.availableFilters.find((af) => af.ref === func.ref) }
-        f.params = this.decodeParams({ ...func.params })
+        if (Object.keys(func.params).length !== 0) {
+          f.params = this.decodeParams({ ...func.params })
+        }
         f.weight = parseInt(func.weight)
         f.filterID = func.filterID
         return { ...f }

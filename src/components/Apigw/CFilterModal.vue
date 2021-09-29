@@ -77,6 +77,7 @@ export default {
   methods: {
     onSave () {
       this.$emit('submit', { ...this.func, updated: this.updated })
+      this.updated = false
     },
     onHidden () {
       this.$emit('reset')

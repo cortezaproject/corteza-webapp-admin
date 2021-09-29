@@ -1,6 +1,7 @@
 <template>
   <div>
     <b-form-group
+      v-if="params.length"
       class="w-100 mt-3 mb-0 font-weight-bold"
     >
       <template
