@@ -18,8 +18,8 @@
             @change="paramsUpdated()"
           />
           <vue-select
-            v-else-if="param.type === 'workflow'"
-            v-model="params.value"
+            v-else-if="param.label === 'workflow'"
+            v-model="param.value"
             :options="workflows"
             :reduce="wf => wf.workflowID"
             :placeholder="$t('filters.placeholders.workflow')"
@@ -70,7 +70,7 @@ export default {
   },
 
   created () {
-    if (this.params.some(({ type = '' }) => type === 'workflow')) {
+    if (this.params.some(({ label = '' }) => label === 'workflow')) {
       this.$AutomationAPI.workflowList()
         .then(({ set: workflows = [] }) => {
           this.workflows = workflows.map(({ workflowID, handle, meta }) => {
