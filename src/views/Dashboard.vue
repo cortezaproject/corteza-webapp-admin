@@ -191,7 +191,7 @@
                 class="mb-2 mb-sm-0"
               >
                 <router-link
-                  :to="{ name: 'system.application.list', query: { deleted: 2 } }"
+                  :to="{ name: 'system.application.list', query: { deleted: 1 } }"
                   :aria-label="applications.total + ' ' + $t('applications.applications') + ' ' + $t('applications.total')"
                 >
                   {{ applications.total }}
@@ -206,7 +206,7 @@
                 class="mb-2 mb-sm-0"
               >
                 <router-link
-                  :to="{ name: 'system.application.list', query: { deleted: 1 } }"
+                  :to="{ name: 'system.application.list', query: { deleted: 2 } }"
                   :aria-label="applications.deleted + ' ' + $t('applications.applications') + ' ' + $t('applications.deleted')"
                 >
                   {{ applications.deleted }}
