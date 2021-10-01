@@ -15,7 +15,6 @@ const store = new Vuex.Store({
         Vue.prototype.$SystemAPI,
         Vue.prototype.$ComposeAPI,
         Vue.prototype.$AutomationAPI,
-        Vue.prototype.$FederationAPI,
       ),
     },
     wfPrompts: {

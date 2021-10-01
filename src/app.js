@@ -55,7 +55,7 @@ export default (options = {}) => {
 
       this.websocketMessageRouter()
 
-      return this.$auth.vue(this).handle().then(({ accessTokenFn, user }) => {
+      return this.$auth.vue(this).handle().then(async ({ accessTokenFn, user }) => {
         if (user.meta.preferredLanguage) {
           // After user is authenticated, get his preferred language
           // and instruct i18next to change it
@@ -89,11 +89,19 @@ export default (options = {}) => {
           }),
         }
 
+        await this.$Settings.init({ api: this.$SystemAPI })
+
         // Load all pending prompts:
         this.$store.dispatch('wfPrompts/update')
 
+        // Only use enabled apis
+        const enabledApis = [this.$SystemAPI, this.$ComposeAPI, this.$AutomationAPI]
+        if (this.$Settings.get('federation.enabled', false)) {
+          enabledApis.push(this.$FederationAPI)
+        }
+
         // Load effective permissions
-        this.$store.dispatch('rbac/load')
+        this.$store.dispatch('rbac/load', enabledApis)
 
         return this.loadBundle(bundleLoaderOpt)
           .then(() => this.$SystemAPI.automationList({ excludeInvalid: true }))
@@ -102,9 +110,6 @@ export default (options = {}) => {
             // to the proper endpoint on the API
             system.TriggerSystemServerScriptOnManual(this.$SystemAPI),
           ))
-          .then(() => {
-            return this.$Settings.init({ api: this.$SystemAPI })
-          })
           .then(() => {
             this.loaded = true
 
