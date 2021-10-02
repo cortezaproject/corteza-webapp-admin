@@ -14,6 +14,16 @@
     </b-form-group>
 
     <div v-if="value.enabled">
+      <b-form-group
+        :label="$t('saml.name')"
+        :description="$t('saml.desc.name')"
+        label-cols="2"
+      >
+        <b-input-group>
+          <b-form-input v-model.trim="value.name" />
+        </b-input-group>
+      </b-form-group>
+
       <h5>
         {{ $t('certificate') }}
       </h5>
@@ -47,6 +57,7 @@
 
       <b-form-group
         :label="$t('saml.idp.url')"
+        :description="$t('saml.desc.idp.url')"
         label-cols="2"
       >
         <b-input-group>

@@ -213,7 +213,7 @@ export default {
       }
 
       // push saml
-      for (let k of ['enabled', 'key', 'cert']) {
+      for (let k of ['enabled', 'name', 'key', 'cert']) {
         name = `auth.external.saml.${k}`
         value = this.saml[k]
         c.push({ name, value })
@@ -259,6 +259,7 @@ export default {
         this.saml = {
           enabled: this.extractKey(this.external, 'auth.external.saml.enabled'),
           cert: this.extractKey(this.external, 'auth.external.saml.cert'),
+          name: this.extractKey(this.external, 'auth.external.saml.name'),
           key: this.extractKey(this.external, 'auth.external.saml.key'),
           idp: {
             url: this.extractKey(this.external, 'auth.external.saml.idp.url'),
