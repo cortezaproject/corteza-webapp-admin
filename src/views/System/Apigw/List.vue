@@ -131,14 +131,13 @@ export default {
     ...mapGetters({
       can: 'rbac/can',
     }),
+
     canCreate () {
       return this.can('system/', 'apigw-route.create')
     },
+
     canGrant () {
       return this.can('system/', 'grant')
-    },
-    canPin () {
-      return true
     },
   },
 

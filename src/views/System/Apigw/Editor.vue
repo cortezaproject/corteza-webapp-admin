@@ -97,13 +97,11 @@ export default {
     }),
 
     canCreate () {
-      return true
+      return this.can('system/', 'apigw-route.create')
     },
+
     canGrant () {
-      return true
-    },
-    canPin () {
-      return true
+      return this.can('system/', 'grant')
     },
   },
 
