@@ -38,7 +38,7 @@ export default {
       return (err = {}) => {
         /* eslint-disable no-console */
         console.error(err)
-        const msg = err.message ? (prefix + ': ' + this.$t(err.message)) : prefix
+        const msg = err.message ? (prefix + ': ' + err.message) : prefix
         this.toastDanger(msg, title)
       }
     },

@@ -194,7 +194,7 @@ export default {
             this.animateSuccess('info')
             this.toastSuccess(this.$t('notification:role.update.success'))
           })
-          .catch(this.toastErrorHandler(this.$t('notification.role.update.error')))
+          .catch(this.toastErrorHandler(this.$t('notification:role.update.error')))
           .finally(() => {
             this.info.processing = false
           })
@@ -206,7 +206,7 @@ export default {
 
             this.$router.push({ name: 'system.role.edit', params: { roleID } })
           })
-          .catch(this.toastErrorHandler(this.$t('notification.role.create.error')))
+          .catch(this.toastErrorHandler(this.$t('notification:role.create.error')))
           .finally(() => {
             this.info.processing = false
           })
@@ -229,7 +229,7 @@ export default {
 
             this.toastSuccess(this.$t('notification:role.unarchive.success'))
           })
-          .catch(this.toastErrorHandler(this.$t('notification.role.unarchive.error')))
+          .catch(this.toastErrorHandler(this.$t('notification:role.unarchive.error')))
           .finally(() => {
             this.decLoader()
           })
@@ -240,7 +240,7 @@ export default {
 
             this.toastSuccess(this.$t('notification:role.archive.success'))
           })
-          .catch(this.toastErrorHandler(this.$t('notification.role.archive.error')))
+          .catch(this.toastErrorHandler(this.$t('notification:role.archive.error')))
           .finally(() => {
             this.decLoader()
           })
