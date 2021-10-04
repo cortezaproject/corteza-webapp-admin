@@ -311,7 +311,7 @@ export default {
         .apigwFilterDefFilter()
         .then((api) => {
           this.availableFilters = api.map((f) => {
-            return { name, ...f, ref: f.name, status: 'Active', options: { checked: false } }
+            return { name, ...f, ref: f.name, enabled: true, options: { checked: false } }
           })
         })
         .catch(this.toastErrorHandler(this.$t('notification:gateway.filter.fetch.error')))

@@ -19,7 +19,7 @@
               label="Status"
             >
               <b-form-select
-                v-model="(func || {}).status"
+                v-model="(func || {}).enabled"
                 class="w-100"
                 :options="statusList"
                 @change="onUpdated"
@@ -62,11 +62,11 @@ export default {
       filteredFields: [],
       statusList: [
         {
-          value: 'Active',
+          value: true,
           text: this.$t('filters.modal.statusActive'),
         },
         {
-          value: 'Disabled',
+          value: false,
           text: this.$t('filters.modal.statusDisabled'),
         },
       ],
