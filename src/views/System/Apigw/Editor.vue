@@ -95,6 +95,7 @@ export default {
     ...mapGetters({
       can: 'rbac/can',
     }),
+
     canCreate () {
       return true
     },

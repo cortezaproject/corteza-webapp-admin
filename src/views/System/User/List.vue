@@ -16,6 +16,7 @@
           {{ $t('new') }}
         </b-button>
         <c-permissions-button
+          v-if="canGrant"
           resource="corteza::system:user/*"
           button-variant="light"
         >
@@ -96,6 +97,7 @@
 import { system } from '@cortezaproject/corteza-js'
 import moment from 'moment'
 import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'UserList',
@@ -148,6 +150,16 @@ export default {
         label: this.$t(`columns.${c.key}`),
       })),
     }
+  },
+
+  computed: {
+    ...mapGetters({
+      can: 'rbac/can',
+    }),
+
+    canGrant () {
+      return this.can('system/', 'grant')
+    },
   },
 
   methods: {
