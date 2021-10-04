@@ -2,7 +2,7 @@
   <div>
     <b-form-group
       v-if="params.length"
-      class="w-100 mt-3 mb-0 font-weight-bold"
+      class="w-100 mb-0"
     >
       <template
         v-for="(param, index) in params"
@@ -15,7 +15,7 @@
           <b-form-checkbox
             v-if="param.type === 'bool'"
             v-model="param.value"
-            @change="paramsUpdated()"
+            @change="onUpdate"
           />
           <vue-select
             v-else-if="param.label === 'workflow'"
@@ -23,19 +23,33 @@
             :options="workflows"
             :reduce="wf => wf.workflowID"
             :placeholder="$t('filters.placeholders.workflow')"
-            @input="paramsUpdated()"
+            @input="onUpdate"
           />
+          <b-form-select
+            v-else-if="param.label === 'status'"
+            v-model="param.value"
+            :options="httpStatusOptions"
+            @change="onUpdate"
+          >
+            <template #first>
+              <b-form-select-option
+                :value="undefined"
+              >
+                {{ $t('filters.httpStatus.none') }}
+              </b-form-select-option>
+            </template>
+          </b-form-select>
           <template v-else>
             <b-form-textarea
               v-if="param.label === 'jsfunc'"
               v-model="param.value"
               max-rows="6"
-              @change="paramsUpdated()"
+              @change="onUpdate"
             />
             <b-form-input
               v-else
               v-model="param.value"
-              @change="paramsUpdated()"
+              @change="onUpdate"
             />
           </template>
         </b-form-group>
@@ -66,6 +80,16 @@ export default {
   data () {
     return {
       workflows: [],
+
+      httpStatusOptions: [
+        { value: 300, text: this.$t('filters.httpStatus.300') },
+        { value: 301, text: this.$t('filters.httpStatus.301') },
+        { value: 302, text: this.$t('filters.httpStatus.302') },
+        { value: 303, text: this.$t('filters.httpStatus.303') },
+        { value: 304, text: this.$t('filters.httpStatus.304') },
+        { value: 307, text: this.$t('filters.httpStatus.307') },
+        { value: 308, text: this.$t('filters.httpStatus.308') },
+      ],
     }
   },
 
@@ -81,8 +105,8 @@ export default {
   },
 
   methods: {
-    paramsUpdated () {
-      this.$emit('paramsUpdated')
+    onUpdate () {
+      this.$emit('update')
     },
   },
 }

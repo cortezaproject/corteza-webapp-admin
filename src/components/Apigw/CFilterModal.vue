@@ -11,27 +11,20 @@
       @hidden="onHidden"
     >
       <div
+        v-if="func"
         class="card-body"
       >
-        <b-row>
-          <b-col>
-            <b-form-group
-              label="Status"
-            >
-              <b-form-select
-                v-model="(func || {}).enabled"
-                class="w-100"
-                :options="statusList"
-                @change="onUpdated"
-              />
-            </b-form-group>
-          </b-col>
-        </b-row>
         <c-filter-params
-          :params="(func || {}).params"
-          :label="(func || {}).label"
-          @paramsUpdated="onParamsUpdated"
+          :params="func.params"
+          :label="func.label"
+          @update="onUpdate"
         />
+        <b-form-checkbox
+          v-model="func.enabled"
+          @change="onUpdate"
+        >
+          {{ $t('filters.enabled') }}
+        </b-form-checkbox>
       </div>
     </b-modal>
   </div>
@@ -57,20 +50,12 @@ export default {
       default: false,
     },
   },
+
   data () {
     return {
-      filteredFields: [],
-      statusList: [
-        {
-          value: true,
-          text: this.$t('filters.modal.statusActive'),
-        },
-        {
-          value: false,
-          text: this.$t('filters.modal.statusDisabled'),
-        },
-      ],
       updated: false,
+
+      filteredFields: [],
     }
   },
 
@@ -79,14 +64,12 @@ export default {
       this.$emit('submit', { ...this.func, updated: this.updated })
       this.updated = false
     },
+
     onHidden () {
       this.$emit('reset')
     },
 
-    onParamsUpdated () {
-      this.onUpdated()
-    },
-    onUpdated () {
+    onUpdate () {
       this.updated = true
     },
   },
