@@ -283,18 +283,21 @@ export default {
     setRouteFilters (routeFilters = []) {
       this.filters = (routeFilters || []).map((func) => {
         const f = { ...this.availableFilters.find((af) => af.ref === func.ref) }
-        if (Object.keys(func.params).length !== 0) {
-          f.params = this.decodeParams({ ...func.params })
-        }
+        f.params = this.decodeParams(f, { ...func.params })
         f.weight = parseInt(func.weight)
         f.filterID = func.filterID
         return { ...f }
       })
     },
 
-    decodeParams (params) {
-      return Object.entries(params).map((p) => {
-        return { label: p[0], value: p[1], type: 'string' }
+    decodeParams (func = {}, values = {}) {
+      const { params = [] } = func
+      return params.map(({ label, type }) => {
+        return {
+          label,
+          type,
+          value: values[label],
+        }
       })
     },
 
