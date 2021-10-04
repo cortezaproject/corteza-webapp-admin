@@ -28,7 +28,12 @@
             {{ func.label }}
           </b-td>
           <b-td class="align-baseline">
-            {{ $t('filters.list.active') }}
+            <template v-if="!func.enabled">
+              {{ $t('filters.list.disabled') }}
+            </template>
+            <template v-else>
+              {{ $t('filters.list.active') }}
+            </template>
           </b-td>
           <b-td class="text-right align-baseline">
             <b-button
