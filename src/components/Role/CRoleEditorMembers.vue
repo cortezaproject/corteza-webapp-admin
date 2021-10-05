@@ -149,7 +149,7 @@ export default {
     filter: {
       handler () {
         const query = this.filter
-        this.$SystemAPI.userList({ query, incSuspended: true, incDeleted: true })
+        this.$SystemAPI.userList({ query })
           .then(({ set: items = [] }) => {
             this.users = items
           }).catch(this.toastErrorHandler(this.$t('notification:user.fetch.error')))
@@ -160,7 +160,7 @@ export default {
   mounted () {
     const userID = this.members
     if (userID.length > 0) {
-      this.$SystemAPI.userList({ userID, incSuspended: true, incDeleted: true })
+      this.$SystemAPI.userList({ userID })
         .then(({ set: items = [] }) => {
           this.memberUsers = items
         }).catch(this.toastErrorHandler(this.$t('notification:user.fetch.error')))
