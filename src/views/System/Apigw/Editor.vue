@@ -115,7 +115,9 @@ export default {
           this.fetchAllAvailableFilters()
           this.fetchFilters()
         } else {
-          this.route = {}
+          this.route = {
+            method: 'GET',
+          }
         }
       },
     },
