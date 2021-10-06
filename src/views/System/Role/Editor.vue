@@ -46,9 +46,8 @@
       @delete="onDelete"
       @status="onStatusChange"
     />
-
     <c-role-editor-members
-      v-if="role && role.roleID && roleMembers"
+      v-if="canManageMembers"
       class="mt-3"
       :processing="members.processing"
       :success="members.success"
@@ -59,6 +58,7 @@
 </template>
 
 <script>
+import { system, NoID } from '@cortezaproject/corteza-js'
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CRoleEditorInfo from 'corteza-webapp-admin/src/components/Role/CRoleEditorInfo'
 import CRoleEditorMembers from 'corteza-webapp-admin/src/components/Role/CRoleEditorMembers'
@@ -108,6 +108,13 @@ export default {
       can: 'rbac/can',
     }),
 
+    canManageMembers () {
+      return this.role &&
+        this.role.canManageMembersOnRole &&
+        this.role.roleID &&
+        this.roleMembers
+    },
+
     canCreate () {
       return this.can('system/', 'role.create')
     },
@@ -145,10 +152,12 @@ export default {
 
       this.$SystemAPI.roleRead({ roleID: this.roleID })
         .then(r => {
-          this.role = r
-          return this.$SystemAPI.roleMemberList(r)
+          this.role = new system.Role(r)
+
+          if (this.canManageMembers) {
+            return this.$SystemAPI.roleMemberList(r).then((mm = []) => { this.roleMembers = mm })
+          }
         })
-        .then((mm = []) => { this.roleMembers = mm })
         .catch(this.toastErrorHandler(this.$t('notification:role.fetch.error')))
         .finally(() => {
           this.decLoader()
