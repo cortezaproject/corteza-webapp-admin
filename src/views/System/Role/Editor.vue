@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { system, NoID } from '@cortezaproject/corteza-js'
+import { system } from '@cortezaproject/corteza-js'
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CRoleEditorInfo from 'corteza-webapp-admin/src/components/Role/CRoleEditorInfo'
 import CRoleEditorMembers from 'corteza-webapp-admin/src/components/Role/CRoleEditorMembers'

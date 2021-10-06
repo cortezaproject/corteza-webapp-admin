@@ -98,8 +98,12 @@ export default {
       const match = ({ name = '', handle = '', roleID = '' }) => {
         return `${name} ${handle} ${roleID}`.toLocaleLowerCase().indexOf(this.filter.toLocaleLowerCase()) > -1
       }
-      console.table(this.roles)
-      return this.roles.filter(r => match(r) && !this.hasRole(r))
+
+      const fits = ({ isClosed, meta = {} }) => {
+        return !(isClosed || (meta.context && meta.context.resourceTypes))
+      }
+
+      return this.roles.filter(r => fits(r) && match(r) && !this.hasRole(r))
     },
 
     filteredRoles () {
