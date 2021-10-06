@@ -107,6 +107,10 @@ export default {
           sortable: true,
         },
         {
+          key: 'unify.name',
+          label: this.$t(`columns.appListName`),
+        },
+        {
           key: 'enabled',
           formatter: (v) => v ? 'Yes' : 'No',
         },
@@ -122,7 +126,7 @@ export default {
       ].map(c => ({
         ...c,
         // Generate column label translation key
-        label: this.$t(`columns.${c.key}`),
+        label: c.label || this.$t(`columns.${c.key}`),
       })),
     }
   },
