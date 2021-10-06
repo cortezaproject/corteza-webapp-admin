@@ -160,7 +160,7 @@ export default {
   mounted () {
     const userID = this.members
     if (userID.length > 0) {
-      this.$SystemAPI.userList({ userID })
+      this.$SystemAPI.userList({ userID, incSuspended: true, incDeleted: true })
         .then(({ set: items = [] }) => {
           this.memberUsers = items
         }).catch(this.toastErrorHandler(this.$t('notification:user.fetch.error')))
