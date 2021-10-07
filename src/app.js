@@ -55,7 +55,7 @@ export default (options = {}) => {
 
       this.websocketMessageRouter()
 
-      return this.$auth.vue(this).handle().then(async ({ accessTokenFn, user }) => {
+      return this.$auth.vue(this).handle().then(async ({ user }) => {
         if (user.meta.preferredLanguage) {
           // After user is authenticated, get his preferred language
           // and instruct i18next to change it
@@ -85,7 +85,7 @@ export default (options = {}) => {
           // Extended with additional helpers
           ctx: new corredor.WebappCtx({
             $invoker: user,
-            accessTokenFn: accessTokenFn,
+            authToken: this.$auth.accessToken,
           }),
         }
 
