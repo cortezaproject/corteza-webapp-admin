@@ -26,7 +26,9 @@
       </c-topbar>
     </header>
 
-    <aside>
+    <aside
+      v-if="allowed"
+    >
       <c-sidebar
         :expanded.sync="expanded"
         :pinned.sync="pinned"
@@ -46,13 +48,16 @@
           <portal-target name="sidebar-footer-expanded" />
         </template>
       </c-sidebar>
+
+      <portal to="sidebar-body-expanded">
+        <c-the-main-nav />
+      </portal>
     </aside>
 
-    <portal to="sidebar-body-expanded">
-      <c-the-main-nav />
-    </portal>
-
-    <main class="d-inline-flex h-100 overflow-auto">
+    <main
+      v-if="allowed"
+      class="d-inline-flex h-100 overflow-auto"
+    >
       <!--
         Content spacer
         Large and xl screens should push in content when the nav is expanded
@@ -76,6 +81,7 @@ import CTheMainNav from 'corteza-webapp-admin/src/components/CTheMainNav'
 import { components, mixins } from '@cortezaproject/corteza-vue'
 import icon from 'corteza-webapp-admin/src/themes/corteza-base/img/icon.png'
 import logo from 'corteza-webapp-admin/src/themes/corteza-base/img/logo.png'
+import { mapGetters } from 'vuex'
 
 const { CPermissionsModal, CPrompts, CTopbar, CSidebar } = components
 
@@ -98,6 +104,8 @@ export default {
 
   data () {
     return {
+      allowed: false,
+
       error: null,
       expanded: window.innerWidth > 576,
       pinned: window.innerWidth > 576,
@@ -105,6 +113,10 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      can: 'rbac/can',
+    }),
+
     user () {
       const { user } = this.$auth
       return user.name || user.handle || user.email || ''
@@ -133,6 +145,38 @@ export default {
 
   created () {
     this.$root.$on('alert', this.displayToast)
+
+    const rulesToCheck = [
+      // Grant
+      { resource: 'system/', operation: 'grant' },
+      { resource: 'compose/', operation: 'grant' },
+      { resource: 'federation/', operation: 'grant' },
+      { resource: 'automation/', operation: 'grant' },
+      // Create
+      { resource: 'system/', operation: 'auth-client.create' },
+      { resource: 'system/', operation: 'role.create' },
+      { resource: 'system/', operation: 'user.create' },
+      { resource: 'system/', operation: 'application.create' },
+      { resource: 'system/', operation: 'template.create' },
+      { resource: 'system/', operation: 'report.create' },
+      { resource: 'system/', operation: 'queue.create' },
+      { resource: 'system/', operation: 'apigw-route.create' },
+      // Manage
+      { resource: 'system/', operation: 'settings.read' },
+      { resource: 'system/', operation: 'system.manage' },
+      { resource: 'system/', operation: 'action-log.read' },
+    ]
+
+    this.allowed = rulesToCheck.some(({ resource, operation }) => this.can(resource, operation))
+
+    // If not allowed to access, show error prompt and redirect after a delay
+    if (!this.allowed) {
+      this.toastDanger(this.$t('notification:notAllowed'))
+
+      setTimeout(() => {
+        window.location = '/..'
+      }, 5000)
+    }
   },
 
   methods: {
