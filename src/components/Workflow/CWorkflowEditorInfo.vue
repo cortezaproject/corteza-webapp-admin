@@ -42,12 +42,22 @@
       <b-form-group
         :label="$t('handle')"
         label-cols="2"
-        :class="{ 'mb-0': !workflow.workflowID }"
       >
         <b-form-input
           v-model="workflow.handle"
           :state="checkHandle"
         />
+      </b-form-group>
+
+      <b-form-group
+        label-cols="2"
+        :class="{ 'mb-0': !workflow.workflowID }"
+      >
+        <b-form-checkbox
+          v-model="workflow.enabled"
+        >
+          {{ $t('enabled') }}
+        </b-form-checkbox>
       </b-form-group>
 
       <b-form-group
@@ -61,17 +71,6 @@
         >
           {{ $t('openBuilder') }}
         </b-button>
-      </b-form-group>
-
-      <b-form-group
-        label-cols="2"
-        :class="{ 'mb-0': !workflow.workflowID }"
-      >
-        <b-form-checkbox
-          v-model="workflow.enabled"
-        >
-          {{ $t('enabled') }}
-        </b-form-checkbox>
       </b-form-group>
 
       <b-form-group
