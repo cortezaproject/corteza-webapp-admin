@@ -1,7 +1,7 @@
 const buildVueConfig = require('./vue.config-builder')
 
 module.exports = buildVueConfig({
-  appFlavour: 'Corteza',
+  appFlavour: 'Admin Area',
   appName: 'admin',
   appLabel: 'Corteza Admin',
   theme: 'corteza-base',
