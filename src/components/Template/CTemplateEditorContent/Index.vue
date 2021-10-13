@@ -12,20 +12,6 @@
       />
     </b-col>
 
-    <!-- PDF preview modal -->
-    <b-modal
-      v-model="previewModalVisible"
-      hide-footer
-      size="lg"
-      @hidden="previewBlob = ''"
-    >
-      <iframe
-        v-if="previewBlob"
-        class="w-100 border-0"
-        :src="previewBlob"
-      />
-    </b-modal>
-
     <!-- Content editor -->
     <b-col
       cols="12"
@@ -187,7 +173,6 @@ export default {
       // @todo i18n this?
       previewData: '{\n  "variables": {\n    "param1": "value1",\n    "param2": {\n      "nestedParam1": "value2"\n    }\n  },\n  "options": {\n    "documentSize": "A4",\n    "contentScale": "1",\n    "orientation": "portrait",\n    "margin": "0.3"\n  }\n}\n',
 
-      previewModalVisible: false,
       previewBlob: '',
 
       availableDrivers: [],
@@ -239,7 +224,7 @@ export default {
       this.$SystemAPI.api().request(cfg)
         .then(r => {
           this.previewBlob = window.URL.createObjectURL(r.data)
-          this.previewModalVisible = true
+          window.open(this.previewBlob, '_newtab')
         })
         .catch(this.toastErrorHandler(this.$t('notification:template.preview.error')))
         .finally(() => {
