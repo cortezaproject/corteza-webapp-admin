@@ -20,20 +20,37 @@
       </b-form-group>
 
       <b-form-group
-        :label="$t('endpoint')"
         label-cols="2"
         :description="routeEndpointDescription"
       >
+        <template
+          #label
+        >
+          <label
+            label-for="endpoint"
+          >
+            {{ $t('endpoint') }}
+          </label>
+
+          <font-awesome-icon
+            id="endpoint_info"
+            class="ml-1"
+            :icon="['far', 'question-circle']"
+          />
+          <b-tooltip
+            target="endpoint_info"
+            triggers="hover"
+          >
+            {{ $t('tooltip') }}
+          </b-tooltip>
+        </template>
+
         <b-form-input
           id="endpoint"
           v-model="route.endpoint"
           :state="isValidEndpoint"
           required
         />
-        <input
-          type="submit"
-          class="d-none"
-        >
       </b-form-group>
 
       <b-form-group
@@ -173,11 +190,23 @@ export default {
     isValidEndpoint () {
       return this.route.endpoint ? /^(\/[\w-]+)+$/.test(this.route.endpoint) : null
     },
+    startsWithSlash () {
+      return this.route.endpoint ? /^\//.test(this.route.endpoint) : null
+    },
     isValidMethod () {
       return !!this.route.method
     },
     routeEndpointDescription () {
-      return this.isValidEndpoint === false ? this.$t('validEndpoint') : ''
+      if (this.isValidEndpoint === false) {
+        if (!this.startsWithSlash) {
+          return this.$t('validation.slash')
+        } else if (this.route.endpoint.length < 2) {
+          return this.$t('validation.minLength')
+        } else if (!/^([\w-]+)+$/.test(this.route.endpoint)) {
+          return this.$t('validation.invalidCharacters')
+        }
+      }
+      return ''
     },
   },
 }
