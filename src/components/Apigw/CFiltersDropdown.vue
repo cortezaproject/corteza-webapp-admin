@@ -6,13 +6,13 @@
   >
     <template v-if="filterList.length">
       <b-dropdown-item
-        v-for="(func, index) in filterList"
+        v-for="(filter, index) in filterList"
         :key="index"
-        :disabled="func.disabled"
+        :disabled="filter.disabled"
         href="#"
-        @click="onAddFilter(func)"
+        @click="onAddFilter(filter)"
       >
-        {{ func.label }}
+        {{ filter.label }}
       </b-dropdown-item>
     </template>
     <b-dropdown-item
@@ -39,20 +39,24 @@ export default {
       required: true,
     },
   },
+
   computed: {
     filterList () {
       return this.availableFilters.map(f => {
-        return { ...f, disabled: !!(this.filters || []).some(func => func.ref === f.ref) }
+        return { ...f, disabled: !!(this.filters || []).some(filter => filter.ref === f.ref) }
       })
     },
   },
+
   methods: {
-    onAddFilter (func) {
-      const add = { ...func, created: true, params: [] }
-      const { params = [] } = func
+    onAddFilter (filter) {
+      const add = { ...filter, created: true, params: [] }
+      const { params = [] } = filter
+
       for (const p of params) {
         add.params.push({ ...p, options: { ...p.options } })
       }
+
       this.$emit('addFilter', add)
     },
   },

@@ -3,7 +3,7 @@
     <b-modal
       :visible="visible"
       size="lg"
-      :title="(func || {}).label"
+      :title="(filter || {}).label"
       :ok-title="$t('filters.modal.ok')"
       body-class="p-0"
       cancel-variant="link"
@@ -11,16 +11,16 @@
       @hidden="onHidden"
     >
       <div
-        v-if="func"
+        v-if="filter"
         class="card-body"
       >
         <c-filter-params
-          :params="func.params"
-          :label="func.label"
+          :params="filter.params"
+          :label="filter.label"
           @update="onUpdate"
         />
         <b-form-checkbox
-          v-model="func.enabled"
+          v-model="filter.enabled"
           @change="onUpdate"
         >
           {{ $t('filters.enabled') }}
@@ -39,7 +39,7 @@ export default {
   },
 
   props: {
-    func: {
+    filter: {
       type: Object,
       default: () => ({}),
     },
@@ -61,7 +61,7 @@ export default {
 
   methods: {
     onSave () {
-      this.$emit('submit', { ...this.func, updated: this.updated })
+      this.$emit('submit', { ...this.filter, updated: this.updated })
       this.updated = false
     },
 

@@ -15,27 +15,26 @@
       <draggable
         v-model="sortableFilters"
         tag="b-tbody"
-        @end="checkMove"
       >
         <b-tr
-          v-for="(func, index) in sortableFilters"
+          v-for="(filter, index) in sortableFilters"
           :key="index"
           class="pointer"
           :class="[selectedRow===index ? 'row-selected' : 'row-not-selected']"
-          @click.stop="onRowClick(func,index)"
+          @click.stop="onRowClick(filter,index)"
         >
           <b-td class="align-baseline">
-            {{ func.label }}
+            {{ filter.label }}
           </b-td>
           <b-td class="align-baseline">
-            {{ $t(`filters.${func.enabled ? 'enabled' : 'disabled'}`) }}
+            {{ $t(`filters.${filter.enabled ? 'enabled' : 'disabled'}`) }}
           </b-td>
           <b-td class="text-right align-baseline">
             <b-button
               variant="danger"
               class="my-1"
               size="sm"
-              @click.stop="onRemoveFilter(func)"
+              @click.stop="onRemoveFilter(filter)"
             >
               {{ $t('filters.list.remove') }}
             </b-button>
@@ -77,41 +76,34 @@ export default {
   },
   computed: {
     sortableFilters: {
-      get: function () {
+      get () {
         return this.filters
       },
-      set: function (v) {
+
+      set (v) {
         this.$emit('sortFilters', v)
-      },
-    },
-    checkAll: {
-      get: function () {
-        return this.filters.every(f => f.options.checked === true)
-      },
-      set: function () {
       },
     },
   },
   methods: {
-    onAddFilter (func) {
-      if (!this.filters.find(f => f.ref === func.ref)) {
-        this.filters.push({ ...func })
+    onAddFilter (filter) {
+      if (!this.filters.find(f => f.ref === filter.ref)) {
+        this.filters.push({ ...filter })
       }
+
       if (this.filters.length === 1) {
-        this.$emit('filterSelect', this.filters[0])
+        this.$emit('filterSelect', filter)
       }
     },
-    onRemoveFilter (func) {
-      this.$emit('removeFilter', func)
+
+    onRemoveFilter (filter) {
+      this.$emit('removeFilter', filter)
     },
-    onRowClick (func, index) {
+
+    onRowClick (filter, index) {
       this.selectedRow = index
-      this.$emit('filterSelect', func)
-      this.selectedFilter = func
-    },
-    checkMove (evt) {
-      this.selectedRow = evt.newDraggableIndex
-      this.$emit('filterSelect', this.sortableFilters[evt.newDraggableIndex])
+      this.selectedFilter = filter
+      this.$emit('filterSelect', filter)
     },
   },
 }

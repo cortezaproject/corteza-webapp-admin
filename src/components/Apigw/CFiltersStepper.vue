@@ -6,7 +6,7 @@
   >
     <c-filter-modal
       :visible="!!selectedFilter"
-      :func="selectedFilter"
+      :filter="selectedFilter"
       @submit="onSubmit"
       @reset="onReset"
     />
@@ -33,6 +33,7 @@
               :filters="getSelectedFiltersByStep"
               @addFilter="onAddFilter"
             />
+
             <c-filters-table
               ref="filterTable"
               :filters="getSelectedFiltersByStep"
@@ -92,10 +93,6 @@ export default {
       type: Array,
       required: true,
     },
-    filtersToDelete: {
-      type: Array,
-      required: true,
-    },
     availableFilters: {
       type: Array,
       required: true,
@@ -105,6 +102,7 @@ export default {
       required: true,
     },
   },
+
   data () {
     return {
       selectedFilter: null,
@@ -114,7 +112,7 @@ export default {
 
   computed: {
     disabled () {
-      return !(this.filters.some(f => f.updated === true || f.created === true) || this.filtersToDelete.length)
+      return !(this.filters.some(({ updated, created, deleted }) => updated || created || deleted))
     },
 
     getSelectedFilter () {
@@ -122,43 +120,44 @@ export default {
     },
 
     getAvailableFiltersByStep () {
-      return (this.availableFilters || []).filter((f) => {
-        return mapKindToStep[f.kind] === this.selectedTab
+      return (this.availableFilters || []).filter(({ kind }) => {
+        return mapKindToStep[kind] === this.selectedTab
       })
     },
 
     getSelectedFiltersByStep () {
-      return (this.filters || []).filter((f) => {
-        return mapKindToStep[f.kind] === this.selectedTab
+      return (this.filters || []).filter(({ kind, deleted }) => {
+        return mapKindToStep[kind] === this.selectedTab && !deleted
       }).sort((a, b) => a.weight - b.weight)
     },
 
     disabledRemoveButton () {
-      return !this.filters.some(f => (f.options || { checked: false }).checked === true)
+      return !this.filters.some(({ options }) => (options || { checked: false }).checked)
     },
   },
 
   methods: {
-    onAddFilter (func) {
-      const i = this.filters.findIndex(({ ref }) => ref === func.ref)
+    onAddFilter (filter) {
+      const i = this.filters.findIndex(({ ref, deleted }) => ref === filter.ref && !deleted)
+
       if (i < 0) {
-        this.selectedFilter = func
+        this.selectedFilter = filter
       } else {
         this.selectedFilter = this.filters[i]
       }
     },
 
-    onSubmit (func) {
-      const i = this.filters.findIndex(f => f.ref === func.ref)
-      const out = [...this.filters]
+    onSubmit (filter) {
+      const i = this.filters.findIndex(({ ref, deleted }) => ref === filter.ref && !deleted)
+
       if (i < 0) {
-        func.weight = this.getSelectedFiltersByStep.length
-        out.push(func)
+        filter.weight = this.getSelectedFiltersByStep.length
+        this.filters.push(filter)
       } else {
-        func.weight = this.filters[i].weight
-        out[i] = func
+        this.filters.splice(this.filters.findIndex(({ ref, deleted }) => ref === filter.ref && !deleted), 1, filter)
       }
-      this.$emit('update:filters', out)
+
+      this.$emit('update:filters', this.filters)
     },
 
     onReset () {
@@ -166,48 +165,40 @@ export default {
     },
 
     onSortFilters (sortedFilters) {
-      this.filters.forEach(func => {
-        func.weight = sortedFilters.findIndex((f) => f.ref === func.ref)
-        func.updated = true
+      this.filters.forEach(filter => {
+        const i = sortedFilters.findIndex(({ ref, deleted }) => ref === filter.ref && !deleted)
+
+        if (i >= 0) {
+          filter.weight = sortedFilters.findIndex(({ ref, deleted }) => ref === filter.ref && !deleted)
+          filter.updated = true
+        }
       })
       this.filters.sort((a, b) => a.weight - b.weight)
     },
 
-    onRemoveFilter (func) {
-      if (func.filterID) {
-        this.filtersToDelete.push(func.filterID)
+    onRemoveFilter (filter) {
+      if (filter.filterID) {
+        this.filters.splice(this.filters.findIndex(({ filterID, deleted }) => filterID === filter.filterID && !deleted), 1, { ...filter, deleted: true })
+      } else {
+        this.filters.splice(this.filters.findIndex(({ ref, deleted }) => ref === filter.ref && !deleted), 1)
       }
-      this.filters.splice(this.filters.findIndex((f) => f.ref === func.ref), 1)
+
       this.$emit('update:filters', this.filters)
     },
 
-    onRemoveCheckedFilters () {
-      this.filters.slice().reverse().forEach(f => {
-        if (f.options.checked) {
-          this.onRemoveFilter(f)
-        }
-      })
-    },
-
-    onFilterSelect (func = {}) {
-      this.selectedFilter = { ...func }
+    onFilterSelect (filter = {}) {
+      this.selectedFilter = { ...filter }
     },
 
     onActivateTab (index) {
       this.selectedTab = index
-    },
-
-    isFilterAlreadyAdded () {
-      return (this.filters || []).some(
-        (f) => f.ref === this.selectedFilter.ref
-      )
     },
   },
 }
 </script>
 <style lang="scss" >
 
-.apigw{
+.apigw {
   .h-fit-content{
     height: fit-content;
   }

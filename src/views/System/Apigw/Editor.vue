@@ -37,7 +37,6 @@
       :processing="stepper.processing"
       :success="stepper.success"
       :filters.sync="filters"
-      :filters-to-delete.sync="filtersToDelete"
       :available-filters="availableFilters"
       :steps="steps"
       @submit="onFiltersSubmit"
@@ -84,7 +83,7 @@ export default {
         processing: false,
         success: false,
       },
-      filtersToDelete: [],
+
       filters: [],
       availableFilters: [],
       steps: [],
@@ -126,8 +125,7 @@ export default {
     fetchRoute () {
       this.incLoader()
 
-      this.$SystemAPI
-        .apigwRouteRead({ routeID: this.routeID, incFlags: 1 })
+      this.$SystemAPI.apigwRouteRead({ routeID: this.routeID, incFlags: 1 })
         .then((api) => {
           this.route = api
         })
@@ -180,9 +178,9 @@ export default {
           .then(() => {
             this.fetchRoute()
 
-            this.toastSuccess(this.$t('notification:user.undelete.success'))
+            this.toastSuccess(this.$t('notification:gateway.undelete.success'))
           })
-          .catch(this.toastErrorHandler(this.$t('notification:user.undelete.error')))
+          .catch(this.toastErrorHandler(this.$t('notification:gateway.undelete.error')))
           .finally(() => {
             this.decLoader()
           })
@@ -192,9 +190,9 @@ export default {
           .then(() => {
             this.fetchRoute()
 
-            this.toastSuccess(this.$t('notification:user.delete.success'))
+            this.toastSuccess(this.$t('notification:gateway.delete.success'))
           })
-          .catch(this.toastErrorHandler(this.$t('notification:user.delete.error')))
+          .catch(this.toastErrorHandler(this.$t('notification:gateway.delete.error')))
           .finally(() => {
             this.decLoader()
           })
@@ -202,76 +200,50 @@ export default {
     },
 
     onFiltersSubmit () {
-      if (this.filtersToDelete.length) {
-        this.deleteFilters(this.filtersToDelete)
-      }
       if (this.routeID) {
-        this.filters.forEach(({ ...func }, index) => {
-          if (func.created || func.updated) {
-            this.stepper.processing = true
-            func.params = this.encodeParams(func.params)
-            func.weight = func.weight.toString()
-            if (func.filterID && func.filterID !== NoID) {
-              this.updateFilter(func, index)
+        this.stepper.processing = true
+
+        Promise.all(this.filters.map(filter => {
+          if (filter.created || filter.updated || filter.deleted) {
+            filter.params = this.encodeParams(filter.params)
+            filter.weight = filter.weight.toString()
+
+            if (filter.filterID && filter.filterID !== NoID) {
+              return filter.deleted ? this.deleteFilter(filter) : this.updateFilter(filter)
             } else {
-              this.createFilter(func, index)
+              return filter.deleted ? undefined : this.createFilter(filter)
             }
           }
-        })
-      }
-    },
-
-    createFilter (func, index) {
-      this.$SystemAPI
-        .apigwFilterCreate({ ...func, routeID: this.routeID })
-        .then(({ filterID }) => {
-          this.filters[index].created = false
-          this.filters[index].updated = false
-          this.filters[index].filterID = filterID
+        })).then(async () => {
+          await this.fetchFilters()
 
           this.animateSuccess('stepper')
-          this.toastSuccess(this.$t('notification:gateway.filter.create.success'))
-        })
-        .catch(this.toastErrorHandler(this.$t('notification:gateway.filter.create.error')))
-        .finally(() => {
-          this.stepper.processing = false
-        })
-    },
-
-    updateFilter (func, index) {
-      this.$SystemAPI
-        .apigwFilterUpdate({ ...func, routeID: this.routeID })
-        .then(() => {
-          this.filters[index].updated = false
-
           this.toastSuccess(this.$t('notification:gateway.filter.update.success'))
         })
-        .catch(this.toastErrorHandler(this.$t('notification:gateway.filter.update.error')))
-        .finally(() => {
-          this.stepper.processing = false
-        })
-    },
-
-    deleteFilters (filtersToDelete) {
-      filtersToDelete.forEach((filterID, index) => {
-        this.$SystemAPI
-          .apigwFilterDelete({ filterID })
-          .then(() => {
-            this.filtersToDelete.splice(index, 1)
-
-            this.toastSuccess(this.$t('notification:gateway.filter.delete.success'))
-          })
-          .catch(this.toastErrorHandler(this.$t('notification:gateway.filter.delete.error')))
+          .catch(this.toastErrorHandler(this.$t('notification:gateway.filter.update.error')))
           .finally(() => {
             this.stepper.processing = false
           })
-      })
+      }
+    },
+
+    createFilter (filter) {
+      return this.$SystemAPI.apigwFilterCreate({ ...filter, routeID: this.routeID })
+    },
+
+    updateFilter (filter) {
+      return this.$SystemAPI.apigwFilterUpdate({ ...filter, routeID: this.routeID })
+    },
+
+    deleteFilter ({ filterID = '' }) {
+      if (filterID) {
+        return this.$SystemAPI.apigwFilterDelete({ filterID })
+      }
     },
 
     fetchFilters () {
       this.incLoader()
-      this.$SystemAPI
-        .apigwFilterList({ routeID: this.routeID })
+      this.$SystemAPI.apigwFilterList({ routeID: this.routeID })
         .then((api) => {
           this.setRouteFilters(api.set)
         })
@@ -282,17 +254,17 @@ export default {
     },
 
     setRouteFilters (routeFilters = []) {
-      this.filters = (routeFilters || []).map((func) => {
-        const f = { ...this.availableFilters.find((af) => af.ref === func.ref) }
-        f.params = this.decodeParams(f, { ...func.params })
-        f.weight = parseInt(func.weight)
-        f.filterID = func.filterID
+      this.filters = (routeFilters || []).map((filter) => {
+        const f = { ...this.availableFilters.find((af) => af.ref === filter.ref) }
+        f.params = this.decodeParams(f, { ...filter.params })
+        f.weight = parseInt(filter.weight)
+        f.filterID = filter.filterID
         return { ...f }
       })
     },
 
-    decodeParams (func = {}, values = {}) {
-      const { params = [] } = func
+    decodeParams (filter = {}, values = {}) {
+      const { params = [] } = filter
       return params.map(({ label, type }) => {
         return {
           label,
@@ -302,8 +274,8 @@ export default {
       })
     },
 
-    encodeParams (params) {
-      return params.reduce(function (result, p) {
+    encodeParams (params = []) {
+      return params.reduce((result, p) => {
         result[p.label] = p.value
         return result
       }, {})
@@ -311,8 +283,7 @@ export default {
 
     fetchAllAvailableFilters () {
       this.incLoader()
-      this.$SystemAPI
-        .apigwFilterDefFilter()
+      this.$SystemAPI.apigwFilterDefFilter()
         .then((api) => {
           this.availableFilters = api.map((f) => {
             return { name, ...f, ref: f.name, enabled: true, options: { checked: false } }
