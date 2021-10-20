@@ -39,6 +39,7 @@ import {
   faFlag,
   faCog,
   faArchway,
+  faEnvelopeOpen,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -95,4 +96,5 @@ library.add(
   faCog,
   faArchway,
   faEye,
+  faEnvelopeOpen,
 )
