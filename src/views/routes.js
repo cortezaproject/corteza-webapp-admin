@@ -92,9 +92,7 @@ export default [
           combo('system', 'template'),
 
           r('system.settings', 'settings', 'System/Settings/Index'),
-          r('system.settings.auth', 'settings/auth', 'System/Settings/Auth'),
-          r('system.settings.external-auth', 'settings/external-auth', 'System/Settings/ExternalAuth'),
-          r('system.settings.email', 'settings/email', 'System/Settings/Email'),
+          r('system.email', 'email', 'System/Email/Index'),
 
           combo('system', 'authClient', { pkey: 'authClientID' }),
 

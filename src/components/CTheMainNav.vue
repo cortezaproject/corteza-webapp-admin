@@ -82,6 +82,14 @@ export default {
               can: ['system/', 'settings.read'],
             },
             {
+              label: 'system.items.email',
+              route: 'system.email',
+              icon: 'envelope-open',
+              // all email management is handled
+              // via settings for now
+              can: ['system/', 'settings.read'],
+            },
+            {
               label: 'system.items.permissions',
               route: 'system.permissions',
               icon: 'lock',
