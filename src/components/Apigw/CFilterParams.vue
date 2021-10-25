@@ -7,7 +7,14 @@
       <template
         v-for="(param, index) in params"
       >
+        <c-headers
+          v-if="label === 'Header'"
+          :key="index"
+          :params="params"
+          @update="onUpdate"
+        />
         <b-form-group
+          v-else
           :key="index"
           :label="$t(`filters.labels.${param.label}`)"
         >
@@ -60,10 +67,12 @@
 
 <script>
 import { VueSelect } from 'vue-select'
+import CHeaders from 'corteza-webapp-admin/src/components/Apigw/CHeaders'
 
 export default {
   components: {
     VueSelect,
+    CHeaders,
   },
 
   props: {
