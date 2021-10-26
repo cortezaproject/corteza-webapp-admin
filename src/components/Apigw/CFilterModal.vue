@@ -15,8 +15,7 @@
         class="card-body"
       >
         <c-filter-params
-          :params="filter.params"
-          :label="filter.label"
+          :filter="filter"
           @update="onUpdate"
         />
         <b-form-checkbox

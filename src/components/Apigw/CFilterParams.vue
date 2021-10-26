@@ -1,11 +1,11 @@
 <template>
   <div>
     <b-form-group
-      v-if="params.length"
+      v-if="filter.params.length"
       class="w-100 mb-0"
     >
       <template
-        v-for="(param, index) in params"
+        v-for="(param, index) in filter.params"
       >
         <b-form-group
           :key="index"
@@ -46,11 +46,37 @@
               max-rows="6"
               @change="onUpdate"
             />
-            <b-form-input
-              v-else
-              v-model="param.value"
-              @change="onUpdate"
-            />
+            <b-input-group v-else>
+              <b-input-group-prepend
+                v-if="param.label === 'expr'"
+              >
+                <b-button
+                  variant="dark"
+                >
+                  ƒ
+                </b-button>
+              </b-input-group-prepend>
+              <b-form-input
+                v-model="param.value"
+                @change="onUpdate"
+              />
+            </b-input-group>
+          </template>
+          <template
+            v-if="filter.ref === 'header'"
+            #description
+          >
+            {{ $t('filters.headerExamples.first') }}
+            <br>
+            {{ $t('filters.headerExamples.second') }}
+            <b-button
+              variant="link"
+              size="sm"
+              class="d-flex p-0"
+              @click="openExpressionsHelp()"
+            >
+              {{ $t('filters.headerExamples.more') }}
+            </b-button>
           </template>
         </b-form-group>
       </template>
@@ -67,13 +93,9 @@ export default {
   },
 
   props: {
-    params: {
-      type: Array,
-      default: () => [],
-    },
-    label: {
-      type: String,
-      default: () => '',
+    filter: {
+      type: Object,
+      default: () => ({}),
     },
   },
 
@@ -94,7 +116,7 @@ export default {
   },
 
   created () {
-    if (this.params.some(({ label = '' }) => label === 'workflow')) {
+    if (this.filter.params.some(({ label = '' }) => label === 'workflow')) {
       this.$AutomationAPI.workflowList()
         .then(({ set: workflows = [] }) => {
           this.workflows = workflows.map(({ workflowID, handle, meta }) => {
@@ -107,6 +129,19 @@ export default {
   methods: {
     onUpdate () {
       this.$emit('update')
+    },
+
+    openExpressionsHelp () {
+      const helpRoute = this.$router.resolve({ name: 'field.expressions.help' })
+      window.open(`${helpRoute.href}#valueExpressions`, '_blank',
+        `toolbar=no,
+                                    location=no,
+                                    status=no,
+                                    menubar=no,
+                                    scrollbars=yes,
+                                    resizable=yes,
+                                    width=960px,
+                                    height=1080px`)
     },
   },
 }
