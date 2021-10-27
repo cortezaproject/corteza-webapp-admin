@@ -108,6 +108,10 @@ export default {
           sortable: true,
         },
         {
+          key: 'meta.name',
+          label: this.$t(`columns.name`),
+        },
+        {
           key: 'enabled',
           sortable: true,
           formatter: (v) => v ? 'Yes' : 'No',
@@ -124,7 +128,7 @@ export default {
       ].map(c => ({
         ...c,
         // Generate column label translation key
-        label: this.$t(`columns.${c.key}`),
+        label: c.label || this.$t(`columns.${c.key}`),
       })),
     }
   },
