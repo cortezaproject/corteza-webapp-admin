@@ -220,8 +220,12 @@ export default {
       return this.checkHandle === false || this.checkName === false
     },
 
+    /**
+     * Returns true if role is not saved yet (without ID)
+     * @returns {boolean}
+     */
     fresh () {
-      return this.role.roleID === NoID
+      return !this.role.roleID || this.role.roleID === NoID
     },
 
     editable () {
