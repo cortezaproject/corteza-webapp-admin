@@ -26,7 +26,11 @@
           v-model="role.handle"
           :state="checkHandle"
           :disabled="!editable"
+          :placeholder="$t('placeholder-handle')"
         />
+        <b-form-invalid-feedback :state="checkHandle">
+          {{ $t('invalid-handle-characters') }}
+        </b-form-invalid-feedback>
       </b-form-group>
 
       <b-form-group

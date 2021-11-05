@@ -24,7 +24,11 @@
         <b-form-input
           v-model="template.handle"
           :state="checkHandle"
+          :placeholder="$t('placeholder-handle')"
         />
+        <b-form-invalid-feedback :state="checkHandle">
+          {{ $t('invalid-handle-characters') }}
+        </b-form-invalid-feedback>
       </b-form-group>
 
       <b-form-group
