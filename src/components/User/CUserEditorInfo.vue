@@ -35,7 +35,12 @@
       >
         <b-form-input
           v-model="user.handle"
+          :placeholder="$t('placeholder-handle')"
+          :state="checkHandle"
         />
+        <b-form-invalid-feedback :state="checkHandle">
+          {{ $t('invalid-handle-characters') }}
+        </b-form-invalid-feedback>
       </b-form-group>
 
       <b-form-group
@@ -211,6 +216,9 @@ export default {
         return this.$auth.user.userID
       }
       return undefined
+    },
+    checkHandle () {
+      return this.user.handle ? /^[A-Za-z][0-9A-Za-z_\-.]*[A-Za-z0-9]$/.test(this.user.handle) : null
     },
   },
 }

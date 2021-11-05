@@ -25,7 +25,12 @@
         <b-form-input
           v-model="authClient.handle"
           :disabled="authClient.isDefault"
+          :placeholder="$t('handle.placeholder-handle')"
+          :state="checkHandle"
         />
+        <b-form-invalid-feedback :state="checkHandle">
+          {{ $t('handle.invalid-handle-characters') }}
+        </b-form-invalid-feedback>
         <template
           v-if="authClient.isDefault"
           #description
@@ -552,6 +557,9 @@ export default {
 
     secretVisible () {
       return this.secret.length > 0
+    },
+    checkHandle () {
+      return this.authClient.handle ? /^[A-Za-z][0-9A-Za-z_\-.]*[A-Za-z0-9]$/.test(this.authClient.handle) : null
     },
   },
 
