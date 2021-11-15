@@ -9,8 +9,21 @@
       >
         <b-form-group
           :key="index"
-          :label="$t(`filters.labels.${param.label}`)"
         >
+          <template slot="label">
+            {{ $t(`filters.labels.${param.label}`) }}
+            <template v-if="param.label === 'expr'">
+              <a
+                v-if="param.label === 'expr'"
+                :href="documentationURL"
+                target="_blank"
+              >
+                <font-awesome-icon
+                  :icon="['far', 'question-circle']"
+                />
+              </a>
+            </template>
+          </template>
           <!-- TODO create multi field component-->
           <b-form-checkbox
             v-if="param.type === 'bool'"
@@ -50,33 +63,22 @@
               <b-input-group-prepend
                 v-if="param.label === 'expr'"
               >
-                <b-button
-                  variant="dark"
-                >
+                <b-button variant="dark">
                   ƒ
                 </b-button>
               </b-input-group-prepend>
               <b-form-input
+                v-if="param.label === 'expr'"
+                v-model="param.value"
+                :placeholder="$t('filters.help.expression.example')"
+                @change="onUpdate"
+              />
+              <b-form-input
+                v-else
                 v-model="param.value"
                 @change="onUpdate"
               />
             </b-input-group>
-          </template>
-          <template
-            v-if="filter.ref === 'header'"
-            #description
-          >
-            {{ $t('filters.headerExamples.first') }}
-            <br>
-            {{ $t('filters.headerExamples.second') }}
-            <b-button
-              variant="link"
-              size="sm"
-              class="d-flex p-0"
-              @click="openExpressionsHelp()"
-            >
-              {{ $t('filters.headerExamples.more') }}
-            </b-button>
           </template>
         </b-form-group>
       </template>
@@ -115,6 +117,14 @@ export default {
     }
   },
 
+  computed: {
+    documentationURL () {
+      // eslint-disable-next-line no-undef
+      const [year, month] = VERSION.split('.')
+      return `https://docs.cortezaproject.org/corteza-docs/${year}.${month}/integrator-guide/expr/index.html`
+    },
+  },
+
   created () {
     if (this.filter.params.some(({ label = '' }) => label === 'workflow')) {
       this.$AutomationAPI.workflowList()
@@ -129,19 +139,6 @@ export default {
   methods: {
     onUpdate () {
       this.$emit('update')
-    },
-
-    openExpressionsHelp () {
-      const helpRoute = this.$router.resolve({ name: 'field.expressions.help' })
-      window.open(`${helpRoute.href}#valueExpressions`, '_blank',
-        `toolbar=no,
-                                    location=no,
-                                    status=no,
-                                    menubar=no,
-                                    scrollbars=yes,
-                                    resizable=yes,
-                                    width=960px,
-                                    height=1080px`)
     },
   },
 }
