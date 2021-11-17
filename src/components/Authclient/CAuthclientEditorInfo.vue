@@ -202,6 +202,13 @@
         >
           {{ $t('api') }}
         </b-form-checkbox>
+        <b-form-checkbox
+          v-if="discoveryEnabled"
+          :checked="(authClient.scope || []).includes('discovery')"
+          @change="setScope($event, 'discovery')"
+        >
+          {{ $t('discovery') }}
+        </b-form-checkbox>
       </b-form-group>
 
       <b-form-group
@@ -560,6 +567,9 @@ export default {
     },
     checkHandle () {
       return this.authClient.handle ? /^[A-Za-z][0-9A-Za-z_\-.]*[A-Za-z0-9]$/.test(this.authClient.handle) : null
+    },
+    discoveryEnabled () {
+      return this.$Settings.get('discovery.enabled', false)
     },
   },
 
