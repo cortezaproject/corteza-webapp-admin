@@ -208,6 +208,13 @@
         >
           {{ $t('openid') }}
         </b-form-checkbox>
+        <b-form-checkbox
+          v-if="discoveryEnabled"
+          :checked="(authClient.scope || []).includes('discovery')"
+          @change="setScope($event, 'discovery')"
+        >
+          {{ $t('discovery') }}
+        </b-form-checkbox>
       </b-form-group>
 
       <b-form-group
@@ -584,6 +591,10 @@ export default {
 
     isClientCredentialsGrant () {
       return this.authClient.validGrant === 'client_credentials'
+    },
+
+    discoveryEnabled () {
+      return this.$Settings.get('discovery.enabled', false)
     },
   },
 
