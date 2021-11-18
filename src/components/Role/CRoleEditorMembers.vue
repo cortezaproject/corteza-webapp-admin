@@ -8,7 +8,7 @@
       @submit.prevent="$emit('submit')"
     >
       <b-form-group
-        :label="$t('count', { count: members.length })"
+        :label="$t('count', { count: members.filter(({ dirty }) => dirty).length })"
         class="mb-0"
       >
         <table
@@ -149,7 +149,7 @@ export default {
     filter: {
       handler () {
         const query = this.filter
-        this.$SystemAPI.userList({ query })
+        this.$SystemAPI.userList({ query, incSuspended: true, incDeleted: true })
           .then(({ set: items = [] }) => {
             this.users = items
           }).catch(this.toastErrorHandler(this.$t('notification:user.fetch.error')))
@@ -158,7 +158,7 @@ export default {
   },
 
   mounted () {
-    const userID = this.members
+    const userID = this.members.map(({ userID }) => userID)
     if (userID.length > 0) {
       this.$SystemAPI.userList({ userID, incSuspended: true, incDeleted: true })
         .then(({ set: items = [] }) => {
@@ -169,29 +169,33 @@ export default {
 
   methods: {
     memberIndex (u) {
-      return this.members.indexOf(typeof u === 'object' ? u.userID : u)
+      u = typeof u === 'object' ? u.userID : u
+      return this.members.findIndex(({ userID }) => userID === u)
     },
 
     isMember (u) {
-      return this.members.indexOf(typeof u === 'object' ? u.userID : u) >= 0
+      u = typeof u === 'object' ? u.userID : u
+      return this.members.findIndex(({ userID, dirty }) => userID === u && dirty) >= 0
     },
 
     addMember (u) {
       const i = this.memberIndex(u)
       if (i < 0) {
-        this.members = this.members.concat(typeof u === 'object' ? u.userID : u)
-        this.memberUsers.push(u)
+        this.members.push({ userID: typeof u === 'object' ? u.userID : u, current: false, dirty: true })
+      } else {
+        this.$set(this.members, i, { ...this.members[i], dirty: true })
       }
+
+      this.memberUsers.push(u)
     },
 
     removeMember (u) {
       const i = this.memberIndex(u)
       if (i > -1) {
-        let m = [...this.members]
-        m.splice(i, 1)
-        this.members = m
-        this.memberUsers = this.memberUsers.filter(user => user.userID !== u.userID)
+        this.$set(this.members, i, { ...this.members[i], dirty: false })
       }
+      u = typeof u === 'object' ? u.userID : u
+      this.memberUsers = this.memberUsers.filter(({ userID }) => userID !== u)
     },
   },
 }

@@ -170,7 +170,6 @@ export default {
 
   methods: {
     submit () {
-      console.log(this.server)
       this.$emit('submit', this.server)
     },
   },

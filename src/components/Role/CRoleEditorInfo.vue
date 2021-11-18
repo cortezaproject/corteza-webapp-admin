@@ -51,13 +51,13 @@
           label-cols="0"
         >
           <b-form-checkbox
-            v-model="isContext"
+            v-model="isContextual"
             :disabled="!editable"
           >
             {{ $t('context.label') }}
           </b-form-checkbox>
         </b-form-group>
-        <div v-if="isContext">
+        <div v-if="isContextual">
           <b-form-group
             :label="$t('context.expression-label')"
             label-cols="3"
@@ -207,19 +207,28 @@ export default {
       value: false,
     },
 
+    isContext: {
+      type: Boolean,
+      required: true,
+    },
+
     canCreate: {
       type: Boolean,
       required: true,
     },
   },
 
-  data () {
-    return {
-      isContext: false,
-    }
-  },
-
   computed: {
+    isContextual: {
+      get () {
+        return this.isContext
+      },
+
+      set (isContext) {
+        this.$emit('update:is-context', isContext)
+      },
+    },
+
     disabled () {
       return this.checkHandle === false || this.checkName === false
     },
@@ -284,20 +293,9 @@ export default {
     },
   },
 
-  watch: {
-    'role.isContext': {
-      immediate: true,
-      handler (v) {
-        if (v) {
-          this.isContext = true
-        }
-      },
-    },
-  },
-
   methods: {
     submit () {
-      if (!this.isContext && this.role.isContext) {
+      if (!this.isContextual && this.role.isContext) {
         // if checkbox was unchecked on submit, purge meta before submit
         this.role.meta.context.resourceTypes = []
         this.role.meta.context.expr = ''

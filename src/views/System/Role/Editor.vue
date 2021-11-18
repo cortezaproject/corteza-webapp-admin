@@ -41,13 +41,14 @@
       :role="role"
       :processing="info.processing"
       :success="info.success"
+      :is-context.sync="isContext"
       :can-create="canCreate"
       @submit="onInfoSubmit"
       @delete="onDelete"
       @status="onStatusChange"
     />
     <c-role-editor-members
-      v-if="canManageMembers"
+      v-if="!isContext && canManageMembers"
       class="mt-3"
       :processing="members.processing"
       :success="members.success"
@@ -90,6 +91,8 @@ export default {
   data () {
     return {
       role: {},
+      isContext: false,
+
       roleMembers: null,
 
       info: {
@@ -112,7 +115,8 @@ export default {
       return this.role &&
         this.role.canManageMembersOnRole &&
         this.role.roleID &&
-        this.roleMembers
+        this.roleMembers &&
+        !this.role.isContext
     },
 
     canCreate () {
@@ -139,6 +143,15 @@ export default {
         }
       },
     },
+
+    'role.isContext': {
+      immediate: true,
+      handler (v) {
+        if (v) {
+          this.isContext = true
+        }
+      },
+    },
   },
 
   methods: {
@@ -154,8 +167,10 @@ export default {
         .then(r => {
           this.role = new system.Role(r)
 
-          if (this.canManageMembers) {
-            return this.$SystemAPI.roleMemberList(r).then((mm = []) => { this.roleMembers = mm })
+          if (this.role.canManageMembersOnRole && !this.role.isContext) {
+            return this.$SystemAPI.roleMemberList(r).then((mm = []) => {
+              this.roleMembers = mm.map(userID => ({ userID, current: true, dirty: true }))
+            })
           }
         })
         .catch(this.toastErrorHandler(this.$t('notification:role.fetch.error')))
@@ -198,7 +213,7 @@ export default {
       if (this.roleID) {
         this.$SystemAPI.roleUpdate(role)
           .then(role => {
-            this.role = role
+            this.fetchRole()
 
             this.animateSuccess('info')
             this.toastSuccess(this.$t('notification:role.update.success'))
@@ -259,12 +274,22 @@ export default {
     onMembersSubmit () {
       this.members.processing = true
 
-      if (this.roleID) {
-        this.$SystemAPI.roleUpdate({ ...this.role, members: this.roleMembers })
-          .then(role => {
-            this.role = role
-
+      const { roleID } = this.role
+      if (roleID) {
+        Promise.all(this.roleMembers.map(async user => {
+          let { userID, current, dirty } = user
+          if (dirty !== current) {
+            if (dirty) {
+              return this.$SystemAPI.roleMemberAdd({ roleID, userID })
+            } else {
+              return this.$SystemAPI.roleMemberRemove({ roleID, userID })
+            }
+          }
+        }))
+          .then(() => {
+            this.fetchRole()
             this.animateSuccess('members')
+
             this.toastSuccess(this.$t('notification:role.membershipUpdate.success'))
           })
           .catch(this.toastErrorHandler(this.$t('notification:role.membershipUpdate.error')))
