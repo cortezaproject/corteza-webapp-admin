@@ -58,6 +58,56 @@
       <hr>
 
       <h5>
+        {{ $t('internal.password-constraints.title') }}
+      </h5>
+
+      <b-alert
+        v-if="!$Settings.get('auth.internal.passwordConstraints.passwordSecurity')"
+        variant="warning"
+        show
+      >
+        {{ $t('internal.password-constraints.ignored-security') }}
+      </b-alert>
+
+      <b-form-group
+        :label="$t('internal.password-constraints.min-length')"
+        :description="$t('internal.password-constraints.min-length-description')"
+        label-cols="2"
+      >
+        <b-form-input
+          v-model="settings['auth.internal.password-constraints.min-length']"
+          :placeholder="`${defaultMinPwd}`"
+          type="number"
+        />
+      </b-form-group>
+
+      <b-form-group
+        :label="$t('internal.password-constraints.min-num-count')"
+        :description="$t('internal.password-constraints.min-num-count-description')"
+        label-cols="2"
+      >
+        <b-form-input
+          v-model="settings['auth.internal.password-constraints.min-num-count']"
+          placeholder="0"
+          type="number"
+        />
+      </b-form-group>
+
+      <b-form-group
+        :label="$t('internal.password-constraints.min-special-count')"
+        :description="$t('internal.password-constraints.min-special-count-description')"
+        label-cols="2"
+      >
+        <b-form-input
+          v-model="settings['auth.internal.password-constraints.min-special-count']"
+          placeholder="0"
+          type="number"
+        />
+      </b-form-group>
+
+      <hr>
+
+      <h5>
         {{ $t('mfa.title') }}
       </h5>
 
@@ -205,6 +255,12 @@ export default {
       type: Boolean,
       required: true,
     },
+  },
+
+  data () {
+    return {
+      defaultMinPwd: 8,
+    }
   },
 }
 </script>
