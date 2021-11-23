@@ -33,7 +33,6 @@
       v-if="authclient"
       :key="authClientID"
       :resource="authclient"
-      :roles="roles"
       :processing="info.processing"
       :success="info.success"
       :can-delete="authclient && authclient.authClientID && !authclient.isDefault && authclient.canDeleteAuthClient"
@@ -84,7 +83,6 @@ export default {
     return {
       authclient: undefined,
       secret: '',
-      roles: [],
 
       info: {
         processing: false,
@@ -125,9 +123,7 @@ export default {
       immediate: true,
       handler () {
         if (this.authClientID) {
-          this.fetchRoles().then(() => {
-            this.fetchAuthclient()
-          })
+          this.fetchAuthclient()
         } else {
           this.authclient = makeNewAuthClient()
         }
@@ -144,19 +140,6 @@ export default {
           this.authclient = ac
         })
         .catch(this.toastErrorHandler(this.$t('notification:authclient.fetch.error')))
-        .finally(() => {
-          this.decLoader()
-        })
-    },
-
-    fetchRoles () {
-      this.incLoader()
-
-      return this.$SystemAPI.roleList()
-        .then(({ set: roles = [] }) => {
-          this.roles = roles
-        })
-        .catch(this.toastErrorHandler(this.$t('notification:user.roles.error')))
         .finally(() => {
           this.decLoader()
         })
