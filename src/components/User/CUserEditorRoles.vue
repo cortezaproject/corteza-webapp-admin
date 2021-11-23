@@ -7,9 +7,7 @@
     <b-form
       @submit.prevent="$emit('submit')"
     >
-      <c-role-picker
-        :current-roles.sync="roles"
-      />
+      <c-role-picker v-model="value" />
     </b-form>
 
     <template #header>
@@ -45,7 +43,7 @@ export default {
   },
 
   props: {
-    currentRoles: {
+    value: {
       type: Array,
       required: true,
       default: () => [],
