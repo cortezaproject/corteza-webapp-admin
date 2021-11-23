@@ -1,97 +1,114 @@
 <template>
-  <b-form-group
-    :label="$t(label, { count: filteredRoles.length })"
-    label-cols="2"
-    class="mb-0"
-  >
-    <table
-      v-if="filteredRoles"
-      class="w-100 m-0 p-0"
-    >
-      <tr
-        v-for="r in filteredRoles"
-        :key="r.userID"
+  <div>
+    <b-input-group>
+      <b-input-group-append is-text>
+        <font-awesome-icon :icon="['fas', 'search']" />
+      </b-input-group-append>
+      <b-form-input v-model.trim="filter" />
+      <b-input-group-append
+        v-if="filter"
+        is-text
       >
-        <td>{{ r.name || r.handle || r.roleID || $t('unnamed') }}</td>
-        <td class="text-right">
+        <b-button
+          variant="link"
+          size="sm"
+          class="p-0 m-0"
+          @click="filter = ''"
+        >
+          <font-awesome-icon :icon="['fas', 'times']" />
+        </b-button>
+      </b-input-group-append>
+    </b-input-group>
+
+    <b-container
+      v-if="filter && filtered.length > 0"
+      class="ml-5 my-2 position-absolute bg-white border results shadow w-50"
+    >
+      <b-row
+        v-for="r in filtered"
+        :key="r.roleID"
+        class="filtered-role"
+        @click="addRole(r)"
+      >
+        <b-col class="pt-1">
+          {{ r | label }}
           <b-button
             variant="link"
-            class="text-danger pr-0"
+            class="float-right"
+            @click="addRole(r)"
+          >
+            <font-awesome-icon :icon="['fas', 'plus']" />
+          </b-button>
+        </b-col>
+      </b-row>
+    </b-container>
+
+    <b-form-text
+      v-if="$slots['description']"
+    >
+      <slot name="description" />
+    </b-form-text>
+
+    <b-container
+      v-if="selected"
+      class="p-1"
+    >
+      <b-row
+        v-for="r in selected"
+        :key="r.userID"
+      >
+        <b-col>{{ r | label }}</b-col>
+        <b-col class="text-right">
+          <b-button
+            variant="link"
             @click="removeRole(r)"
           >
-            {{ $t('remove') }}
+            <font-awesome-icon :icon="['far', 'trash-alt']" />
           </b-button>
-        </td>
-      </tr>
-    </table>
-    <b-input-group>
-      <b-input-group-prepend>
-        <b-input-group-text>{{ $t('searchRoles') }}</b-input-group-text>
-      </b-input-group-prepend>
-      <b-form-input v-model.trim="filter" />
-    </b-input-group>
-    <b-form-text v-if="description">
-      {{ description }}
-    </b-form-text>
-    <table
-      v-if="filter && filtered"
-      class="w-100 p-0 table-hover"
-    >
-      <tbody>
-        <tr
-          v-for="r in filtered"
-          :key="r.roleID"
-        >
-          <td>{{ r.name || r.handle || r.roleID || $t('unnamed') }}</td>
-          <td class="text-right">
-            <b-button
-              variant="light"
-              @click="addRole(r)"
-            >
-              {{ $t('add') }}
-            </b-button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </b-form-group>
+        </b-col>
+      </b-row>
+    </b-container>
+  </div>
 </template>
 
 <script>
+
+function roleSorter (a, b) {
+  return `${a.name} ${a.handle} ${a.roleID}`.localeCompare(`${b.name} ${b.handle} ${b.roleID}`)
+}
+
 export default {
+  filters: {
+    label (r) {
+      return r.name || r.handle || r.roleID
+    },
+  },
+
   props: {
     label: {
       type: String,
       default: 'count',
     },
 
-    description: {
-      type: String,
-      default: null,
-    },
-
-    currentRoles: {
+    // list of role IDs
+    value: {
       type: Array,
-      required: true,
-      default: () => [],
+      default: () => ([]),
     },
   },
 
   data () {
     return {
+      roles: [],
       filter: '',
     }
   },
 
   computed: {
-    roles: {
-      get () {
-        return this.currentRoles
-      },
-
-      set (roles) {
-        this.$emit('update:current-roles', roles)
-      },
+    selected () {
+      return this.roles
+        .filter(({ roleID }) => this.value.includes(roleID))
+        .sort(roleSorter)
     },
 
     filtered () {
@@ -103,11 +120,7 @@ export default {
         return !(isClosed || (meta.context && meta.context.resourceTypes))
       }
 
-      return this.roles.filter(r => fits(r) && match(r) && !this.hasRole(r))
-    },
-
-    filteredRoles () {
-      return this.roles.filter(this.hasRole)
+      return this.roles.filter(r => !this.value.includes(r.roleID) && fits(r) && match(r))
     },
   },
 
@@ -120,18 +133,39 @@ export default {
     },
   },
 
-  methods: {
-    hasRole (r) {
-      return r.dirty
-    },
+  mounted () {
+    this.preload()
+  },
 
+  methods: {
     addRole (r) {
-      this.$set(r, 'dirty', true)
+      if (!this.value.includes(r.roleID)) {
+        this.value.push(r.roleID)
+      }
     },
 
     removeRole (r) {
-      this.$set(r, 'dirty', false)
+      this.value.splice(this.value.indexOf(r.roleID), 1)
+      this.filter = ''
+    },
+
+    preload () {
+      return this.$SystemAPI.roleList()
+        .then(({ set }) => { this.roles = set || [] })
+        .catch(this.toastErrorHandler({}))
     },
   },
 }
 </script>
+<style lang="scss">
+.results {
+  z-index: 100;
+  .filtered-role {
+    cursor: pointer;
+    &:hover {
+      background-color: $light;
+    }
+  }
+}
+
+</style>

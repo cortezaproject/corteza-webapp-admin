@@ -41,6 +41,7 @@ import {
   faArchway,
   faEnvelopeOpen,
   faWrench,
+  faSearch,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -99,4 +100,5 @@ library.add(
   faEye,
   faEnvelopeOpen,
   faWrench,
+  faSearch,
 )
