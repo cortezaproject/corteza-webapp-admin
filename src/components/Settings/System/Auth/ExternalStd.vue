@@ -1,16 +1,12 @@
 <template>
   <div>
-    <h3 class="mb-2">
-      {{ title }}
-    </h3>
-
     <b-form-group label-cols="2">
       <b-form-checkbox
         v-model="value.enabled"
         :value="true"
         :unchecked-value="false"
       >
-        {{ $t('providerEnabled') }}
+        {{ $t('enabled') }}
       </b-form-checkbox>
     </b-form-group>
     <b-form-group
@@ -29,19 +25,46 @@
         <b-form-input v-model.trim="value.secret" />
       </b-input-group>
     </b-form-group>
+    <!--
+    <c-role-picker
+      label="security.permittedRoles.label"
+      :description="$t('security.permittedRoles.description')"
+      :current-roles.sync="value.security.permittedRoles"
+      class="mb-3"
+    />
+
+    <c-role-picker
+      label="security.forbiddenRoles.label"
+      :description="$t('security.forbiddenRoles.description')"
+      :current-roles.sync="value.security.forbiddenRoles"
+      class="mb-3"
+    />
+
+    <c-role-picker
+      label="security.forcedRoles.label"
+      :description="$t('security.forcedRoles.description')"
+      :current-roles.sync="value.security.forcedRoles"
+      class="mb-3"
+    />
+-->
   </div>
 </template>
 
 <script>
+import CRolePicker from '../../../CRolePicker.vue'
 export default {
   name: 'StandardExternalAuthProvider',
 
-  props: {
-    title: {
-      type: String,
-      required: true,
-    },
+  i18nOptions: {
+    namespaces: 'system.settings',
+    keyPrefix: 'editor.external.standard',
+  },
 
+  components: {
+    CRolePicker,
+  },
+
+  props: {
     value: {
       type: Object,
       required: true,
@@ -50,5 +73,3 @@ export default {
   },
 }
 </script>
-<style scoped lang="scss">
-</style>
