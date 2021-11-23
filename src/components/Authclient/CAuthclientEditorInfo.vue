@@ -10,7 +10,7 @@
     >
       <b-form-group
         :label="$t('name')"
-        label-cols="2"
+        label-cols="3"
       >
         <b-form-input
           v-model="authClient.meta.name"
@@ -20,7 +20,7 @@
 
       <b-form-group
         :label="$t('handle.label')"
-        label-cols="2"
+        label-cols="3"
       >
         <b-form-input
           v-model="authClient.handle"
@@ -41,7 +41,7 @@
 
       <b-form-group
         :label="$t('redirectURI')"
-        label-cols="2"
+        label-cols="3"
       >
         <b-button
           variant="light"
@@ -80,7 +80,7 @@
       <b-form-group
         v-if="existing"
         :label="$t('secret')"
-        label-cols="2"
+        label-cols="3"
         class="mb-3"
       >
         <b-input-group>
@@ -115,7 +115,7 @@
       </b-form-group>
 
       <b-form-group
-        label-cols="2"
+        label-cols="3"
       >
         <b-form-radio-group
           v-model="authClient.validGrant"
@@ -129,7 +129,7 @@
 
       <b-form-group
         :label="$t('validFrom.label')"
-        label-cols="2"
+        label-cols="3"
         :description="$t('validFrom.description')"
       >
         <b-input-group>
@@ -159,7 +159,7 @@
 
       <b-form-group
         :label="$t('expiresAt.label')"
-        label-cols="2"
+        label-cols="3"
         :description="$t('expiresAt.description')"
       >
         <b-input-group>
@@ -188,7 +188,7 @@
       </b-form-group>
 
       <b-form-group
-        label-cols="2"
+        label-cols="3"
       >
         <b-form-checkbox
           :checked="(authClient.scope || []).includes('profile')"
@@ -205,7 +205,7 @@
       </b-form-group>
 
       <b-form-group
-        label-cols="2"
+        label-cols="3"
       >
         <b-form-checkbox
           v-model="authClient.trusted"
@@ -216,7 +216,7 @@
       </b-form-group>
 
       <b-form-group
-        label-cols="2"
+        label-cols="3"
       >
         <b-form-checkbox
           v-model="authClient.enabled"
@@ -233,9 +233,9 @@
         </template>
       </b-form-group>
 
-      <div v-if="authClient.validGrant === 'client_credentials'">
+      <div v-if="isClientCredentialsGrant">
         <b-form-group
-          label-cols="2"
+          label-cols="3"
           :label="$t('security.impersonateUser.label')"
           :description="$t('security.impersonateUser.description')"
         >
@@ -245,7 +245,7 @@
           />
         </b-form-group>
         <div v-if="existing">
-          <b-form-group label-cols="2">
+          <b-form-group label-cols="3">
             <b-button
               variant="light"
               class="align-top"
@@ -262,7 +262,7 @@
           <b-form-group
             v-if="curlVisible"
             :label="$t('cUrl')"
-            label-cols="2"
+            label-cols="3"
             class="curl"
           >
             <div class="w-100">
@@ -319,31 +319,55 @@ curl -X POST {{ curlURL }} \
         </div>
       </div>
 
-      <c-role-picker
-        label="security.permittedRoles.label"
-        :description="$t('security.permittedRoles.description')"
-        :current-roles.sync="permittedRoles"
-        class="mb-3"
-      />
+      <b-form-group
+        :label="$t('security.permittedRoles.label')"
+        label-cols="3"
+        class="mb-0"
+      >
+        <c-role-picker
+          v-model="authClient.security.permittedRoles"
+          class="mb-3"
+        >
+          <template #description>
+            {{ $t('security.permittedRoles.description') }}
+          </template>
+        </c-role-picker>
+      </b-form-group>
 
-      <c-role-picker
-        label="security.forbiddenRoles.label"
-        :description="$t('security.forbiddenRoles.description')"
-        :current-roles.sync="forbiddenRoles"
-        class="mb-3"
-      />
+      <b-form-group
+        :label="$t('security.forbiddenRoles.label')"
+        label-cols="3"
+        class="mb-0"
+      >
+        <c-role-picker
+          v-model="authClient.security.forbiddenRoles"
+          class="mb-3"
+        >
+          <template #description>
+            {{ $t('security.forbiddenRoles.description') }}
+          </template>
+        </c-role-picker>
+      </b-form-group>
 
-      <c-role-picker
-        label="security.forcedRoles.label"
-        :description="$t('security.forcedRoles.description')"
-        :current-roles.sync="forcedRoles"
-        class="mb-3"
-      />
+      <b-form-group
+        :label="$t('security.forcedRoles.label')"
+        label-cols="3"
+        class="mb-0"
+      >
+        <c-role-picker
+          v-model="authClient.security.forcedRoles"
+          class="mb-3"
+        >
+          <template #description>
+            {{ $t('security.forcedRoles.description') }}
+          </template>
+        </c-role-picker>
+      </b-form-group>
 
       <b-form-group
         v-if="authClient.createdAt"
         :label="$t('createdAt')"
-        label-cols="2"
+        label-cols="3"
         class="mb-0"
       >
         <b-form-input
@@ -356,7 +380,7 @@ curl -X POST {{ curlURL }} \
       <b-form-group
         v-if="authClient.updatedAt"
         :label="$t('updatedAt')"
-        label-cols="2"
+        label-cols="3"
       >
         <b-form-input
           :value="authClient.updatedAt | locFullDateTime"
@@ -368,7 +392,7 @@ curl -X POST {{ curlURL }} \
       <b-form-group
         v-if="authClient.deletedAt"
         :label="$t('deletedAt')"
-        label-cols="2"
+        label-cols="3"
       >
         <b-form-input
           :value="authClient.deletedAt | locFullDateTime"
@@ -434,6 +458,13 @@ import CSelectUser from 'corteza-webapp-admin/src/components/Authclient/CSelectU
 import copy from 'copy-to-clipboard'
 import axios from 'axios'
 
+const defSecurity = Object.freeze({
+  impersonateUser: '0',
+  permittedRoles: [],
+  forbiddenRoles: [],
+  forcedRoles: [],
+})
+
 export default {
   name: 'CAuthclientEditorInfo',
 
@@ -460,12 +491,6 @@ export default {
       default: () => false,
     },
 
-    roles: {
-      type: Array,
-      required: true,
-      default: () => [],
-    },
-
     processing: {
       type: Boolean,
       value: false,
@@ -483,39 +508,29 @@ export default {
   },
 
   data () {
-    let roles = {}
-    if (this.resource) {
-      const { permittedRoles = [], forbiddenRoles = [], forcedRoles = [] } = this.resource.security || {}
-      roles = {
-        permittedRoles: this.transformRoles(permittedRoles),
-        forbiddenRoles: this.transformRoles(forbiddenRoles),
-        forcedRoles: this.transformRoles(forcedRoles),
-      }
+    const authClient = Vue.util.extend({
+      trusted: false,
+      handle: '',
+      meta: {
+        name: '',
+        description: '',
+      },
+
+      redirectURI: '',
+      validGrant: '',
+
+      // make sure all references are destroyed
+    }, this.resource)
+
+    if (!authClient.security.impersonateUser) {
+      // hande empty security struct
+      authClient.security = { ...defSecurity }
     }
 
     return {
       // setup all object props we need (reactivity)
       // when we migrate it to corteza-js using a proper Class this can remove it
-      authClient: Vue.util.extend({
-        trusted: false,
-        handle: '',
-        meta: {
-          name: '',
-          description: '',
-        },
-
-        security: {
-          impersonateUser: '0',
-          permittedRoles: [],
-          forbiddenRoles: [],
-          forcedRoles: [],
-        },
-
-        redirectURI: '',
-        validGrant: '',
-
-        // make sure all references are destroyed
-      }, this.resource),
+      authClient,
 
       redirectURI: this.resource.redirectURI ? this.resource.redirectURI.split(' ') : [],
 
@@ -530,8 +545,6 @@ export default {
         date: new Date(this.resource.expiresAt).toISOString(),
         time: new Date(this.resource.expiresAt).toTimeString().split(' ')[0],
       } : { date: null, time: null },
-
-      ...roles,
 
       curlVisible: false,
       curlURL: '',
@@ -558,8 +571,13 @@ export default {
     secretVisible () {
       return this.secret.length > 0
     },
+
     checkHandle () {
       return this.authClient.handle ? /^[A-Za-z][0-9A-Za-z_\-.]*[A-Za-z0-9]$/.test(this.authClient.handle) : null
+    },
+
+    isClientCredentialsGrant () {
+      return this.authClient.validGrant === 'client_credentials'
     },
   },
 
@@ -613,26 +631,15 @@ export default {
         this.authClient.validFrom = undefined
       }
 
+      if (!this.isClientCredentialsGrant || !this.authClient.security.impersonateUser) {
+        this.authClient.security.impersonateUser = '0'
+      }
+
       if (this.expiresAt.date && this.expiresAt.time) {
         this.authClient.expiresAt = new Date(`${this.expiresAt.date} ${this.expiresAt.time}`).toISOString()
       } else {
         this.authClient.expiresAt = undefined
       }
-
-      this.authClient.security.permittedRoles = this.permittedRoles
-        .filter(({ current, dirty }) => {
-          return dirty !== current && dirty
-        }).map(({ roleID }) => roleID)
-
-      this.authClient.security.forbiddenRoles = this.forbiddenRoles
-        .filter(({ current, dirty }) => {
-          return dirty !== current && dirty
-        }).map(({ roleID }) => roleID)
-
-      this.authClient.security.forcedRoles = this.forcedRoles
-        .filter(({ current, dirty }) => {
-          return dirty !== current && dirty
-        }).map(({ roleID }) => roleID)
 
       this.$emit('submit', this.authClient)
     },
@@ -647,22 +654,6 @@ export default {
       }
 
       this.authClient.scope = items.join(' ')
-    },
-
-    transformRoles (currentRoles = []) {
-      let transformedRoles = []
-      this.roles.forEach(r => {
-        let { roleID } = r
-        if (roleID !== '1') {
-          let current = false
-          if (currentRoles.indexOf(roleID) > -1) {
-            current = true
-          }
-          transformedRoles.push({ ...r, current: current, dirty: current })
-        }
-      })
-
-      return transformedRoles
     },
 
     resetDateTime (target) {
