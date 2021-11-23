@@ -67,6 +67,7 @@
         v-model="modal.open"
         :title="modal.title"
         size="lg"
+        title-class="text-capitalize"
         @ok="modal.updater(modal.data)"
       >
         <component
@@ -109,11 +110,11 @@ const idpStandard = [
   'linkedin',
 ]
 
-const idpSecurity = Object.freeze({
+const idpSecurity = {
   permittedRoles: [],
   forbiddenRoles: [],
   forcedRoles: [],
-})
+}
 
 /**
  * Give some structure to key-val settings
@@ -170,8 +171,9 @@ function prepareExternal (external) {
       enabled: false,
       secret: '',
       key: '',
-      security: { ...idpSecurity },
+      security: {},
     }),
+    security: { ...idpSecurity },
   }))
 
   const prefix = `auth.external.providers.openid-connect.`
@@ -188,8 +190,10 @@ function prepareExternal (external) {
           issuer: '',
           key: '',
           secret: '',
+          security: {},
         }),
         handle,
+        security: { ...idpSecurity },
         deleted: false,
       }))
 
@@ -423,62 +427,13 @@ export default {
   },
 
   methods: {
-    // findRoles () {
-    //   for (const client in this.standard) {
-    //     let { permittedRoles = [], forbiddenRoles = [], forcedRoles = [] } = {}
-    //     for (let setting in this.external) {
-    //       if (this.external[setting].name === `auth.external.${client}.security`) {
-    //         for (let roles in this.external[setting].value) {
-    //           if (roles === 'permittedRoles') permittedRoles = this.external[setting].value[roles]
-    //           if (roles === 'forbidenRoles') forbiddenRoles = this.external[setting].value[roles]
-    //           if (roles === 'forcedRoles') forcedRoles = this.external[setting].value[roles]
-    //         }
-    //       }
-    //     }
-    //
-    //     this.standard[client].permittedRoles = this.transformRoles(permittedRoles)
-    //     this.standard[client].forbiddenRoles = this.transformRoles(forbiddenRoles)
-    //     this.standard[client].forcedRoles = this.transformRoles(forcedRoles)
-    //   }
-    //   this.transformed = true
-    // },
-    //
-    // fetchRoles () {
-    //   // this.incLoader()
-    //
-    //   return this.$SystemAPI.roleList()
-    //     .then(({ set: roles = [] }) => {
-    //       this.roles = roles
-    //       this.findRoles()
-    //     })
-    //     .catch(this.toastErrorHandler(this.$t('notification:user.roles.error')))
-    //     .finally(() => {
-    //       // this.decLoader()
-    //     })
-    // },
-    //
-    // transformRoles (currentRoles = []) {
-    //   let transformedRoles = []
-    //   this.roles.forEach(r => {
-    //     let { roleID } = r
-    //     if (roleID !== '1') {
-    //       let current = false
-    //       if (currentRoles.indexOf(roleID) > -1) {
-    //         current = true
-    //       }
-    //       transformedRoles.push({ ...r, current: current, dirty: current })
-    //     }
-    //   })
-    //
-    //   return transformedRoles
-    // },
-
     openEditor ({ component, title, data, updater }) {
       this.modal.open = true
       this.modal.component = component
       this.modal.title = title
       this.modal.updater = updater
 
+      console.log(JSON.parse(JSON.stringify(data)))
       // deref
       this.modal.data = JSON.parse(JSON.stringify(data))
     },
@@ -494,6 +449,7 @@ export default {
           key: '',
           secret: '',
           fresh: true,
+          security: { ...idpSecurity },
         },
         updater: (changed) => {
           this.updater('oidc', changed, -1)
