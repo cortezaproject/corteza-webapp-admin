@@ -55,9 +55,14 @@
         <b-form-input v-model.trim="value.secret" />
       </b-input-group>
     </b-form-group>
+
+    <security
+      v-model="value.security"
+    />
   </div>
 </template>
 <script>
+import Security from './ExternalSecurity'
 
 export default {
   name: 'OIDCExternalAuthProvider',
@@ -65,6 +70,10 @@ export default {
   i18nOptions: {
     namespaces: 'system.settings',
     keyPrefix: 'editor.external.oidc',
+  },
+
+  components: {
+    Security,
   },
 
   props: {
