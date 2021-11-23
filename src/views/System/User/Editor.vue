@@ -51,11 +51,11 @@
 
     <c-user-editor-roles
       v-if="user && user.userID"
+      v-model="membership.active"
       class="mt-3"
       :processing="roles.processing"
       :success="roles.success"
-      :current-roles.sync="userRoles"
-      @submit="onRoleSubmit"
+      @submit="onMembershipSubmit"
     />
 
     <c-user-editor-mfa
@@ -115,7 +115,10 @@ export default {
   data () {
     return {
       user: {},
-      userRoles: [],
+      membership: {
+        active: [],
+        original: [],
+      },
 
       // Processing and success flags for each form
       info: {
@@ -161,7 +164,7 @@ export default {
       handler () {
         if (this.userID) {
           this.fetchUser()
-          this.fetchUserRoles()
+          this.fetchMembership()
         } else {
           this.user = {}
         }
@@ -187,28 +190,13 @@ export default {
         })
     },
 
-    fetchUserRoles () {
+    fetchMembership () {
       this.incLoader()
-
-      this.userRoles = []
-      const userID = this.userID
-
-      this.$SystemAPI.roleList().then(({ set: roles = [] }) => {
-        return this.$SystemAPI.userMembershipList({ userID }).then((m = []) => {
-          let userRoles = []
-          roles.forEach(r => {
-            let { roleID } = r
-            if (roleID !== '1') {
-              let current = false
-              if (m.indexOf(roleID) > -1) {
-                current = true
-              }
-              userRoles.push({ ...r, current: current, dirty: current })
-            }
-          })
-          this.userRoles = userRoles
+      return this.$SystemAPI.userMembershipList({ userID: this.userID })
+        .then((set = []) => {
+          this.membership = { active: set, original: set }
         })
-      }).catch(this.toastErrorHandler(this.$t('notification:user.roles.error')))
+        .catch(this.toastErrorHandler(this.$t('notification:user.roles.error')))
         .finally(() => {
           this.decLoader()
         })
@@ -333,23 +321,25 @@ export default {
      * Handles user role submit event, calls membership add or remove API endpoint
      * and handles response & errors
      */
-    onRoleSubmit () {
+    onMembershipSubmit () {
       this.roles.processing = true
 
       const userID = this.userID
-      Promise.all(this.userRoles.map(async role => {
-        let { roleID, current, dirty } = role
-        if (dirty !== current) {
-          if (dirty) {
-            return this.$SystemAPI.userMembershipAdd({ roleID, userID })
-          } else {
-            return this.$SystemAPI.userMembershipRemove({ roleID, userID })
-          }
-        }
-      }))
+
+      const { active, original } = this.membership
+      Promise.all([
+        // all removed memberships
+        ...original.filter(roleID => !active.includes(roleID)).map(roleID => {
+          return this.$SystemAPI.userMembershipRemove({ roleID, userID })
+        }),
+        // all new memerships
+        ...active.filter(roleID => !original.includes(roleID)).map(roleID => {
+          return this.$SystemAPI.userMembershipAdd({ roleID, userID })
+        }),
+      ])
         .then(() => {
           this.animateSuccess('roles')
-          this.fetchUserRoles()
+          this.fetchMembership()
 
           this.toastSuccess(this.$t('notification:user.membershipUpdate.success'))
         })
