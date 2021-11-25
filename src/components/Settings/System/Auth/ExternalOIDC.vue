@@ -56,6 +56,21 @@
       </b-input-group>
     </b-form-group>
 
+    <b-form-group
+      :label="$t('scope')"
+      label-cols="2"
+    >
+      <b-input-group>
+        <b-form-input
+          v-model.trim="value.scope"
+          :placeholder="$t('scopePlaceholder')"
+        />
+      </b-input-group>
+      <b-form-text
+        v-html="$t('scopeHint')"
+      />
+    </b-form-group>
+
     <security
       v-model="value.security"
     />
