@@ -16,17 +16,25 @@
         >
           {{ $t('new') }}
         </b-button>
+
         <c-permissions-button
           v-if="roleID && canGrant"
           :title="role.name"
           :target="role.name"
           :resource="'corteza::system:role/'+roleID"
           button-variant="light"
+          class="mr-2"
         >
           <font-awesome-icon :icon="['fas', 'lock']" />
           {{ $t('permissions') }}
         </c-permissions-button>
+
+        <c-permission-clone
+          v-if="roleID && canGrant"
+          :role-id="roleID"
+        />
       </span>
+
       <c-corredor-manual-buttons
         ui-page="role/editor"
         ui-slot="toolbar"
@@ -47,6 +55,7 @@
       @delete="onDelete"
       @status="onStatusChange"
     />
+
     <c-role-editor-members
       v-if="!isContext && canManageMembers"
       class="mt-3"
@@ -63,12 +72,14 @@ import { system } from '@cortezaproject/corteza-js'
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CRoleEditorInfo from 'corteza-webapp-admin/src/components/Role/CRoleEditorInfo'
 import CRoleEditorMembers from 'corteza-webapp-admin/src/components/Role/CRoleEditorMembers'
+import CPermissionClone from 'corteza-webapp-admin/src/components/Permissions/CPermissionClone'
 import { mapGetters } from 'vuex'
 
 export default {
   components: {
     CRoleEditorInfo,
     CRoleEditorMembers,
+    CPermissionClone,
   },
 
   i18nOptions: {
