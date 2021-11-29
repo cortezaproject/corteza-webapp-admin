@@ -33,7 +33,7 @@
             <b-list-group-item
               v-for="(opt, i) in sec.options"
               :key="opt.label + i"
-              class="px-0 text-nowrap"
+              class="px-0 text-wrap"
               @click="opt.onClick || (() => {})"
             >
               {{ opt.label }}
