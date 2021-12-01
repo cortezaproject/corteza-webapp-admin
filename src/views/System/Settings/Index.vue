@@ -15,8 +15,8 @@
     />
 
     <c-system-editor-external
+      v-model="settings"
       class="mt-3"
-      :external="settings"
       :processing="external.processing"
       :success="external.success"
       :can-manage="canManage"
@@ -135,6 +135,7 @@ export default {
         .catch(this.toastErrorHandler(this.$t('notification:settings.system.external.error')))
         .finally(() => {
           this.external.processing = false
+          this.fetchSettings()
         })
     },
   },

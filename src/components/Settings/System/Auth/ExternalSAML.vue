@@ -1,23 +1,20 @@
 <template>
-  <b-form-group
-    :label="title"
-    label-size="lg"
-  >
-    <b-form-group label-cols="2">
+  <div>
+    <b-form-group label-cols="3">
       <b-form-checkbox
         v-model="value.enabled"
         :value="true"
         :unchecked-value="false"
       >
-        {{ $t('providerEnabled') }}
+        {{ $t('enabled') }}
       </b-form-checkbox>
     </b-form-group>
 
-    <div v-if="value.enabled">
+    <div>
       <b-form-group
-        :label="$t('saml.name')"
-        :description="$t('saml.desc.name')"
-        label-cols="2"
+        :label="$t('name')"
+        :description="$t('desc.name')"
+        label-cols="3"
       >
         <b-input-group>
           <b-form-input v-model.trim="value.name" />
@@ -29,9 +26,9 @@
       </h5>
 
       <b-form-group
-        :label="$t('saml.cert')"
-        label-cols="2"
-        :description="$t('saml.desc.cert')"
+        :label="$t('cert')"
+        label-cols="3"
+        :description="$t('desc.cert')"
       >
         <b-input-group>
           <b-form-textarea
@@ -40,9 +37,9 @@
         </b-input-group>
       </b-form-group>
       <b-form-group
-        :label="$t('saml.cert-key')"
-        label-cols="2"
-        :description="$t('saml.desc.cert-key')"
+        :label="$t('cert-key')"
+        label-cols="3"
+        :description="$t('desc.cert-key')"
       >
         <b-input-group>
           <b-form-textarea v-model.trim="value.key" />
@@ -52,13 +49,13 @@
       <h5
         class="mt-2"
       >
-        {{ $t('saml.idp.title') }}
+        {{ $t('idp.title') }}
       </h5>
 
       <b-form-group
-        :label="$t('saml.idp.url')"
-        :description="$t('saml.desc.idp.url')"
-        label-cols="2"
+        :label="$t('idp.url')"
+        :description="$t('desc.idp.url')"
+        label-cols="3"
       >
         <b-input-group>
           <b-form-input v-model.trim="value.idp.url" />
@@ -66,9 +63,9 @@
       </b-form-group>
 
       <b-form-group
-        :label="$t('saml.idp.ident-name')"
-        :description="$t('saml.desc.idp.ident-name')"
-        label-cols="2"
+        :label="$t('idp.ident-name')"
+        :description="$t('desc.idp.ident-name')"
+        label-cols="3"
       >
         <b-input-group>
           <b-form-input v-model.trim="value.idp['ident-name']" />
@@ -76,9 +73,9 @@
       </b-form-group>
 
       <b-form-group
-        :label="$t('saml.idp.ident-handle')"
-        :description="$t('saml.desc.idp.ident-handle')"
-        label-cols="2"
+        :label="$t('idp.ident-handle')"
+        :description="$t('desc.idp.ident-handle')"
+        label-cols="3"
       >
         <b-input-group>
           <b-form-input v-model.trim="value.idp['ident-handle']" />
@@ -86,28 +83,37 @@
       </b-form-group>
 
       <b-form-group
-        :label="$t('saml.idp.ident-identifier')"
-        :description="$t('saml.desc.idp.ident-identifier')"
-        label-cols="2"
+        :label="$t('idp.ident-identifier')"
+        :description="$t('desc.idp.ident-identifier')"
+        label-cols="3"
       >
         <b-input-group>
           <b-form-input v-model.trim="value.idp['ident-identifier']" />
         </b-input-group>
       </b-form-group>
     </div>
-  </b-form-group>
-</template>
 
+    <security
+      v-model="value.security"
+    />
+  </div>
+</template>
 <script>
+import Security from './ExternalSecurity'
+
 export default {
   name: 'SamlExternalAuthProvider',
 
-  props: {
-    title: {
-      type: String,
-      required: true,
-    },
+  i18nOptions: {
+    namespaces: 'system.settings',
+    keyPrefix: 'editor.external.saml',
+  },
 
+  components: {
+    Security,
+  },
+
+  props: {
     value: {
       type: Object,
       required: true,

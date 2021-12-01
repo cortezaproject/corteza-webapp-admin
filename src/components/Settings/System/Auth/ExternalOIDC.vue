@@ -1,16 +1,12 @@
 <template>
   <div>
-    <h3 class="mb-2">
-      {{ title }}{{ value.handle ? `: ${value.handle}` : '' }}
-    </h3>
-
     <b-form-group label-cols="2">
       <b-form-checkbox
         v-model="value.enabled"
         :value="true"
         :unchecked-value="false"
       >
-        {{ $t('providerEnabled') }}
+        {{ $t('enabled') }}
       </b-form-checkbox>
     </b-form-group>
 
@@ -34,7 +30,7 @@
       <b-input-group>
         <b-form-input
           v-model.trim="value.issuer"
-          :placeholder="$t('issuerPlaceholder')"
+          placeholder="https://issuer.tld"
         />
       </b-input-group>
       <b-form-text
@@ -59,23 +55,65 @@
         <b-form-input v-model.trim="value.secret" />
       </b-input-group>
     </b-form-group>
+
+    <b-form-group
+      :label="$t('scope')"
+      label-cols="2"
+    >
+      <b-input-group>
+        <b-form-input
+          v-model.trim="value.scope"
+          :placeholder="$t('scopePlaceholder')"
+        />
+      </b-input-group>
+      <b-form-text
+        v-html="$t('scopeHint')"
+      />
+    </b-form-group>
+
+    <security
+      v-model="value.security"
+    />
   </div>
 </template>
 <script>
+import Security from './ExternalSecurity'
 
 export default {
   name: 'OIDCExternalAuthProvider',
 
-  props: {
-    title: {
-      type: String,
-      required: true,
-    },
+  i18nOptions: {
+    namespaces: 'system.settings',
+    keyPrefix: 'editor.external.oidc',
+  },
 
+  components: {
+    Security,
+  },
+
+  props: {
     value: {
       type: Object,
       required: true,
     },
+  },
+
+  data () {
+    const {
+      enabled,
+      key,
+      secret,
+    } = this.value
+
+    return {
+      enabled,
+      key,
+      secret,
+
+      permittedRoles: [],
+      forbiddenRoles: [],
+      forcedRoles: [],
+    }
   },
 
   computed: {
