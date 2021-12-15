@@ -46,7 +46,7 @@ export default {
     }),
 
     canGrant () {
-      return this.can('automation/', 'grant')
+      return this.can('federation/', 'grant')
     },
   },
 

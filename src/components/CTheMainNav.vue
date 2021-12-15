@@ -129,7 +129,7 @@ export default {
               label: 'compose.items.settings',
               route: 'compose.settings',
               icon: 'sliders-h',
-              can: ['compose/', 'settings.read'],
+              can: ['system/', 'settings.read'],
             },
 
             {
