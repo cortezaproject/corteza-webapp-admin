@@ -194,7 +194,7 @@ export default {
       this.incLoader()
       return this.$SystemAPI.userMembershipList({ userID: this.userID })
         .then((set = []) => {
-          this.membership = { active: set, original: set }
+          this.membership = { active: [...set], original: [...set] }
         })
         .catch(this.toastErrorHandler(this.$t('notification:user.roles.error')))
         .finally(() => {
@@ -327,6 +327,7 @@ export default {
       const userID = this.userID
 
       const { active, original } = this.membership
+
       Promise.all([
         // all removed memberships
         ...original.filter(roleID => !active.includes(roleID)).map(roleID => {
