@@ -522,7 +522,7 @@ export default {
       // make sure all references are destroyed
     }, this.resource)
 
-    if (!authClient.security.impersonateUser) {
+    if (!(authClient.security || {}).impersonateUser) {
       // hande empty security struct
       authClient.security = { ...defSecurity }
     }
