@@ -26,9 +26,9 @@
       </h5>
 
       <b-form-group
-        :label="$t('cert')"
+        :label="$t('cert.public')"
         label-cols="3"
-        :description="$t('desc.cert')"
+        :description="$t('desc.cert.public')"
       >
         <b-input-group>
           <b-form-textarea
@@ -37,12 +37,44 @@
         </b-input-group>
       </b-form-group>
       <b-form-group
-        :label="$t('cert-key')"
+        :label="$t('cert.private')"
         label-cols="3"
-        :description="$t('desc.cert-key')"
+        :description="$t('desc.cert.private')"
       >
         <b-input-group>
           <b-form-textarea v-model.trim="value.key" />
+        </b-input-group>
+      </b-form-group>
+      <b-form-group
+        :label="$t('cert.sign-requests')"
+        label-cols="3"
+        :description="$t('desc.cert.sign-requests')"
+      >
+        <b-input-group>
+          <b-form-checkbox
+            v-model="value['sign-requests']"
+          />
+        </b-input-group>
+      </b-form-group>
+      <b-form-group
+        :label="$t('cert.sign-method')"
+        label-cols="3"
+        :description="$t('desc.cert.sign-method')"
+      >
+        <b-input-group>
+          <b-form-select
+            v-model.trim="value['sign-method']"
+            :options="signMethods"
+          >
+            <template #first>
+              <b-form-select-option
+                value=""
+                disabled
+              >
+                {{ $t('admin:general.label.selectOption') }}
+              </b-form-select-option>
+            </template>
+          </b-form-select>
         </b-input-group>
       </b-form-group>
 
@@ -120,6 +152,17 @@ export default {
       default: () => ({}),
     },
   },
+
+  data () {
+    return {
+      signMethods: [
+        { value: 'http://www.w3.org/2000/09/xmldsig#rsa-sha1', text: 'SHA1' },
+        { value: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256', text: 'SHA256' },
+        { value: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha512', text: 'SHA512' },
+      ],
+    }
+  },
+
 }
 </script>
 <style scoped lang="scss">

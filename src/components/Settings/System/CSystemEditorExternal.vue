@@ -86,9 +86,9 @@
     <template #footer>
       <c-submit-button
         class="float-right"
+        :disabled="!dirty || !canManage"
         :processing="processing"
         :success="success"
-        :disabled="!dirty || !canManage"
         @submit="$emit('submit', changes)"
       />
     </template>
@@ -122,15 +122,14 @@ const idpSecurity = {
 function prepareExternal (external) {
   const extractKey = (settings = {}, name, t = 'string') => {
     const v = settings.find(v => v.name === `auth.external.${name}`)
-    if (!v) {
-      return null
-    }
 
     switch (t) {
       case 'string':
-        return v.value || ''
+        return (v || { value: null }).value || ''
       case 'boolean':
-        return !!v.value
+        return !!(v || { value: null }).value
+      case 'array':
+        return (v || { value: [] }).value || []
     }
   }
 
@@ -144,6 +143,12 @@ function prepareExternal (external) {
     return out
   }
 
+  const extractSec = (prefix) => ({
+    permittedRoles: extractKey(external, `${prefix}.permittedRoles`, 'array'),
+    forbiddenRoles: extractKey(external, `${prefix}.forbiddenRoles`, 'array'),
+    forcedRoles: extractKey(external, `${prefix}.forcedRoles`, 'array'),
+  })
+
   const data = {
     enabled: !!(external.find(v => v.name === 'auth.external.enabled') || {}).value,
 
@@ -155,13 +160,15 @@ function prepareExternal (external) {
       cert: extractKey(external, 'saml.cert'),
       name: extractKey(external, 'saml.name'),
       key: extractKey(external, 'saml.key'),
+      'sign-method': extractKey(external, 'saml.sign-method'),
+      'sign-requests': extractKey(external, 'saml.sign-requests', 'boolean'),
       idp: {
         url: extractKey(external, 'saml.idp.url'),
         'ident-name': extractKey(external, 'saml.idp.ident-name'),
         'ident-handle': extractKey(external, 'saml.idp.ident-handle'),
         'ident-identifier': extractKey(external, 'saml.idp.ident-identifier'),
       },
-      security: { ...idpSecurity },
+      security: extractSec('saml.security'),
     },
   }
 
@@ -173,7 +180,7 @@ function prepareExternal (external) {
       key: '',
       security: {},
     }),
-    security: { ...idpSecurity },
+    security: extractSec(handle),
   }))
 
   const prefix = `auth.external.providers.openid-connect.`
@@ -193,7 +200,7 @@ function prepareExternal (external) {
           security: {},
         }),
         handle,
-        security: { ...idpSecurity },
+        security: extractSec('openid-connect.' + handle),
         deleted: false,
       }))
 
@@ -400,17 +407,24 @@ export default {
       })
 
       mapKeys(
-        `${prefix}.saml`,
+        `auth.external.saml`,
         e.saml,
         o.saml,
-        ['enabled', 'name', 'key', 'cert']
+        ['enabled', 'name', 'key', 'cert', 'sign-method', 'sign-requests']
       )
 
       mapKeys(
-        `${prefix}.saml.idp`,
+        `auth.external.saml.idp`,
         e.saml.idp,
         o.saml.idp,
         ['url', 'ident-name', 'ident-handle', 'ident-identifier']
+      )
+
+      mapKeys(
+        `auth.external.saml.security`,
+        e.saml.security,
+        o.saml.security,
+        ['permittedRoles', 'forbiddenRoles', 'forcedRoles']
       )
 
       return c
@@ -433,7 +447,6 @@ export default {
       this.modal.title = title
       this.modal.updater = updater
 
-      console.log(JSON.parse(JSON.stringify(data)))
       // deref
       this.modal.data = JSON.parse(JSON.stringify(data))
     },
