@@ -198,6 +198,7 @@ function prepareExternal (external) {
           issuer: '',
           key: '',
           secret: '',
+          scope: '',
           security: {},
         }),
         handle,
@@ -395,14 +396,14 @@ export default {
       // @todo how do we remove OIDC?
       e.oidc.forEach((p, i) => {
         if (p.deleted) {
-          ['key', 'secret', 'enabled', 'issuer']
+          ['key', 'secret', 'enabled', 'issuer', 'scope']
             .forEach(name => c.push({ name: `${prefix}.openid-connect.${p.handle}.${name}`, value: null }))
         } else {
           mapKeys(
             `${prefix}.openid-connect.${p.handle}`,
             p,
             o.oidc[i] || {},
-            ['key', 'secret', 'enabled', 'issuer']
+            ['key', 'secret', 'enabled', 'issuer', 'scope']
           )
         }
       })
@@ -462,6 +463,7 @@ export default {
           issuer: '',
           key: '',
           secret: '',
+          scope: '',
           fresh: true,
           security: { ...idpSecurity },
         },

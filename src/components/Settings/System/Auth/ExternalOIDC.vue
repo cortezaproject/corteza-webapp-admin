@@ -67,7 +67,7 @@
         />
       </b-input-group>
       <b-form-text
-        v-html="$t('scopePlaceholder')"
+        v-html="$t('scopeHint')"
       />
     </b-form-group>
 
@@ -103,12 +103,14 @@ export default {
       enabled,
       key,
       secret,
+      scope,
     } = this.value
 
     return {
       enabled,
       key,
       secret,
+      scope,
 
       permittedRoles: [],
       forbiddenRoles: [],
