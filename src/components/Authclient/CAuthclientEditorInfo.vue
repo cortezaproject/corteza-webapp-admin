@@ -204,6 +204,12 @@
         >
           {{ $t('api') }}
         </b-form-checkbox>
+        <b-form-checkbox
+          :checked="(authclient.scope || []).includes('openid')"
+          @change="setScope($event, 'openid')"
+        >
+          {{ $t('openid') }}
+        </b-form-checkbox>
       </b-form-group>
 
       <b-form-group
