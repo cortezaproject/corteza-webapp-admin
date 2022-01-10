@@ -5,7 +5,7 @@
     <b-list-group
       v-for="(grp, g) in navigation"
       :key="g"
-      tag="ul"
+      tag="li"
     >
       <h2
         v-if="grp.header"
