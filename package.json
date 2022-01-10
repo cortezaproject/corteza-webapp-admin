@@ -116,11 +116,6 @@
     "functions": 0,
     "statements": 0
   },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
-  },
   "browserslist": [
     "> 1%",
     "last 2 versions",

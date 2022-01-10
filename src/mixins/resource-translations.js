@@ -24,7 +24,7 @@ export default {
         case 'sd':
           return 'rtl'
         default:
-          return 'rtl'
+          return 'ltr'
       }
     },
   },
