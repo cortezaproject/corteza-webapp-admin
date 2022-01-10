@@ -162,6 +162,7 @@ function prepareExternal (external) {
       key: extractKey(external, 'saml.key'),
       'sign-method': extractKey(external, 'saml.sign-method'),
       'sign-requests': extractKey(external, 'saml.sign-requests', 'boolean'),
+      binding: extractKey(external, 'saml.binding'),
       idp: {
         url: extractKey(external, 'saml.idp.url'),
         'ident-name': extractKey(external, 'saml.idp.ident-name'),
@@ -410,7 +411,7 @@ export default {
         `auth.external.saml`,
         e.saml,
         o.saml,
-        ['enabled', 'name', 'key', 'cert', 'sign-method', 'sign-requests']
+        ['enabled', 'name', 'key', 'cert', 'sign-method', 'sign-requests', 'binding']
       )
 
       mapKeys(
