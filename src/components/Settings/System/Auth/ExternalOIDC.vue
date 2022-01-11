@@ -67,7 +67,7 @@
         />
       </b-input-group>
       <b-form-text
-        v-html="$t('scopeHint')"
+        v-html="$t('scopePlaceholder')"
       />
     </b-form-group>
 
