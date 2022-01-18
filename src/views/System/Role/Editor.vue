@@ -127,6 +127,7 @@ export default {
         this.role.canManageMembersOnRole &&
         this.role.roleID &&
         this.roleMembers &&
+        !this.role.isClosed &&
         !this.role.isContext
     },
 
@@ -178,7 +179,7 @@ export default {
         .then(r => {
           this.role = new system.Role(r)
 
-          if (this.role.canManageMembersOnRole && !this.role.isContext) {
+          if (this.role.canManageMembersOnRole && !this.role.isContext && !this.role.isClosed) {
             return this.$SystemAPI.roleMemberList(r).then((mm = []) => {
               this.roleMembers = mm.map(userID => ({ userID, current: true, dirty: true }))
             })
