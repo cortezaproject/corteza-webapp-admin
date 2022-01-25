@@ -304,33 +304,34 @@ export default {
               updater: (changed) => this.updater('saml', changed),
             },
           },
-          ...this.external.oidc.map((p, i) => ({
-            rowBackground: (() => {
-              if (_.isEqual(this.original.oidc[i], p)) {
-                return ''
-              }
+          ...this.external.oidc
+            .map((p, i) => ({
+              rowBackground: (() => {
+                if (_.isEqual(this.original.oidc[i], p)) {
+                  return ''
+                }
 
-              if (p.deleted) {
-                return 'text-light deleted'
-              }
+                if (p.deleted) {
+                  return 'text-light deleted'
+                }
 
-              return 'bg-warning'
-            })(),
-            provider: p.handle,
-            tag: 'OIDC',
-            info: p.issuer,
+                return 'bg-warning'
+              })(),
+              provider: p.handle,
+              tag: 'OIDC',
+              info: p.issuer,
 
-            enabled: p.enabled,
-            enable: (val) => this.$set(this.external.oidc[i], 'enabled', val),
-            delete: () => this.$set(this.external.oidc[i], 'deleted', !p.deleted),
+              enabled: p.enabled,
+              enable: (val) => this.$set(this.external.oidc[i], 'enabled', val),
+              delete: () => this.$set(this.external.oidc[i], 'deleted', !p.deleted),
 
-            editor: {
-              component: 'oidc-external',
-              data: p,
-              title: p.handle,
-              updater: (changed) => this.updater('oidc', changed, i),
-            },
-          })),
+              editor: {
+                component: 'oidc-external',
+                data: p,
+                title: p.handle,
+                updater: (changed) => this.updater('oidc', changed, i),
+              },
+            })),
           ...this.external.standard.map((p, i) => ({
             rowBackground: _.isEqual(this.original.standard[i], p) ? '' : 'bg-warning',
             provider: p.handle,
@@ -371,7 +372,7 @@ export default {
       const mapKeys = (prefix, wc, org, keys) => {
         for (const k of keys) {
           if (wc[k] === undefined) {
-            throw new Error(`potential issue - unknown key "${k}" used`)
+            console.error(`potential issue - unknown key "${prefix}.${k}" used`, wc)
           }
 
           if (_.isEqual(wc[k], org[k])) {
@@ -394,16 +395,23 @@ export default {
       })
 
       // @todo how do we remove OIDC?
+      const oidcKeys = ['key', 'secret', 'enabled', 'issuer', 'scope', 'security']
       e.oidc.forEach((p, i) => {
         if (p.deleted) {
-          ['key', 'secret', 'enabled', 'issuer', 'scope']
+          // use base set of keys used for OIDC provider
+          // plus add a few extra ones that are usually set by the backend
+          //
+          // @todo it would probably smarter to trigger the backend that all settings
+          //       with a certain key prefix should be deleted.
+          //       Unfortunately, backend does not support that for now + could be a bit dangerous
+          [...oidcKeys, 'weight', 'redirect', 'label']
             .forEach(name => c.push({ name: `${prefix}.openid-connect.${p.handle}.${name}`, value: null }))
         } else {
           mapKeys(
             `${prefix}.openid-connect.${p.handle}`,
             p,
             o.oidc[i] || {},
-            ['key', 'secret', 'enabled', 'issuer', 'scope', 'security']
+            oidcKeys
           )
         }
       })
