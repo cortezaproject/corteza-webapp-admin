@@ -389,7 +389,7 @@ export default {
           `${prefix}.${p.handle}`,
           p,
           o.standard[i],
-          ['key', 'secret', 'enabled'],
+          ['key', 'secret', 'enabled', 'security'],
         )
       })
 
@@ -403,7 +403,7 @@ export default {
             `${prefix}.openid-connect.${p.handle}`,
             p,
             o.oidc[i] || {},
-            ['key', 'secret', 'enabled', 'issuer', 'scope']
+            ['key', 'secret', 'enabled', 'issuer', 'scope', 'security']
           )
         }
       })
@@ -412,7 +412,7 @@ export default {
         `auth.external.saml`,
         e.saml,
         o.saml,
-        ['enabled', 'name', 'key', 'cert', 'sign-method', 'sign-requests', 'binding']
+        ['enabled', 'name', 'key', 'cert', 'sign-method', 'sign-requests', 'binding', 'security']
       )
 
       mapKeys(
@@ -422,12 +422,6 @@ export default {
         ['url', 'ident-name', 'ident-handle', 'ident-identifier']
       )
 
-      mapKeys(
-        `auth.external.saml.security`,
-        e.saml.security,
-        o.saml.security,
-        ['permittedRoles', 'forbiddenRoles', 'forcedRoles']
-      )
 
       return c
     },
