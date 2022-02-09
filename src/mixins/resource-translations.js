@@ -4,8 +4,11 @@ export default {
       return this.$i18n.i18next.language
     },
 
+  },
+
+  methods: {
     /**
-     * Manage directionality of the page according to the language
+     * Returns directionality of the page according to the language
      *  - Arabic (ar)
      *  - Hebrew (he)
      *  - Pashto (pa)
@@ -14,8 +17,8 @@ export default {
      *  - Sindhi (sd)
      * @returns {string} rtl | ltr
      */
-    textDirectionality () {
-      switch (this.currentLanguage) {
+    textDirectionality (language = this.currentLanguage) {
+      switch (language) {
         case 'ar':
         case 'he':
         case 'pa':

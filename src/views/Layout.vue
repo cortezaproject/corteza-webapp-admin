@@ -35,7 +35,7 @@
         :icon="icon"
         :logo="logo"
         expand-on-hover
-        :right="textDirectionality === 'rtl'"
+        :right="textDirectionality() === 'rtl'"
       >
         <template #header-expanded>
           <portal-target name="sidebar-header-expanded" />

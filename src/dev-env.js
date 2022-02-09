@@ -24,7 +24,7 @@ export default new Vue({
   el: '#app',
   name: 'DevEnv',
   async created () {
-    document.body.setAttribute('dir', this.textDirectionality)
+    document.body.setAttribute('dir', this.textDirectionality())
   },
   template: '<router-view/>',
   router: new Router({
