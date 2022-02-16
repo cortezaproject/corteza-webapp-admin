@@ -10,11 +10,19 @@
       >
         <b-button
           variant="primary"
-          class="mr-2"
+          class="mr-2 float-left"
           :to="{ name: 'system.user.new' }"
         >
           {{ $t('new') }}
         </b-button>
+        <c-user-import-modal
+          class="mr-1 float-left"
+          @imported="onImported"
+        />
+        <c-user-export-modal
+          class="mr-1 float-left"
+          @export="onExport"
+        />
         <c-permissions-button
           v-if="canGrant"
           resource="corteza::system:user/*"
@@ -97,10 +105,17 @@
 import { system } from '@cortezaproject/corteza-js'
 import moment from 'moment'
 import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
+import CUserExportModal from 'corteza-webapp-admin/src/components/User/CUserExportModal'
+import CUserImportModal from 'corteza-webapp-admin/src/components/User/CUserImportModal'
 import { mapGetters } from 'vuex'
+import { url } from '@cortezaproject/corteza-vue'
 
 export default {
   name: 'UserList',
+  components: {
+    CUserExportModal,
+    CUserImportModal,
+  },
   mixins: [
     listHelpers,
   ],
@@ -165,6 +180,29 @@ export default {
   methods: {
     makeEvent () {
       return system.SystemEvent()
+    },
+
+    onExport (e) {
+      const params = {
+        filename: 'export',
+        ...e,
+      }
+
+      const exportUrl = url.Make({
+        url: `${this.$SystemAPI.baseURL}${this.$SystemAPI.userExportEndpoint(params)}`,
+        query: {
+          jwt: this.$auth.accessToken,
+          inclRoleMembership: e.inclRoleMembership || false,
+          inclRoles: e.inclRoles || false,
+        },
+      })
+
+      window.open(exportUrl)
+    },
+
+    onImported () {
+      this.toastSuccess(this.$t('notification:user.import.success'))
+      this.filterList()
     },
 
     items () {
