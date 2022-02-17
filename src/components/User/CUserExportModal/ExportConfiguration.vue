@@ -59,9 +59,6 @@ export default {
 
   methods: {
     nextStep () {
-      if (!this.canContinue) {
-        return
-      }
       const rtr = {
         inclRoleMembership: this.inclRoleMembership,
         inclRoles: this.inclRoles,
