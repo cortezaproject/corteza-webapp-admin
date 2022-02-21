@@ -120,8 +120,8 @@ const idpSecurity = {
  * Give some structure to key-val settings
  */
 function prepareExternal (external) {
-  const extractKey = (settings = {}, name, t = 'string') => {
-    const v = settings.find(v => v.name === `auth.external.${name}`)
+  const extractKey = (name, t = 'string') => {
+    const v = external.find(v => v.name === `auth.external.${name}`)
 
     switch (t) {
       case 'string':
@@ -130,24 +130,29 @@ function prepareExternal (external) {
         return !!(v || { value: null }).value
       case 'array':
         return (v || { value: [] }).value || []
+      case undefined:
+        // use t=undefined to get raw value
+        return v.value
     }
   }
 
-  const extractKeys = (provider, settings = {}, base = {}) => {
+  const extractKeys = (provider, base = {}) => {
     let out = { ...base }
 
     for (let k in base) {
-      out[k] = extractKey(settings, `providers.${provider}.${k}`, typeof out[k])
+      out[k] = extractKey(`providers.${provider}.${k}`, typeof out[k])
     }
 
     return out
   }
 
-  const extractSec = (prefix) => ({
-    permittedRoles: extractKey(external, `${prefix}.permittedRoles`, 'array'),
-    forbiddenRoles: extractKey(external, `${prefix}.forbiddenRoles`, 'array'),
-    forcedRoles: extractKey(external, `${prefix}.forcedRoles`, 'array'),
-  })
+  // careful with prefix!
+  // ....providers.openid-connect....
+  // ....providers....
+  // ....saml
+  const extractSec = (prefix) => {
+    return { ...idpSecurity, ...(extractKey(`${prefix}.security`, undefined) || {}) }
+  }
 
   const data = {
     enabled: !!(external.find(v => v.name === 'auth.external.enabled') || {}).value,
@@ -156,32 +161,32 @@ function prepareExternal (external) {
     standard: [],
 
     saml: {
-      enabled: extractKey(external, 'saml.enabled'),
-      cert: extractKey(external, 'saml.cert'),
-      name: extractKey(external, 'saml.name'),
-      key: extractKey(external, 'saml.key'),
-      'sign-method': extractKey(external, 'saml.sign-method'),
-      'sign-requests': extractKey(external, 'saml.sign-requests', 'boolean'),
-      binding: extractKey(external, 'saml.binding'),
+      enabled: extractKey('saml.enabled'),
+      cert: extractKey('saml.cert'),
+      name: extractKey('saml.name'),
+      key: extractKey('saml.key'),
+      'sign-method': extractKey('saml.sign-method'),
+      'sign-requests': extractKey('saml.sign-requests', 'boolean'),
+      binding: extractKey('saml.binding'),
       idp: {
-        url: extractKey(external, 'saml.idp.url'),
-        'ident-name': extractKey(external, 'saml.idp.ident-name'),
-        'ident-handle': extractKey(external, 'saml.idp.ident-handle'),
-        'ident-identifier': extractKey(external, 'saml.idp.ident-identifier'),
+        url: extractKey('saml.idp.url'),
+        'ident-name': extractKey('saml.idp.ident-name'),
+        'ident-handle': extractKey('saml.idp.ident-handle'),
+        'ident-identifier': extractKey('saml.idp.ident-identifier'),
       },
-      security: extractSec('saml.security'),
+      security: extractSec('saml'),
     },
   }
 
   data.standard = idpStandard.map(handle => ({
     handle,
-    ...extractKeys(handle, external, {
+    ...extractKeys(handle, {
       enabled: false,
       secret: '',
       key: '',
       security: {},
     }),
-    security: extractSec(handle),
+    security: extractSec(`providers.${handle}`),
   }))
 
   const prefix = `auth.external.providers.openid-connect.`
@@ -193,7 +198,7 @@ function prepareExternal (external) {
       // trim off the prefix and everything after next.
       .map(({ name }) => name.substring(prefix.length).split('.', 2)[0]))]
       .map(handle => ({
-        ...extractKeys('openid-connect.' + handle, external, {
+        ...extractKeys('openid-connect.' + handle, {
           enabled: false,
           issuer: '',
           key: '',
@@ -202,7 +207,7 @@ function prepareExternal (external) {
           security: {},
         }),
         handle,
-        security: extractSec('openid-connect.' + handle),
+        security: extractSec('providers.openid-connect.' + handle),
         deleted: false,
       }))
 
