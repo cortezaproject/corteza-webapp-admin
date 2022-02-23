@@ -6,85 +6,26 @@
       :title="$t('title')"
     />
 
-    <b-row cols="12">
-      <b-col
-        cols="6"
-      >
-        <b-card
-          class="shadow-sm"
-        >
-          <div
-            class="d-flex justify-content-between"
-          >
-            <h4
-              class="card-title"
-            >
-              {{ $t('mainLogo.title') }}
-            </h4>
-            <b-button
-              v-if="uploadedFile('main-logo')"
-              variant="link"
-              class="d-flex align-items-top text-dark p-1"
-              @click="resetAttachment('ui.main-logo')"
-            >
-              <font-awesome-icon
-                :icon="['far', 'trash-alt']"
-              />
-            </b-button>
-          </div>
+    <c-ui-logo-editor
+      :settings="settings"
+      :can-manage="canManage"
+    />
 
-          <c-uploader-with-preview
-            :value="uploadedFile('main-logo')"
-            :endpoint="'/settings/ui.main-logo'"
-            :disabled="!canManage"
-            :labels="$t('mainLogo.uploader', { returnObjects: true })"
-            @upload="onUpload($event)"
-          />
-        </b-card>
-      </b-col>
-      <b-col
-        cols="6"
-      >
-        <b-card
-          class="shadow-sm"
-        >
-          <div
-            class="d-flex justify-content-between"
-          >
-            <h4
-              class="card-title"
-            >
-              {{ $t('iconLogo.title') }}
-            </h4>
-            <b-button
-              v-if="uploadedFile('icon-logo')"
-              variant="link"
-              class="d-flex align-items-top text-dark p-1"
-              @click="resetAttachment('ui.icon-logo')"
-            >
-              <font-awesome-icon
-                :icon="['far', 'trash-alt']"
-              />
-            </b-button>
-          </div>
-
-          <c-uploader-with-preview
-            :value="uploadedFile('icon-logo')"
-            :endpoint="'/settings/ui.icon-logo'"
-            :disabled="!canManage"
-            :labels="$t('iconLogo.uploader', { returnObjects: true })"
-            @upload="onUpload($event)"
-            @clear="resetAttachment('ui.icon-logo')"
-          />
-        </b-card>
-      </b-col>
-    </b-row>
+    <c-ui-topbar-settings
+      :settings="settings"
+      :processing="topbar.processing"
+      :success="topbar.success"
+      :can-manage="canManage"
+      class="mt-3"
+      @submit="onTopbarSubmit"
+    />
   </b-container>
 </template>
 
 <script>
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
-import CUploaderWithPreview from 'corteza-webapp-admin/src/components//CUploaderWithPreview'
+import CUILogoEditor from 'corteza-webapp-admin/src/components/Settings/UI/CUILogoEditor'
+import CUITopbarSettings from 'corteza-webapp-admin/src/components/Settings/UI/CUITopbarSettings'
 import { mapGetters } from 'vuex'
 
 const prefix = 'ui.'
@@ -96,7 +37,8 @@ export default {
   },
 
   components: {
-    CUploaderWithPreview,
+    'c-ui-logo-editor': CUILogoEditor,
+    'c-ui-topbar-settings': CUITopbarSettings,
   },
 
   mixins: [
@@ -106,6 +48,11 @@ export default {
   data () {
     return {
       settings: {},
+
+      topbar: {
+        processing: false,
+        success: false,
+      },
     }
   },
 
@@ -117,7 +64,6 @@ export default {
     canManage () {
       return this.can('system/', 'settings.manage')
     },
-
   },
 
   created () {
@@ -130,7 +76,7 @@ export default {
       this.$SystemAPI.settingsList({ prefix: prefix })
         .then(settings => {
           settings.forEach(({ name, value }) => {
-            this.$set(this.settings, name.substring(prefix.length), value)
+            this.$set(this.settings, name, value)
           })
         })
         .catch(this.toastErrorHandler(this.$t('notification:settings.ui.fetch.error')))
@@ -139,33 +85,22 @@ export default {
         })
     },
 
-    onUpload ({ name, value }) {
-      this.$set(this.settings, name.substring(prefix.length), value)
-    },
+    onTopbarSubmit (settings) {
+      this.topbar.processing = true
 
-    resetAttachment (name) {
-      this.$SystemAPI.settingsUpdate({ values: [{ name, value: undefined }], upload: {} })
+      const values = Object.entries(settings).map(([name, value]) => {
+        return { name, value }
+      })
+
+      this.$SystemAPI.settingsUpdate({ values })
         .then(() => {
-          this.$set(this.settings, name.substring(prefix.length), undefined)
+          this.animateSuccess('topbar')
+          this.toastSuccess(this.$t('notification:settings.compose.update.success'))
         })
-    },
-
-    uploadedFile (name) {
-      const localAttachment = /^attachment:(\d+)/
-
-      switch (true) {
-        case this.settings[name] && localAttachment.test(this.settings[name]):
-          const [, attachmentID] = localAttachment.exec(this.settings[name])
-
-          return this.$SystemAPI.baseURL +
-            this.$SystemAPI.attachmentOriginalEndpoint({
-              attachmentID,
-              kind: 'settings',
-              name: prefix + name,
-            })
-      }
-
-      return undefined
+        .catch(this.toastErrorHandler(this.$t('notification:settings.compose.update.error')))
+        .finally(() => {
+          this.topbar.processing = false
+        })
     },
   },
 }

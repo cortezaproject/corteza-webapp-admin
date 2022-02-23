@@ -7,7 +7,7 @@
     <b-form
       @submit.prevent="$emit('submit', basic)"
     >
-      <h4>{{ $t('attachments.page') }}</h4>
+      <h5>{{ $t('attachments.page') }}</h5>
       <b-form-group
         :label="$t('attachments.max-size')"
         label-cols="2"
@@ -15,6 +15,7 @@
         <b-form-input
           v-model="basic['compose.page.attachments.max-size']"
           type="number"
+          number
         />
       </b-form-group>
       <b-form-group
@@ -27,8 +28,10 @@
           <b-form-input v-model="pageAttachmentWhitelist" />
         </b-input-group>
       </b-form-group>
+
       <hr>
-      <h4>{{ $t('attachments.record') }}</h4>
+
+      <h5>{{ $t('attachments.record') }}</h5>
       <b-form-group
         :label="$t('attachments.max-size')"
         label-cols="2"
@@ -37,6 +40,7 @@
           <b-form-input
             v-model="basic['compose.record.attachments.max-size']"
             type="number"
+            number
           />
         </b-input-group>
       </b-form-group>
