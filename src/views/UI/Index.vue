@@ -96,6 +96,7 @@ export default {
         .then(() => {
           this.animateSuccess('topbar')
           this.toastSuccess(this.$t('notification:settings.compose.update.success'))
+          this.$Settings.fetch()
         })
         .catch(this.toastErrorHandler(this.$t('notification:settings.compose.update.error')))
         .finally(() => {
