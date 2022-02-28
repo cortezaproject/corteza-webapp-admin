@@ -98,6 +98,10 @@ export default [
 
           combo('system', 'apigw', { pkey: 'routeID', plural: 'routes' }),
 
+          r('system.apigw.profiler', 'apigw/profiler', 'System/Apigw/Profiler'),
+          r('system.apigw.profiler.route.list', 'apigw/profiler/route/:routeID', 'System/Apigw/Profiler/Route'),
+          r('system.apigw.profiler.hit.list', 'apigw/profiler/hit/:hitID', 'System/Apigw/Profiler/Hit'),
+
           r('system.permissions', 'permissions', 'System/Permissions/Index'),
           r('system.actionlog', 'actionlog', 'System/Actionlog/Index'),
 

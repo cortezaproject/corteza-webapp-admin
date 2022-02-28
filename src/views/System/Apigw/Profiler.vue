@@ -7,39 +7,11 @@
     >
       <span
         class="text-nowrap"
-      >
-        <b-button
-          v-if="canCreate"
-          variant="primary"
-          class="mr-2"
-          :to="{ name: 'system.apigw.new' }"
-        >
-          {{ $t('new') }}
-        </b-button>
-        <c-permissions-button
-          v-if="canGrant"
-          resource="corteza::system:apigw-route/*"
-          button-variant="light"
-        >
-          <font-awesome-icon :icon="['fas', 'lock']" />
-          {{ $t('permissions') }}
-        </c-permissions-button>
-      </span>
-      <b-dropdown
-        v-if="false"
-        variant="link"
-        right
-        menu-class="shadow-sm"
-        text="Export"
-      >
-        <b-dropdown-item-button variant="link">
-          {{ $t('yaml') }}
-        </b-dropdown-item-button>
-      </b-dropdown>
+      />
     </c-content-header>
     <c-resource-list
       primary-key="routeID"
-      edit-route="system.apigw.edit"
+      edit-route="system.apigw.profiler.route.list"
       :loading-text="$t('loading')"
       :paging="paging"
       :sorting="sorting"
@@ -57,28 +29,19 @@
               @keyup="filterList"
             />
           </b-input-group>
+          <b-button
+            variant="primary"
+            @click="refresh"
+          >
+            Refresh
+          </b-button>
         </b-form-group>
-        <b-row
-          no-gutters
-          class="mt-3"
-        >
-          <c-resource-list-status-filter
-            v-model="filter.deleted"
-            class="mb-1 mb-lg-0"
-            :label="$t('filterForm.deleted.label')"
-            :excluded-label="$t('filterForm.excluded.label')"
-            :inclusive-label="$t('filterForm.inclusive.label')"
-            :exclusive-label="$t('filterForm.exclusive.label')"
-            @change="filterList"
-          />
-        </b-row>
       </template>
     </c-resource-list>
   </b-container>
 </template>
 
 <script>
-import * as moment from 'moment'
 import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
 import { mapGetters } from 'vuex'
 
@@ -89,7 +52,7 @@ export default {
 
   i18nOptions: {
     namespaces: [ 'system.apigw' ],
-    keyPrefix: 'list',
+    keyPrefix: 'profiler',
   },
 
   data () {
@@ -101,26 +64,49 @@ export default {
         deleted: 0,
       },
 
+      pollDelay: 2,
+
+      items: [],
+
       fields: [
         {
-          key: 'endpoint',
+          key: 'path',
           sortable: true,
         },
         {
-          key: 'method',
-          sortable: false,
-        },
-        {
-          key: 'enabled',
-          formatter: (v) => v ? 'Yes' : 'No',
-        },
-        {
-          key: 'createdAt',
+          key: 'count',
           sortable: true,
-          formatter: (v) => moment(v).fromNow(),
+        },
+        {
+          key: 'size_min',
+          sortable: true,
+        },
+        {
+          key: 'size_max',
+          sortable: true,
+        },
+        {
+          key: 'size_avg',
+          sortable: true,
+          tdClass: 'text-right',
+        },
+        {
+          key: 'time_min',
+          sortable: true,
+        },
+        {
+          key: 'time_max',
+          sortable: true,
+          // formatter: (v) => moment(v).fromNow(),
+        },
+        {
+          key: 'time_avg',
+          sortable: true,
+          tdClass: 'text-right',
         },
         {
           key: 'actions',
+          label: '',
           tdClass: 'text-right',
         },
       ].map(c => ({
@@ -145,9 +131,19 @@ export default {
     },
   },
 
+  mounted () {
+    this.refresh()
+  },
+
   methods: {
-    items () {
-      return this.procListResults(this.$SystemAPI.apigwRouteList(this.encodeListParams()))
+    async refresh () {
+      const l = this.$SystemAPI.apigwProfilerList(this.encodeListParams())
+
+      this.items = (await this.procListResults(l)).map((i) => ({ ...i, 'routeID': this.encodeRouteID(i.path) }))
+    },
+
+    encodeRouteID (r) {
+      return btoa(r)
     },
   },
 }
