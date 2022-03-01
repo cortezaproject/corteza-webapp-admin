@@ -26,20 +26,32 @@
             >
               {{ role.name }}
             </div>
+            <b-button
+              variant="link"
+              class="hide-role text-light text-decoration-none py-0"
+              @click="onHideRole(role)"
+            >
+              <font-awesome-icon
+                :icon="['fas', 'plus']"
+                class="rotate"
+              />
+            </b-button>
           </b-col>
           <b-col
             v-if="roles.length < 8"
             class="border-bottom border-left py-2 overflow-hidden text-nowrap"
           >
-            <div
+            <b-button
               v-b-modal.addRole
-              class="text-primary text-truncate pointer"
+              class="text-primary text-truncate text-decoration-none py-0"
+              variant="link"
             >
               {{ $t('ui.role.add') }}
               <font-awesome-icon
                 :icon="['fas', 'plus']"
+                class="d-block ml-auto mr-auto"
               />
-            </div>
+            </b-button>
           </b-col>
         </b-row>
         <div
@@ -51,7 +63,7 @@
           >
             <b-col
               cols="4"
-              class="py-2 text-left font-weight-bold "
+              class="py-2 text-left font-weight-bold"
             >
               {{ getTranslation(type) }}
             </b-col>
@@ -307,6 +319,10 @@ export default {
       }
       this.newRole = null
     },
+
+    onHideRole (role) {
+      this.$emit('hide', role)
+    },
   },
 }
 </script>
@@ -319,5 +335,11 @@ export default {
 }
 .active-cell:hover {
   background-color: #F3F3F5;
+}
+.rotate {
+  transform: rotate(45deg);
+}
+.hide-role:hover {
+  color: $dark !important;
 }
 </style>

@@ -18,6 +18,7 @@
       component="federation"
       @submit="onSubmit"
       @add="addRole"
+      @hide="hideRole"
     />
   </b-container>
 </template>

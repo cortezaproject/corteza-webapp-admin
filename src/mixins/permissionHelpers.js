@@ -154,6 +154,19 @@ export default {
         })
     },
 
+    hideRole (role) {
+      this.loaded.roles = false
+      const { roleID } = role
+      this.rolesExcluded.push(role)
+      this.rolesIncluded = this.rolesIncluded.filter(r => r !== roleID)
+
+      // Store for next time
+      setIncludedRoles(this.rolesIncluded)
+
+      this.loaded.roles = true
+      this.roles = this.roles.filter(r => r.roleID !== roleID)
+    },
+
     roleRules (rules) {
       return (rules || [])
         .reduce((map, { resource, operation, access }) => {

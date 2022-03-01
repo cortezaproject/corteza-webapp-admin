@@ -18,6 +18,7 @@
       component="automation"
       @submit="onSubmit"
       @add="addRole"
+      @hide="hideRole"
     />
   </b-container>
 </template>

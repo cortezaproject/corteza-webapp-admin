@@ -18,6 +18,7 @@
       component="compose"
       @submit="onSubmit"
       @add="addRole"
+      @hide="hideRole"
     />
   </b-container>
 </template>
