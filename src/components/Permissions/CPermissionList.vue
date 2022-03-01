@@ -41,12 +41,16 @@
             v-if="roles.length < 8"
             class="border-bottom border-left py-2 overflow-hidden text-nowrap"
           >
-            <b-button
-              v-b-modal.addRole
-              class="text-primary text-truncate text-decoration-none py-0"
-              variant="link"
+            <div
+              class="text-truncate"
             >
               {{ $t('ui.role.add') }}
+            </div>
+            <b-button
+              v-b-modal.addRole
+              variant="link"
+              class="text-primary text-truncate text-decoration-none py-0"
+            >
               <font-awesome-icon
                 :icon="['fas', 'plus']"
                 class="d-block ml-auto mr-auto"
