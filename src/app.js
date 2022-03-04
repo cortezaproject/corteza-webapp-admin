@@ -21,7 +21,7 @@ export default (options = {}) => {
   options = {
     el: '#app',
     name: 'admin',
-    template: '<div><router-view v-if="loaded && i18nLoaded && isRbacLoaded" /><vue-progress-bar /></div>',
+    template: '<div><router-view v-if="loaded && i18nLoaded && isRbacLoaded" /></div>',
 
     mixins: [
       mixins.corredor,
@@ -32,10 +32,6 @@ export default (options = {}) => {
       i18nLoaded: false,
     }),
 
-    mounted () {
-      this.$Progress.finish()
-    },
-
     computed: {
       ...mapGetters({
         isRbacLoaded: 'rbac/isLoaded',
@@ -43,8 +39,6 @@ export default (options = {}) => {
     },
 
     async created () {
-      this.$Progress.start()
-
       this.$i18n.i18next.on('loaded', () => {
         this.i18nLoaded = true
       })
@@ -64,15 +58,6 @@ export default (options = {}) => {
           // and instruct i18next to change it
           this.$i18n.i18next.changeLanguage(user.meta.preferredLanguage)
         }
-
-        // Setup the progress bar
-        this.$router.beforeEach((to, from, next) => {
-          this.$Progress.start()
-          next()
-        })
-        this.$router.afterEach((to, from) => {
-          this.$Progress.finish()
-        })
 
         // ref to vue is needed inside compose helper
         // load and register bundle and list of client/server scripts
