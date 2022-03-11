@@ -15,8 +15,8 @@
       @submit.prevent="$emit('submit', route)"
     >
       <b-tabs
-        active-nav-item-class="active-tab border-0 text-primary bg-white"
-        class="border-0 text-primary font-weight-bold"
+        active-nav-item-class="active-tab bg-white"
+        class="border-0 font-weight-bold"
         content-class="border-bottom"
       >
         <b-tab
@@ -199,19 +199,15 @@ export default {
 <style lang="scss" >
 
 .apigw {
-  .h-fit-content{
-    height: fit-content;
+  .nav-link {
+    color: $primary;
+    border-width: 0 0 3px 0 !important;
+    border-color: transparent !important;
   }
-  .active-tab{
-    border-bottom: 3px solid $primary !important;
-    &:hover{
-      border-bottom: 3px solid $primary !important;
-      color:$primary !important;
-    }
-  }
-  .nav-link:hover{
-    color:$primary;
-    border:none;
+
+  .active-tab {
+    color: $primary !important;
+    border-color: $primary !important;
   }
 }
 </style>
