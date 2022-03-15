@@ -3,7 +3,7 @@
     class="py-3"
   >
     <c-content-header
-      :title="$t('title')"
+      :title="$t('hit.title')"
     >
       <span
         class="text-nowrap"
@@ -21,7 +21,7 @@
 
 <script>
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
-import CProfilerHitInfo from 'corteza-webapp-admin/src/components/Apigw/CProfilerHitInfo'
+import CProfilerHitInfo from 'corteza-webapp-admin/src/components/Apigw/Profiler/CProfilerHitInfo'
 import { mapGetters } from 'vuex'
 
 export default {

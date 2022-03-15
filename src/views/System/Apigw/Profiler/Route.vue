@@ -5,134 +5,51 @@
     <c-content-header
       :title="title"
     >
-      <!-- // :title="$t('title')" -->
       <span
         class="text-nowrap"
       >
-        <c-permissions-button
-          v-if="canGrant"
-          resource="corteza::system:apigw-route/*"
-          button-variant="light"
+        <b-button
+          v-if="$Settings.get('apigw.profilerEnabled', false)"
+          class="ml-2"
+          variant="info"
+          :to="{ name: 'system.apigw.profiler' }"
         >
-          <font-awesome-icon :icon="['fas', 'lock']" />
-          {{ $t('permissions') }}
-        </c-permissions-button>
+          {{ $t('label') }}
+        </b-button>
       </span>
     </c-content-header>
-    <c-resource-list
-      primary-key="hitID"
-      edit-route="system.apigw.profiler.hit.list"
-      :loading-text="$t('loading')"
-      :paging="paging"
-      :sorting="sorting"
-      :items="hits"
-      :fields="fields"
-    >
-      <template #filter>
-        <b-form-group
-          class="p-0 m-0"
-        >
-          <b-input-group>
-            <b-button
-              variant="primary"
-              @click="refresh"
-            >
-              Refresh
-            </b-button>
-          </b-input-group>
-        </b-form-group>
-      </template>
-    </c-resource-list>
+
+    <c-profiler-route-hits
+      :route="$route.params.routeID"
+    />
   </b-container>
 </template>
 
 <script>
-import * as moment from 'moment'
-import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
-import { mapGetters } from 'vuex'
+import CProfilerRouteHits from 'corteza-webapp-admin/src/components/Apigw/Profiler/CProfilerRouteHits'
 
 export default {
-  mixins: [
-    listHelpers,
-  ],
+  components: {
+    CProfilerRouteHits,
+  },
 
   i18nOptions: {
-    namespaces: [ 'system.apigw' ],
+    namespaces: ['system.apigw'],
     keyPrefix: 'profiler',
-  },
-
-  data () {
-    return {
-      id: 'routes',
-
-      filter: {
-        routeID: '',
-        query: '',
-        deleted: 0,
-      },
-
-      pollDelay: 2,
-
-      hits: [],
-
-      fields: [
-        {
-          key: 'time_start',
-          sortable: true,
-          formatter: (v) => moment(v).toISOString(),
-        },
-        {
-          key: 'time_finish',
-          sortable: true,
-          formatter: (v) => moment(v).toISOString(),
-        },
-        {
-          key: 'request.ContentLength',
-          sortable: true,
-        },
-        {
-          key: 'time_duration',
-          sortable: true,
-        },
-        {
-          key: 'actions',
-          label: '',
-          tdClass: 'text-right',
-        },
-      ].map(c => ({
-        ...c,
-        // Generate column label translation key
-        label: this.$t(`columns.${c.key}`),
-      })),
-    }
-  },
-
-  computed: {
-    ...mapGetters({
-      can: 'rbac/can',
-    }),
-    route () {
-      return atob(this.$route.params.routeID)
-    },
   },
 
   watch: {
     '$route.params.routeID': {
       immediate: true,
       handler () {
-        this.title = `${this.$t('title')} - ${this.route}`
+        this.title = `${this.$t('title')} - ${this.decodeRouteID(this.$route.params.routeID)}`
       },
     },
   },
 
-  mounted () {
-    this.refresh()
-  },
-
   methods: {
-    async refresh () {
-      const l = this.$SystemAPI.apigwProfilerRoute({ ...this.encodeListParams(), routeID: this.$route.params.routeID })
-      this.hits = (await this.procListResults(l)).map((i) => ({ ...i, 'hitID': i.ID }))
+    decodeRouteID (routeID) {
+      return atob(routeID)
     },
   },
 }

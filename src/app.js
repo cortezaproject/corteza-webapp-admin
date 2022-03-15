@@ -156,6 +156,7 @@ export default (options = {}) => {
       { app: 'corteza-webapp-admin' },
       'admin',
       'dashboard',
+      'general',
       'navigation',
       'notification',
       'general',

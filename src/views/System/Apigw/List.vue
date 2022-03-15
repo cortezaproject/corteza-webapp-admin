@@ -11,15 +11,23 @@
         <b-button
           v-if="canCreate"
           variant="primary"
-          class="mr-2"
           :to="{ name: 'system.apigw.new' }"
         >
           {{ $t('new') }}
+        </b-button>
+        <b-button
+          v-if="$Settings.get('apigw.profilerEnabled', false)"
+          class="ml-2"
+          variant="info"
+          :to="{ name: 'system.apigw.profiler' }"
+        >
+          {{ $t('profiler') }}
         </b-button>
         <c-permissions-button
           v-if="canGrant"
           resource="corteza::system:apigw-route/*"
           button-variant="light"
+          class="ml-2"
         >
           <font-awesome-icon :icon="['fas', 'lock']" />
           {{ $t('permissions') }}
@@ -121,6 +129,7 @@ export default {
         },
         {
           key: 'actions',
+          label: '',
           tdClass: 'text-right',
         },
       ].map(c => ({

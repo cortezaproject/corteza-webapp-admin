@@ -31,6 +31,7 @@
       @submit="onInfoSubmit"
       @delete="onInfoDelete"
     />
+
     <c-filters-stepper
       v-if="routeID"
       ref="stepper"
@@ -41,6 +42,12 @@
       :steps="steps"
       @submit="onFiltersSubmit"
     />
+
+    <c-profiler-route-hits
+      v-if="showProfiler"
+      :route="routeEndpoint"
+      class="mt-3"
+    />
   </b-container>
 </template>
 <script>
@@ -49,11 +56,13 @@ import CRouteEditorInfo from 'corteza-webapp-admin/src/components/Apigw/CRouteEd
 import CFiltersStepper from 'corteza-webapp-admin/src/components/Apigw/CFiltersStepper'
 import { mapGetters } from 'vuex'
 import { NoID } from '@cortezaproject/corteza-js'
+import CProfilerRouteHits from 'corteza-webapp-admin/src/components/Apigw/Profiler/CProfilerRouteHits'
 
 export default {
   components: {
     CRouteEditorInfo,
     CFiltersStepper,
+    CProfilerRouteHits,
   },
 
   i18nOptions: {
@@ -74,6 +83,7 @@ export default {
   data () {
     return {
       route: {},
+      routeEndpoint: undefined,
 
       info: {
         processing: false,
@@ -102,12 +112,18 @@ export default {
     canGrant () {
       return this.can('system/', 'grant')
     },
+
+    showProfiler () {
+      return this.$Settings.get('apigw.profilerEnabled', false) && (this.$Settings.get('apigw.profilerGlobal', false) || this.filters.some(({ ref, enabled = false }) => ref === 'profiler' && enabled))
+    },
   },
 
   watch: {
     routeID: {
       immediate: true,
       handler () {
+        this.routeEndpoint = undefined
+
         if (this.routeID) {
           this.fetchSteps()
           this.fetchRoute()
@@ -128,6 +144,7 @@ export default {
       this.$SystemAPI.apigwRouteRead({ routeID: this.routeID, incFlags: 1 })
         .then((api) => {
           this.route = api
+          this.routeEndpoint = btoa(api.endpoint)
         })
         .catch(this.toastErrorHandler(this.$t('notification:gateway.fetch.error')))
         .finally(() => {
