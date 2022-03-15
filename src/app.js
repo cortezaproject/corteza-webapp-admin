@@ -158,6 +158,7 @@ export default (options = {}) => {
       'dashboard',
       'navigation',
       'notification',
+      'general',
       'permissions',
       'system.stats',
       'system.applications',

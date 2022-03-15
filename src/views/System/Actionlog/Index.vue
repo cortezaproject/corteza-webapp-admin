@@ -7,288 +7,274 @@
     />
 
     <b-card
-      class="mb-1"
-    >
-      <b-form
-        @submit.prevent="search"
-      >
-        <b-form-group
-          label-cols-lg="2"
-          :label="$t('filter.from')"
-        >
-          <b-input-group>
-            <b-form-datepicker
-              v-model="from.date"
-              today-button
-              reset-button
-              close-button
-              :placeholder="$t('filter.choose-date')"
-              locale="en"
-            />
-
-            <b-form-timepicker
-              v-model="from.time"
-              now-button
-              reset-button
-              :placeholder="$t('filter.no-time')"
-              locale="en"
-            />
-          </b-input-group>
-        </b-form-group>
-        <b-form-group
-          label-cols-lg="2"
-          :label="$t('filter.to')"
-        >
-          <b-input-group>
-            <b-form-datepicker
-              v-model="to.date"
-              today-button
-              reset-button
-              close-button
-              :max="new Date()"
-              :placeholder="$t('filter.choose-date')"
-              locale="en"
-            />
-
-            <b-form-timepicker
-              v-model="to.time"
-              now-button
-              reset-button
-              :placeholder="$t('filter.no-time')"
-              locale="en"
-            />
-          </b-input-group>
-        </b-form-group>
-        <b-form-group
-          label-cols-lg="2"
-          :label="$t('filter.resource')"
-        >
-          <b-form-input
-            v-model="filter.resource"
-            size="sm"
-          />
-        </b-form-group>
-        <b-form-group
-          label-cols-lg="2"
-          :label="$t('filter.action')"
-        >
-          <b-form-input
-            v-model="filter.action"
-            size="sm"
-          />
-        </b-form-group>
-        <b-form-group
-          label-cols-lg="2"
-          :label="$t('filter.actor')"
-        >
-          <b-form-input
-            v-model="filter.actorID"
-            size="sm"
-          />
-        </b-form-group>
-        <b-form-group
-          label-cols-lg="2"
-        >
-          <b-button type="submit">
-            {{ $t('filter.search') }}
-          </b-button>
-        </b-form-group>
-      </b-form>
-    </b-card>
-
-    <b-card
-      no-body
       class="shadow-sm"
+      body-class="p-0"
       header-bg-variant="white"
       footer-bg-variant="white"
+      footer-class="d-flex align-items-center justify-content-center"
     >
-      <b-card-body
-        class="p-0"
-      >
-        <b-table
-          id="resource-list"
-          responsive
-          hover
-          class="mb-0 small"
-          head-variant="light"
-          :items="items"
-          :fields="fields"
-          :tbody-tr-class="trClass"
-          :empty-text="$t('admin:general.notFound')"
-          show-empty
-          @row-clicked="item=>$set(item, '_showDetails', !item._showDetails)"
+      <template #header>
+        <b-form
+          @submit.prevent="search"
         >
-          <template #table-busy>
-            <div class="text-center m-5">
-              <div>
-                <b-spinner
-                  small
-                  class="align-middle m-2"
-                />
-              </div>
-              <div>{{ $t('loading') }}</div>
+          <b-form-group
+            label-cols-lg="2"
+            :label="$t('filter.from')"
+          >
+            <c-input-date-time
+              v-model="filter.from"
+              :labels="{
+                clear: $t('general:label.clear'),
+                none: $t('general:label.none'),
+                now: $t('general:label.now'),
+                today: $t('general:label.today'),
+              }"
+            />
+          </b-form-group>
+          <b-form-group
+            label-cols-lg="2"
+            :label="$t('filter.to')"
+          >
+            <c-input-date-time
+              v-model="filter.to"
+              only-past
+              :labels="{
+                clear: $t('general:label.clear'),
+                none: $t('general:label.none'),
+                now: $t('general:label.now'),
+                today: $t('general:label.today'),
+              }"
+            />
+          </b-form-group>
+          <b-form-group
+            label-cols-lg="2"
+            :label="$t('filter.resource')"
+          >
+            <b-form-input
+              v-model="filter.resource"
+              size="sm"
+            />
+          </b-form-group>
+          <b-form-group
+            label-cols-lg="2"
+            :label="$t('filter.action')"
+          >
+            <b-form-input
+              v-model="filter.action"
+              size="sm"
+            />
+          </b-form-group>
+          <b-form-group
+            label-cols-lg="2"
+            :label="$t('filter.actor')"
+          >
+            <b-form-input
+              v-model="filter.actorID"
+              size="sm"
+            />
+          </b-form-group>
+          <b-form-group
+            label-cols-lg="2"
+          >
+            <b-button type="submit">
+              {{ $t('filter.search') }}
+            </b-button>
+          </b-form-group>
+        </b-form>
+      </template>
+
+      <b-table
+        id="resource-list"
+        responsive
+        hover
+        class="mb-0 small"
+        head-variant="light"
+        :items="items"
+        :fields="fields"
+        :tbody-tr-class="`${trClass} pointer`"
+        :empty-text="$t('admin:general.notFound')"
+        show-empty
+        @row-clicked="item=>$set(item, '_showDetails', !item._showDetails)"
+      >
+        <template #table-busy>
+          <div class="text-center m-5">
+            <div>
+              <b-spinner
+                small
+                class="align-middle m-2"
+              />
             </div>
-          </template>
-          <template #cell(timestamp)="{ item: a }">
-            {{ a.timestamp | locFullDateTime }}
-          </template>
-          <template #cell(actor)="{ item: a }">
-            <router-link
-              v-if="a.actorID && a.actorID !== '0'"
-              :to="drillDownLink({ actorID: a.actorID })"
-            >
-              {{ a.actor || a.actorID }}
-            </router-link>
-          </template>
-          <template #cell(resource)="{ item: a }">
-            <router-link
-              :to="drillDownLink({ resource: a.resource })"
-            >
-              {{ a.resource }}
-            </router-link>
-          </template>
-          <template #cell(action)="{ item: a }">
-            <router-link
-              :to="drillDownLink({ action: a.action })"
-            >
-              {{ a.action }}
-            </router-link>
-          </template>
-          <template #row-details="{ item: a, toggleDetails }">
-            <b-card-group class="m-3 mb-5">
-              <b-card :header="$t('details.header')">
-                <b-row>
-                  <b-col cols="4">
-                    {{ $t('details.id') }}
-                  </b-col>
-                  <b-col cols="8">
-                    {{ a.actionID }}
-                  </b-col>
-                </b-row>
-                <b-row>
-                  <b-col cols="4">
-                    {{ $t('details.timestamp') }}
-                  </b-col>
-                  <b-col cols="8">
-                    {{ a.timestamp }}
-                  </b-col>
-                </b-row>
-                <b-row>
-                  <b-col cols="4">
-                    {{ $t('details.requestOrigin') }}
-                  </b-col>
-                  <b-col cols="8">
-                    {{ a.requestOrigin }}
-                  </b-col>
-                </b-row>
-                <b-row>
-                  <b-col cols="4">
-                    {{ $t('details.requestID') }}
-                  </b-col>
-                  <b-col cols="8">
-                    {{ a.requestID }}
-                  </b-col>
-                </b-row>
-                <b-row>
-                  <b-col cols="4">
-                    {{ $t('details.actorIPAddr') }}
-                  </b-col>
-                  <b-col cols="8">
-                    {{ a.actorIPAddr }}
-                  </b-col>
-                </b-row>
-                <b-row>
-                  <b-col cols="4">
-                    {{ $t('details.actor') }}
-                  </b-col>
-                  <b-col cols="8">
-                    {{ a.actor }}
-                  </b-col>
-                </b-row>
-                <b-row>
-                  <b-col cols="4">
-                    {{ $t('details.actorID') }}
-                  </b-col>
-                  <b-col cols="8">
-                    {{ a.actorID }}
-                  </b-col>
-                </b-row>
-                <b-row>
-                  <b-col cols="4">
-                    {{ $t('details.severity') }}
-                  </b-col>
-                  <b-col cols="8">
-                    {{ getSeverityLabel(a.severity) }}
-                  </b-col>
-                </b-row>
-                <b-row>
-                  <b-col cols="4">
-                    {{ $t('details.resource') }}
-                  </b-col>
-                  <b-col cols="8">
-                    {{ a.resource }}
-                  </b-col>
-                </b-row>
-                <b-row>
-                  <b-col cols="4">
-                    {{ $t('details.action') }}
-                  </b-col>
-                  <b-col cols="8">
-                    {{ a.action }}
-                  </b-col>
-                </b-row>
-              </b-card>
-              <b-card :header="$t('details.headerAdditional')">
-                <b-row>
-                  <b-col cols="4">
-                    {{ $t('details.description') }}
-                  </b-col>
-                  <b-col cols="8">
-                    {{ a.description }}
-                  </b-col>
-                </b-row>
-                <b-row v-if="a.error">
-                  <b-col cols="4">
-                    {{ $t('details.error') }}
-                  </b-col>
-                  <b-col cols="8">
-                    {{ a.error }}
-                  </b-col>
-                </b-row>
-                <hr>
-                <b-row
-                  v-for="(val, key) in a.meta"
-                  :key="key"
-                >
-                  <b-col cols="4">
-                    <code>{{ key }}</code>
-                  </b-col>
-                  <b-col cols="8">
-                    <code>{{ val }}</code>
-                  </b-col>
-                </b-row>
-              </b-card>
-            </b-card-group>
-          </template>
-        </b-table>
-      </b-card-body>
-      <b-card-footer class="p-3 text-center">
-        <button
+            <div>{{ $t('loading') }}</div>
+          </div>
+        </template>
+        <template #cell(timestamp)="{ item: a }">
+          {{ a.timestamp | locFullDateTime }}
+        </template>
+        <template #cell(actor)="{ item: a }">
+          <router-link
+            v-if="a.actorID && a.actorID !== '0'"
+            :to="drillDownLink({ actorID: a.actorID })"
+          >
+            {{ a.actor || a.actorID }}
+          </router-link>
+        </template>
+        <template #cell(resource)="{ item: a }">
+          <router-link
+            :to="drillDownLink({ resource: a.resource })"
+          >
+            {{ a.resource }}
+          </router-link>
+        </template>
+        <template #cell(action)="{ item: a }">
+          <router-link
+            :to="drillDownLink({ action: a.action })"
+          >
+            {{ a.action }}
+          </router-link>
+        </template>
+        <template #row-details="{ item: a }">
+          <b-card-group class="m-3 mb-5">
+            <b-card :header="$t('details.header')">
+              <b-row>
+                <b-col cols="4">
+                  {{ $t('details.id') }}
+                </b-col>
+                <b-col cols="8">
+                  {{ a.actionID }}
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col cols="4">
+                  {{ $t('details.timestamp') }}
+                </b-col>
+                <b-col cols="8">
+                  {{ a.timestamp }}
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col cols="4">
+                  {{ $t('details.requestOrigin') }}
+                </b-col>
+                <b-col cols="8">
+                  {{ a.requestOrigin }}
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col cols="4">
+                  {{ $t('details.requestID') }}
+                </b-col>
+                <b-col cols="8">
+                  {{ a.requestID }}
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col cols="4">
+                  {{ $t('details.actorIPAddr') }}
+                </b-col>
+                <b-col cols="8">
+                  {{ a.actorIPAddr }}
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col cols="4">
+                  {{ $t('details.actor') }}
+                </b-col>
+                <b-col cols="8">
+                  {{ a.actor }}
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col cols="4">
+                  {{ $t('details.actorID') }}
+                </b-col>
+                <b-col cols="8">
+                  {{ a.actorID }}
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col cols="4">
+                  {{ $t('details.severity') }}
+                </b-col>
+                <b-col cols="8">
+                  {{ getSeverityLabel(a.severity) }}
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col cols="4">
+                  {{ $t('details.resource') }}
+                </b-col>
+                <b-col cols="8">
+                  {{ a.resource }}
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col cols="4">
+                  {{ $t('details.action') }}
+                </b-col>
+                <b-col cols="8">
+                  {{ a.action }}
+                </b-col>
+              </b-row>
+            </b-card>
+            <b-card :header="$t('details.headerAdditional')">
+              <b-row>
+                <b-col cols="4">
+                  {{ $t('details.description') }}
+                </b-col>
+                <b-col cols="8">
+                  {{ a.description }}
+                </b-col>
+              </b-row>
+              <b-row v-if="a.error">
+                <b-col cols="4">
+                  {{ $t('details.error') }}
+                </b-col>
+                <b-col cols="8">
+                  {{ a.error }}
+                </b-col>
+              </b-row>
+              <hr>
+              <b-row
+                v-for="(val, key) in a.meta"
+                :key="key"
+              >
+                <b-col cols="4">
+                  <code>{{ key }}</code>
+                </b-col>
+                <b-col cols="8">
+                  <code>{{ val }}</code>
+                </b-col>
+              </b-row>
+            </b-card>
+          </b-card-group>
+        </template>
+      </b-table>
+
+      <template #footer>
+        <b-button
+          v-if="items.length"
+          variant="light"
           @click.stop="load()"
         >
           {{ $t('loadOlder') }}
-        </button>
-      </b-card-footer>
+        </b-button>
+      </template>
     </b-card>
   </b-container>
 </template>
 
 <script>
 import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
+import { components } from '@cortezaproject/corteza-vue'
+const { CInputDateTime } = components
 
 const defSeverity = 6
 
 export default {
+  components: {
+    CInputDateTime,
+  },
+
   mixins: [
     listHelpers,
   ],
@@ -302,17 +288,9 @@ export default {
     return {
       id: 'actionlog',
 
-      from: {
-        date: undefined,
-        time: undefined,
-      },
-
-      to: {
-        date: undefined,
-        time: undefined,
-      },
-
       filter: {
+        from: undefined,
+        to: undefined,
         beforeActionID: undefined,
         actorID: undefined,
         resource: undefined,
@@ -379,34 +357,6 @@ export default {
     }
   },
 
-  computed: {
-    fromDateTime () {
-      return this.getDateTime(this.from)
-    },
-
-    toDateTime () {
-      return this.getDateTime(this.to)
-    },
-  },
-
-  watch: {
-    'from.time': {
-      handler (time) {
-        if (time && !this.from.date) {
-          this.from.date = new Date().toISOString().split('T')[0]
-        }
-      },
-    },
-
-    'to.time': {
-      handler (time) {
-        if (time && !this.to.date) {
-          this.to.date = new Date().toISOString().split('T')[0]
-        }
-      },
-    },
-  },
-
   mounted () {
     this.load()
   },
@@ -427,9 +377,6 @@ export default {
           this.paging.beforeActionID = (this.items[len - 1] || {}).actionID
         }
       }
-
-      this.filter.from = this.fromDateTime
-      this.filter.to = this.toDateTime
 
       this.procListResults(this.$SystemAPI.actionlogList({ ...this.filter, ...this.paging }), false)
         .then(rr => {
@@ -454,11 +401,6 @@ export default {
           sort: undefined,
         },
       }
-    },
-
-    getDateTime ({ date, time }) {
-      const datetime = date && time ? `${date} ${time}` : date || time
-      return datetime ? new Date(datetime).toISOString() : undefined
     },
 
     getSeverityLabel (index = -1) {
