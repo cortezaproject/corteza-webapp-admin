@@ -81,8 +81,6 @@
 <script>
 import CTheMainNav from 'corteza-webapp-admin/src/components/CTheMainNav'
 import { components, mixins } from '@cortezaproject/corteza-vue'
-import icon from 'corteza-webapp-admin/src/themes/corteza-base/img/icon.png'
-import logo from 'corteza-webapp-admin/src/themes/corteza-base/img/logo.png'
 import { mapGetters } from 'vuex'
 
 const { CPermissionsModal, CPrompts, CTopbar, CSidebar } = components
@@ -125,11 +123,11 @@ export default {
     },
 
     icon () {
-      return this.$Settings.attachment('ui.iconLogo', icon)
+      return this.$Settings.attachment('ui.iconLogo')
     },
 
     logo () {
-      return this.$Settings.attachment('ui.mainLogo', logo)
+      return this.$Settings.attachment('ui.mainLogo')
     },
   },
 
