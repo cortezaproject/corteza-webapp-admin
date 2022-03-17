@@ -21,6 +21,7 @@
         :empty-text="$t('notFound')"
         show-empty
         no-sort-reset
+        no-local-sorting
       >
         <template #table-busy>
           <div class="text-center m-5">
