@@ -20,8 +20,8 @@ dep:
 	$(YARN) install
 
 test:
-#	$(YARN) lint
-#	$(YARN) test:unit
+	$(YARN) lint
+	$(YARN) test:unit
 
 build:
 	$(YARN) build $(BUILD_FLAGS)

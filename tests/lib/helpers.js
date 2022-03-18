@@ -2,17 +2,28 @@ import Vue from 'vue'
 import { createLocalVue, shallowMount as sm, mount as rm } from '@vue/test-utils'
 import sinon from 'sinon'
 import BootstrapVue from 'bootstrap-vue'
+import PortalVue from 'portal-vue'
 import CContentHeader from 'corteza-webapp-admin/src/components/CContentHeader'
 import CResourceList from 'corteza-webapp-admin/src/components/CResourceList'
 import CResourceListStatusFilter from 'corteza-webapp-admin/src/components/CResourceListStatusFilter'
+import store from 'corteza-webapp-admin/src/store'
+
+import resourceTranslations from 'corteza-webapp-admin/src/mixins/resource-translations'
+import toast from 'corteza-webapp-admin/src/mixins/toast'
 import { components } from '@cortezaproject/corteza-vue'
 const { CCorredorManualButtons, CPermissionsButton } = components
 
+// Mixins
+Vue.mixin(resourceTranslations)
+Vue.mixin(toast)
+
+// Components
 Vue.config.ignoredElements = [
   'font-awesome-icon',
 ]
 
 Vue.use(BootstrapVue)
+Vue.use(PortalVue)
 
 Vue.component('c-corredor-manual-buttons', CCorredorManualButtons)
 Vue.component('c-permissions-button', CPermissionsButton)
@@ -49,9 +60,15 @@ const mounter = (component, { localVue = createLocalVue(), $auth = {}, mocks = {
     ],
     mocks: {
       $t: (e) => e,
+      $i18n: {
+        i18next: {
+          language: 'en',
+        },
+      },
       $SystemAPI: {},
       $route: { query: { fullPath: '', token: undefined } },
       $auth,
+      $store: store,
       ...mocks,
     },
     ...options,

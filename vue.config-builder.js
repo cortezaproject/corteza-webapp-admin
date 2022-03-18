@@ -4,7 +4,6 @@ var path = require('path')
 
 module.exports = ({ appFlavour, appName, appLabel, version, theme, packageAlias, root = path.resolve('.'), env = process.env.NODE_ENV }) => {
   const isDevelopment = (env === 'development')
-  // const isProduction = (env === 'production')
   const isTest = (env === 'test')
 
   var Vue = require('vue')
@@ -68,6 +67,14 @@ module.exports = ({ appFlavour, appName, appLabel, version, theme, packageAlias,
       config.resolve.alias.delete('@')
       if (packageAlias) {
         config.resolve.alias.set(packageAlias, root)
+      }
+
+      if (isTest) {
+        const scssRule = config.module.rule('scss')
+        scssRule.uses.clear()
+        scssRule
+          .use('null-loader')
+          .loader('null-loader')
       }
 
       const scssNormal = config.module.rule('scss').oneOf('normal')

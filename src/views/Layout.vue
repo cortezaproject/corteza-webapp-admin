@@ -139,7 +139,9 @@ export default {
       handler (icon) {
         if (icon) {
           const favicon = document.getElementById('favicon')
-          favicon.href = icon
+          if (favicon) {
+            favicon.href = icon
+          }
         }
       },
     },
