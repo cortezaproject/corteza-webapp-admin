@@ -45,6 +45,17 @@
       </b-form-group>
 
       <b-form-group
+        :label="$t('general.method')"
+        label-cols="2"
+      >
+        <b-form-input
+          v-model="request.method"
+          plaintext
+          disabled
+        />
+      </b-form-group>
+
+      <b-form-group
         :label="$t('general.statusCode')"
         label-cols="2"
       >

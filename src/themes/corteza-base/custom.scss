@@ -139,3 +139,21 @@ input[type="search"]::-webkit-search-cancel-button {
 .b-toaster.b-toaster-bottom-right {
   bottom: 75px;
 }
+
+.loading {
+  display: inline-block;
+}
+
+.loading::after {
+  display: inline-block;
+  animation: ellipsis steps(1,end) 1s infinite;
+  content: '';
+}
+
+@keyframes ellipsis {
+    0%   { content: ''; }
+    25%  { content: '.'; }
+    50%  { content: '..'; }
+    75%  { content: '...'; }
+    100% { content: ''; }
+}

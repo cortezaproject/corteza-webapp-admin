@@ -14,10 +14,14 @@
       <div
         class="d-flex align-items-center justify-content-end"
       >
-        {{ autoRefreshLabel }}
+        <span
+          :class="{ 'loading': loading }"
+        >
+          {{ autoRefreshLabel }}
+        </span>
         <b-button
           variant="primary"
-          :disabled="refreshing"
+          :disabled="loading"
           class="ml-2"
           @click="loadItems()"
         >
@@ -40,9 +44,13 @@
         :sort-desc.sync="sorting.sortDesc"
         :items="items"
         :fields="fields"
+        :busy="loading"
         no-local-sorting
         @sort-changed="resetItems"
       >
+        <template #cell(http_method)="row">
+          {{ row.item.request.Method }}
+        </template>
         <template #cell(http_status_code)="row">
           <h6 class="mb-0">
             <b-badge :variant="getStatusCodeVariant(row.item.http_status_code)">
@@ -51,7 +59,7 @@
           </h6>
         </template>
         <template #cell(content_length)="row">
-          {{ row.item.request.ContentLength }}
+          {{ `${((row.item.request.ContentLength || 0) / 1000).toFixed(3)} kB` }}
         </template>
         <template #cell(actions)="row">
           <b-button
@@ -72,7 +80,7 @@
       <b-button
         v-if="items.length"
         variant="light"
-        :disabled="!hasNextPage || refreshing"
+        :disabled="!hasNextPage || loading"
         @click="loadMore()"
       >
         {{ $t('general:label.loadMore') }}
@@ -123,7 +131,7 @@ export default {
 
       refresh: {
         timer: undefined,
-        countdown: 10,
+        countdown: 0,
       },
 
       fields: [
@@ -136,6 +144,11 @@ export default {
           key: 'time_finish',
           sortable: true,
           formatter: v => fmt.fullDateTime(v),
+        },
+        {
+          key: 'http_method',
+          sortable: true,
+          class: 'text-center',
         },
         {
           key: 'http_status_code',
@@ -167,12 +180,12 @@ export default {
   },
 
   computed: {
-    refreshing () {
+    loading () {
       return !this.refresh.countdown
     },
 
     autoRefreshLabel () {
-      return !this.refreshing ? this.$t('general:label.refreshingIn', { seconds: this.refresh.countdown }) : this.$t('general:label.refreshing')
+      return !this.loading ? this.$t('refreshingIn', { seconds: this.refresh.countdown }) : this.$t('general:label.loading')
     },
 
     hasNextPage () {

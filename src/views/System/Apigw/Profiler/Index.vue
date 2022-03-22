@@ -19,17 +19,24 @@
         </h3>
 
         <div
-          class="d-flex align-items-center justify-content-end"
+          class="d-flex align-items-center justify-content-between"
         >
-          {{ autoRefreshLabel }}
-          <b-button
-            variant="primary"
-            :disabled="refreshing"
-            class="ml-2"
-            @click="loadItems()"
-          >
-            {{ $t('general:label.refresh') }}
-          </b-button>
+          <em>{{ description }}</em>
+          <div>
+            <span
+              :class="{ 'loading': loading }"
+            >
+              {{ autoRefreshLabel }}
+            </span>
+            <b-button
+              variant="primary"
+              :disabled="loading"
+              class="ml-2"
+              @click="loadItems()"
+            >
+              {{ $t('general:label.refresh') }}
+            </b-button>
+          </div>
         </div>
       </template>
 
@@ -47,6 +54,7 @@
           :sort-desc.sync="sorting.sortDesc"
           :items="items"
           :fields="fields"
+          :busy="loading"
           no-local-sorting
           @sort-changed="resetItems"
         >
@@ -69,7 +77,7 @@
         <b-button
           v-if="items.length"
           variant="light"
-          :disabled="!hasNextPage || refreshing"
+          :disabled="!hasNextPage || loading"
           @click="loadMore()"
         >
           {{ $t('general:label.loadMore') }}
@@ -114,7 +122,7 @@ export default {
 
       refresh: {
         timer: undefined,
-        countdown: 10,
+        countdown: 0,
       },
 
       fields: [
@@ -136,11 +144,13 @@ export default {
           key: 'size_max',
           sortable: true,
           class: 'text-right',
+          formatter: v => `${(v / 1000).toFixed(3)} kB`,
         },
         {
           key: 'size_avg',
           sortable: true,
           class: 'text-right',
+          formatter: v => `${(v / 1000).toFixed(3)} kB`,
         },
         {
           key: 'time_min',
@@ -174,12 +184,16 @@ export default {
   },
 
   computed: {
-    refreshing () {
+    loading () {
       return !this.refresh.countdown
     },
 
     autoRefreshLabel () {
-      return !this.refreshing ? this.$t('general:label.refreshingIn', { seconds: this.refresh.countdown }) : this.$t('general:label.refreshing')
+      return !this.loading ? this.$t('refreshingIn', { seconds: this.refresh.countdown }) : this.$t('general:label.loading')
+    },
+
+    description () {
+      return this.$Settings.get('apigw.profilerGlobal', false) ? this.$t('description.globalEnabled') : this.$t('description.globalDisabled')
     },
 
     hasNextPage () {
