@@ -26,7 +26,7 @@
           >
             {{ $t('logo.label') }}
             <b-button
-              v-if="unify.logo"
+              v-if="showLogoPreview"
               v-b-modal.logo
               variant="link"
               class="d-flex align-items-center border-0 p-0 ml-2"
@@ -118,6 +118,7 @@
 </template>
 
 <script>
+import { NoID } from '@cortezaproject/corteza-js'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 
 export default {
@@ -194,6 +195,10 @@ export default {
       } else {
         return this.validConfig
       }
+    },
+
+    showLogoPreview () {
+      return this.unify.logoID !== NoID
     },
   },
 
