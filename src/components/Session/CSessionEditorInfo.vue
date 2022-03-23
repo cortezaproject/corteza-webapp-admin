@@ -144,6 +144,18 @@
           disabled
         />
       </b-form-group>
+
+      <b-form-group
+        v-if="session.workflowID"
+        label-cols="2"
+      >
+        <b-button
+          variant="light"
+          :to="{ name: 'automation.workflow.edit', params: { workflowID: session.workflowID } }"
+        >
+          {{ $t('openWorkflow') }}
+        </b-button>
+      </b-form-group>
     </b-form>
 
     <template #header>
