@@ -55,20 +55,8 @@
       :fields="fields"
     >
       <template #filter>
-        <b-form-group
-          class="p-0 m-0"
-        >
-          <b-input-group>
-            <b-form-input
-              v-model.trim="filter.query"
-              :placeholder="$t('filterForm.query.placeholder')"
-              @keyup="filterList"
-            />
-          </b-input-group>
-        </b-form-group>
         <b-row
           no-gutters
-          class="mt-3"
         >
           <c-resource-list-status-filter
             v-model="filter.deleted"
