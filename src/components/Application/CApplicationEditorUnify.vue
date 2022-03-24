@@ -22,7 +22,7 @@
       >
         <template #label>
           <div
-            class="d-flex"
+            class="d-flex align-items-center"
           >
             {{ $t('logo.label') }}
             <b-button
@@ -34,6 +34,16 @@
               <font-awesome-icon
                 :icon="['fas', 'eye']"
               />
+            </b-button>
+
+            <b-button
+              v-if="showLogoPreview"
+              variant="light"
+              size="sm"
+              class="py-0 ml-2"
+              @click="resetLogo()"
+            >
+              {{ $t('logo.reset') }}
             </b-button>
           </div>
         </template>
@@ -204,6 +214,13 @@ export default {
 
   created () {
     this.unify.name = this.unify.name ? this.unify.name : this.application.name
+  },
+
+  methods: {
+    resetLogo () {
+      this.unify.logo = undefined
+      this.unify.logoID = NoID
+    },
   },
 }
 </script>
