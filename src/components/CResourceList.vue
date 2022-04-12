@@ -82,12 +82,17 @@
         class="p-0"
         fluid
       >
-        <b-row
-          align-v="end"
-        >
+        <b-row>
           <b-col
-            lg="9"
+            v-if="!!$slots.actions"
+            cols="12"
+            lg="6"
           >
+            <slot
+              name="actions"
+            />
+          </b-col>
+          <b-col>
             <slot
               name="filter"
             />
