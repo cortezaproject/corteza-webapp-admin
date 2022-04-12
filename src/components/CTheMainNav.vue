@@ -52,6 +52,12 @@ export default {
           header: { label: 'system.group' },
           items: [
             {
+              label: 'system.items.datasources',
+              route: 'system.dataSources',
+              icon: 'folder',
+              // can: ['system/', 'data-sources.search'],
+            },
+            {
               label: 'system.items.users',
               route: 'system.user',
               icon: 'users',
