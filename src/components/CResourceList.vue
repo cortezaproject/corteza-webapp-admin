@@ -61,7 +61,7 @@
             />
           </b-button>
           <b-button
-            v-if="row.item.roleID !== '1'"
+            v-if="editRoute && row.item.roleID !== '1'"
             size="sm"
             variant="link"
             :to="{ name: editRoute, params: { [primaryKey]: row.item[primaryKey] } }"
@@ -92,7 +92,10 @@
               name="actions"
             />
           </b-col>
-          <b-col>
+          <b-col
+            cols="12"
+            :lg="$slots.actions ? '6' : '9'"
+          >
             <slot
               name="filter"
             />
@@ -151,7 +154,7 @@ export default {
 
     editRoute: {
       type: String,
-      required: true,
+      default: '',
     },
 
     primaryKey: {

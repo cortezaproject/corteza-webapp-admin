@@ -14,8 +14,8 @@
     </template>
 
     <c-resource-list
-      primary-key="dataSourceID"
-      edit-route="system.dataSources.edit"
+      primary-key="datasourceID"
+      edit-route="system.datasource.edit"
       :loading-text="$t('loading')"
       :paging="paging"
       :sorting="sorting"
@@ -25,32 +25,31 @@
       <template #actions>
         <b-button
           variant="primary"
-          size="md"
-          class="py-2"
-          :to="{ name: 'system.dataSources.create' }"
+          size="lg"
+          :to="{ name: 'system.datasource.new' }"
         >
           {{ $t('add-button') }}
         </b-button>
       </template>
 
       <template #filter>
-        <b-form-group>
-          <b-input-group>
-            <b-form-input
-              v-model.trim="filter.query"
-              :placeholder="$t('filterForm.query.placeholder')"
-              class="text-truncate border-right-0"
-              @keyup="filterList"
-            />
-            <b-input-group-append>
-              <b-input-group-text class="text-primary bg-white">
-                <font-awesome-icon
-                  :icon="['fas', 'search']"
-                />
-              </b-input-group-text>
-            </b-input-group-append>
-          </b-input-group>
-        </b-form-group>
+        <b-input-group
+          class="h-100"
+        >
+          <b-form-input
+            v-model.trim="filter.query"
+            :placeholder="$t('filterForm.query.placeholder')"
+            class="text-truncate border-right-0 mb-0 h-100"
+            @keyup="filterList"
+          />
+          <b-input-group-append>
+            <b-input-group-text class="text-primary bg-white">
+              <font-awesome-icon
+                :icon="['fas', 'search']"
+              />
+            </b-input-group-text>
+          </b-input-group-append>
+        </b-input-group>
       </template>
     </c-resource-list>
   </b-card>
@@ -60,7 +59,7 @@
 import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
 
 export default {
-  name: 'CExternalDataSourcesList',
+  name: 'CExternalDatasourceList',
 
   mixins: [
     listHelpers,
@@ -73,7 +72,7 @@ export default {
 
   data () {
     return {
-      id: 'dataSources',
+      id: 'datasources',
 
       fields: [
         {
@@ -81,8 +80,7 @@ export default {
           sortable: true,
         },
         {
-          key: 'url',
-          label: this.$t(`columns.dsn`),
+          key: 'dsn',
           sortable: true,
         },
         {
@@ -95,7 +93,6 @@ export default {
         },
         {
           key: 'actions',
-          label: this.$t('edit'),
           class: 'text-right',
         },
       ].map(c => ({
@@ -109,9 +106,9 @@ export default {
   methods: {
     items () {
       const set = [
-        { dataSourceID: '1', name: 'Primary Data Lake', url: 'dsnsdnsdnnsdnsnd', location: 'Switzerland', ownership: 'ACME Ltd.', sensitiveData: true },
-        { dataSourceID: '2', name: 'Internal ERP', url: 'nannanananana', location: 'Switzerland', ownership: 'ACME Ltd.', sensitiveData: false },
-        { dataSourceID: '3', name: 'ELK', url: 'batmaaaan', location: 'Switzerland', ownership: 'ACME Ltd.', sensitiveData: false },
+        { datasourceID: '1', name: 'Primary Data Lake', url: 'dsnsdnsdnnsdnsnd', location: 'Switzerland', ownership: 'ACME Ltd.', sensitiveData: true },
+        { datasourceID: '2', name: 'Internal ERP', url: 'nannanananana', location: 'Switzerland', ownership: 'ACME Ltd.', sensitiveData: false },
+        { datasourceID: '3', name: 'ELK', url: 'batmaaaan', location: 'Switzerland', ownership: 'ACME Ltd.', sensitiveData: false },
       ]
 
       const filter = {
@@ -119,7 +116,7 @@ export default {
         limit: 10,
       }
 
-      return this.procListResults(new Promise(resolve => setTimeout(resolve({ filter, set })), 200))
+      return this.procListResults(new Promise(resolve => setTimeout(resolve({ filter, set })), 200), false)
     },
   },
 }
