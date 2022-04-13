@@ -52,12 +52,6 @@ export default {
           header: { label: 'system.group' },
           items: [
             {
-              label: 'system.items.datasources',
-              route: 'system.dataSources',
-              icon: 'folder',
-              // can: ['system/', 'data-sources.search'],
-            },
-            {
               label: 'system.items.users',
               route: 'system.user',
               icon: 'users',
@@ -124,6 +118,12 @@ export default {
               route: 'system.permissions',
               icon: 'lock',
               can: ['system/', 'grant'],
+            },
+            {
+              label: 'system.items.datasources',
+              route: 'system.datasource',
+              icon: 'folder',
+              // can: ['system/', 'data-sources.search'],
             },
           ],
         },
