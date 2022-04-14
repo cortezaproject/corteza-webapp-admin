@@ -26,7 +26,7 @@
             buttons
             button-variant="outline-primary"
             size="lg"
-            class="bg-light"
+            class="capabilities rounded"
             @change="changeSupportType(cap.name, $event)"
           />
         </b-col>
@@ -144,3 +144,16 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.capabilities {
+  .btn {
+    background-color: $light;
+    border: none;
+  }
+
+  .btn:nth-child(2), .btn:nth-child(3) {
+    margin-left: 0.2rem;
+  }
+}
+</style>

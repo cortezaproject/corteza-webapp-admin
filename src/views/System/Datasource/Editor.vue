@@ -10,6 +10,7 @@
       :datasource="datasource"
       :processing="info.processing"
       :success="info.success"
+      @submit="onInfoSubmit"
     />
 
     <c-external-datasource-capabilities
@@ -18,6 +19,7 @@
       :processing="capabilities.processing"
       :success="capabilities.success"
       class="mt-4"
+      @submit="onCapabilitiesSubmit"
     />
   </b-container>
 </template>
@@ -53,9 +55,7 @@ export default {
   data () {
     return {
       datasources: [
-        { datasourceID: '1', name: 'Primary Data Lake', url: 'dsnsdnsdnnsdnsnd', location: 'Switzerland', ownership: 'ACME Ltd.', sensitiveData: true },
-        { datasourceID: '2', name: 'Internal ERP', url: 'nannanananana', location: 'Switzerland', ownership: 'ACME Ltd.', sensitiveData: false },
-        { datasourceID: '3', name: 'ELK', url: 'batmaaaan', location: 'Switzerland', ownership: 'ACME Ltd.', sensitiveData: false },
+        { datasourceID: '1', name: 'Primary Data Lake', dsn: 'postgresql:://*************@dlacke.acme.internnal/acme-db', location: 'Switzerland', ownership: 'ACME Ltd.', sensitiveData: true },
       ],
 
       datasource: {},
@@ -92,6 +92,31 @@ export default {
           this.datasource = {}
         }
       },
+    },
+  },
+
+  methods: {
+    onInfoSubmit (datasource) {
+      this.info.processing = true
+
+      this.animateSuccess('info')
+      if (datasource.datasourceID) {
+        this.toastSuccess(this.$t('notification:datasource.update.success'))
+      } else {
+        this.toastSuccess(this.$t('notification:datasource.create.success'))
+      }
+      this.$router.push({ name: 'system.datasource.edit', params: { datasourceID: '1' } })
+
+      this.info.processing = false
+    },
+
+    onCapabilitiesSubmit () {
+      this.capabilities.processing = true
+
+      this.animateSuccess('capabilities')
+      this.toastSuccess(this.$t('notification:datasource.update-capabilities.success'))
+
+      this.capabilities.processing = false
     },
   },
 }
