@@ -23,7 +23,7 @@
             class="mb-3 text-primary"
           >
             <b-form-input
-              :value="datasource.name"
+              v-model="datasource.name"
             />
           </b-form-group>
         </b-col>
@@ -36,7 +36,7 @@
             class="mb-3 text-primary"
           >
             <b-form-input
-              :value="datasource.location"
+              v-model="datasource.location"
             />
           </b-form-group>
         </b-col>
@@ -51,7 +51,8 @@
             class="mb-3 text-primary"
           >
             <b-form-input
-              :value="datasource.url"
+              v-model="datasource.dsn"
+              type="url"
             />
           </b-form-group>
         </b-col>
@@ -64,7 +65,7 @@
             class="mb-3 text-primary"
           >
             <b-form-input
-              :value="datasource.ownership"
+              v-model="datasource.ownership"
             />
           </b-form-group>
         </b-col>
@@ -76,7 +77,6 @@
           >
             <b-checkbox
               v-model="datasource.sensitiveData"
-              class="mt-2 ml-3"
             >
               {{ $t('info.sensitiveData.text') }}
             </b-checkbox>
