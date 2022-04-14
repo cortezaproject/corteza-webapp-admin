@@ -82,6 +82,7 @@ export default {
         {
           key: 'url',
           sortable: true,
+          tdClass: 'text-info',
         },
         {
           key: 'location',
@@ -115,10 +116,7 @@ export default {
   methods: {
     items () {
       const set = [
-        { federationID: '1', name: 'ACME Spain', url: 'https://corteza.acme.es', location: 'Spain', ownership: 'ACME Ltd.', createdBy: 'John Doe', createdAt: new Date() },
-        { federationID: '2', name: 'ACME Germany', url: 'https://corteza.acme.es', location: 'Germany', ownership: 'ACME Ltd.', createdBy: 'John Doe', createdAt: new Date() },
-        { federationID: '3', name: 'ACME France', url: 'https://corteza.acme.es', location: 'France', ownership: 'ACME Ltd.', createdBy: 'John Doe', createdAt: new Date() },
-        { federationID: '4', name: 'ACME Italy', url: 'https://corteza.acme.es', location: 'Italy', ownership: 'ACME Ltd.', createdBy: 'John Doe', createdAt: new Date() },
+        { federationID: '1', name: 'ACME France', url: 'https://corteza.acme.fr', location: 'France', ownership: 'ACME SARL', createdBy: 'John Doe', createdAt: new Date() },
       ]
 
       const filter = {
