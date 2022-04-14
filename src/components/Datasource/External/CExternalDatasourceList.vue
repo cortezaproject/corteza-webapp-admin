@@ -82,6 +82,7 @@ export default {
         {
           key: 'dsn',
           sortable: true,
+          tdClass: 'text-info',
         },
         {
           key: 'location',
@@ -106,9 +107,7 @@ export default {
   methods: {
     items () {
       const set = [
-        { datasourceID: '1', name: 'Primary Data Lake', url: 'dsnsdnsdnnsdnsnd', location: 'Switzerland', ownership: 'ACME Ltd.', sensitiveData: true },
-        { datasourceID: '2', name: 'Internal ERP', url: 'nannanananana', location: 'Switzerland', ownership: 'ACME Ltd.', sensitiveData: false },
-        { datasourceID: '3', name: 'ELK', url: 'batmaaaan', location: 'Switzerland', ownership: 'ACME Ltd.', sensitiveData: false },
+        { datasourceID: '1', name: 'Primary Data Lake', dsn: 'postgresql:://*************@dlacke.acme.internnal/acme-db', location: 'Switzerland', ownership: 'ACME Ltd.', sensitiveData: false },
       ]
 
       const filter = {
