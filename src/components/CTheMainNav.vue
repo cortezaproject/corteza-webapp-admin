@@ -90,12 +90,6 @@ export default {
               can: ['system/', 'settings.read'],
             },
             {
-              label: 'system.items.permissions',
-              route: 'system.permissions',
-              icon: 'lock',
-              can: ['system/', 'grant'],
-            },
-            {
               label: 'system.items.authclients',
               route: 'system.authClient',
               icon: 'key',
@@ -118,6 +112,12 @@ export default {
               route: 'system.apigw',
               icon: 'archway',
               can: ['system/', 'apigw-routes.search'],
+            },
+            {
+              label: 'system.items.permissions',
+              route: 'system.permissions',
+              icon: 'lock',
+              can: ['system/', 'grant'],
             },
           ],
         },
