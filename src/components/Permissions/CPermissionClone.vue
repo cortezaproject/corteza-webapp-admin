@@ -32,6 +32,7 @@
           :loading="processingRoles"
           multiple
           placeholder="Pick a role"
+          class="bg-white"
         />
       </b-form-group>
     </b-modal>

@@ -4,6 +4,7 @@
     :get-option-label="getOptionLabel"
     :get-option-key="getOptionKey"
     :value="user.value"
+    class="bg-white"
     @search="search"
     @input="updateRunAs"
   />

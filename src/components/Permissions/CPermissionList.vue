@@ -171,6 +171,7 @@
         v-model="newRole"
         :options="rolesExcluded"
         label="name"
+        class="bg-white"
         :placeholder="$t('ui.role.no-role-selected')"
       />
     </b-modal>

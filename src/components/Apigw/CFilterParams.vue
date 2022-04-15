@@ -36,6 +36,7 @@
             :options="workflows"
             :reduce="wf => wf.workflowID"
             :placeholder="$t('filters.placeholders.workflow')"
+            class="bg-white"
             @input="onUpdate"
           />
           <b-form-select
