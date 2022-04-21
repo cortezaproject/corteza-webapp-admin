@@ -109,7 +109,7 @@ export default {
     }),
 
     canCreate () {
-      return this.can('system/', 'queue.create')
+      return this.can('system/', 'template.create')
     },
 
     canGrant () {

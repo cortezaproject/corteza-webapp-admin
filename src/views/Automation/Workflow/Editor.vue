@@ -93,7 +93,7 @@ export default {
     }),
 
     canCreate () {
-      return this.can('system/', 'queue.create')
+      return this.can('system/', 'workflow.create')
     },
 
     canGrant () {
