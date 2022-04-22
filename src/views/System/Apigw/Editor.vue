@@ -44,7 +44,7 @@
     />
 
     <c-profiler-route-hits
-      v-if="showProfiler"
+      v-if="routeID && showProfiler"
       :route="routeEndpoint"
       class="mt-3"
     />
