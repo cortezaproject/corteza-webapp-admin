@@ -13,19 +13,54 @@
     <b-form
       @submit.prevent="$emit('submit', settings)"
     >
-      <h5>{{ $t('sidebar.title') }}</h5>
       <b-form-group
-        class="mb-0"
+        :label="$t('sidebar.title')"
       >
         <b-form-checkbox
-          v-model="sidebarSettings.hideNamespaceList"
+          v-model="sidebar.hideNamespaceList"
         >
           {{ $t('sidebar.hide-namespace-list') }}
         </b-form-checkbox>
         <b-form-checkbox
-          v-model="sidebarSettings.hideNamespaceListLink"
+          v-model="sidebar.hideNamespaceListLink"
         >
           {{ $t('sidebar.hide-namespace-list-link') }}
+        </b-form-checkbox>
+      </b-form-group>
+
+      <b-form-group
+        :label="$t('record-toolbar.title')"
+        class="mb-0"
+      >
+        <b-form-checkbox
+          v-model="recordToolbar.hideSubmit"
+        >
+          {{ $t('record-toolbar.hide-submit') }}
+        </b-form-checkbox>
+        <b-form-checkbox
+          v-model="recordToolbar.hideDelete"
+        >
+          {{ $t('record-toolbar.hide-delete') }}
+        </b-form-checkbox>
+        <b-form-checkbox
+          v-model="recordToolbar.hideEdit"
+        >
+          {{ $t('record-toolbar.hide-edit') }}
+        </b-form-checkbox>
+        <b-form-checkbox
+          v-model="recordToolbar.hideNew"
+        >
+          {{ $t('record-toolbar.hide-new') }}
+        </b-form-checkbox>
+        <b-form-checkbox
+          v-model="recordToolbar.hideClone"
+        >
+          {{ $t('record-toolbar.hide-clone') }}
+        </b-form-checkbox>
+        <b-form-checkbox
+          v-model="recordToolbar.hideBack"
+        >
+          {{ $t('record-toolbar.hide-back') }}
         </b-form-checkbox>
       </b-form-group>
     </b-form>
@@ -81,7 +116,8 @@ export default {
 
   data () {
     return {
-      sidebarSettings: {},
+      sidebar: {},
+      recordToolbar: {},
     }
   },
 
@@ -89,7 +125,8 @@ export default {
     settings: {
       immediate: true,
       handler (settings) {
-        this.sidebarSettings = settings['compose.ui.sidebar'] || {}
+        this.sidebar = settings['compose.ui.sidebar'] || {}
+        this.recordToolbar = settings['compose.ui.record-toolbar'] || {}
       },
     },
   },
@@ -97,7 +134,8 @@ export default {
   methods: {
     onSubmit () {
       this.$emit('submit', {
-        'compose.ui.sidebar': this.sidebarSettings,
+        'compose.ui.sidebar': this.sidebar,
+        'compose.ui.record-toolbar': this.recordToolbar,
       })
     },
   },
