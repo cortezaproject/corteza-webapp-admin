@@ -167,6 +167,7 @@ export default {
         .then(() => {
           this.fetchQueue()
           this.toastSuccess(this.$t('notification:queue.delete.success'))
+          this.$router.push({ name: 'system.queue' })
         })
         .catch(this.toastErrorHandler(this.$t('notification:queue.delete.error')))
         .finally(() => {

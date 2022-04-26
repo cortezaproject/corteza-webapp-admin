@@ -206,6 +206,7 @@ export default {
             this.fetchWorkflow()
 
             this.toastSuccess(this.$t('notification:workflow.delete.success'))
+            this.$router.push({ name: 'automation.workflow' })
           })
           .catch(this.toastErrorHandler(this.$t('notification:workflow.delete.error')))
           .finally(() => {

@@ -47,7 +47,6 @@
       :processing="unify.processing"
       :success="unify.success"
       @submit="onUnifySubmit"
-      @delete="onDelete"
     />
   </b-container>
 </template>
@@ -274,6 +273,7 @@ export default {
             this.fetchApplication()
 
             this.toastSuccess(this.$t('notification:application.delete.success'))
+            this.$router.push({ name: 'system.application' })
           })
           .catch(this.toastErrorHandler(this.$t('notification:application.delete.error')))
           .finally(() => {

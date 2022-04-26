@@ -54,7 +54,6 @@
       :processing="info.processing"
       :success="info.success"
       :can-create="canCreate"
-      @delete="onDelete"
       @submit="onInfoSubmit"
     />
   </b-container>
@@ -181,6 +180,7 @@ export default {
             this.fetchTemplate()
 
             this.toastSuccess(this.$t('notification:template.delete.success'))
+            this.$router.push({ name: 'system.template' })
           })
           .catch(this.toastErrorHandler(this.$t('notification:template.delete.error')))
           .finally(() => {

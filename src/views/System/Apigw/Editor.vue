@@ -208,6 +208,7 @@ export default {
             this.fetchRoute()
 
             this.toastSuccess(this.$t('notification:gateway.delete.success'))
+            this.$router.push({ name: 'system.apigw' })
           })
           .catch(this.toastErrorHandler(this.$t('notification:gateway.delete.error')))
           .finally(() => {

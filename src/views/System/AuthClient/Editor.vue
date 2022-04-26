@@ -186,6 +186,7 @@ export default {
           this.fetchAuthclient()
 
           this.toastSuccess(this.$t('notification:authclient.delete.success'))
+          this.$router.push({ name: 'system.authClient' })
         })
         .catch(this.toastErrorHandler(this.$t('notification:authclient.authclient.error')))
         .finally(() => this.decLoader())

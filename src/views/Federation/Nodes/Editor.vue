@@ -288,6 +288,7 @@ export default {
             this.fetchNode()
 
             this.toastSuccess(this.$t('notification:federation.delete.success'))
+            this.$router.push({ name: 'federation.nodes' })
           })
           .catch(this.toastErrorHandler(this.$t('notification:federation.delete.error')))
           .finally(() => {

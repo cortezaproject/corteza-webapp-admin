@@ -266,6 +266,7 @@ export default {
             this.fetchUser()
 
             this.toastSuccess(this.$t('notification:user.delete.success'))
+            this.$router.push({ name: 'system.user' })
           })
           .catch(this.toastErrorHandler(this.$t('notification:user.delete.error')))
           .finally(() => {

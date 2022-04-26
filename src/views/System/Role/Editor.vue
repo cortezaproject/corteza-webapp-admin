@@ -211,6 +211,7 @@ export default {
             this.fetchRole()
 
             this.toastSuccess(this.$t('notification:role.delete.success'))
+            this.$router.push({ name: 'system.role' })
           })
           .catch(this.toastErrorHandler(this.$t('notification:role.delete.error')))
           .finally(() => {
