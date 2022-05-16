@@ -44,7 +44,7 @@
         >
           <b-input-group>
             <b-form-input
-              v-model.trim="filter.handle"
+              v-model.trim="filter.query"
               :placeholder="$t('filterForm.handle.placeholder')"
               @keyup="filterList"
             />
@@ -89,7 +89,7 @@ export default {
       id: 'queues',
 
       filter: {
-        handle: '',
+        query: '',
         archived: 0,
         deleted: 0,
       },
