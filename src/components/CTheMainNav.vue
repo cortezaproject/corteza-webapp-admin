@@ -122,7 +122,7 @@ export default {
             {
               label: 'system.items.connections',
               route: 'system.connection',
-              icon: 'folder',
+              icon: 'cloud',
               // can: ['system/', 'data-sources.search'],
             },
           ],

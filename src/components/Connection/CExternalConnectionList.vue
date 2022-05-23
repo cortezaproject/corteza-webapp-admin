@@ -21,6 +21,7 @@
       :sorting="sorting"
       :items="items"
       :fields="fields"
+      class="h-100"
     >
       <template #actions>
         <b-button
@@ -57,10 +58,9 @@
 
 <script>
 import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
+import moment from 'moment'
 
 export default {
-  name: 'CExternalConnectionList',
-
   mixins: [
     listHelpers,
   ],
@@ -74,23 +74,33 @@ export default {
     return {
       id: 'connections',
 
+      filter: {
+        type: 'corteza::system:dal_connection',
+        deleted: 0,
+      },
+
       fields: [
         {
           key: 'name',
           sortable: true,
         },
         {
-          key: 'dsn',
-          sortable: true,
-          tdClass: 'text-info',
-        },
-        {
           key: 'location',
           sortable: true,
+          formatter: l => {
+            const { properties = {} } = l
+            return properties.name
+          },
         },
         {
           key: 'ownership',
           sortable: true,
+        },
+        {
+          key: 'createdAt',
+          label: 'Created',
+          sortable: true,
+          formatter: (v) => moment(v).fromNow(),
         },
         {
           key: 'actions',
@@ -106,16 +116,7 @@ export default {
 
   methods: {
     items () {
-      const set = [
-        { connectionID: '1', name: 'Primary Data Lake', dsn: 'postgresql:://*************@dlacke.acme.internnal/acme-db', location: 'Switzerland', ownership: 'ACME Ltd.', sensitiveData: false },
-      ]
-
-      const filter = {
-        count: set.length,
-        limit: 10,
-      }
-
-      return this.procListResults(new Promise(resolve => setTimeout(resolve({ filter, set })), 200), false)
+      return this.procListResults(this.$SystemAPI.dalConnectionList(this.encodeListParams()))
     },
   },
 }
