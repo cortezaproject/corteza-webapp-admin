@@ -6,21 +6,24 @@
       :title="$t('title')"
     />
 
-    <c-connection-basic-info
-      :connection="connection"
-      class="mb-4"
-    />
+    <div
+      class="d-flex flex-column h-100"
+    >
+      <c-connection-basic-info
+        class="mb-4"
+      />
 
-    <c-external-connection-list
-      class="mb-4"
-    />
+      <c-external-connection-list
+        class="mb-4"
+      />
 
-    <c-federated-node-list />
+      <c-federated-node-list />
+    </div>
   </b-container>
 </template>
 <script>
 import CConnectionBasicInfo from 'corteza-webapp-admin/src/components/Connection/CConnectionBasicInfo'
-import CExternalConnectionList from 'corteza-webapp-admin/src/components/Connection/External/CExternalConnectionList'
+import CExternalConnectionList from 'corteza-webapp-admin/src/components/Connection/CExternalConnectionList'
 import CFederatedNodeList from 'corteza-webapp-admin/src/components/Connection/CFederatedNodeList'
 
 export default {
@@ -35,16 +38,6 @@ export default {
   i18nOptions: {
     namespaces: 'system.connections',
     keyPrefix: 'list',
-  },
-
-  data () {
-    return {
-      connection: {
-        connectionID: '1',
-        location: 'Ireland',
-        ownership: 'ACME Ltd.',
-      },
-    }
   },
 }
 </script>
