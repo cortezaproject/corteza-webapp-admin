@@ -25,7 +25,7 @@
         <b-button
           variant="primary"
           size="lg"
-          :to="{ name: 'system.connections.create' }"
+          :to="{ name: 'system.connections.new' }"
         >
           {{ $t('add-button') }}
         </b-button>
@@ -59,8 +59,6 @@ import { fmt } from '@cortezaproject/corteza-js'
 import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
 
 export default {
-  name: 'CRecordFederationList',
-
   mixins: [
     listHelpers,
   ],

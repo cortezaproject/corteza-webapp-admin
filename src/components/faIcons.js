@@ -42,6 +42,8 @@ import {
   faEnvelopeOpen,
   faWrench,
   faSearch,
+  faMapMarkedAlt,
+  faCloud,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -101,4 +103,6 @@ library.add(
   faEnvelopeOpen,
   faWrench,
   faSearch,
+  faMapMarkedAlt,
+  faCloud,
 )

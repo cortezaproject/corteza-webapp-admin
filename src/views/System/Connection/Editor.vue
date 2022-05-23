@@ -6,14 +6,16 @@
       :title="title"
     />
 
-    <c-external-connection-editor-info
+    <c-connection-editor-info
+      v-if="connection"
       :connection="connection"
       :processing="info.processing"
       :success="info.success"
       @submit="onInfoSubmit"
+      @delete="onDelete"
     />
 
-    <c-external-connection-capabilities
+    <c-connection-capabilities
       v-if="connection && connectionID"
       :connection="connection"
       :processing="capabilities.processing"
@@ -26,14 +28,14 @@
 
 <script>
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
-import CExternalConnectionEditorInfo from 'corteza-webapp-admin/src/components/Connection/External/CExternalConnectionEditorInfo'
-import CExternalConnectionCapabilities from 'corteza-webapp-admin/src/components/Connection/External/CExternalConnectionCapabilities'
+import CConnectionEditorInfo from 'corteza-webapp-admin/src/components/Connection/CConnectionEditorInfo'
+import CConnectionCapabilities from 'corteza-webapp-admin/src/components/Connection/CConnectionCapabilities'
 import { mapGetters } from 'vuex'
 
 export default {
   components: {
-    CExternalConnectionEditorInfo,
-    CExternalConnectionCapabilities,
+    CConnectionEditorInfo,
+    CConnectionCapabilities,
   },
 
   i18nOptions: {
@@ -54,11 +56,8 @@ export default {
 
   data () {
     return {
-      connections: [
-        { connectionID: '1', name: 'Primary Data Lake', dsn: 'postgresql:://*************@dlacke.acme.internnal/acme-db', location: 'Switzerland', ownership: 'ACME Ltd.', sensitiveData: true },
-      ],
-
-      connection: {},
+      processing: false,
+      connection: undefined,
 
       info: {
         processing: false,
@@ -87,36 +86,137 @@ export default {
       immediate: true,
       handler (connectionID) {
         if (connectionID) {
-          this.connection = this.connections.find(ds => ds.connectionID === connectionID)
+          this.fetchConnection(connectionID)
         } else {
-          this.connection = {}
+          this.connection = {
+            name: '',
+            handle: '',
+            type: 'corteza::system:dal_connection',
+
+            location: {
+              geometry: {
+                coordinates: [],
+                type: '',
+              },
+              properties: {
+                name: '',
+              },
+            },
+
+            ownership: '',
+            sensitivityLevel: '0',
+
+            config: {
+              connection: {
+                type: 'corteza::dal:connection:dsn',
+                params: {
+                  dsn: '',
+                },
+              },
+            },
+            capabilities: {
+              enforced: [],
+              supported: [
+                'corteza::dal:capability:create',
+                'corteza::dal:capability:update',
+                'corteza::dal:capability:delete',
+                'corteza::dal:capability:search',
+                'corteza::dal:capability:lookup',
+                'corteza::dal:capability:paging',
+                'corteza::dal:capability:stats',
+                'corteza::dal:capability:sorting',
+                'corteza::dal:capability:RBAC',
+              ],
+              unsupported: [],
+              enabled: [],
+            },
+          }
         }
       },
     },
   },
 
   methods: {
+    fetchConnection (connectionID) {
+      this.incLoader()
+
+      return this.$SystemAPI.dalConnectionRead({ connectionID }).then(connection => {
+        this.connection = connection
+      }).catch(this.toastErrorHandler(this.$t('notification:fetch.error')))
+        .finally(async () => {
+          this.decLoader()
+        })
+    },
+
     onInfoSubmit (connection) {
       this.info.processing = true
 
-      this.animateSuccess('info')
       if (connection.connectionID) {
-        this.toastSuccess(this.$t('notification:connection.update.success'))
-      } else {
-        this.toastSuccess(this.$t('notification:connection.create.success'))
-      }
-      this.$router.push({ name: 'system.connection.edit', params: { connectionID: '1' } })
+        this.$SystemAPI.dalConnectionUpdate(connection)
+          .then(connection => {
+            this.connection = connection
 
-      this.info.processing = false
+            this.animateSuccess('info')
+            this.toastSuccess(this.$t('notification:connection.update.success'))
+          })
+          .catch(this.toastErrorHandler(this.$t('notification:connection.update.error')))
+          .finally(() => {
+            this.info.processing = false
+          })
+      } else {
+        this.$SystemAPI.dalConnectionCreate(connection)
+          .then(({ connectionID }) => {
+            this.animateSuccess('info')
+            this.toastSuccess(this.$t('notification:connection.create.success'))
+            this.$router.push({ name: 'system.connection.edit', params: { connectionID } })
+          })
+          .catch(this.toastErrorHandler(this.$t('notification:connection.create.error')))
+          .finally(() => {
+            this.info.processing = false
+          })
+      }
     },
 
-    onCapabilitiesSubmit () {
+    onDelete () {
+      this.incLoader()
+
+      if (this.connection.deletedAt) {
+        this.$SystemAPI.dalConnectionUndelete({ connectionID: this.connectionID })
+          .then(() => {
+            this.fetchConnection()
+
+            this.toastSuccess(this.$t('notification:connection.undelete.success'))
+          })
+          .catch(this.toastErrorHandler(this.$t('notification:connection.undelete.error')))
+          .finally(() => {
+            this.decLoader()
+          })
+      } else {
+        this.$SystemAPI.dalConnectionDelete({ connectionID: this.connectionID })
+          .then(() => {
+            this.$router.push({ name: 'system.connection' })
+          })
+          .catch(this.toastErrorHandler(this.$t('notification:connection.delete.error')))
+          .finally(() => {
+            this.decLoader()
+          })
+      }
+    },
+
+    onCapabilitiesSubmit ({ capabilities }) {
       this.capabilities.processing = true
 
-      this.animateSuccess('capabilities')
-      this.toastSuccess(this.$t('notification:connection.update-capabilities.success'))
+      this.$SystemAPI.dalConnectionUpdate({ ...this.connection, capabilities })
+        .then(connection => {
+          this.connection = connection
 
-      this.capabilities.processing = false
+          this.animateSuccess('capabilities')
+          this.toastSuccess(this.$t('notification:connection.capabilities.success'))
+        })
+        .catch(this.toastErrorHandler(this.$t('notification:connection.capabilities.error')))
+        .finally(() => {
+          this.capabilities.processing = false
+        })
     },
   },
 }
