@@ -14,7 +14,7 @@
       :label="$t('location')"
       label-class="text-primary"
     >
-      {{ datasource.location }}
+      {{ connection.location }}
     </b-form-group>
 
     <b-form-group
@@ -22,22 +22,22 @@
       label-class="text-primary"
       class="mb-0"
     >
-      {{ datasource.ownership }}
+      {{ connection.ownership }}
     </b-form-group>
   </b-card>
 </template>
 
 <script>
 export default {
-  name: 'CDatasourceBasicInfo',
+  name: 'CConnectionBasicInfo',
 
   i18nOptions: {
-    namespaces: 'system.datasources',
+    namespaces: 'system.connections',
     keyPrefix: 'editor.info',
   },
 
   props: {
-    datasource: {
+    connection: {
       type: Object,
       required: true,
     },

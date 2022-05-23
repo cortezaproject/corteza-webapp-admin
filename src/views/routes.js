@@ -105,9 +105,9 @@ export default [
           r('system.permissions', 'permissions', 'System/Permissions/Index'),
           r('system.actionlog', 'actionlog', 'System/Actionlog/Index'),
 
-          r('system.datasource', 'datasource', 'System/Datasource/Index'),
-          r('system.datasource.new', 'datasource/new', 'System/Datasource/Editor'),
-          r('system.datasource.edit', 'datasource/edit/:datasourceID', 'System/Datasource/Editor'),
+          r('system.connection', 'connection', 'System/Connection/Index'),
+          r('system.connection.new', 'connection/new', 'System/Connection/Editor'),
+          r('system.connection.edit', 'connection/edit/:connectionID', 'System/Connection/Editor'),
 
           combo('system', 'queue', { pkey: 'queueID' }),
         ],
