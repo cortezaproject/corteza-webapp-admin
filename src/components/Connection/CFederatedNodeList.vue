@@ -9,13 +9,12 @@
       #header
     >
       <h3 class="m-0">
-        {{ $t('title.default') }}
+        {{ $t('title') }}
       </h3>
     </template>
 
     <c-resource-list
-      primary-key="datasourceID"
-      edit-route="system.datasource.edit"
+      primary-key="federationID"
       :loading-text="$t('loading')"
       :paging="paging"
       :sorting="sorting"
@@ -26,7 +25,7 @@
         <b-button
           variant="primary"
           size="lg"
-          :to="{ name: 'system.datasource.new' }"
+          :to="{ name: 'system.connections.create' }"
         >
           {{ $t('add-button') }}
         </b-button>
@@ -39,7 +38,7 @@
           <b-form-input
             v-model.trim="filter.query"
             :placeholder="$t('filterForm.query.placeholder')"
-            class="text-truncate border-right-0 mb-0 h-100"
+            class="text-truncate border-right-0 h-100"
             @keyup="filterList"
           />
           <b-input-group-append>
@@ -56,23 +55,24 @@
 </template>
 
 <script>
+import { fmt } from '@cortezaproject/corteza-js'
 import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
 
 export default {
-  name: 'CExternalDatasourceList',
+  name: 'CRecordFederationList',
 
   mixins: [
     listHelpers,
   ],
 
   i18nOptions: {
-    namespaces: 'system.datasources',
-    keyPrefix: 'external',
+    namespaces: 'system.connections',
+    keyPrefix: 'federation',
   },
 
   data () {
     return {
-      id: 'datasources',
+      id: 'federation',
 
       fields: [
         {
@@ -80,7 +80,7 @@ export default {
           sortable: true,
         },
         {
-          key: 'dsn',
+          key: 'url',
           sortable: true,
           tdClass: 'text-info',
         },
@@ -91,6 +91,15 @@ export default {
         {
           key: 'ownership',
           sortable: true,
+        },
+        {
+          key: 'createdBy',
+          sortable: true,
+        },
+        {
+          key: 'createdAt',
+          sortable: true,
+          formatter: v => v ? fmt.fullDateTime(v) : v,
         },
         {
           key: 'actions',
@@ -107,7 +116,7 @@ export default {
   methods: {
     items () {
       const set = [
-        { datasourceID: '1', name: 'Primary Data Lake', dsn: 'postgresql:://*************@dlacke.acme.internnal/acme-db', location: 'Switzerland', ownership: 'ACME Ltd.', sensitiveData: false },
+        { federationID: '1', name: 'ACME France', url: 'https://corteza.acme.fr', location: 'France', ownership: 'ACME SARL', createdBy: 'John Doe', createdAt: new Date() },
       ]
 
       const filter = {

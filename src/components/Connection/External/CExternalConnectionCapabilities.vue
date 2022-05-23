@@ -9,7 +9,7 @@
     </template>
 
     <b-form
-      @submit.prevent="$emit('submit', datasource)"
+      @submit.prevent="$emit('submit', connection)"
     >
       <b-row
         v-for="cap in capabilities"
@@ -68,7 +68,7 @@
         class="float-right"
         :processing="processing"
         :success="success"
-        @submit="$emit('submit', datasource)"
+        @submit="$emit('submit', connection)"
       />
     </template>
   </b-card>
@@ -78,10 +78,10 @@
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 
 export default {
-  name: 'CDatasourceEditorCapabilities',
+  name: 'CConnectionEditorCapabilities',
 
   i18nOptions: {
-    namespaces: 'system.datasources',
+    namespaces: 'system.connections',
     keyPrefix: 'external',
   },
 
@@ -90,7 +90,7 @@ export default {
   },
 
   props: {
-    datasource: {
+    connection: {
       type: Object,
       required: true,
     },
