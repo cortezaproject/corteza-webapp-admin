@@ -12,8 +12,8 @@
       @submit.prevent="$emit('submit', connection)"
     >
       <b-row
-        v-for="cap in capabilities"
-        :key="cap.name"
+        v-for="cap in capabilityTypes"
+        :key="cap"
         align-v="center"
         class="mb-3"
       >
@@ -21,13 +21,13 @@
           cols="auto"
         >
           <b-form-radio-group
-            v-model="cap.supportType"
+            v-model="capabilities[cap].support"
             :options="supportOptions"
             buttons
             button-variant="outline-primary"
             size="lg"
             class="capabilities rounded"
-            @change="changeSupportType(cap.name, $event)"
+            @change="changeSupportType(cap, $event)"
           />
         </b-col>
         <b-col
@@ -36,7 +36,7 @@
           <div
             class="d-flex align-items-center text-capitalize text-primary h6 mb-0 mr-5"
           >
-            {{ cap.name }}
+            {{ cap.split('corteza::dal:capability:')[1] }}
             <font-awesome-icon
               :icon="['far', 'question-circle']"
               class="text-dark ml-2"
@@ -45,8 +45,8 @@
         </b-col>
         <b-col>
           <b-form-checkbox
-            v-model="cap.enabled"
-            :disabled="cap.supportType != 'supported'"
+            v-model="capabilities[cap].enabled"
+            :disabled="capabilities[cap].support != 'supported'"
           >
             Enabled
           </b-form-checkbox>
@@ -68,7 +68,7 @@
         class="float-right"
         :processing="processing"
         :success="success"
-        @submit="$emit('submit', connection)"
+        @submit="updateCapabilities"
       />
     </template>
   </b-card>
@@ -78,8 +78,6 @@
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 
 export default {
-  name: 'CConnectionEditorCapabilities',
-
   i18nOptions: {
     namespaces: 'system.connections',
     keyPrefix: 'external',
@@ -108,20 +106,17 @@ export default {
 
   data () {
     return {
-      capabilities: [
-        { name: 'immutable', supportType: 'supported', enabled: false },
-        { name: 'encrypted', supportType: 'supported', enabled: false },
-        { name: 'accessControl', supportType: 'supported', enabled: false },
-        { name: 'softDelete', supportType: 'supported', enabled: false },
-        { name: 'revisioned', supportType: 'supported', enabled: false },
-        { name: 'automation', supportType: 'supported', enabled: false },
-        { name: 'pagination', supportType: 'supported', enabled: false },
-        { name: 'filtering', supportType: 'supported', enabled: false },
-        { name: 'search', supportType: 'supported', enabled: false },
-        { name: 'ownership', supportType: 'supported', enabled: false },
-        { name: 'timestamps', supportType: 'supported', enabled: false },
-        { name: 'auditLog', supportType: 'supported', enabled: false },
-      ],
+      capabilities: {
+        'corteza::dal:capability:create': { support: 'unsupported', enabled: false },
+        'corteza::dal:capability:update': { support: 'unsupported', enabled: false },
+        'corteza::dal:capability:delete': { support: 'unsupported', enabled: false },
+        'corteza::dal:capability:search': { support: 'unsupported', enabled: false },
+        'corteza::dal:capability:lookup': { support: 'unsupported', enabled: false },
+        'corteza::dal:capability:paging': { support: 'unsupported', enabled: false },
+        'corteza::dal:capability:stats': { support: 'unsupported', enabled: false },
+        'corteza::dal:capability:sorting': { support: 'unsupported', enabled: false },
+        'corteza::dal:capability:RBAC': { support: 'unsupported', enabled: false },
+      },
 
       supportOptions: [
         { text: 'Enforced', value: 'enforced' },
@@ -131,15 +126,51 @@ export default {
     }
   },
 
+  computed: {
+    capabilityTypes () {
+      return Object.keys(this.capabilities)
+    },
+  },
+
+  watch: {
+    'connection.capabilities': {
+      immediate: true,
+      handler (capabilities) {
+        ['enforced', 'supported', 'unsupported'].forEach(support => {
+          (capabilities[support] || []).forEach(c => {
+            this.capabilities[c] = { support, enabled: (capabilities.enabled || []).includes(c) }
+          })
+        })
+      },
+    },
+  },
+
   methods: {
     changeSupportType (name, supportType) {
-      const cap = this.capabilities.find(cap => cap.name === name) || {}
-
       if (supportType === 'enforced') {
-        cap.enabled = true
+        this.capabilities[name].enabled = true
       } else if (supportType === 'unsupported') {
-        cap.enabled = false
+        this.capabilities[name].enabled = false
       }
+    },
+
+    updateCapabilities () {
+      const capabilities = {
+        enabled: [],
+        enforced: [],
+        supported: [],
+        unsupported: [],
+      }
+
+      this.capabilityTypes.forEach(cap => {
+        const { support, enabled } = this.capabilities[cap]
+        capabilities[support].push(cap)
+        if (enabled) {
+          capabilities.enabled.push(cap)
+        }
+      })
+
+      this.$emit('submit', { ...this.connection, capabilities })
     },
   },
 }
