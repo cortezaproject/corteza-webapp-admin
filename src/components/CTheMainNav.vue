@@ -120,8 +120,8 @@ export default {
               can: ['system/', 'grant'],
             },
             {
-              label: 'system.items.datasources',
-              route: 'system.datasource',
+              label: 'system.items.connections',
+              route: 'system.connection',
               icon: 'folder',
               // can: ['system/', 'data-sources.search'],
             },
