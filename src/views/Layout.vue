@@ -72,7 +72,9 @@
           }"
         />
       </template>
-      <router-view />
+      <div class="d-flex flex-column w-100">
+        <router-view />
+      </div>
     </main>
     <c-prompts />
     <c-permissions-modal />

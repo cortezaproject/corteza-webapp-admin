@@ -32,30 +32,17 @@
           lg="6"
         >
           <b-form-group
-            :label="$t('info.location')"
+            :label="$t('info.handle')"
             class="mb-3 text-primary"
           >
             <b-form-input
-              v-model="connection.location"
+              v-model="connection.handle"
+              :disabled="isPrimary"
             />
           </b-form-group>
         </b-col>
       </b-row>
       <b-row>
-        <b-col
-          cols="12"
-          lg="6"
-        >
-          <b-form-group
-            :label="$t('info.url')"
-            class="mb-3 text-primary"
-          >
-            <b-form-input
-              v-model="connection.dsn"
-              type="url"
-            />
-          </b-form-group>
-        </b-col>
         <b-col
           cols="12"
           lg="6"
@@ -69,20 +56,49 @@
             />
           </b-form-group>
         </b-col>
-      </b-row>
-      <b-row>
-        <b-col>
-          <b-form-group
-            :label="$t('info.sensitiveData.label')"
-          >
-            <b-checkbox
-              v-model="connection.sensitiveData"
+        <b-col
+          cols="12"
+          lg="6"
+        >
+          <b-form-group>
+            <label
+              class="d-flex align-items-center text-primary"
             >
-              {{ $t('info.sensitiveData.text') }}
-            </b-checkbox>
+              {{ $t('info.location') }}
+              <c-location
+                v-model="locationCoordinates"
+                editable
+                class="ml-1"
+              />
+            </label>
+
+            <b-form-input
+              v-model="locationName"
+            />
           </b-form-group>
         </b-col>
       </b-row>
+
+      <b-form-group
+        :label="$t('info.url')"
+        class="mb-3 text-primary"
+      >
+        <b-form-input
+          v-model="url"
+          type="url"
+          :disabled="isPrimary"
+        />
+      </b-form-group>
+
+      <b-form-group>
+        <b-checkbox
+          v-model="connection.sensitivityLevel"
+          value="1"
+          unchecked-value="0"
+        >
+          {{ $t('info.sensitiveData.text') }}
+        </b-checkbox>
+      </b-form-group>
 
       <!--
         include hidden input to enable
@@ -103,10 +119,10 @@
       />
 
       <confirmation-toggle
-        v-if="connection && connection.connectionID"
+        v-if="connection && connection.connectionID && !isPrimary"
         @confirmed="$emit('delete')"
       >
-        {{ getDeleteStatus }}
+        {{ deleteStatus }}
       </confirmation-toggle>
     </template>
   </b-card>
@@ -115,10 +131,9 @@
 <script>
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
+import CLocation from 'corteza-webapp-admin/src/components/CLocation'
 
 export default {
-  name: 'CExternalSourcesEditorInfo',
-
   i18nOptions: {
     namespaces: 'system.connections',
     keyPrefix: 'external',
@@ -127,6 +142,7 @@ export default {
   components: {
     ConfirmationToggle,
     CSubmitButton,
+    CLocation,
   },
 
   props: {
@@ -147,7 +163,43 @@ export default {
   },
 
   computed: {
-    getDeleteStatus () {
+    isPrimary () {
+      return this.connection.type === 'corteza::system:primary_dal_connection'
+    },
+
+    locationCoordinates: {
+      get () {
+        return this.connection.location.geometry.coordinates || []
+      },
+
+      set (coordinates) {
+        this.connection.location.geometry.coordinates = coordinates
+      },
+    },
+
+    locationName: {
+      get () {
+        return this.connection.location.properties.name
+      },
+
+      set (name) {
+        this.connection.location.properties.name = name
+      },
+    },
+
+    url: {
+      get () {
+        const { connection } = this.connection.config
+        const { params = {} } = connection
+        return (params || {}).dsn
+      },
+
+      set (url) {
+        this.connection.config.connection.params.dsn = url
+      },
+    },
+
+    deleteStatus () {
       return this.connection.deletedAt ? this.$t('general:label.undelete') : this.$t('general:label.delete')
     },
   },
