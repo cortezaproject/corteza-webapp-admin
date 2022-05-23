@@ -11,7 +11,7 @@
     </template>
 
     <b-form
-      @submit.prevent="$emit('submit', datasource)"
+      @submit.prevent="$emit('submit', connection)"
     >
       <b-row>
         <b-col
@@ -23,7 +23,7 @@
             class="mb-3 text-primary"
           >
             <b-form-input
-              v-model="datasource.name"
+              v-model="connection.name"
             />
           </b-form-group>
         </b-col>
@@ -36,7 +36,7 @@
             class="mb-3 text-primary"
           >
             <b-form-input
-              v-model="datasource.location"
+              v-model="connection.location"
             />
           </b-form-group>
         </b-col>
@@ -51,7 +51,7 @@
             class="mb-3 text-primary"
           >
             <b-form-input
-              v-model="datasource.dsn"
+              v-model="connection.dsn"
               type="url"
             />
           </b-form-group>
@@ -65,7 +65,7 @@
             class="mb-3 text-primary"
           >
             <b-form-input
-              v-model="datasource.ownership"
+              v-model="connection.ownership"
             />
           </b-form-group>
         </b-col>
@@ -76,7 +76,7 @@
             :label="$t('info.sensitiveData.label')"
           >
             <b-checkbox
-              v-model="datasource.sensitiveData"
+              v-model="connection.sensitiveData"
             >
               {{ $t('info.sensitiveData.text') }}
             </b-checkbox>
@@ -99,11 +99,11 @@
         class="float-right"
         :processing="processing"
         :success="success"
-        @submit="$emit('submit', datasource)"
+        @submit="$emit('submit', connection)"
       />
 
       <confirmation-toggle
-        v-if="datasource && datasource.datasourceID"
+        v-if="connection && connection.connectionID"
         @confirmed="$emit('delete')"
       >
         {{ getDeleteStatus }}
@@ -120,7 +120,7 @@ export default {
   name: 'CExternalSourcesEditorInfo',
 
   i18nOptions: {
-    namespaces: 'system.datasources',
+    namespaces: 'system.connections',
     keyPrefix: 'external',
   },
 
@@ -130,7 +130,7 @@ export default {
   },
 
   props: {
-    datasource: {
+    connection: {
       type: Object,
       required: true,
     },
@@ -148,7 +148,7 @@ export default {
 
   computed: {
     getDeleteStatus () {
-      return this.datasource.deletedAt ? this.$t('general:label.undelete') : this.$t('general:label.delete')
+      return this.connection.deletedAt ? this.$t('general:label.undelete') : this.$t('general:label.delete')
     },
   },
 }
