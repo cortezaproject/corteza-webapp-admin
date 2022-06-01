@@ -1,16 +1,16 @@
 <template>
   <b-container
-    class="py-3"
+    class="py-3 overflow-hidden"
   >
     <c-content-header
       :title="$t('title')"
     >
       <span
-        class="text-nowrap"
+        class="text-wrap"
       >
         <b-button
           variant="primary"
-          class="mr-2 float-left"
+          class="mr-1 float-left"
           :to="{ name: 'system.user.new' }"
         >
           {{ $t('new') }}
@@ -55,6 +55,7 @@
     <c-resource-list
       primary-key="userID"
       edit-route="system.user.edit"
+      class="overflow-auto"
       :loading-text="$t('loading')"
       :paging="paging"
       :sorting="sorting"
@@ -79,7 +80,7 @@
         >
           <c-resource-list-status-filter
             v-model="filter.deleted"
-            class="col-12 col-lg-6 mb-1 mb-lg-0"
+            class="col-12 col-lg-6 mb-1 mb-lg-0 row text-wrap p-0 m-0"
             :label="$t('filterForm.deleted.label')"
             :excluded-label="$t('filterForm.excluded.label')"
             :inclusive-label="$t('filterForm.inclusive.label')"
@@ -88,7 +89,7 @@
           />
           <c-resource-list-status-filter
             v-model="filter.suspended"
-            class="col-12 col-lg-6"
+            class="col-12 col-lg-6 row text-wrap p-0 m-0"
             :label="$t('filterForm.suspended.label')"
             :excluded-label="$t('filterForm.excluded.label')"
             :inclusive-label="$t('filterForm.inclusive.label')"
