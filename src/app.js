@@ -43,11 +43,7 @@ export default (options = {}) => {
         this.i18nLoaded = true
       })
 
-      // cross link auth & websocket so that ws
-      // can use the right access token
-      websocket.init(this)
-
-      this.websocketMessageRouter()
+      this.websocket()
 
       return this.$auth.vue(this).handle().then(async ({ user }) => {
         // switch the page directionality on body based on language
@@ -130,8 +126,11 @@ export default (options = {}) => {
        * Registers event listener for websocket messages and
        * routes them depending on their type
        */
-      websocketMessageRouter () {
-        // All
+      websocket () {
+        // cross-link auth & websocket so that ws can use the right access token
+        websocket.init(this)
+
+        // register event listener for workflow messages
         this.$on('websocket-message', ({ data }) => {
           const msg = JSON.parse(data)
           switch (msg['@type']) {

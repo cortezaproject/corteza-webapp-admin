@@ -6,7 +6,9 @@ import { store as cvStore } from '@cortezaproject/corteza-vue'
 
 Vue.use(Vuex)
 
-const store = new Vuex.Store({
+export default new Vuex.Store({
+  strict: process.env.NODE_ENV !== 'production',
+
   modules: {
     ui,
     rbac: {
@@ -21,9 +23,9 @@ const store = new Vuex.Store({
       namespaced: true,
       ...cvStore.wfPrompts({
         api: Vue.prototype.$AutomationAPI,
+        ws: Vue.prototype.$socket,
+        webapp: 'admin',
       }),
     },
   },
 })
-
-export default store

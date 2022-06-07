@@ -4,7 +4,9 @@ import BootstrapVue from 'bootstrap-vue'
 import Router from 'vue-router'
 import Vuex from 'vuex'
 
-import { plugins } from '@cortezaproject/corteza-vue'
+import VueNativeSock from 'vue-native-websocket'
+
+import { plugins, websocket } from '@cortezaproject/corteza-vue'
 
 import pairs from './eventbus-pairs'
 
@@ -41,3 +43,5 @@ Vue.use(plugins.UIHooks(), {
 })
 
 Vue.use(plugins.Settings, { api: Vue.prototype.$SystemAPI })
+
+Vue.use(VueNativeSock, websocket.endpoint(), websocket.config)
