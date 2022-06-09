@@ -157,3 +157,27 @@ input[type="search"]::-webkit-search-cancel-button {
     75%  { content: '...'; }
     100% { content: ''; }
 }
+
+// Supporting CSS to improve print-to-PDF option
+@media print {
+  @page {
+    size: auto;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  main {
+    padding-top: 64px;
+  }
+
+  header, footer, aside, nav {
+    display: none;
+  }
+
+  .block {
+    break-inside: avoid;
+    width: 100%;
+  }
+}
