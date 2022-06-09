@@ -55,17 +55,15 @@
       :fields="fields"
     >
       <template #filter>
-        <b-form-group
+        <c-input-search
+          v-model.trim="filter.query"
           class="p-0 m-0"
-        >
-          <b-input-group>
-            <b-form-input
-              v-model.trim="filter.query"
-              :placeholder="$t('filterForm.handle.placeholder')"
-              @keyup="filterList"
-            />
-          </b-input-group>
-        </b-form-group>
+          hide-icon
+          on-key-up
+          :placeholder="$t('filterForm.handle.placeholder')"
+          @keyup="filterList"
+        />
+
         <b-row
           no-gutters
           class="mt-3"
@@ -89,10 +87,13 @@
 import * as moment from 'moment'
 import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
 import { mapGetters } from 'vuex'
+import { components } from '@cortezaproject/corteza-vue'
+const { CInputSearch } = components
 
 export default {
   mixins: [
     listHelpers,
+    CInputSearch,
   ],
 
   i18nOptions: {

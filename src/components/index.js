@@ -7,7 +7,7 @@ import CResourceList from './CResourceList'
 import CResourceListStatusFilter from './CResourceListStatusFilter'
 import { components } from '@cortezaproject/corteza-vue'
 
-const { CCorredorManualButtons, CPermissionsButton } = components
+const { CCorredorManualButtons, CPermissionsButton, CInputSearch } = components
 
 Vue.use(PortalVue)
 Vue.component('c-corredor-manual-buttons', CCorredorManualButtons)
@@ -16,3 +16,4 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('c-content-header', CContentHeader)
 Vue.component('c-resource-list', CResourceList)
 Vue.component('c-resource-list-status-filter', CResourceListStatusFilter)
+Vue.component('c-input-search', CInputSearch)

@@ -62,17 +62,14 @@
       :fields="fields"
     >
       <template #filter>
-        <b-form-group
+        <c-input-search
+          v-model.trim="filter.query"
           class="p-0 m-0"
-        >
-          <b-input-group>
-            <b-form-input
-              v-model.trim="filter.query"
-              :placeholder="$t('filterForm.query.placeholder')"
-              @keyup="filterList"
-            />
-          </b-input-group>
-        </b-form-group>
+          hide-icon
+          on-key-up
+          :placeholder="$t('filterForm.query.placeholder')"
+          @keyup="filterList"
+        />
         <b-row
           no-gutters
           class="mt-3"
@@ -108,13 +105,15 @@ import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
 import CUserExportModal from 'corteza-webapp-admin/src/components/User/CUserExportModal'
 import CUserImportModal from 'corteza-webapp-admin/src/components/User/CUserImportModal'
 import { mapGetters } from 'vuex'
-import { url } from '@cortezaproject/corteza-vue'
+import { url, components } from '@cortezaproject/corteza-vue'
+const { CInputSearch } = components
 
 export default {
   name: 'UserList',
   components: {
     CUserExportModal,
     CUserImportModal,
+    CInputSearch,
   },
   mixins: [
     listHelpers,
