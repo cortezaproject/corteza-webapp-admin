@@ -100,6 +100,20 @@
         </b-checkbox>
       </b-form-group>
 
+      <b-form-group
+        v-if="issues.length"
+        label="Issues"
+        class="mt-5 text-primary"
+      >
+        <p
+          v-for="issue in issues"
+          :key="issue"
+          class="text-danger"
+        >
+          <code>{{ issue }}</code>
+        </p>
+      </b-form-group>
+
       <!--
         include hidden input to enable
         trigger submit event w/ ENTER
@@ -197,6 +211,12 @@ export default {
       set (url) {
         this.connection.config.connection.params.dsn = url
       },
+    },
+
+    issues () {
+      const { issues = [] } = this.connection
+
+      return issues
     },
 
     deleteStatus () {

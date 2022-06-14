@@ -1,6 +1,6 @@
 <template>
   <b-container
-    class="py-3"
+    class="py-3 h-100"
   >
     <c-content-header
       :title="$t('title')"
@@ -14,17 +14,17 @@
       />
 
       <c-external-connection-list
-        class="mb-4"
+        class="mb-4 flex-fill"
       />
 
-      <c-federated-node-list />
+      <!-- <c-federated-node-list /> -->
     </div>
   </b-container>
 </template>
 <script>
 import CConnectionBasicInfo from 'corteza-webapp-admin/src/components/Connection/CConnectionBasicInfo'
 import CExternalConnectionList from 'corteza-webapp-admin/src/components/Connection/CExternalConnectionList'
-import CFederatedNodeList from 'corteza-webapp-admin/src/components/Connection/CFederatedNodeList'
+// import CFederatedNodeList from 'corteza-webapp-admin/src/components/Connection/CFederatedNodeList'
 
 export default {
   name: 'Connection',
@@ -32,7 +32,7 @@ export default {
   components: {
     CConnectionBasicInfo,
     CExternalConnectionList,
-    CFederatedNodeList,
+    // CFederatedNodeList,
   },
 
   i18nOptions: {
