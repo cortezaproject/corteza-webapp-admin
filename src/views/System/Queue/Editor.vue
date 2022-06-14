@@ -1,5 +1,6 @@
 <template>
   <b-container
+    v-if="queue"
     class="py-3"
   >
     <c-content-header
@@ -60,7 +61,7 @@ export default {
 
   data () {
     return {
-      queue: {},
+      queue: undefined,
 
       consumers: [],
 
@@ -95,6 +96,7 @@ export default {
           this.fetchQueue()
         } else {
           this.queue = {
+            consumer: 'corteza',
             meta: {
               poll_delay: '',
               dispatch_events: false,

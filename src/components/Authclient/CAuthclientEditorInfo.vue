@@ -26,9 +26,9 @@
           v-model="authClient.handle"
           :disabled="authClient.isDefault"
           :placeholder="$t('handle.placeholder-handle')"
-          :state="checkHandle"
+          :state="handleState"
         />
-        <b-form-invalid-feedback :state="checkHandle">
+        <b-form-invalid-feedback :state="handleState">
           {{ $t('handle.invalid-handle-characters') }}
         </b-form-invalid-feedback>
         <template
@@ -78,7 +78,7 @@
       </b-form-group>
 
       <b-form-group
-        v-if="existing"
+        v-if="!fresh"
         :label="$t('secret')"
         label-cols="3"
         class="mb-3"
@@ -257,7 +257,7 @@
             @updateUser="onUpdateUser"
           />
         </b-form-group>
-        <div v-if="existing">
+        <div v-if="!fresh">
           <b-form-group label-cols="3">
             <b-button
               variant="light"
@@ -286,7 +286,8 @@
 curl -X POST {{ curlURL }} \
 -d grant_type=client_credentials \
 -d scope='profile api' \
--u {{ authClient.authClientID }}:{{ secret || 'PLACE-YOUR-CLIENT-SECRET-HERE' }}</pre>
+-u {{ authClient.authClientID }}:{{ secret || 'PLACE-YOUR-CLIENT-SECRET-HERE' }}
+                </pre>
                 <b-button
                   variant="link"
                   class="align-top ml-auto fit-content text-secondary"
@@ -421,7 +422,7 @@ curl -X POST {{ curlURL }} \
       <input
         type="submit"
         class="d-none"
-        :disabled="!isValid"
+        :disabled="saveDisabled"
       >
     </b-form>
 
@@ -434,7 +435,7 @@ curl -X POST {{ curlURL }} \
     <template #footer>
       <c-submit-button
         class="float-right"
-        :disabled="!isValid"
+        :disabled="saveDisabled"
         :processing="processing"
         :success="success"
         @submit="submit"
@@ -463,6 +464,8 @@ curl -X POST {{ curlURL }} \
 </template>
 
 <script>
+import { NoID } from '@cortezaproject/corteza-js'
+import { handleState } from 'corteza-webapp-admin/src/lib/handle'
 import Vue from 'vue'
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
@@ -518,6 +521,11 @@ export default {
       type: Boolean,
       value: false,
     },
+
+    canCreate: {
+      type: Boolean,
+      required: true,
+    },
   },
 
   data () {
@@ -569,24 +577,26 @@ export default {
   },
 
   computed: {
-    existing () {
-      return !!this.authClient.authClientID
+    fresh () {
+      return !this.authClient.authClientID || this.authClient.authClientID === NoID
+    },
+
+    editable () {
+      return this.fresh ? this.canCreate : this.authClient.canUpdateAuthClient
     },
 
     isDeleted () {
       return this.authClient.deletedAt
     },
 
-    isValid () {
-      return !!this.authClient.handle
-    },
-
     secretVisible () {
       return this.secret.length > 0
     },
 
-    checkHandle () {
-      return this.authClient.handle ? /^[A-Za-z][0-9A-Za-z_\-.]*[A-Za-z0-9]$/.test(this.authClient.handle) : null
+    handleState () {
+      const { handle } = this.authClient
+
+      return handle ? handleState(handle) : false
     },
 
     isClientCredentialsGrant () {
@@ -595,6 +605,10 @@ export default {
 
     discoveryEnabled () {
       return this.$Settings.get('discovery.enabled', false)
+    },
+
+    saveDisabled () {
+      return !this.editable || [this.handleState].includes(false)
     },
   },
 

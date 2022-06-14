@@ -25,17 +25,9 @@
       >
         <b-form-input
           v-model="application.name"
+          :state="nameState"
           required
         />
-
-        <!--
-          include hidden input to enable
-          trigger submit event w/ ENTER
-        -->
-        <input
-          type="submit"
-          class="d-none"
-        >
       </b-form-group>
 
       <b-form-group
@@ -85,6 +77,16 @@
           disabled
         />
       </b-form-group>
+
+      <!--
+        include hidden input to enable
+        trigger submit event w/ ENTER
+      -->
+      <input
+        type="submit"
+        class="d-none"
+        :disabled="saveDisabled"
+      >
     </b-form>
 
     <template #header>
@@ -98,7 +100,7 @@
         class="float-right"
         :processing="processing"
         :success="success"
-        :disabled="!canCreate"
+        :disabled="saveDisabled"
         @submit="$emit('submit', application)"
       />
 
@@ -113,6 +115,7 @@
 </template>
 
 <script>
+import { NoID } from '@cortezaproject/corteza-js'
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 
@@ -152,6 +155,23 @@ export default {
   },
 
   computed: {
+    fresh () {
+      return !this.application.applicationID || this.application.applicationID === NoID
+    },
+
+    editable () {
+      return this.fresh ? this.canCreate : this.application.canUpdateApplication
+    },
+
+    saveDisabled () {
+      return !this.editable || [this.nameState].includes(false)
+    },
+
+    nameState () {
+      const { name } = this.application
+      return name ? null : false
+    },
+
     getDeleteStatus () {
       return this.application.deletedAt ? this.$t('undelete') : this.$t('delete')
     },

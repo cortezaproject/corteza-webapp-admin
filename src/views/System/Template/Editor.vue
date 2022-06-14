@@ -1,5 +1,6 @@
 <template>
   <b-container
+    v-if="template"
     class="py-3"
   >
     <c-content-header
@@ -91,7 +92,7 @@ export default {
 
   data () {
     return {
-      template: new system.Template(),
+      template: undefined,
 
       info: {
         processing: false,

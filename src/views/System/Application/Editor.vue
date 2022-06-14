@@ -1,5 +1,6 @@
 <template>
   <b-container
+    v-if="application"
     class="py-3"
   >
     <c-content-header
@@ -81,7 +82,7 @@ export default {
 
   data () {
     return {
-      application: {},
+      application: undefined,
 
       info: {
         processing: false,

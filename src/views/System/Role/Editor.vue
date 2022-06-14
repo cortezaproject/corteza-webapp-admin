@@ -1,5 +1,6 @@
 <template>
   <b-container
+    v-if="role"
     class="py-3"
   >
     <c-content-header
@@ -101,7 +102,7 @@ export default {
 
   data () {
     return {
-      role: {},
+      role: undefined,
       isContext: false,
 
       roleMembers: null,

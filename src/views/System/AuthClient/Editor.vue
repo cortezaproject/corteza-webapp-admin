@@ -1,5 +1,6 @@
 <template>
   <b-container
+    v-if="authclient"
     class="py-3"
   >
     <c-content-header
@@ -30,13 +31,13 @@
     </c-content-header>
 
     <c-authclient-editor-info
-      v-if="authclient"
       :key="authClientID"
       :resource="authclient"
       :processing="info.processing"
       :success="info.success"
-      :can-delete="authclient && authclient.authClientID && !authclient.isDefault && authclient.canDeleteAuthClient"
       :secret="secret"
+      :can-delete="authclient && authclient.authClientID && !authclient.isDefault && authclient.canDeleteAuthClient"
+      :can-create="canCreate"
       @regenerate-secret="onRegenerateSecret"
       @request-secret="onRequestSecret"
       @submit="onSubmit($event)"

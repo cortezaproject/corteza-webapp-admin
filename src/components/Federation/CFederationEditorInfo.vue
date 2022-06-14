@@ -13,18 +13,8 @@
       >
         <b-form-input
           v-model="node.name"
-          :state="!!node.name"
+          :state="nameState"
         />
-
-        <!--
-          include hidden input to enable
-          trigger submit event w/ ENTER
-        -->
-        <input
-          type="submit"
-          class="d-none"
-          :disabled="!isValid"
-        >
       </b-form-group>
 
       <b-form-group
@@ -35,7 +25,7 @@
           v-model="node.baseURL"
           placeholder="https://example.com/federation"
           type="url"
-          :state="isValidURL"
+          :state="urlState"
         />
       </b-form-group>
 
@@ -124,6 +114,16 @@
           disabled
         />
       </b-form-group>
+
+      <!--
+        include hidden input to enable
+        trigger submit event w/ ENTER
+      -->
+      <input
+        type="submit"
+        class="d-none"
+        :disabled="saveDisabled"
+      >
     </b-form>
 
     <template #header>
@@ -135,7 +135,7 @@
     <template #footer>
       <c-submit-button
         class="float-right"
-        :disabled="!isValid"
+        :disabled="saveDisabled"
         :processing="processing"
         :success="success"
         @submit="$emit('submit', node)"
@@ -152,6 +152,7 @@
 </template>
 
 <script>
+import { NoID } from '@cortezaproject/corteza-js'
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 
@@ -183,19 +184,38 @@ export default {
       type: Boolean,
       value: false,
     },
+
+    canCreate: {
+      type: Boolean,
+      value: false,
+    },
   },
 
   computed: {
+    fresh () {
+      return !this.node.nodeID || this.node.nodeID === NoID
+    },
+
+    editable () {
+      return this.fresh ? this.canCreate : this.node.canManageNode
+    },
+
+    saveDisabled () {
+      return !this.editable && [this.nameState, this.urlState].includes(false)
+    },
+
+    nameState () {
+      const { name } = this.node
+      return name ? null : false
+    },
+
+    urlState () {
+      const { baseURL = '' } = this.node
+      return /https?:\/\/*.*\/federation/gm.test(baseURL) ? null : false
+    },
+
     getDeleteStatus () {
       return this.node.deletedAt ? this.$t('undelete') : this.$t('delete')
-    },
-
-    isValid () {
-      return !!this.node.name && this.isValidURL
-    },
-
-    isValidURL () {
-      return /https?:\/\/*.*\/federation/gm.test(this.node.baseURL || '')
     },
   },
 }

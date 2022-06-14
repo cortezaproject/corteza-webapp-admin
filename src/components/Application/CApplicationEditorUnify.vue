@@ -181,19 +181,19 @@ export default {
 
   computed: {
     disabled () {
-      return !this.validConfig
+      return this.validConfig === false
     },
 
     validConfig () {
       if (!this.unify) {
-        return true
+        return null
       }
 
       try {
         if ((this.unify.config || '').trim() !== '') {
           JSON.parse(this.unify.config)
         }
-        return true
+        return null
       } catch (e) {
         return false
       }

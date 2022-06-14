@@ -5,22 +5,21 @@
     <c-content-header
       :title="$t('title')"
     >
-      <b-button-group>
-        <b-button
-          variant="link"
-          :to="{ name: 'federation.nodes.new' }"
-        >
-          {{ $t('new') }}
-        </b-button>
-      </b-button-group>
-      <b-button-group>
-        <b-button
-          variant="link"
-          @click="openPairModal()"
-        >
-          {{ $t('pair.label') }}
-        </b-button>
-      </b-button-group>
+      <b-button
+        v-if="canCreate"
+        variant="primary"
+        class="mr-2"
+        :to="{ name: 'federation.nodes.new' }"
+      >
+        {{ $t('new') }}
+      </b-button>
+
+      <b-button
+        variant="light"
+        @click="openPairModal()"
+      >
+        {{ $t('pair.label') }}
+      </b-button>
     </c-content-header>
 
     <c-resource-list
@@ -155,6 +154,7 @@
 import moment from 'moment'
 import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'FederationList',
@@ -228,6 +228,16 @@ export default {
         label: this.$t(`columns.${c.key}`),
       })),
     }
+  },
+
+  computed: {
+    ...mapGetters({
+      can: 'rbac/can',
+    }),
+
+    canCreate () {
+      return this.can('federation/', 'node.create')
+    },
   },
 
   methods: {

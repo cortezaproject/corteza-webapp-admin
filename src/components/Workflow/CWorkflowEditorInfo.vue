@@ -28,15 +28,6 @@
           v-model="workflow.meta.name"
           required
         />
-
-        <!--
-          include hidden input to enable
-          trigger submit event w/ ENTER
-        -->
-        <input
-          type="submit"
-          class="d-none"
-        >
       </b-form-group>
 
       <b-form-group
@@ -45,8 +36,11 @@
       >
         <b-form-input
           v-model="workflow.handle"
-          :state="checkHandle"
+          :state="handleState"
         />
+        <b-form-invalid-feedback :state="handleState">
+          {{ $t('invalid-handle-characters') }}
+        </b-form-invalid-feedback>
       </b-form-group>
 
       <b-form-group
@@ -109,6 +103,16 @@
           disabled
         />
       </b-form-group>
+
+      <!--
+        include hidden input to enable
+        trigger submit event w/ ENTER
+      -->
+      <input
+        type="submit"
+        class="d-none"
+        :disabled="saveDisabled"
+      >
     </b-form>
 
     <template #header>
@@ -122,12 +126,13 @@
         class="float-right"
         :processing="processing"
         :success="success"
-        :disabled="!canCreate || disabled"
+        :disabled="saveDisabled"
         @submit="$emit('submit', workflow)"
       />
 
       <confirmation-toggle
         v-if="workflow && workflow.workflowID"
+        :disabled="deleteDisabled"
         @confirmed="$emit('delete')"
       >
         {{ getDeleteStatus }}
@@ -137,6 +142,7 @@
 </template>
 
 <script>
+import { handleState } from 'corteza-webapp-admin/src/lib/handle'
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 
@@ -176,21 +182,26 @@ export default {
   },
 
   computed: {
+    editable () {
+      return this.workflow.canUpdateWorkflow
+    },
+
+    handleState () {
+      const { handle } = this.workflow
+
+      return handle ? handleState(handle) : false
+    },
+
+    saveDisabled () {
+      return !this.editable || [this.nameState, this.handleState].includes(false)
+    },
+
+    deleteDisabled () {
+      return !(this.workflow.deletedAt ? this.workflow.canUndeleteWorkflow : this.workflow.canDeleteWorkflow)
+    },
+
     getDeleteStatus () {
       return this.workflow.deletedAt ? this.$t('undelete') : this.$t('delete')
-    },
-
-    disabled () {
-      return !this.checkHandle
-    },
-
-    checkHandle () {
-      const { handle } = this.workflow
-      if (!handle || handle.length === 0 || handle.length > 64) {
-        return null
-      }
-
-      return /^[A-Za-z][0-9A-Za-z_\-.]*[A-Za-z0-9]$/.test(handle)
     },
   },
 

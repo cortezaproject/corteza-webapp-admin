@@ -124,7 +124,7 @@
         class="float-right"
         :processing="processing"
         :success="success"
-        :disabled="!isValidEndpoint || !isValidMethod || !canCreate"
+        :disabled="saveDisabled"
         @submit="$emit('submit', route)"
       />
 
@@ -139,6 +139,7 @@
 </template>
 
 <script>
+import { NoID } from '@cortezaproject/corteza-js'
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 
@@ -184,18 +185,32 @@ export default {
   },
 
   computed: {
+    fresh () {
+      return !this.route.routeID || this.route.routeID === NoID
+    },
+
+    editable () {
+      return this.fresh ? this.canCreate : true // this.route.canUpdateRoute
+    },
+
+    saveDisabled () {
+      return !this.editable || [this.isValidEndpoint].includes(false)
+    },
+
     getDeleteStatus () {
       return this.route.deletedAt ? this.$t('undelete') : this.$t('delete')
     },
+
     isValidEndpoint () {
-      return this.route.endpoint ? /^(\/[\w-]+)+$/.test(this.route.endpoint) : null
+      const { endpoint } = this.route
+
+      return (!!endpoint && /^(\/[\w-]+)+$/.test(endpoint)) ? null : false
     },
+
     startsWithSlash () {
       return this.route.endpoint ? /^\//.test(this.route.endpoint) : null
     },
-    isValidMethod () {
-      return !!this.route.method
-    },
+
     routeEndpointDescription () {
       if (this.isValidEndpoint === false) {
         if (!this.startsWithSlash) {

@@ -23,10 +23,10 @@
       >
         <b-form-input
           v-model="template.handle"
-          :state="checkHandle"
+          :state="handleState"
           :placeholder="$t('placeholder-handle')"
         />
-        <b-form-invalid-feedback :state="checkHandle">
+        <b-form-invalid-feedback :state="handleState">
           {{ $t('invalid-handle-characters') }}
         </b-form-invalid-feedback>
       </b-form-group>
@@ -94,6 +94,16 @@
       >
         {{ template.lastUsedAt }}
       </b-form-group>
+
+      <!--
+        include hidden input to enable
+        trigger submit event w/ ENTER
+      -->
+      <input
+        type="submit"
+        class="d-none"
+        :disabled="saveDisabled"
+      >
     </b-form>
 
     <template #header>
@@ -107,7 +117,7 @@
         class="float-right"
         :processing="processing"
         :success="success"
-        :disabled="disabled || !canCreate"
+        :disabled="saveDisabled"
         @submit="$emit('submit', template)"
       />
 
@@ -122,6 +132,8 @@
 </template>
 
 <script>
+import { NoID } from '@cortezaproject/corteza-js'
+import { handleState } from 'corteza-webapp-admin/src/lib/handle'
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 
@@ -172,6 +184,24 @@ export default {
   computed: {
     disabled () {
       return !this.checkHandle
+    },
+
+    fresh () {
+      return !this.template.templateID || this.template.templateID === NoID
+    },
+
+    editable () {
+      return this.fresh ? this.canCreate : true // this.template.canUpdateRole
+    },
+
+    handleState () {
+      const { handle } = this.template
+
+      return handle ? handleState(handle) : false
+    },
+
+    saveDisabled () {
+      return !this.editable || [this.handleState].includes(false)
     },
 
     // 2+ alpha-numeric + _

@@ -1,5 +1,6 @@
 <template>
   <b-container
+    v-if="user"
     class="py-3"
   >
     <c-content-header
@@ -42,6 +43,7 @@
       :user="user"
       :processing="info.processing"
       :success="info.success"
+      :can-create="canCreate"
       @submit="onInfoSubmit"
       @delete="onDelete"
       @status="onStatusChange"
@@ -114,7 +116,7 @@ export default {
 
   data () {
     return {
-      user: {},
+      user: undefined,
       membership: {
         active: [],
         original: [],

@@ -21,6 +21,7 @@
       :node="node"
       :processing="info.processing"
       :success="info.success"
+      :can-create="canCreate"
       @submit="onInfoSubmit"
       @delete="onDelete"
     />
@@ -126,6 +127,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CFederationEditorInfo from 'corteza-webapp-admin/src/components/Federation/CFederationEditorInfo'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
@@ -174,6 +176,14 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      can: 'rbac/can',
+    }),
+
+    canCreate () {
+      return this.can('federation/', 'node.create')
+    },
+
     userLabel () {
       return this.$auth.user.name || this.$auth.user.email
     },

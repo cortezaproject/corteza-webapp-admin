@@ -6,22 +6,25 @@
   >
     <b-form @submit="$emit('submit', queue)">
       <b-form-group
+        :label="$t('name')"
+        label-cols="2"
+      >
+        <b-form-input
+          v-model="queue.queue"
+          :state="handleState"
+        />
+        <b-form-invalid-feedback :state="handleState">
+          {{ $t('invalid-handle-characters') }}
+        </b-form-invalid-feedback>
+      </b-form-group>
+
+      <b-form-group
         :label="$t('consumer')"
         label-cols="2"
       >
         <b-form-select
           v-model="queue.consumer"
           :options="consumers"
-        />
-      </b-form-group>
-
-      <b-form-group
-        :label="$t('name')"
-        label-cols="2"
-      >
-        <b-form-input
-          v-model="queue.queue"
-          :state="isValidSlug"
         />
       </b-form-group>
 
@@ -33,7 +36,7 @@
         <b-form-input
           v-model="(queue.meta || {}).poll_delay"
           class="col-xs-2 col-lg-2"
-          :state="isValidDuration"
+          :state="durationState"
         />
       </b-form-group>
 
@@ -87,7 +90,7 @@
         class="float-right"
         :processing="processing"
         :success="success"
-        :disabled="!formValid || !canCreate"
+        :disabled="saveDisabled"
         @submit="$emit('submit', queue)"
       />
 
@@ -102,6 +105,8 @@
 </template>
 
 <script>
+import { NoID } from '@cortezaproject/corteza-js'
+import { handleState } from 'corteza-webapp-admin/src/lib/handle'
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 
@@ -146,33 +151,32 @@ export default {
   },
 
   computed: {
-    getDeleteStatus () {
-      return this.queue.deletedAt ? this.$t('undelete') : this.$t('delete')
+    fresh () {
+      return !this.queue.queueID || this.queue.queueID === NoID
     },
 
-    isValidDuration () {
+    editable () {
+      return this.fresh ? this.canCreate : true // this.queue.canUpdateQueue
+    },
+
+    saveDisabled () {
+      return !this.editable || [this.durationState, this.handleState].includes(false)
+    },
+
+    durationState () {
       let pd = (this.queue.meta || {}).poll_delay || ''
       let m = pd.match(/^((\d+h)?(\d+m)?(\d+s)?)|(\s)$/g)
 
       if (m.length && m[0] === pd) {
-        return true
+        return null
       }
 
       return false
     },
 
-    isValidSlug () {
-      return this.queue.queue ? /^[A-Za-z][0-9A-Za-z_\-.]*[A-Za-z0-9]$/.test(this.queue.queue) : null
-    },
-
-    isValidConsumer () {
-      return !!this.queue.consumer
-    },
-
-    formValid () {
-      return this.isValidDuration &&
-        this.isValidSlug &&
-        this.isValidConsumer
+    handleState () {
+      const { queue = '' } = this.queue
+      return queue ? handleState(queue) : false
     },
 
     isMetaPollDelay () {
@@ -185,6 +189,10 @@ export default {
 
     isMetaDispatchEvents () {
       return ((this.queue || {}).meta || {}).dispatch_events === null
+    },
+
+    getDeleteStatus () {
+      return this.queue.deletedAt ? this.$t('undelete') : this.$t('delete')
     },
   },
 

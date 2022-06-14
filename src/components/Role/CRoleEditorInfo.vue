@@ -13,7 +13,7 @@
       >
         <b-form-input
           v-model="role.name"
-          :state="checkName"
+          :state="nameState"
           :disabled="!editable"
         />
       </b-form-group>
@@ -24,11 +24,11 @@
       >
         <b-form-input
           v-model="role.handle"
-          :state="checkHandle"
+          :state="handleState"
           :disabled="!editable"
           :placeholder="$t('placeholder-handle')"
         />
-        <b-form-invalid-feedback :state="checkHandle">
+        <b-form-invalid-feedback :state="handleState">
           {{ $t('invalid-handle-characters') }}
         </b-form-invalid-feedback>
       </b-form-group>
@@ -136,6 +136,7 @@
       <input
         type="submit"
         class="d-none"
+        :disabled="saveDisabled"
       >
     </b-form>
 
@@ -150,7 +151,7 @@
         class="float-right"
         :processing="processing"
         :success="success"
-        :disabled="disabled || !editable"
+        :disabled="saveDisabled"
         @submit="submit()"
       />
 
@@ -175,6 +176,7 @@
 
 <script>
 import { system, NoID } from '@cortezaproject/corteza-js'
+import { handleState } from 'corteza-webapp-admin/src/lib/handle'
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 
@@ -229,8 +231,8 @@ export default {
       },
     },
 
-    disabled () {
-      return this.checkHandle === false || this.checkName === false
+    saveDisabled () {
+      return !this.editable || [this.nameState, this.handleState].includes(false)
     },
 
     /**
@@ -246,13 +248,16 @@ export default {
     },
 
     // At least 1 character
-    checkName () {
-      return this.editable && this.role.name ? /^.+$/.test(this.role.name) : null
+    nameState () {
+      const { name } = this.role
+      return name ? null : false
     },
 
     // 2+ alpha-numeric + _
-    checkHandle () {
-      return this.editable && this.role.handle ? /^[A-Za-z][0-9A-Za-z_\-.]*[A-Za-z0-9]$/.test(this.role.handle) : null
+    handleState () {
+      const { handle } = this.role
+
+      return handle ? handleState(handle) : false
     },
 
     getDeleteStatus () {

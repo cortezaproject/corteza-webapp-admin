@@ -14,6 +14,7 @@
         <b-form-input
           v-model="user.email"
           required
+          :state="emailState"
           type="email"
         />
       </b-form-group>
@@ -36,9 +37,9 @@
         <b-form-input
           v-model="user.handle"
           :placeholder="$t('placeholder-handle')"
-          :state="checkHandle"
+          :state="handleState"
         />
-        <b-form-invalid-feedback :state="checkHandle">
+        <b-form-invalid-feedback :state="handleState">
           {{ $t('invalid-handle-characters') }}
         </b-form-invalid-feedback>
       </b-form-group>
@@ -99,6 +100,7 @@
       <input
         type="submit"
         class="d-none"
+        :disabled="saveDisabled"
       >
     </b-form>
 
@@ -113,6 +115,7 @@
         class="float-right"
         :processing="processing"
         :success="success"
+        :disabled="saveDisabled"
         @submit="$emit('submit', user)"
       />
 
@@ -143,7 +146,7 @@
       </confirmation-toggle>
 
       <b-button
-        v-if="isExisting && !user.emailConfirmed"
+        v-if="!fresh && !user.emailConfirmed"
         variant="light"
         class="ml-1"
         @click="$emit('patch', '/emailConfirmed', true)"
@@ -164,9 +167,10 @@
 </template>
 
 <script>
+import { NoID } from '@cortezaproject/corteza-js'
+import { handleState } from 'corteza-webapp-admin/src/lib/handle'
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
-import { NoID } from '@cortezaproject/corteza-js'
 
 export default {
   name: 'CUserEditorInfo',
@@ -196,6 +200,11 @@ export default {
       type: Boolean,
       value: false,
     },
+
+    canCreate: {
+      type: Boolean,
+      required: true,
+    },
   },
 
   computed: {
@@ -207,18 +216,34 @@ export default {
       return this.user.suspendedAt ? this.$t('unsuspend') : this.$t('suspend')
     },
 
-    isExisting () {
-      return this.user && this.user.userID && this.user.userID !== NoID
-    },
-
     userID () {
       if (this.$auth.user) {
         return this.$auth.user.userID
       }
       return undefined
     },
-    checkHandle () {
-      return this.user.handle ? /^[A-Za-z][0-9A-Za-z_\-.]*[A-Za-z0-9]$/.test(this.user.handle) : null
+
+    fresh () {
+      return !this.user.userID || this.user.userID === NoID
+    },
+
+    editable () {
+      return this.fresh ? this.canCreate : true // this.user.canUpdateUser
+    },
+
+    emailState () {
+      const { email } = this.user
+      return email ? null : false
+    },
+
+    handleState () {
+      const { handle } = this.user
+
+      return handle ? handleState(handle) : false
+    },
+
+    saveDisabled () {
+      return !this.editable || [this.nameState, this.handleState].includes(false)
     },
   },
 }
