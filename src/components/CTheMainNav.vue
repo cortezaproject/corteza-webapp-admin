@@ -123,7 +123,7 @@ export default {
               label: 'system.items.connections',
               route: 'system.connection',
               icon: 'cloud',
-              // can: ['system/', 'data-sources.search'],
+              can: ['system/', 'dal-connections.search'],
             },
           ],
         },
