@@ -107,6 +107,10 @@ export default {
             sensitivityLevel: '0',
 
             config: {
+              defaultModelIdent: 'compose_record',
+              defaultAttributeIdent: 'values',
+              defaultPartitionFormat: 'compose_record_{{namespace}}_{{module}}',
+              partitionFormatValidator: '',
               connection: {
                 type: 'corteza::dal:connection:dsn',
                 params: {
