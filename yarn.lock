@@ -675,10 +675,10 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@cortezaproject/corteza-js@^2022.3.4":
-  version "2022.3.4"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2022.3.4.tgz#b094065a98af94add80d28bd31c456d9455a4244"
-  integrity sha512-G+mHR6JRtsenFJFY0t/2OU5XQofoogXWdFV5TZPMSU3ovswc27ycyysOHdAMNcRpEfn3BipbHZiNld8YFgRaug==
+"@cortezaproject/corteza-js@^2022.9.0-dev.1":
+  version "2022.9.0-dev.1"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2022.9.0-dev.1.tgz#2ec9005f42c1e55756dcb10775ac0ec352997f6c"
+  integrity sha512-mr1kEvoFnFQWL2PJvJnpYIwM8dH7EWusJzZ020Eah84JqOXMNgFTIV0lqtUMMz8scb9x/wV4QebUhj/qsF2Bsg==
   dependencies:
     axios "^0.21.1"
     chart.js "2.9.3"
@@ -690,12 +690,12 @@
     numeral "^2.0.6"
     pino "^5.16.0"
 
-"@cortezaproject/corteza-vue@^2022.3.4":
-  version "2022.3.4"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2022.3.4.tgz#e726b80813500e1cb9764daf9d58f2c49476a02b"
-  integrity sha512-8CdWfHYPNinFd0doXmZq/P01HXvJWS/mwOeTm4ruwXi+BNwkrvUxRdvhRHDNCoIvpD0JWClvyXHtwKraA9shmw==
+"@cortezaproject/corteza-vue@^2022.3.4-rc.3":
+  version "2022.3.4-rc.3"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2022.3.4-rc.3.tgz#3415b0bbc35f7d5724a4117ec729c6e22b1f7d39"
+  integrity sha512-0uZX1pNwpiIF299wZpGS/5anApUl5tW0VHcTimSRGqL+jMho1/WHOB9yfUuNfBceyqft8Tsq7T1m6oFLyKjNew==
   dependencies:
-    "@cortezaproject/corteza-js" "^2022.3.4"
+    "@cortezaproject/corteza-js" "^2022.3.4-rc.2"
     "@fortawesome/fontawesome-svg-core" "^1.2.26"
     "@fortawesome/free-solid-svg-icons" "^5.12.0"
     "@fortawesome/vue-fontawesome" "^0.1.9"
@@ -6270,6 +6270,7 @@ leaflet@^1.7.1:
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.7.1.tgz#10d684916edfe1bf41d688a3b97127c0322a2a19"
   integrity sha512-/xwPEBidtg69Q3HlqPdU3DnrXQOvQU/CCHA1tcDQVzOwm91YMYaILjNp7L4Eaw5Z4sOYdbBz6koWyibppd8Zqw==
+
 leven@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/leven/-/leven-2.1.0.tgz#c2e7a9f772094dee9d34202ae8acce4687875580"
