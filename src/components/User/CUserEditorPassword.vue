@@ -114,7 +114,7 @@ export default {
     return {
       password: '',
       confirmPassword: '',
-      minPasswordLength: 5,
+      minPasswordLength: this.$Settings.get('auth.internal.passwordConstraints.minLength', 8),
     }
   },
 

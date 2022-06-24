@@ -77,6 +77,7 @@
         <b-form-input
           v-model="settings['auth.internal.password-constraints.min-length']"
           :placeholder="`${defaultMinPwd}`"
+          :min="defaultMinPwd"
           type="number"
         />
       </b-form-group>
@@ -89,6 +90,7 @@
         <b-form-input
           v-model="settings['auth.internal.password-constraints.min-num-count']"
           placeholder="0"
+          min="0"
           type="number"
         />
       </b-form-group>
@@ -101,6 +103,7 @@
         <b-form-input
           v-model="settings['auth.internal.password-constraints.min-special-count']"
           placeholder="0"
+          min="0"
           type="number"
         />
       </b-form-group>
