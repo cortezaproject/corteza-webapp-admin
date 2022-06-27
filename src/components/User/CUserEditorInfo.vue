@@ -1,6 +1,7 @@
 <template>
   <b-card
     class="shadow-sm"
+    data-test-id="card-user-info"
     header-bg-variant="white"
     footer-bg-variant="white"
   >
@@ -13,6 +14,7 @@
       >
         <b-form-input
           v-model="user.email"
+          data-test-id="input-email"
           required
           :state="emailState"
           type="email"
@@ -25,6 +27,7 @@
       >
         <b-form-input
           v-model="user.name"
+          data-test-id="input-name"
           required
         />
       </b-form-group>
@@ -36,6 +39,7 @@
       >
         <b-form-input
           v-model="user.handle"
+          data-test-id="input-handle"
           :placeholder="$t('placeholder-handle')"
           :state="handleState"
         />
@@ -50,6 +54,7 @@
         label-cols="2"
       >
         <b-form-input
+          data-test-id="input-updated-at"
           :value="user.updatedAt | locFullDateTime"
           plaintext
           disabled
@@ -87,6 +92,7 @@
         class="mb-0"
       >
         <b-form-input
+          data-test-id="input-created-at"
           :value="user.createdAt | locFullDateTime"
           plaintext
           disabled
@@ -121,6 +127,7 @@
 
       <confirmation-toggle
         v-if="user && user.userID"
+        data-test-id="button-delete"
         @confirmed="$emit('delete')"
       >
         {{ getDeleteStatus }}
@@ -128,6 +135,7 @@
 
       <confirmation-toggle
         v-if="user && user.userID"
+        data-test-id="button-status"
         class="ml-1"
         cta-class="light"
         @confirmed="$emit('status')"
@@ -137,6 +145,7 @@
 
       <confirmation-toggle
         v-if="user && user.userID"
+        data-test-id="button-sessions-revoke"
         :disabled="user.userID === userID"
         class="ml-1"
         cta-class="secondary"

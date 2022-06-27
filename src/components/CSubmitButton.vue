@@ -1,5 +1,6 @@
 <template>
   <b-button
+    data-test-id="button-submit"
     type="submit"
     :variant="variant"
     :disabled="disabled || processing || success"

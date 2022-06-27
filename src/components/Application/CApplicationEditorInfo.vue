@@ -1,6 +1,7 @@
 <template>
   <b-card
     class="shadow-sm"
+    data-test-id="card-application-info"
     header-bg-variant="white"
     footer-bg-variant="white"
   >
@@ -14,6 +15,7 @@
       >
         <b-form-input
           v-model="application.applicationID"
+          data-test-id="input-application-id"
           plaintext
           disabled
         />
@@ -25,6 +27,7 @@
       >
         <b-form-input
           v-model="application.name"
+          data-test-id="input-name"
           :state="nameState"
           required
         />
@@ -36,6 +39,7 @@
       >
         <b-form-checkbox
           v-model="application.enabled"
+          data-test-id="checkbox-enabled"
         >
           {{ $t('enabled') }}
         </b-form-checkbox>
@@ -48,6 +52,7 @@
       >
         <b-form-input
           v-model="application.updatedAt"
+          data-test-id="input-updated-at"
           plaintext
           disabled
         />
@@ -73,6 +78,7 @@
       >
         <b-form-input
           v-model="application.createdAt"
+          data-test-id="input-created-at"
           plaintext
           disabled
         />
@@ -106,6 +112,7 @@
 
       <confirmation-toggle
         v-if="application && application.applicationID"
+        data-test-id="button-delete"
         @confirmed="$emit('delete')"
       >
         {{ getDeleteStatus }}

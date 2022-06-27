@@ -11,6 +11,7 @@
       >
         <b-button
           v-if="roleID && canCreate"
+          data-test-id="button-new-role"
           variant="primary"
           class="mr-2"
           :to="{ name: 'system.role.new' }"

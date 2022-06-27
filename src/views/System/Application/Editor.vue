@@ -11,6 +11,7 @@
       >
         <b-button
           v-if="applicationID && canCreate"
+          data-test-id="button-new-application"
           variant="primary"
           :to="{ name: 'system.application.new' }"
         >

@@ -11,6 +11,7 @@
       >
         <b-button
           v-if="templateID && canCreate"
+          data-test-id="button-new-template"
           variant="primary"
           class="mr-2"
           :to="{ name: 'system.template.new' }"

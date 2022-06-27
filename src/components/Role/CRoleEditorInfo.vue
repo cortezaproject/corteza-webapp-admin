@@ -1,6 +1,7 @@
 <template>
   <b-card
     class="shadow-sm"
+    data-test-id="card-role-info"
     header-bg-variant="white"
     footer-bg-variant="white"
   >
@@ -13,6 +14,7 @@
       >
         <b-form-input
           v-model="role.name"
+          data-test-id="input-name"
           :state="nameState"
           :disabled="!editable"
         />
@@ -24,6 +26,7 @@
       >
         <b-form-input
           v-model="role.handle"
+          data-test-id="input-handle"
           :state="handleState"
           :disabled="!editable"
           :placeholder="$t('placeholder-handle')"
@@ -40,6 +43,7 @@
       >
         <b-form-textarea
           v-model="role.meta.description"
+          data-test-id="textarea-description"
           :disabled="!editable"
         />
       </b-form-group>
@@ -52,6 +56,7 @@
         >
           <b-form-checkbox
             v-model="isContextual"
+            data-test-id="checkbox-is-contextual"
             :disabled="!editable"
           >
             {{ $t('context.label') }}
@@ -86,6 +91,7 @@
         label-cols="2"
       >
         <b-form-input
+          data-test-id="input-updated-at"
           :value="role.updatedAt | locFullDateTime"
           plaintext
           disabled
@@ -123,6 +129,7 @@
         class="mb-0"
       >
         <b-form-input
+          data-test-id="input-created-at"
           :value="role.createdAt | locFullDateTime"
           plaintext
           disabled
@@ -157,6 +164,7 @@
 
       <confirmation-toggle
         v-if="!fresh && editable"
+        data-test-id="button-delete"
         @confirmed="$emit('delete')"
       >
         {{ getDeleteStatus }}
@@ -164,6 +172,7 @@
 
       <confirmation-toggle
         v-if="!fresh && editable"
+        data-test-id="button-status"
         class="ml-2"
         cta-class="secondary"
         @confirmed="$emit('status')"

@@ -1,6 +1,7 @@
 <template>
   <b-card
     class="shadow-sm"
+    data-test-id="card-template-info"
     header-bg-variant="white"
     footer-bg-variant="white"
   >
@@ -13,6 +14,7 @@
       >
         <b-form-input
           v-model="template.meta.short"
+          data-test-id="input-short-name"
         />
       </b-form-group>
 
@@ -23,6 +25,7 @@
       >
         <b-form-input
           v-model="template.handle"
+          data-test-id="input-handle"
           :state="handleState"
           :placeholder="$t('placeholder-handle')"
         />
@@ -37,6 +40,7 @@
       >
         <b-form-textarea
           v-model="template.meta.description"
+          data-test-id="textarea-description"
         />
       </b-form-group>
 
@@ -46,6 +50,7 @@
       >
         <b-form-select
           v-model="template.type"
+          data-test-id="select-template-type"
           :options="contentTypes"
         />
       </b-form-group>
@@ -57,6 +62,7 @@
       >
         <b-form-checkbox
           v-model="template.partial"
+          data-test-id="checkbox-is-partial-template"
           name="checkbox-1"
         >
           {{ $t('partial') }}
@@ -65,6 +71,7 @@
 
       <b-form-group
         v-if="template.createdAt"
+        data-test-id="input-created-at"
         :label="$t('createdAt')"
         label-cols="2"
       >
@@ -73,6 +80,7 @@
 
       <b-form-group
         v-if="template.updatedAt"
+        data-test-id="input-updated-at"
         :label="$t('updatedAt')"
         label-cols="2"
       >
@@ -123,6 +131,7 @@
 
       <confirmation-toggle
         v-if="!fresh"
+        data-test-id="button-delete"
         @confirmed="$emit('delete')"
       >
         {{ getDeleteStatus }}

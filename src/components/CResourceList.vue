@@ -111,6 +111,7 @@
         </b-button>
         <b-button
           :disabled="hasPrevPage"
+          data-test-id="button-previous-page"
           variant="link"
           class="text-dark"
           @click="goToPage('prevPage')"
@@ -120,6 +121,7 @@
         </b-button>
         <b-button
           :disabled="hasNextPage"
+          data-test-id="button-next-page"
           variant="link"
           class="text-dark"
           @click="goToPage('nextPage')"

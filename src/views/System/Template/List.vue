@@ -10,6 +10,7 @@
       >
         <b-button
           v-if="canCreate"
+          data-test-id="button-new-template"
           variant="primary"
           class="mr-2"
           :to="{ name: 'system.template.new' }"
@@ -61,6 +62,7 @@
           <b-input-group>
             <b-form-input
               v-model.trim="filter.handle"
+              data-test-id="input-search"
               :placeholder="$t('filterForm.handle.placeholder')"
               @keyup="filterList"
             />

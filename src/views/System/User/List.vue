@@ -10,6 +10,7 @@
       >
         <b-button
           variant="primary"
+          data-test-id="button-new-user"
           class="mr-2 float-left"
           :to="{ name: 'system.user.new' }"
         >

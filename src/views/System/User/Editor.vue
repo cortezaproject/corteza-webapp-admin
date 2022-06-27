@@ -12,6 +12,7 @@
       >
         <b-button
           v-if="canCreate"
+          data-test-id="button-new-user"
           variant="primary"
           class="mr-2"
           :to="{ name: 'system.user.new' }"
