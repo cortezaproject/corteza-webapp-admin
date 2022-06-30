@@ -152,7 +152,8 @@ export default {
         if (this.roleID) {
           this.fetchRole()
         } else {
-          this.role = {}
+          this.role = new system.Role()
+          this.isContext = false
         }
       },
     },
@@ -179,6 +180,7 @@ export default {
       this.$SystemAPI.roleRead({ roleID: this.roleID })
         .then(r => {
           this.role = new system.Role(r)
+          this.isContext = !!this.role.isContext
 
           if (this.role.canManageMembersOnRole && !this.role.isContext && !this.role.isClosed) {
             return this.$SystemAPI.roleMemberList(r).then((mm = []) => {
