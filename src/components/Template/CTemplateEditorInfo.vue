@@ -122,7 +122,7 @@
       />
 
       <confirmation-toggle
-        v-if="template && template.templateID"
+        v-if="!fresh"
         @confirmed="$emit('delete')"
       >
         {{ getDeleteStatus }}
