@@ -1,14 +1,15 @@
 <template>
   <b-container
-    class="py-3"
+    fluid
+    class="d-flex flex-column h-100 py-3"
   >
     <c-content-header
       :title="$t('ui.title.system')"
     />
 
     <c-permission-list
-      :roles="roles"
-      :roles-excluded="rolesExcluded"
+      :roles="sortedRoles"
+      :all-roles="allRoles"
       :permissions="permissions"
       :role-permissions="rolePermissions"
       :can-grant="canGrant"
@@ -16,6 +17,7 @@
       :processing="permission.processing"
       :success="permission.success"
       component="system"
+      class="flex-fill"
       @submit="onSubmit"
       @add="addRole"
       @hide="hideRole"
