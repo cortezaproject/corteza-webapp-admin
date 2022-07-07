@@ -1,5 +1,6 @@
 <template>
   <b-container
+    fluid
     class="py-3"
   >
     <c-content-header
@@ -7,8 +8,8 @@
     />
 
     <c-permission-list
-      :roles="roles"
-      :roles-excluded="rolesExcluded"
+      :roles="sortedRoles"
+      :all-roles="allRoles"
       :permissions="permissions"
       :role-permissions="rolePermissions"
       :can-grant="canGrant"
