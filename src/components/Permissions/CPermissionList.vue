@@ -1,125 +1,71 @@
 <template>
   <div>
     <b-card
-      class="shadow-sm"
-      body-class="py-0 px-3"
+      class="shadow h-100"
+      header-class="p-0"
+      body-class="overflow-auto p-0"
       header-bg-variant="white"
       footer-bg-variant="white"
     >
-      <div
+      <template
         v-if="loaded && canGrant"
+        #header
       >
         <b-row
-          class="text-center"
+          no-gutters
+          align-v="stretch"
+          class="border-bottom"
         >
           <b-col
-            class="border-bottom py-2"
             cols="4"
-          />
+            class="text-left p-3"
+          >
+            <small>
+              {{ $t('ui.click-on-cell-to-allow') }}
+              <br>
+              {{ $t('ui.alt-click-to-deny') }}
+            </small>
+          </b-col>
           <b-col
             v-for="role in roles"
-            :key="role.roleID"
-            class="border-bottom border-left py-2 overflow-hidden text-nowrap"
+            :key="role.ID"
+            class="d-flex flex-column align-items-center justify-content-center pointer hide-role border-left p-3 overflow-hidden"
+            @click="onHideRole(role)"
           >
-            <div
-              class="text-truncate"
+            <label
+              v-for="(n, index) in role.name"
+              :key="index"
+              :title="n"
+              class="pointer text-center text-primary text-break mb-1"
             >
-              {{ role.name }}
-            </div>
-            <b-button
-              variant="link"
-              class="hide-role text-light text-decoration-none py-0"
-              @click="onHideRole(role)"
-            >
-              <font-awesome-icon
-                :icon="['fas', 'plus']"
-                class="rotate"
-              />
-            </b-button>
+              {{ n }}
+            </label>
+            <font-awesome-icon
+              :icon="['fas', 'plus']"
+              class="text-light rotate"
+            />
           </b-col>
           <b-col
             v-if="roles.length < 8"
-            class="border-bottom border-left py-2 overflow-hidden text-nowrap"
+            v-b-modal.add
+            class="d-flex flex-column align-items-center justify-content-center border-left p-3 overflow-hidden"
           >
-            <div
-              class="text-truncate"
+            <label
+              class="pointer text-center text-primary text-break mb-1"
             >
-              {{ $t('ui.role.add') }}
-            </div>
-            <b-button
-              v-b-modal.addRole
-              variant="link"
-              class="text-primary text-truncate text-decoration-none py-0"
-            >
-              <font-awesome-icon
-                :icon="['fas', 'plus']"
-                class="d-block ml-auto mr-auto"
-              />
-            </b-button>
+              {{ $t('ui.add.label') }}
+            </label>
+            <font-awesome-icon
+              :icon="['fas', 'plus']"
+              class="text-success"
+            />
           </b-col>
         </b-row>
-        <div
-          v-for="type in sortedPermissions"
-          :key="type"
-        >
-          <b-row
-            class="bg-secondary"
-          >
-            <b-col
-              cols="4"
-              class="py-2 text-left font-weight-bold"
-            >
-              {{ getTranslation(type) }}
-            </b-col>
-            <b-col
-              v-for="role in roles"
-              :key="role.roleID"
-              class="py-2 not-allowed"
-            />
-          </b-row>
-          <b-row
-            v-for="operation in permissions[type].ops"
-            :key="operation"
-            class="text-center"
-          >
-            <b-col
-              class="border-bottom text-left py-2 text-truncate"
-              cols="4"
-            >
-              <span :title="getTranslation(type, operation)">{{ getTranslation(type, operation) }}</span>
-            </b-col>
-            <b-col
-              v-for="role in roles"
-              :key="role.roleID"
-              class="border-bottom border-left py-2 pointer active-cell"
-              :class="{
-                'not-allowed bg-light': role.roleID.includes('-'),
-                'bg-warning': checkChange(role.roleID, permissions[type].any, operation)
-              }"
-              @click="ruleChange($event, role.roleID, permissions[type].any, operation)"
-            >
-              <font-awesome-icon
-                v-if="checkRule(role.roleID, permissions[type].any, operation, 'allow')"
-                :icon="['fas', 'check']"
-                class="text-success"
-              />
-              <font-awesome-icon
-                v-if="checkRule(role.roleID, permissions[type].any, operation, 'deny')"
-                :icon="['fas', 'times']"
-                class="text-danger"
-              />
-            </b-col>
-            <b-col
-              v-if="roles.length < 8"
-              class="border-bottom border-left py-2 not-allowed bg-light"
-            />
-          </b-row>
-        </div>
-      </div>
+      </template>
 
       <div
-        v-else
-        class="text-center m-5"
+        v-if="!loaded || !canGrant"
+        class="d-flex align-items-center justify-content-center h-100 pb-4"
       >
         <div
           v-if="!loaded"
@@ -139,41 +85,158 @@
         </div>
       </div>
 
+      <template v-else>
+        <div
+          v-for="(type, i) in sortedPermissions"
+          :key="type"
+        >
+          <b-row
+            class="bg-light border-bottom text-primary"
+            align-v="stretch"
+            no-gutters
+          >
+            <b-col
+              cols="4"
+              align-self="center"
+              class="p-3 text-left"
+            >
+              <span class="h-100 h6 mb-0">
+                {{ getTranslation(type) }}
+              </span>
+            </b-col>
+            <b-col
+              v-for="role in roles"
+              :key="role.ID"
+              class="overflow-hidden p-3 text-center border-left not-allowed"
+            >
+              <p
+                v-if="i === 0"
+                :title="role.mode === 'edit' ? $t('ui.edit.title') : $t('ui.evaluate.title')"
+                class="mb-0"
+              >
+                {{ role.mode === 'edit' ? $t('ui.edit.title') : $t('ui.evaluate.title') }}
+              </p>
+            </b-col>
+            <b-col
+              class="p-3 border-left not-allowed"
+            />
+          </b-row>
+          <b-row
+            v-for="operation in permissions[type].ops"
+            :key="operation"
+            no-gutters
+            class="text-center"
+          >
+            <b-col
+              class="border-bottom text-left p-3"
+              cols="4"
+            >
+              <span :title="getTranslation(type, operation)">{{ getTranslation(type, operation) }}</span>
+            </b-col>
+            <b-col
+              v-for="role in roles"
+              :key="role.ID"
+              class="border-bottom border-left p-3 pointer active-cell h5 mb-0"
+              :class="{
+                'not-allowed bg-extra-light': role.mode === 'eval',
+                'bg-warning': checkChange(role.ID, permissions[type].any, operation)
+              }"
+              @click="ruleChange($event, role.ID, permissions[type].any, operation)"
+            >
+              <font-awesome-icon
+                v-if="checkRule(role.ID, permissions[type].any, operation, 'allow')"
+                :icon="['fas', 'check']"
+                class="text-success"
+              />
+              <font-awesome-icon
+                v-if="checkRule(role.ID, permissions[type].any, operation, 'deny')"
+                :icon="['fas', 'times']"
+                class="text-danger"
+              />
+            </b-col>
+            <b-col
+              v-if="roles.length < 8"
+              class="border-bottom border-left p-3 not-allowed bg-extra-light"
+            />
+          </b-row>
+        </div>
+      </template>
+
       <template
         v-if="loaded && canGrant"
         #footer
       >
-        <small class="float-left text-primary">
-          {{ $t('ui.click-on-cell-to-allow') }}
-          <br>
-          {{ $t('ui.alt-click-to-deny') }}
-        </small>
         <c-submit-button
           class="float-right"
           :processing="processing"
           :success="success"
           @submit="onSubmit"
         >
-          {{ $t('ui.save-changes') }}
+          {{ $t('ui.save') }}
         </c-submit-button>
       </template>
     </b-card>
 
     <b-modal
-      id="addRole"
-      :title="$t('ui.role.add')"
-      :ok-only="true"
-      :ok-title="$t('ui.role.add-new')"
-      @ok="onAddRole"
+      id="add"
+      title="Edit or evaluate permissions"
+      centered
+      ok-only
+      :ok-title="$t('ui.add.save')"
+      :ok-disabled="!addEnabled"
+      @ok="onAdd"
     >
-      <vue-select
-        key="roleID"
-        v-model="newRole"
-        :options="rolesExcluded"
-        label="name"
-        class="bg-white"
-        :placeholder="$t('ui.role.no-role-selected')"
-      />
+      <b-form-group>
+        <b-form-radio-group
+          v-model="add.mode"
+          :options="modeOptions"
+          buttons
+          button-variant="outline-primary"
+          class="mode rounded w-100"
+        />
+      </b-form-group>
+
+      <p>
+        {{ addModeDescription }}
+      </p>
+
+      <b-form-group
+        :label="$t('ui.add.role.label')"
+        label-class="text-primary"
+        class="mb-0"
+      >
+        <vue-select
+          key="roleID"
+          v-model="add.roleID"
+          :options="availableRoles"
+          :multiple="add.mode === 'eval'"
+          label="name"
+          clearable
+          :disabled="add.mode === 'eval' && !!add.userID"
+          :placeholder="$t('ui.add.role.placeholder')"
+          class="bg-white"
+        />
+      </b-form-group>
+
+      <b-form-group
+        v-if="add.mode === 'eval'"
+        :label="$t('ui.add.user.label')"
+        label-class="text-primary"
+        class="mt-3 mb-0"
+      >
+        <vue-select
+          key="userID"
+          v-model="add.userID"
+          :disabled="!!add.roleID.length"
+          :options="userOptions"
+          :get-option-label="getUserLabel"
+          label="name"
+          clearable
+          :placeholder="$t('ui.add.user.placeholder')"
+          class="bg-white"
+          @search="searchUsers"
+        />
+      </b-form-group>
     </b-modal>
   </div>
 </template>
@@ -199,7 +262,7 @@ export default {
       required: true,
     },
 
-    rolesExcluded: {
+    allRoles: {
       type: Array,
       required: true,
     },
@@ -242,27 +305,86 @@ export default {
 
   data () {
     return {
+      add: {
+        // Either edit or eval
+        mode: 'edit',
+        roleID: [],
+        userID: undefined,
+      },
+
+      modeOptions: [
+        { text: 'Edit', value: 'edit' },
+        { text: 'Evaluate', value: 'eval' },
+      ],
+
+      userOptions: [],
+
+      evaluatedPermissions: undefined,
+
       newRole: null,
       permissionChanges: [],
     }
   },
 
   computed: {
+    editableRoles () {
+      return this.roles.filter(({ mode }) => mode !== 'eval').map(({ roleID }) => roleID.roleID)
+    },
+
+    availableRoles () {
+      if (this.add.mode === 'edit') {
+        return this.allRoles.filter(({ roleID, isBypass }) => !isBypass && !this.editableRoles.includes(roleID))
+      } else if (this.add.mode === 'eval') {
+        return this.allRoles
+      }
+
+      return []
+    },
+
     sortedPermissions () {
       return Object.keys(this.permissions).sort()
     },
+
+    addModeDescription () {
+      return this.add.mode === 'edit' ? this.$t('ui.add.edit.description') : this.$t('ui.add.evaluate.description')
+    },
+
+    addEnabled () {
+      const { mode, roleID = [], userID } = this.add
+
+      if (mode === 'edit') {
+        return Array.isArray(roleID) ? roleID.length : roleID
+      } else if (mode === 'eval') {
+        return (roleID && roleID.length) || userID
+      }
+
+      return false
+    },
+  },
+
+  watch: {
+    'add.mode': {
+      handler (mode) {
+        this.add.roleID = mode === 'eval' ? [] : undefined
+        this.add.userID = undefined
+      },
+    },
+  },
+
+  mounted () {
+    this.searchUsers('', () => {})
   },
 
   methods: {
-    checkRule (roleID, res, op, access) {
+    checkRule (ID, res, op, access) {
       const key = `${op}@${res}`
-      return (this.rolePermissions.find(r => r.roleID === roleID) || { rules: {} }).rules[key] === access
+      return (this.rolePermissions.find(r => r.ID === ID) || { rules: {} }).rules[key] === access
     },
 
-    checkChange (roleID, res, op) {
+    checkChange (ID, res, op) {
       const key = `${op}@${res}`
-      const current = (this.rolePermissions.find(r => r.roleID === roleID) || { rules: {} }).rules[key]
-      const initial = (this.permissionChanges.find(r => r.roleID === roleID) || { rules: {} }).rules[key]
+      const current = (this.rolePermissions.find(r => r.ID === ID) || { rules: {} }).rules[key]
+      const initial = (this.permissionChanges.find(r => r.ID === ID) || { rules: {} }).rules[key]
 
       if (initial) {
         return current !== initial
@@ -271,18 +393,18 @@ export default {
       }
     },
 
-    ruleChange (event, roleID, res, op) {
+    ruleChange (event, ID, res, op) {
       const key = `${op}@${res}`
-      let access = (this.rolePermissions.find(r => r.roleID === roleID) || { rules: {} }).rules[key]
+      let access = (this.rolePermissions.find(r => r.ID === ID) || { rules: {} }).rules[key]
 
       // Keep track of permission changes, record initial value before it changes
-      if (!(this.permissionChanges.find(r => r.roleID === roleID) || { rules: {} }).rules[key]) {
-        this.permissionChanges.push({ roleID, rules: { } })
+      if (!(this.permissionChanges.find(r => r.ID === ID) || { rules: {} }).rules[key]) {
+        this.permissionChanges.push({ ID, rules: { } })
 
         if (!access) {
           access = 'inherit'
         }
-        this.$set(this.permissionChanges.find(r => r.roleID === roleID).rules, key, access)
+        this.$set(this.permissionChanges.find(r => r.ID === ID).rules, key, access)
       }
 
       if (event.altKey) {
@@ -299,7 +421,23 @@ export default {
         }
       }
 
-      this.$set(this.rolePermissions.find(r => r.roleID === roleID).rules, key, access)
+      this.$set(this.rolePermissions.find(r => r.ID === ID).rules, key, access)
+    },
+
+    searchUsers (query = '', loading) {
+      loading(true)
+
+      this.$SystemAPI.userList({ query, limit: 15 })
+        .then(({ set }) => {
+          this.userOptions = set.map(m => Object.freeze(m))
+        })
+        .finally(() => {
+          loading(false)
+        })
+    },
+
+    getUserLabel ({ userID, email, name, username }) {
+      return name || username || email || `<@${userID}>`
     },
 
     getTranslation (resource, operation = '') {
@@ -317,12 +455,13 @@ export default {
       this.permissionChanges = []
     },
 
-    onAddRole () {
-      const { roleID } = (this.newRole || {})
-      if (roleID) {
-        this.$emit('add', this.newRole)
+    onAdd () {
+      this.$emit('add', this.add)
+      this.add = {
+        mode: 'edit',
+        roleID: [],
+        userID: undefined,
       }
-      this.newRole = null
     },
 
     onHideRole (role) {
@@ -345,6 +484,21 @@ export default {
   transform: rotate(45deg);
 }
 .hide-role:hover {
-  color: $dark !important;
+  .rotate {
+    color: $dark !important;
+  }
+}
+</style>
+
+<style lang="scss">
+.mode {
+  .btn {
+    background-color: #E4E9EF;
+    border: none;
+  }
+
+  .btn:nth-child(2), .btn:nth-child(3) {
+    margin-left: 0.2rem !important;
+  }
 }
 </style>
