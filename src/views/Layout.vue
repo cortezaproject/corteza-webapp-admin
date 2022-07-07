@@ -77,7 +77,34 @@
       </div>
     </main>
     <c-prompts />
-    <c-permissions-modal />
+    <c-permissions-modal
+      :labels="{
+        save: $t('permissions:ui.save'),
+        cancel: $t('permissions:ui.cancel'),
+        loading: $t('permissions:ui.loading'),
+        edit: {
+          label: $t('permissions:ui.edit.label'),
+          description: $t('permissions:ui.edit.description'),
+        },
+        evaluate: {
+          label: $t('permissions:ui.evaluate.label'),
+          description: $t('permissions:ui.evaluate.description'),
+        },
+        add: {
+          label: $t('permissions:ui.add.label'),
+          title: $t('permissions:ui.add.title'),
+          save: $t('permissions:ui.add.save'),
+          role: {
+            label: $t('permissions:ui.add.role.label'),
+            placeholder: $t('permissions:ui.add.role.placeholder'),
+          },
+          user: {
+            label: $t('permissions:ui.add.user.label'),
+            placeholder: $t('permissions:ui.add.user.placeholder'),
+          },
+        },
+      }"
+    />
   </div>
 </template>
 <script>
