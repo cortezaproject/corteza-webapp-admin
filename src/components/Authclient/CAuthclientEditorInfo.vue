@@ -105,6 +105,7 @@
             v-else
             class="ml-1 text-primary"
             variant="link"
+            :title="$t('tooltip.regenerate-secret')"
             @click="$emit('regenerate-secret')"
           >
             <font-awesome-icon
@@ -148,6 +149,7 @@
           <b-button
             class="ml-1 text-secondary"
             variant="link"
+            :title="$t('tooltip.reset-value')"
             @click="resetDateTime('validFrom')"
           >
             <font-awesome-icon
@@ -178,6 +180,7 @@
           <b-button
             class="ml-1 text-secondary"
             variant="link"
+            :title="$t('tooltip.reset-value')"
             @click="resetDateTime('expiresAt')"
           >
             <font-awesome-icon
