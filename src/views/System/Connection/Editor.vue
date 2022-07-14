@@ -11,6 +11,7 @@
       :connection="connection"
       :processing="info.processing"
       :success="info.success"
+      :can-create="canCreate"
       @submit="onInfoSubmit"
       @delete="onDelete"
     />
@@ -79,6 +80,10 @@ export default {
     title () {
       return this.connectionID ? this.$t('title.edit') : this.$t('title.create')
     },
+
+    canCreate () {
+      return this.can('system/', 'dal-connection.create')
+    },
   },
 
   watch: {
@@ -91,7 +96,7 @@ export default {
           this.connection = {
             name: '',
             handle: '',
-            type: 'corteza::system:dal_connection',
+            type: 'corteza::system:dal-connection',
 
             location: {
               geometry: {
@@ -104,7 +109,7 @@ export default {
             },
 
             ownership: '',
-            sensitivityLevel: '0',
+            sensitivityLevel: undefined,
 
             config: {
               defaultModelIdent: 'compose_record',
@@ -118,6 +123,7 @@ export default {
                 },
               },
             },
+
             capabilities: {
               enforced: [],
               supported: [

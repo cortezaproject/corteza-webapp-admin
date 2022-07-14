@@ -38,24 +38,16 @@
             <b-form-input
               v-model="connection.handle"
               :disabled="isPrimary"
+              :placeholder="$t('handle.placeholder')"
+              :state="handleState"
             />
+            <b-form-invalid-feedback :state="handleState">
+              {{ $t('handle.invalid-characters') }}
+            </b-form-invalid-feedback>
           </b-form-group>
         </b-col>
       </b-row>
       <b-row>
-        <b-col
-          cols="12"
-          lg="6"
-        >
-          <b-form-group
-            :label="$t('info.ownership')"
-            class="mb-3 text-primary"
-          >
-            <b-form-input
-              v-model="connection.ownership"
-            />
-          </b-form-group>
-        </b-col>
         <b-col
           cols="12"
           lg="6"
@@ -77,11 +69,24 @@
             />
           </b-form-group>
         </b-col>
+        <b-col
+          cols="12"
+          lg="6"
+        >
+          <b-form-group
+            :label="$t('info.ownership')"
+            class="mb-3 text-primary"
+          >
+            <b-form-input
+              v-model="connection.ownership"
+            />
+          </b-form-group>
+        </b-col>
       </b-row>
 
       <b-form-group
         :label="$t('info.url')"
-        class="mb-3 text-primary"
+        class="text-primary"
       >
         <b-form-input
           v-model="url"
@@ -90,20 +95,27 @@
         />
       </b-form-group>
 
-      <b-form-group>
-        <b-checkbox
-          v-model="connection.sensitivityLevel"
-          value="1"
-          unchecked-value="0"
+      <b-row>
+        <b-col
+          cols="12"
+          lg="6"
         >
-          {{ $t('info.sensitiveData.text') }}
-        </b-checkbox>
-      </b-form-group>
+          <b-form-group
+            :label="$t('info.sensitivityLevel.label')"
+            class="text-primary"
+          >
+            <c-sensitivity-level-picker
+              v-model="connection.sensitivityLevel"
+              :placeholder="$t('info.sensitivityLevel.placeholder')"
+            />
+          </b-form-group>
+        </b-col>
+      </b-row>
 
       <b-form-group
         v-if="issues.length"
         label="Issues"
-        class="mt-5 text-primary"
+        class="text-primary"
       >
         <p
           v-for="issue in issues"
@@ -129,6 +141,7 @@
         class="float-right"
         :processing="processing"
         :success="success"
+        :disabled="saveDisabled"
         @submit="$emit('submit', connection)"
       />
 
@@ -143,9 +156,13 @@
 </template>
 
 <script>
+import { NoID } from '@cortezaproject/corteza-js'
+import { components } from '@cortezaproject/corteza-vue'
+import { handleState } from 'corteza-webapp-admin/src/lib/handle'
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 import CLocation from 'corteza-webapp-admin/src/components/CLocation'
+const { CSensitivityLevelPicker } = components
 
 export default {
   i18nOptions: {
@@ -157,6 +174,7 @@ export default {
     ConfirmationToggle,
     CSubmitButton,
     CLocation,
+    CSensitivityLevelPicker,
   },
 
   props: {
@@ -174,11 +192,34 @@ export default {
       type: Boolean,
       value: false,
     },
+
+    canCreate: {
+      type: Boolean,
+      required: true,
+    },
   },
 
   computed: {
     isPrimary () {
-      return this.connection.type === 'corteza::system:primary_dal_connection'
+      return this.connection.type === 'corteza::system:primary-dal-connection'
+    },
+
+    editable () {
+      return this.fresh ? this.canCreate : true
+    },
+
+    fresh () {
+      return !this.connection.connectionID || this.connection.connectionID === NoID
+    },
+
+    handleState () {
+      const { handle } = this.connection
+
+      return handle ? handleState(handle) : false
+    },
+
+    saveDisabled () {
+      return !this.editable || [this.handleState].includes(false)
     },
 
     locationCoordinates: {

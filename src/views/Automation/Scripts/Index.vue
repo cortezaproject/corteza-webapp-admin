@@ -1,6 +1,6 @@
 <template>
   <b-container
-    class="py-3"
+    class="d-flex flex-column h-100 py-3"
   >
     <c-content-header
       :title="$t('title')"
@@ -8,7 +8,7 @@
 
     <b-card
       no-body
-      class="shadow-sm"
+      class="flex-fill shadow-sm"
       header-bg-variant="white"
     >
       <template #header>
