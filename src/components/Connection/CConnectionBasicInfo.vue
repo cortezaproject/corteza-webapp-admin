@@ -1,3 +1,4 @@
+
 <template>
   <b-card
     class="shadow-sm"
@@ -24,27 +25,82 @@
     <template
       v-if="connection"
     >
-      <b-form-group>
-        <label
-          class="d-flex align-items-center text-primary"
+      <b-row>
+        <b-col
+          cols="12"
+          lg="6"
         >
-          {{ $t('location') }}
-          <c-location
-            v-model="locationCoordinates"
-            class="ml-1"
-          />
-        </label>
+          <b-form-group
+            :label="$t('name')"
+            class="mb-3 text-primary"
+          >
+            {{ connection.name }}
+          </b-form-group>
+        </b-col>
+        <b-col
+          cols="12"
+          lg="6"
+        >
+          <b-form-group
+            :label="$t('handle')"
+            label-class="text-primary"
+            class="mb-3"
+          >
+            {{ connection.handle }}
+          </b-form-group>
+        </b-col>
+        <b-col
+          cols="12"
+          lg="6"
+        >
+          <b-form-group>
+            <label
+              class="d-flex align-items-center text-primary"
+            >
+              {{ $t('location') }}
+              <c-location
+                v-model="locationCoordinates"
+                class="ml-1"
+              />
+            </label>
 
-        {{ locationName }}
-      </b-form-group>
+            {{ locationName }}
+          </b-form-group>
+        </b-col>
+        <b-col
+          cols="12"
+          lg="6"
+        >
+          <b-form-group
+            :label="$t('ownership')"
+            label-class="text-primary"
+            class="mb-0"
+          >
+            {{ connection.ownership }}
+          </b-form-group>
+        </b-col>
+      </b-row>
 
       <b-form-group
-        :label="$t('ownership')"
+        :label="$t('url')"
         label-class="text-primary"
-        class="mb-0"
       >
-        {{ connection.ownership }}
+        {{ connectionURL }}
       </b-form-group>
+
+      <b-row>
+        <b-col
+          cols="12"
+          lg="6"
+        >
+          <b-form-group
+            :label="$t('sensitivityLevel')"
+            label-class="text-primary"
+          >
+            {{ sensitivityLevelName }}
+          </b-form-group>
+        </b-col>
+      </b-row>
     </template>
   </b-card>
 </template>
@@ -67,6 +123,7 @@ export default {
       processing: false,
 
       connection: undefined,
+      sensitivityLevel: undefined,
     }
   },
 
@@ -78,6 +135,17 @@ export default {
     locationName () {
       return this.connection.location.properties.name || 'Unnamed location'
     },
+
+    connectionURL () {
+      const { connection } = this.connection.config
+      const { params = {} } = connection
+      return (params || {}).dsn
+    },
+
+    sensitivityLevelName () {
+      const { sensitivityLevelID, handle, meta = {} } = this.sensitivityLevel || {}
+      return meta.name || handle || sensitivityLevelID || 'N/A'
+    },
   },
 
   created () {
@@ -88,8 +156,16 @@ export default {
     fetchPrimaryConnection () {
       this.processing = true
 
-      return this.$SystemAPI.dalConnectionList({ type: 'corteza::system:primary_dal_connection' }).then(({ set = [] }) => {
-        this.connection = set.find(({ type }) => type === 'corteza::system:primary_dal_connection')
+      return this.$SystemAPI.dalConnectionList({ type: 'corteza::system:primary-dal-connection' }).then(({ set = [] }) => {
+        this.connection = set.find(({ type }) => type === 'corteza::system:primary-dal-connection')
+        const { sensitivityLevel: sensitivityLevelID } = this.connection || {}
+
+        if (sensitivityLevelID) {
+          return this.$SystemAPI.dalSensitivityLevelRead({ sensitivityLevelID })
+            .then(sensitivityLevel => {
+              this.sensitivityLevel = sensitivityLevel
+            })
+        }
       }).catch(this.toastErrorHandler(this.$t('notification:fetch.error')))
         .finally(async () => {
           this.processing = false
