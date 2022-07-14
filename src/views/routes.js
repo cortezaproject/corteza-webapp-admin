@@ -109,6 +109,8 @@ export default [
           r('system.connection.new', 'connection/new', 'System/Connection/Editor'),
           r('system.connection.edit', 'connection/edit/:connectionID', 'System/Connection/Editor'),
 
+          combo('system', 'sensitivityLevel'),
+
           combo('system', 'queue', { pkey: 'queueID' }),
         ],
       },

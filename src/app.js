@@ -173,6 +173,7 @@ export default (options = {}) => {
       'system.queues',
       'system.apigw',
       'system.connections',
+      'system.sensitivityLevel',
       'compose.settings',
       'compose.permissions',
       'compose.automation',

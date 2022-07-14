@@ -75,7 +75,7 @@ export default {
       id: 'connections',
 
       filter: {
-        type: 'corteza::system:dal_connection',
+        type: 'corteza::system:dal-connection',
         deleted: 0,
       },
 
