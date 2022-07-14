@@ -125,6 +125,12 @@ export default {
               icon: 'cloud',
               can: ['system/', 'dal-connections.search'],
             },
+            {
+              label: 'system.items.sensitivityLevel',
+              route: 'system.sensitivityLevel',
+              icon: 'stamp',
+              can: ['system/', 'dal-sensitivity-level.manage'],
+            },
           ],
         },
 
