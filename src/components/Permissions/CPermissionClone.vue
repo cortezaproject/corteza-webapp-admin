@@ -88,7 +88,7 @@ export default {
     clonePermissions () {
       this.processingSubmit = true
 
-      this.$SystemAPI.permissionsClone({ roleID: this.roleId, cloneToRoleID: this.selectedRoles })
+      this.$SystemAPI.roleCloneRules({ roleID: this.roleId, cloneToRoleID: this.selectedRoles })
         .then(() => {
           this.selectedRoles = []
           this.toastSuccess(this.$t('notification:permissions.clone.success'))
