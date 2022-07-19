@@ -177,7 +177,7 @@ export default {
     },
 
     async readPermissions ({ name, roleID }) {
-      return this.api.permissionsRead({ roleID })
+      return this.api.permissionsRead({ roleID, specific: 0 })
         .then(rr => {
           this.rolePermissions.push({ resource: '', ID: `edit-${roleID}`, rules: this.roleRules(rr, 'edit') })
           this.roles.push({
