@@ -107,14 +107,14 @@
             <b-col
               v-for="role in roles"
               :key="role.ID"
-              class="overflow-hidden p-3 text-center border-left not-allowed"
+              class="d-flex align-items-center justify-content-center overflow-hidden p-3 text-center border-left not-allowed"
             >
               <p
                 v-if="i === 0"
-                :title="role.mode === 'edit' ? $t('ui.edit.title') : $t('ui.evaluate.title')"
+                :title="$t(`ui.${role.mode === 'edit' ? 'edit' : 'evaluate'}.title`)"
                 class="mb-0"
               >
-                {{ role.mode === 'edit' ? $t('ui.edit.title') : $t('ui.evaluate.title') }}
+                {{ $t(`ui.${role.mode === 'edit' ? 'edit' : 'evaluate'}.title`) }}
               </p>
             </b-col>
             <b-col
@@ -125,7 +125,6 @@
             v-for="operation in permissions[type].ops"
             :key="operation"
             no-gutters
-            class="text-center"
           >
             <b-col
               class="border-bottom text-left p-3"
@@ -136,20 +135,26 @@
             <b-col
               v-for="role in roles"
               :key="role.ID"
-              class="border-bottom border-left p-3 pointer active-cell h5 mb-0"
+              :title="getRuleTooltip(checkRule(role.ID, permissions[type].any, operation, 'unknown-context'), !!role.userID)"
+              class="d-flex align-items-center justify-content-center border-bottom border-left p-3 pointer active-cell h5 mb-0"
               :class="{
                 'not-allowed bg-extra-light': role.mode === 'eval',
                 'bg-warning': checkChange(role.ID, permissions[type].any, operation)
               }"
-              @click="ruleChange($event, role.ID, permissions[type].any, operation)"
+              @click="role.mode === 'edit' ? ruleChange($event, role.ID, permissions[type].any, operation) : undefined"
             >
               <font-awesome-icon
-                v-if="checkRule(role.ID, permissions[type].any, operation, 'allow')"
+                v-if="checkRule(role.ID, permissions[type].any, operation, 'unknown-context')"
+                :icon="['fas', 'question']"
+                class="text-secondary"
+              />
+              <font-awesome-icon
+                v-else-if="checkRule(role.ID, permissions[type].any, operation, 'allow')"
                 :icon="['fas', 'check']"
                 class="text-success"
               />
               <font-awesome-icon
-                v-if="checkRule(role.ID, permissions[type].any, operation, 'deny')"
+                v-else
                 :icon="['fas', 'times']"
                 class="text-danger"
               />
@@ -448,6 +453,14 @@ export default {
       } else {
         return this.$t(`resources.${this.component}.${resource}.label`)
       }
+    },
+
+    getRuleTooltip (isUnknown = false, isUser) {
+      if (!isUnknown) {
+        return ''
+      }
+
+      return this.$t(`ui.tooltip.unknown-context.${isUser ? 'user' : 'role'}`)
     },
 
     onSubmit () {
