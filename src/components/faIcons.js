@@ -44,6 +44,7 @@ import {
   faSearch,
   faMapMarkedAlt,
   faCloud,
+  faQuestion,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -105,4 +106,5 @@ library.add(
   faSearch,
   faMapMarkedAlt,
   faCloud,
+  faQuestion,
 )
