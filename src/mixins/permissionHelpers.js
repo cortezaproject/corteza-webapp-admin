@@ -35,6 +35,8 @@ export default {
       effective: {},
 
       api: this.$SystemAPI,
+      resources: [],
+
       loaded: {
         roles: false,
         permissions: false,
@@ -86,8 +88,10 @@ export default {
 
       this.api.permissionsList()
         .then(permissions => {
+          this.resources = new Set()
           this.permissions = (permissions || [])
             .reduce((map, { type, any, op }) => {
+              this.resources.add(any)
               if (!map[type]) {
                 map[type] = { any, ops: [] }
               }
@@ -177,7 +181,9 @@ export default {
     },
 
     async readPermissions ({ name, roleID }) {
-      return this.api.permissionsRead({ roleID, specific: 0 })
+      const resource = [...this.resources]
+
+      return this.api.permissionsRead({ resource, roleID })
         .then(rr => {
           this.rolePermissions.push({ resource: '', ID: `edit-${roleID}`, rules: this.roleRules(rr, 'edit') })
           this.roles.push({
@@ -194,7 +200,9 @@ export default {
     },
 
     async evaluatePermissions ({ name, roleID, userID }) {
-      return this.api.permissionsTrace({ roleID, userID })
+      const resource = [...this.resources]
+
+      return this.api.permissionsTrace({ resource, roleID, userID })
         .then(rr => {
           const ID = userID ? `eval-${userID}` : `eval-${roleID.join('-')}`
 
@@ -215,12 +223,17 @@ export default {
 
     roleRules (rules, mode = 'edit') {
       return (rules || [])
-        .reduce((map, { resource, operation, access }) => {
+        .reduce((map, { resource, operation, access, resolution }) => {
           const [ type ] = resource.split('/', 2)
           if ((this.permissions[type] || { ops: [] }).ops.indexOf(operation) > -1) {
-            if (mode === 'eval' && access === 'inherit') {
-              access = 'deny'
+            if (mode === 'eval') {
+              if (resolution === 'unknown-context') {
+                access = 'unknown-context'
+              } else if (access === 'inherit') {
+                access = 'deny'
+              }
             }
+
             map[`${operation}@${resource}`] = access
           }
 
