@@ -82,6 +82,31 @@
       </b-form-group>
 
       <b-form-group
+        v-if="session.workflowID"
+        label-cols="2"
+      >
+        <b-button
+          variant="light"
+          :to="{ name: 'automation.workflow.edit', params: { workflowID: session.workflowID } }"
+        >
+          {{ $t('openWorkflow') }}
+        </b-button>
+      </b-form-group>
+
+      <b-form-group
+        v-if="!session.completedAt"
+        label-cols="2"
+      >
+        <b-button
+          variant="danger"
+          :disabled="processing"
+          @click="$emit('cancel')"
+        >
+          {{ $t('cancel') }}
+        </b-button>
+      </b-form-group>
+
+      <b-form-group
         v-if="session.createdBy"
         :label="$t('createdByUserID')"
         label-cols="2"
@@ -143,18 +168,6 @@
           plaintext
           disabled
         />
-      </b-form-group>
-
-      <b-form-group
-        v-if="session.workflowID"
-        label-cols="2"
-      >
-        <b-button
-          variant="light"
-          :to="{ name: 'automation.workflow.edit', params: { workflowID: session.workflowID } }"
-        >
-          {{ $t('openWorkflow') }}
-        </b-button>
       </b-form-group>
     </b-form>
 

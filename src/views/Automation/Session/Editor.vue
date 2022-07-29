@@ -10,6 +10,7 @@
       :session="session"
       :user="user"
       :processing="info.processing"
+      @cancel="cancelSession()"
     />
   </b-container>
 </template>
@@ -65,15 +66,33 @@ export default {
   methods: {
     fetchSession () {
       this.incLoader()
+      this.info.processing = true
 
       this.$AutomationAPI.sessionRead({ sessionID: this.sessionID })
         .then(session => {
-          this.prepare(session)
+          this.session = session
           this.fetchUser()
         })
         .catch(this.toastErrorHandler(this.$t('notification:session.fetch.error')))
         .finally(() => {
           this.decLoader()
+          this.info.processing = false
+        })
+    },
+
+    cancelSession (sessionID = this.sessionID) {
+      this.incLoader()
+      this.info.processing = true
+
+      this.$AutomationAPI.sessionCancel({ sessionID })
+        .then(() => {
+          this.fetchSession()
+          this.toastSuccess(this.$t('notification:session.cancel.success'))
+        })
+        .catch(this.toastErrorHandler(this.$t('notification:session.cancel.error')))
+        .finally(() => {
+          this.decLoader()
+          this.info.processing = false
         })
     },
 
@@ -88,10 +107,6 @@ export default {
         .finally(() => {
           this.decLoader()
         })
-    },
-
-    prepare (session = {}) {
-      this.session = session
     },
   },
 }
