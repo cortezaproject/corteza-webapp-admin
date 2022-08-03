@@ -78,6 +78,13 @@
       :user-i-d="userID"
       @submit="onPasswordSubmit"
     />
+
+    <c-user-editor-external-auth-providers
+      v-if="user && user.userID && user.meta.externalAuthProviders"
+      class="mt-3"
+      :value="user.meta.externalAuthProviders"
+      @delete="onExternalAuthProviderDelete"
+    />
   </b-container>
 </template>
 
@@ -88,6 +95,7 @@ import CUserEditorInfo from 'corteza-webapp-admin/src/components/User/CUserEdito
 import CUserEditorPassword from 'corteza-webapp-admin/src/components/User/CUserEditorPassword'
 import CUserEditorMfa from 'corteza-webapp-admin/src/components/User/CUserEditorMFA'
 import CUserEditorRoles from 'corteza-webapp-admin/src/components/User/CUserEditorRoles'
+import CUserEditorExternalAuthProviders from 'corteza-webapp-admin/src/components/User/CUserEditorExternalAuthProviders'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -96,6 +104,7 @@ export default {
     CUserEditorPassword,
     CUserEditorInfo,
     CUserEditorMfa,
+    CUserEditorExternalAuthProviders,
   },
 
   i18nOptions: {
@@ -168,6 +177,7 @@ export default {
         if (this.userID) {
           this.fetchUser()
           this.fetchMembership()
+          this.fetchExternalAuthProviders()
         } else {
           this.user = {}
         }
@@ -200,6 +210,23 @@ export default {
           this.membership = { active: [...set], original: [...set] }
         })
         .catch(this.toastErrorHandler(this.$t('notification:user.roles.error')))
+        .finally(() => {
+          this.decLoader()
+        })
+    },
+
+    fetchExternalAuthProviders () {
+      this.incLoader()
+      return this.$SystemAPI.userListCredentials({ userID: this.userID })
+        .then((providers = []) => {
+          this.user.meta = {
+            ...this.user.meta,
+            externalAuthProviders: [
+              ...providers.map(({ credentialsID = '', label = '', kind = '' }) => ({ credentialsID, label, type: kind })),
+            ],
+          }
+        })
+        .catch(this.toastErrorHandler(this.$t('notification:user.external-auth-providers.error')))
         .finally(() => {
           this.decLoader()
         })
@@ -276,6 +303,21 @@ export default {
             this.decLoader()
           })
       }
+    },
+
+    onExternalAuthProviderDelete (credentialsID = '') {
+      this.incLoader()
+
+      this.$SystemAPI.userDeleteCredentials({ userID: this.userID, credentialsID })
+        .then(() => {
+          this.fetchExternalAuthProviders()
+
+          this.toastSuccess(this.$t('notification:user.external-auth-providers.success'))
+        })
+        .catch(this.toastErrorHandler(this.$t('notification:user.external-auth-providers.error')))
+        .finally(() => {
+          this.decLoader()
+        })
     },
 
     /**
