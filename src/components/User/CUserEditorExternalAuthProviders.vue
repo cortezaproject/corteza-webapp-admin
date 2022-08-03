@@ -1,0 +1,60 @@
+<template>
+  <b-card
+    class="shadow-sm"
+    header-bg-variant="white"
+    footer-bg-variant="white"
+  >
+    <b-table
+      :items="providers.items"
+      :fields="providers.fields"
+    >
+      <template #cell(editor)="{ item }">
+        <b-button
+          variant="link"
+          class="pr-0"
+          @click="$emit('delete', item.credentialsID)"
+        >
+          <font-awesome-icon :icon="['far', 'trash-alt']" />
+        </b-button>
+      </template>
+    </b-table>
+    <template #header>
+      <h3 class="m-0">
+        {{ $t('title') }}
+      </h3>
+    </template>
+  </b-card>
+</template>
+
+<script>
+export default {
+  name: 'CUserEditorExternalAuthProviders',
+
+  i18nOptions: {
+    namespaces: 'system.users',
+    keyPrefix: 'editor.external-auth-providers',
+  },
+
+  props: {
+    value: {
+      type: Array,
+      required: true,
+    },
+  },
+
+  computed: {
+    providers () {
+      return {
+        fields: [
+          { key: 'label', label: this.$t('label'), thStyle: { width: '350px' } },
+          { key: 'type', label: this.$t('type'), thStyle: { width: '250px' } },
+          { key: 'editor', label: '', tdClass: 'text-right' },
+        ],
+        items: [
+          ...this.value,
+        ],
+      }
+    },
+  },
+}
+</script>
