@@ -82,12 +82,6 @@
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 
-/**
- * @todo find a way to get this number from the backend
- * @type {number}
- */
-// const minPasswordLength = 5
-
 export default {
   name: 'CUserEditorPassword',
 
