@@ -70,6 +70,30 @@
       </b-alert>
 
       <b-form-group
+        :label="$t('internal.password-constraints.min-upper-case-length')"
+        :description="$t('internal.password-constraints.min-upper-case-description')"
+        label-cols="2"
+      >
+        <b-form-input
+          v-model="settings['auth.internal.password-constraints.min-upper-case']"
+          :placeholder="`${defaultMinUppCaseChrs}`"
+          :min="defaultMinUppCaseChrs"
+        />
+      </b-form-group>
+
+      <b-form-group
+        :label="$t('internal.password-constraints.min-lower-case-length')"
+        :description="$t('internal.password-constraints.min-lower-case-description')"
+        label-cols="2"
+      >
+        <b-form-input
+          v-model="settings['auth.internal.password-constraints.min-lower-case']"
+          :placeholder="`${defaultMinLowCaseChrs}`"
+          :min="defaultMinLowCaseChrs"
+        />
+      </b-form-group>
+
+      <b-form-group
         :label="$t('internal.password-constraints.min-length')"
         :description="$t('internal.password-constraints.min-length-description')"
         label-cols="2"
@@ -263,6 +287,8 @@ export default {
   data () {
     return {
       defaultMinPwd: 8,
+      defaultMinUppCaseChrs: 0,
+      defaultMinLowCaseChrs: 0,
     }
   },
 }
