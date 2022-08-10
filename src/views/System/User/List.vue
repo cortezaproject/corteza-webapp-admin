@@ -61,6 +61,7 @@
       :sorting="sorting"
       :items="items"
       :fields="fields"
+      :row-class="rowClass"
     >
       <template #filter>
         <b-form-group
@@ -156,6 +157,19 @@ export default {
           formatter: (v) => moment(v).fromNow(),
         },
         {
+          key: 'state',
+          label: 'State',
+          formatter: (v, key, item) => {
+            let state = []
+            if (item.deletedAt) {
+              state.push(this.$t('rows.filters.deleted'))
+            } if (item.suspendedAt) {
+              state.push(this.$t('rows.filters.suspended'))
+            }
+            return state.join(' ')
+          },
+        },
+        {
           key: 'actions',
           label: '',
           tdClass: 'text-right',
@@ -208,6 +222,14 @@ export default {
 
     items () {
       return this.procListResults(this.$SystemAPI.userList(this.encodeListParams()))
+    },
+
+    rowClass (item = {}, type) {
+      if (item && !item.suspendedAt) {
+        return this.genericRowClass(item, type)
+      } else {
+        return 'text-secondary'
+      }
     },
   },
 }
