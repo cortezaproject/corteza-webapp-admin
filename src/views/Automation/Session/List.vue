@@ -14,6 +14,7 @@
       :sorting="sorting"
       :items="items"
       :fields="fields"
+      :row-class="rowClass"
     >
       <template #filter>
         <b-row
@@ -96,6 +97,15 @@ export default {
           formatter: (v) => new Date(v).toLocaleString('en-EN'),
         },
         {
+          key: 'state',
+          label: 'State',
+          formatter: (v, key, item) => {
+            if (item.completedAt) {
+              return this.$t('filterForm.completed.label')
+            }
+          },
+        },
+        {
           key: 'actions',
           tdClass: 'text-right',
         },
@@ -123,6 +133,12 @@ export default {
   methods: {
     items () {
       return this.procListResults(this.$AutomationAPI.sessionList(this.encodeListParams()))
+    },
+
+    rowClass (item = {}, type) {
+      if (item && item.completedAt) {
+        return 'text-primary'
+      }
     },
   },
 }

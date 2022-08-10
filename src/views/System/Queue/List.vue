@@ -37,6 +37,7 @@
       :sorting="sorting"
       :items="items"
       :fields="fields"
+      :row-class="genericRowClass"
     >
       <template #filter>
         <b-form-group
@@ -108,6 +109,15 @@ export default {
           label: 'Created',
           sortable: true,
           formatter: (v) => moment(v).fromNow(),
+        },
+        {
+          key: 'state',
+          label: 'State',
+          formatter: (v, key, item) => {
+            if (item.deletedAt) {
+              return this.$t('rows.filters.deleted')
+            }
+          },
         },
         {
           key: 'actions',
