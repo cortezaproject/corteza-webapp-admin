@@ -157,5 +157,11 @@ export default {
           this.decLoader()
         })
     },
+
+    genericRowClass (item = {}, type) {
+      if (item && item.deletedAt) {
+        return 'text-secondary'
+      }
+    },
   },
 }

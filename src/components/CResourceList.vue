@@ -16,6 +16,7 @@
         :primary-key="primaryKey"
         :sort-by.sync="sorting.sortBy"
         :sort-desc.sync="sorting.sortDesc"
+        :tbody-tr-class="rowClass"
         :items="items"
         :fields="fields"
         :empty-text="$t('notFound')"
@@ -180,6 +181,11 @@ export default {
     items: {
       type: Function,
       required: true,
+    },
+
+    rowClass: {
+      type: [String, Array, Function],
+      default: '',
     },
   },
 
