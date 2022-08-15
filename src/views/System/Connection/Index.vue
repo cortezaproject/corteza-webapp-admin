@@ -9,7 +9,7 @@
     <div
       class="d-flex flex-column h-100"
     >
-      <c-connection-basic-info
+      <c-connection-primary
         class="mb-4"
       />
 
@@ -22,7 +22,7 @@
   </b-container>
 </template>
 <script>
-import CConnectionBasicInfo from 'corteza-webapp-admin/src/components/Connection/CConnectionBasicInfo'
+import CConnectionPrimary from 'corteza-webapp-admin/src/components/Connection/CConnectionPrimary'
 import CExternalConnectionList from 'corteza-webapp-admin/src/components/Connection/CExternalConnectionList'
 // import CFederatedNodeList from 'corteza-webapp-admin/src/components/Connection/CFederatedNodeList'
 
@@ -30,7 +30,7 @@ export default {
   name: 'Connection',
 
   components: {
-    CConnectionBasicInfo,
+    CConnectionPrimary,
     CExternalConnectionList,
     // CFederatedNodeList,
   },

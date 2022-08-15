@@ -3,45 +3,140 @@
     class="py-3"
   >
     <c-content-header
-      :title="title"
+      :title="connectionID ? $t('title.edit') : $t('title.create')"
     />
 
-    <c-connection-editor-info
+    <b-form
       v-if="connection"
-      :connection="connection"
-      :processing="info.processing"
-      :success="info.success"
-      :can-create="canCreate"
-      @submit="onInfoSubmit"
-      @delete="onDelete"
-    />
+      @submit.prevent="onSubmit"
+    >
+      <c-connection-editor-info
+        :connection="connection"
+        :disabled="disabled"
+        :is-primary="isPrimary"
+      />
 
-    <c-connection-capabilities
-      v-if="connection && connectionID"
-      :connection="connection"
-      :processing="capabilities.processing"
-      :success="capabilities.success"
-      class="mt-4"
-      @submit="onCapabilitiesSubmit"
-    />
+      <c-connection-editor-properties
+        :properties="connection.meta.properties"
+        :disabled="disabled"
+        class="mt-4"
+      />
+
+      <c-connection-editor-dal
+        :dal="connection.config.dal"
+        :issues="connection.issues || []"
+        :disabled="disabled"
+        :can-manage="connection.canManageDalConfig"
+        class="mt-4"
+      />
+      <!--
+        include hidden input to enable
+        trigger submit event w/ ENTER
+      -->
+      <input
+        type="submit"
+        class="d-none"
+      >
+
+      <b-container>
+        <b-row>
+          <b-col
+            cols="12"
+            class="mt-3 mb-5 text-right"
+          >
+            <confirmation-toggle
+              v-if="connection && connection.connectionID && !isPrimary && !disabled"
+              cta-class="link"
+              @confirmed="toggleDelete"
+            >
+              {{ connection.deletedAt ? $t('general:label.undelete') : $t('general:label.delete') }}
+            </confirmation-toggle>
+
+            <c-submit-button
+              :processing="processing"
+              :disabled="disabled"
+              @submit="onSubmit"
+            />
+          </b-col>
+        </b-row>
+      </b-container>
+    </b-form>
   </b-container>
 </template>
 
 <script>
+import { NoID } from '@cortezaproject/corteza-js'
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CConnectionEditorInfo from 'corteza-webapp-admin/src/components/Connection/CConnectionEditorInfo'
-import CConnectionCapabilities from 'corteza-webapp-admin/src/components/Connection/CConnectionCapabilities'
+import CConnectionEditorProperties from 'corteza-webapp-admin/src/components/Connection/CConnectionEditorProperties'
+import CConnectionEditorDal from 'corteza-webapp-admin/src/components/Connection/CConnectionEditorDAL'
+import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
+import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 import { mapGetters } from 'vuex'
+import { merge } from 'lodash'
+
+const base = Object.freeze({
+  handle: '',
+  type: 'corteza::system:dal-connection',
+
+  meta: {
+    name: '',
+    ownership: '',
+    location: {
+      properties: { name: '' },
+      geometry: {
+        coordinates: [],
+        type: '',
+      },
+
+    },
+
+    properties: {
+      dataAtRestEncryption: {
+        enabled: false,
+        notes: '',
+      },
+      dataAtRestProtection: {
+        enabled: false,
+        notes: '',
+      },
+      dataAtTransitEncryption: {
+        enabled: false,
+        notes: '',
+      },
+      dataRestoration: {
+        enabled: false,
+        notes: '',
+      },
+    },
+  },
+
+  config: {
+    privacy: {
+      sensitivityLevelID: NoID,
+    },
+  },
+})
+
+const baseConfigDAL = Object.freeze({
+  type: 'corteza::dal:connection:dsn',
+  params: { dsn: '' },
+  modelIdent: '',
+  modelIdentCheck: [],
+})
 
 export default {
   components: {
     CConnectionEditorInfo,
-    CConnectionCapabilities,
+    CConnectionEditorDal,
+    CConnectionEditorProperties,
+    ConfirmationToggle,
+    CSubmitButton,
   },
 
   i18nOptions: {
     namespaces: 'system.connections',
-    keyPrefix: 'external',
+    keyPrefix: 'editor',
   },
 
   mixins: [
@@ -58,17 +153,7 @@ export default {
   data () {
     return {
       processing: false,
-      connection: undefined,
-
-      info: {
-        processing: false,
-        success: false,
-      },
-
-      capabilities: {
-        processing: false,
-        success: false,
-      },
+      connection: { ...base },
     }
   },
 
@@ -77,12 +162,16 @@ export default {
       can: 'rbac/can',
     }),
 
-    title () {
-      return this.connectionID ? this.$t('title.edit') : this.$t('title.create')
-    },
-
     canCreate () {
       return this.can('system/', 'dal-connection.create')
+    },
+
+    isPrimary () {
+      return this.connection.type === 'corteza::system:primary-dal-connection'
+    },
+
+    disabled () {
+      return this.processing
     },
   },
 
@@ -93,54 +182,7 @@ export default {
         if (connectionID) {
           this.fetchConnection(connectionID)
         } else {
-          this.connection = {
-            name: '',
-            handle: '',
-            type: 'corteza::system:dal-connection',
-
-            location: {
-              geometry: {
-                coordinates: [],
-                type: '',
-              },
-              properties: {
-                name: '',
-              },
-            },
-
-            ownership: '',
-            sensitivityLevel: undefined,
-
-            config: {
-              defaultModelIdent: 'compose_record',
-              defaultAttributeIdent: 'values',
-              defaultPartitionFormat: 'compose_record_{{namespace}}_{{module}}',
-              partitionFormatValidator: '',
-              connection: {
-                type: 'corteza::dal:connection:dsn',
-                params: {
-                  dsn: '',
-                },
-              },
-            },
-
-            capabilities: {
-              enforced: [],
-              supported: [
-                'corteza::dal:capability:create',
-                'corteza::dal:capability:update',
-                'corteza::dal:capability:delete',
-                'corteza::dal:capability:search',
-                'corteza::dal:capability:lookup',
-                'corteza::dal:capability:paging',
-                'corteza::dal:capability:stats',
-                'corteza::dal:capability:sorting',
-                'corteza::dal:capability:RBAC',
-              ],
-              unsupported: [],
-              enabled: [],
-            },
-          }
+          this.connection = Object.assign({}, { ...base })
         }
       },
     },
@@ -149,84 +191,74 @@ export default {
   methods: {
     fetchConnection (connectionID) {
       this.incLoader()
-
       return this.$SystemAPI.dalConnectionRead({ connectionID }).then(connection => {
-        this.connection = connection
+        this.connection = this.merge(connection)
       }).catch(this.toastErrorHandler(this.$t('notification:fetch.error')))
         .finally(async () => {
           this.decLoader()
         })
     },
 
-    onInfoSubmit (connection) {
-      this.info.processing = true
+    onSubmit () {
+      const updating = !!this.connection.connectionID
+      const op = updating ? 'update' : 'delete'
+      const fn = updating ? 'dalConnectionUpdate' : 'dalConnectionCreate'
 
-      if (connection.connectionID) {
-        this.$SystemAPI.dalConnectionUpdate(connection)
-          .then(connection => {
-            this.connection = connection
-
-            this.animateSuccess('info')
-            this.toastSuccess(this.$t('notification:connection.update.success'))
-          })
-          .catch(this.toastErrorHandler(this.$t('notification:connection.update.error')))
-          .finally(() => {
-            this.info.processing = false
-          })
-      } else {
-        this.$SystemAPI.dalConnectionCreate(connection)
-          .then(({ connectionID }) => {
-            this.animateSuccess('info')
-            this.toastSuccess(this.$t('notification:connection.create.success'))
-            this.$router.push({ name: 'system.connection.edit', params: { connectionID } })
-          })
-          .catch(this.toastErrorHandler(this.$t('notification:connection.create.error')))
-          .finally(() => {
-            this.info.processing = false
-          })
-      }
-    },
-
-    onDelete () {
+      this.processing = true
       this.incLoader()
 
-      if (this.connection.deletedAt) {
-        this.$SystemAPI.dalConnectionUndelete({ connectionID: this.connectionID })
-          .then(() => {
-            this.fetchConnection()
+      return this.$SystemAPI[fn](this.connection)
+        .then(connection => {
+          const { connectionID } = this.connection
 
-            this.toastSuccess(this.$t('notification:connection.undelete.success'))
-          })
-          .catch(this.toastErrorHandler(this.$t('notification:connection.undelete.error')))
-          .finally(() => {
-            this.decLoader()
-          })
-      } else {
-        this.$SystemAPI.dalConnectionDelete({ connectionID: this.connectionID })
-          .then(() => {
-            this.$router.push({ name: 'system.connection' })
-          })
-          .catch(this.toastErrorHandler(this.$t('notification:connection.delete.error')))
-          .finally(() => {
-            this.decLoader()
-          })
-      }
+          this.toastSuccess(this.$t(`notification:connection.${op}.success`))
+          if (!updating) {
+            this.$router.push({ name: `system.connection.edit`, params: { connectionID } })
+          } else {
+            this.connection = this.merge(connection)
+          }
+        })
+        .catch(this.toastErrorHandler(this.$t(`notification:connection.${op}.error`)))
+        .finally(() => {
+          this.processing = false
+        })
     },
 
-    onCapabilitiesSubmit ({ capabilities }) {
-      this.capabilities.processing = true
+    toggleDelete () {
+      const { deletedAt } = this.connection
+      const deleting = !!deletedAt
+      const op = deleting ? 'delete' : 'undelete'
+      const fn = deleting ? 'dalConnectionDelete' : 'dalConnectionUndelete'
 
-      this.$SystemAPI.dalConnectionUpdate({ ...this.connection, capabilities })
+      this.processing = true
+      this.incLoader()
+
+      return this.$SystemAPI[fn](this.connection)
         .then(connection => {
-          this.connection = connection
+          this.toastSuccess(this.$t(`notification:connection.${op}.success`))
 
-          this.animateSuccess('capabilities')
-          this.toastSuccess(this.$t('notification:connection.capabilities.success'))
+          if (deleting) {
+            /**
+             * Resource deleted, move back to the list
+             */
+            this.$router.push({ name: `system.connection` })
+          } else {
+            this.connection.deletedAt = null
+          }
         })
-        .catch(this.toastErrorHandler(this.$t('notification:connection.capabilities.error')))
+        .catch(this.toastErrorHandler(this.$t(`notification:connection.${op}.error`)))
         .finally(() => {
-          this.capabilities.processing = false
+          this.processing = false
         })
+    },
+
+    merge (conn) {
+      conn = merge({}, { ...base }, conn)
+      if (conn.canManageDalConfig) {
+        conn.config.dal = merge({}, { ...baseConfigDAL }, conn.config.dal)
+      }
+
+      return conn
     },
   },
 }

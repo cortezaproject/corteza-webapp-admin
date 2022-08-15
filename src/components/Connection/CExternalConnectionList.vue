@@ -9,7 +9,7 @@
       #header
     >
       <h3 class="m-0">
-        {{ $t('title.default') }}
+        {{ $t('title') }}
       </h3>
     </template>
 
@@ -39,7 +39,7 @@
         >
           <b-form-input
             v-model.trim="filter.query"
-            :placeholder="$t('filterForm.query.placeholder')"
+            :placeholder="$t('filter-form.query.placeholder')"
             class="text-truncate border-right-0 mb-0 h-100"
             @keyup="filterList"
           />
@@ -67,7 +67,7 @@ export default {
 
   i18nOptions: {
     namespaces: 'system.connections',
-    keyPrefix: 'external',
+    keyPrefix: 'list',
   },
 
   data () {
@@ -83,14 +83,12 @@ export default {
         {
           key: 'name',
           sortable: true,
+          formatter: (value, col, conn) => conn.meta.name || conn.handle,
         },
         {
           key: 'location',
           sortable: true,
-          formatter: l => {
-            const { properties = {} } = l
-            return properties.name
-          },
+          formatter: (value, col, conn) => conn.meta.location.properties.name,
         },
         {
           key: 'ownership',
@@ -98,12 +96,12 @@ export default {
         },
         {
           key: 'createdAt',
-          label: 'Created',
           sortable: true,
           formatter: (v) => moment(v).fromNow(),
         },
         {
           key: 'actions',
+          label: '',
           class: 'text-right',
         },
       ].map(c => ({
