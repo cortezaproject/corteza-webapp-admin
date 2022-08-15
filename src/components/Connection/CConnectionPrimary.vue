@@ -5,8 +5,8 @@
     header-bg-variant="white"
     footer-bg-variant="white"
   >
-    <template #header>
-      <h3 class="d-flex justify-content-between m-0">
+    <template>
+      <h3 class="d-flex justify-content-between m-0 mb-3">
         {{ $t('title') }}
 
         <b-button
@@ -22,8 +22,9 @@
       </h3>
     </template>
 
-    <template
+    <b-overlay
       v-if="connection"
+      :show="loading"
     >
       <b-row>
         <b-col
@@ -34,7 +35,7 @@
             :label="$t('name')"
             class="mb-3 text-primary"
           >
-            {{ connection.name }}
+            {{ connection.name || '-' }}
           </b-form-group>
         </b-col>
         <b-col
@@ -46,7 +47,7 @@
             label-class="text-primary"
             class="mb-3"
           >
-            {{ connection.handle }}
+            {{ connection.handle || '-' }}
           </b-form-group>
         </b-col>
         <b-col
@@ -64,7 +65,7 @@
               />
             </label>
 
-            {{ locationName }}
+            {{ locationName || '-' }}
           </b-form-group>
         </b-col>
         <b-col
@@ -76,17 +77,10 @@
             label-class="text-primary"
             class="mb-0"
           >
-            {{ connection.ownership }}
+            {{ connection.ownership || '-' }}
           </b-form-group>
         </b-col>
       </b-row>
-
-      <b-form-group
-        :label="$t('url')"
-        label-class="text-primary"
-      >
-        {{ connectionURL }}
-      </b-form-group>
 
       <b-row>
         <b-col
@@ -94,14 +88,14 @@
           lg="6"
         >
           <b-form-group
-            :label="$t('sensitivityLevel')"
+            :label="$t('sensitivity-level')"
             label-class="text-primary"
           >
-            {{ sensitivityLevelName }}
+            {{ sensitivityLevelName || '-' }}
           </b-form-group>
         </b-col>
       </b-row>
-    </template>
+    </b-overlay>
   </b-card>
 </template>
 
@@ -115,12 +109,12 @@ export default {
 
   i18nOptions: {
     namespaces: 'system.connections',
-    keyPrefix: 'editor.info',
+    keyPrefix: 'primary',
   },
 
   data () {
     return {
-      processing: false,
+      loading: false,
 
       connection: undefined,
       sensitivityLevel: undefined,
@@ -129,17 +123,11 @@ export default {
 
   computed: {
     locationCoordinates () {
-      return this.connection.location.geometry.coordinates || []
+      return this.connection.meta.location.geometry.coordinates || []
     },
 
     locationName () {
-      return this.connection.location.properties.name || 'Unnamed location'
-    },
-
-    connectionURL () {
-      const { connection } = this.connection.config
-      const { params = {} } = connection
-      return (params || {}).dsn
+      return this.connection.meta.location.name || 'Unnamed location'
     },
 
     sensitivityLevelName () {
@@ -154,7 +142,7 @@ export default {
 
   methods: {
     fetchPrimaryConnection () {
-      this.processing = true
+      this.loading = true
 
       return this.$SystemAPI.dalConnectionList({ type: 'corteza::system:primary-dal-connection' }).then(({ set = [] }) => {
         this.connection = set.find(({ type }) => type === 'corteza::system:primary-dal-connection')
@@ -168,7 +156,7 @@ export default {
         }
       }).catch(this.toastErrorHandler(this.$t('notification:fetch.error')))
         .finally(async () => {
-          this.processing = false
+          this.loading = false
         })
     },
   },
