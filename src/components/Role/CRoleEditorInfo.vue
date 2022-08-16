@@ -163,7 +163,7 @@
       />
 
       <confirmation-toggle
-        v-if="!fresh && editable"
+        v-if="!fresh && editable && role.canDeleteRole"
         data-test-id="button-delete"
         @confirmed="$emit('delete')"
       >

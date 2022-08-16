@@ -589,7 +589,7 @@ export default {
     },
 
     isDeleted () {
-      return this.authClient.deletedAt
+      return this.authClient.deletedAt && this.authClient.canDeleteAuthClient
     },
 
     secretVisible () {
