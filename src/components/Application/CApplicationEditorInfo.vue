@@ -111,7 +111,7 @@
       />
 
       <confirmation-toggle
-        v-if="application && application.applicationID"
+        v-if="application && application.applicationID && application.canDeleteApplication"
         data-test-id="button-delete"
         @confirmed="$emit('delete')"
       >
