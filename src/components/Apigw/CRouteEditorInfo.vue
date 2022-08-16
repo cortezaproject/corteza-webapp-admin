@@ -129,7 +129,7 @@
       />
 
       <confirmation-toggle
-        v-if="route && route.routeID"
+        v-if="route && route.routeID && route.canDeleteApigwRoute"
         @confirmed="$emit('delete')"
       >
         {{ getDeleteStatus }}

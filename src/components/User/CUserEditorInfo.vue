@@ -126,7 +126,7 @@
       />
 
       <confirmation-toggle
-        v-if="user && user.userID"
+        v-if="user && user.userID && user.canDeleteUser"
         data-test-id="button-delete"
         @confirmed="$emit('delete')"
       >

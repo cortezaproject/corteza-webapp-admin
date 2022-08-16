@@ -95,7 +95,7 @@
       />
 
       <confirmation-toggle
-        v-if="queue && queue.queueID"
+        v-if="queue && queue.queueID && queue.canDeleteQueue"
         @confirmed="$emit('delete')"
       >
         {{ getDeleteStatus }}
