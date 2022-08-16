@@ -131,7 +131,7 @@
       />
 
       <confirmation-toggle
-        v-if="workflow && workflow.workflowID"
+        v-if="workflow && workflow.workflowID && workflow.canDeleteWorkflow"
         :disabled="deleteDisabled"
         @confirmed="$emit('delete')"
       >

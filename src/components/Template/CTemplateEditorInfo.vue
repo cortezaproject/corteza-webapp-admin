@@ -130,7 +130,7 @@
       />
 
       <confirmation-toggle
-        v-if="!fresh"
+        v-if="!fresh && template.canDeleteTemplate"
         data-test-id="button-delete"
         @confirmed="$emit('delete')"
       >
