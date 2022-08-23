@@ -1,5 +1,6 @@
 <template>
   <b-card
+    data-test-id="card-application-selector"
     class="shadow-sm"
     header-bg-variant="white"
     footer-bg-variant="white"
@@ -12,7 +13,10 @@
         :description="$t('name.description')"
         label-cols="2"
       >
-        <b-form-input v-model="unify.name" />
+        <b-form-input
+          v-model="unify.name"
+          data-test-id="input-name"
+        />
       </b-form-group>
 
       <b-form-group
@@ -28,6 +32,7 @@
             <b-button
               v-if="showLogoPreview"
               v-b-modal.logo
+              data-test-id="button-logo-show"
               variant="link"
               class="d-flex align-items-center border-0 p-0 ml-2"
             >
@@ -38,6 +43,7 @@
 
             <b-button
               v-if="showLogoPreview"
+              data-test-id="button-logo-reset"
               variant="light"
               size="sm"
               class="py-0 ml-2"
@@ -49,6 +55,7 @@
         </template>
         <b-form-file
           v-model="unifyAssets.logo"
+          data-test-id="file-logo-upload"
           accept="image/*"
           :placeholder="$t('logo.placeholder')"
         />
@@ -62,6 +69,7 @@
         body-class="p-1"
       >
         <b-img
+          data-test-id="img-logo-preview"
           :src="unify.logo"
           fluid-grow
         />
@@ -72,7 +80,10 @@
         :description="$t('url.description')"
         label-cols="2"
       >
-        <b-form-input v-model="unify.url" />
+        <b-form-input
+          v-model="unify.url"
+          data-test-id="input-url"
+        />
       </b-form-group>
 
       <b-form-group
@@ -80,6 +91,7 @@
       >
         <b-form-checkbox
           v-model="unify.listed"
+          data-test-id="checkbox-listed"
         >
           {{ $t('listed') }}
         </b-form-checkbox>
@@ -90,6 +102,7 @@
       >
         <b-form-checkbox
           v-model="unify.pinned"
+          data-test-id="checkbox-pinned"
           :disabled="!canPin"
         >
           {{ $t('pinned') }}
@@ -103,6 +116,7 @@
       >
         <b-form-textarea
           v-model="unify.config"
+          data-test-id="textarea-config"
           :state="configState"
           rows="10"
         />
@@ -110,13 +124,17 @@
     </b-form>
 
     <template #header>
-      <h3 class="m-0">
+      <h3
+        data-test-id="card-title"
+        class="m-0"
+      >
         {{ $t('title') }}
       </h3>
     </template>
 
     <template #footer>
       <c-submit-button
+        data-test-id="button-submit"
         class="float-right"
         :processing="processing"
         :success="success"

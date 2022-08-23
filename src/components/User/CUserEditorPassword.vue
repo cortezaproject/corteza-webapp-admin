@@ -1,5 +1,6 @@
 <template>
   <b-card
+    data-test-id="card-user-password"
     class="shadow-sm"
     header-bg-variant="white"
     footer-bg-variant="white"
@@ -14,6 +15,7 @@
       >
         <b-form-input
           v-model="password"
+          data-test-id="input-new-password"
           :state="passwordState"
           autocomplete="new-password"
           required
@@ -29,6 +31,7 @@
       >
         <b-form-input
           v-model="confirmPassword"
+          data-test-id="input-confirm-password"
           type="password"
           autocomplete="new-password"
           required
@@ -39,13 +42,17 @@
     </b-form>
 
     <template #header>
-      <h3 class="m-0">
+      <h3
+        data-test-id="card-title"
+        class="m-0"
+      >
         {{ $t('title') }}
       </h3>
     </template>
 
     <template #footer>
       <confirmation-toggle
+        data-test-id="button-remove-password"
         class="ml-1"
         cta-class="light"
         @confirmed="$emit('submit')"

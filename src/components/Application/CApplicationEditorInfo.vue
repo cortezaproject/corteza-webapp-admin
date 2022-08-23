@@ -65,6 +65,7 @@
       >
         <b-form-input
           v-model="application.deletedAt"
+          data-test-id="input-deleted-at"
           plaintext
           disabled
         />
@@ -112,7 +113,7 @@
 
       <confirmation-toggle
         v-if="application && application.applicationID"
-        data-test-id="button-delete"
+        :data-test-id="deleteButtonStatusCypressId"
         @confirmed="$emit('delete')"
       >
         {{ getDeleteStatus }}
@@ -181,6 +182,10 @@ export default {
 
     getDeleteStatus () {
       return this.application.deletedAt ? this.$t('undelete') : this.$t('delete')
+    },
+
+    deleteButtonStatusCypressId () {
+      return `button-${this.getDeleteStatus.toLowerCase()}`
     },
   },
 }

@@ -66,6 +66,7 @@
         >
           <c-resource-list-status-filter
             v-model="filter.deleted"
+            data-test-id="filter-deleted-apps"
             class="mb-1 mb-lg-0"
             :label="$t('filterForm.deleted.label')"
             :excluded-label="$t('filterForm.excluded.label')"
