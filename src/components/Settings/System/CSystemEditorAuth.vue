@@ -1,5 +1,6 @@
 <template>
   <b-card
+    data-test-id="card-edit-authentication"
     class="shadow-sm"
     header-bg-variant="white"
     footer-bg-variant="white"
@@ -22,6 +23,7 @@
         </b-form-checkbox>
         <b-form-checkbox
           v-model="settings['auth.internal.password-reset.enabled']"
+          data-test-id="checkbox-password-reset"
           :value="true"
           :unchecked-value="false"
         >
