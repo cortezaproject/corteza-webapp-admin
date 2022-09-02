@@ -145,6 +145,7 @@
       <b-form-group label-cols="2">
         <b-form-checkbox
           v-model="settings['auth.multi-factor.email-otp.enabled']"
+          data-test-id="checkbox-enable-emailOTP"
           :value="true"
           :unchecked-value="false"
         >
@@ -176,6 +177,7 @@
       <b-form-group label-cols="2">
         <b-form-checkbox
           v-model="settings['auth.multi-factor.totp.enabled']"
+          data-test-id="checkbox-enable-TOTP"
           :value="true"
           :unchecked-value="false"
         >
