@@ -7,6 +7,7 @@
     <b-form-group>
       <b-form-checkbox
         v-model="inclRoleMembership"
+        data-test-id="checkbox-include-role-membership"
         :value="true"
         :unchecked-value="false"
       >
@@ -22,6 +23,7 @@
     >
       <b-form-checkbox
         v-model="inclRoles"
+        data-test-id="checkbox-include-roles"
         :value="true"
         :unchecked-value="false"
         :disabled="!inclRoleMembership"
@@ -32,6 +34,7 @@
 
     <div slot="footer">
       <b-button
+        data-test-id="button-export"
         variant="dark"
         class="float-right"
         @click="nextStep"

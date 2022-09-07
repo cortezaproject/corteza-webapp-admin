@@ -1,5 +1,6 @@
 <template>
   <b-card
+    data-test-id="card-external-auth-providers"
     class="shadow-sm"
     header-bg-variant="white"
     footer-bg-variant="white"
@@ -10,6 +11,7 @@
     >
       <template #cell(editor)="{ item }">
         <b-button
+          data-test-id="button-remove-provider"
           variant="link"
           class="pr-0"
           @click="$emit('delete', item.credentialsID)"
