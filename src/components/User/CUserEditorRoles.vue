@@ -1,5 +1,6 @@
 <template>
   <b-card
+    data-test-id="card-role-membership"
     class="shadow-sm"
     header-bg-variant="white"
     footer-bg-variant="white"

@@ -24,6 +24,7 @@
       </template>
       <div
         v-else
+        data-test-id="drop-area"
         class="d-flex align-items-center h-100 w-100 p-2 droparea justify-content-center"
         :class="{ 'bg-danger': error }"
       >
@@ -39,6 +40,10 @@ import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 import { mixins } from '@cortezaproject/corteza-vue'
 
 export default {
+  i18nOptions: {
+    namespaces: 'general',
+  },
+
   components: {
     vueDropzone,
   },
@@ -146,7 +151,7 @@ export default {
         types = ['*/*']
       }
       if (!this.validateFileType(file.name, types)) {
-        this.error = this.$t('general.label.fileTypeNotAllowed')
+        this.error = this.$t('label.fileTypeNotAllowed')
         this.$refs.dropzone.removeFile(file)
       }
     },

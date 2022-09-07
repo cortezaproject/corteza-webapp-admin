@@ -67,6 +67,7 @@
         label-cols="2"
       >
         <b-form-input
+          data-test-id="input-suspended-at"
           :value="user.suspendedAt | locFullDateTime"
           plaintext
           disabled
@@ -79,6 +80,7 @@
         label-cols="2"
       >
         <b-form-input
+          data-test-id="input-deleted-at"
           :value="user.deletedAt | locFullDateTime"
           plaintext
           disabled
@@ -127,7 +129,7 @@
 
       <confirmation-toggle
         v-if="user && user.userID && user.canDeleteUser"
-        data-test-id="button-delete"
+        :data-test-id="deletedButtonStatusCypressId"
         @confirmed="$emit('delete')"
       >
         {{ getDeleteStatus }}
@@ -135,7 +137,7 @@
 
       <confirmation-toggle
         v-if="user && user.userID"
-        data-test-id="button-status"
+        :data-test-id="suspendButtonStatusCypressId"
         class="ml-1"
         cta-class="light"
         @confirmed="$emit('status')"
@@ -253,6 +255,14 @@ export default {
 
     saveDisabled () {
       return !this.editable || [this.nameState, this.handleState].includes(false)
+    },
+
+    deletedButtonStatusCypressId () {
+      return `button-${this.getDeleteStatus.toLowerCase()}`
+    },
+
+    suspendButtonStatusCypressId () {
+      return `button-${this.getSuspendStatus.toLowerCase()}`
     },
   },
 }

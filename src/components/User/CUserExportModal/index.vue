@@ -1,6 +1,7 @@
 <template>
   <div>
     <b-button
+      data-test-id="button-export"
       variant="light"
       @click="showModal=true"
     >

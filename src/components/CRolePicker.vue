@@ -1,15 +1,21 @@
 <template>
-  <div>
+  <div
+    data-test-id="role-picker"
+  >
     <b-input-group>
       <b-input-group-append is-text>
         <font-awesome-icon :icon="['fas', 'search']" />
       </b-input-group-append>
-      <b-form-input v-model.trim="filter" />
+      <b-form-input
+        v-model.trim="filter"
+        data-test-id="input-role"
+      />
       <b-input-group-append
         v-if="filter"
         is-text
       >
         <b-button
+          data-test-id="button-clear-role"
           variant="link"
           size="sm"
           class="p-0 m-0"
@@ -27,12 +33,14 @@
       <b-row
         v-for="r in filtered"
         :key="r.roleID"
+        data-test-id="filtered-row-list"
         class="filtered-role"
         @click="addRole(r)"
       >
         <b-col class="pt-1">
           {{ r | label }}
           <b-button
+            data-test-id="button-add-role"
             variant="link"
             class="float-right"
             @click="addRole(r)"
@@ -56,10 +64,12 @@
       <b-row
         v-for="r in selected"
         :key="r.userID"
+        data-test-id="selected-row-list"
       >
         <b-col>{{ r | label }}</b-col>
         <b-col class="text-right">
           <b-button
+            data-test-id="button-remove-role"
             variant="link"
             @click="removeRole(r)"
           >
