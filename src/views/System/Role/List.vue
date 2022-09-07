@@ -47,51 +47,58 @@
       />
     </c-content-header>
     <c-resource-list
-      primary-key="roleID"
-      edit-route="system.role.edit"
-      :loading-text="$t('loading')"
-      :paging="paging"
+      :primary-key="primaryKey"
+      :edit-route="editRoute"
+      :filter="filter"
       :sorting="sorting"
-      :items="items"
+      :pagination="pagination"
       :fields="fields"
+      :items="items"
       :row-class="rowClass"
+      :translations="{
+        searchPlaceholder: $t('filterForm.query.placeholder'),
+        notFound: $t('admin:general.notFound'),
+        noItems: $t('admin:general.resource-list.no-items'),
+        loading: $t('admin:general.loading'),
+        showingPagination: 'admin:general.pagination.showing',
+        singlePluralPagination: 'admin:general.pagination.single_plural',
+        prevPagination: $t('admin:general.pagination.prev'),
+        nextPagination: $t('admin:general.pagination.next'),
+      }"
+      hide-total
+      @search="filterList"
     >
-      <template #filter>
-        <b-form-group
-          class="p-0 m-0"
+      <template #header>
+        <c-resource-list-status-filter
+          v-model="filter.deleted"
+          :label="$t('filterForm.deleted.label')"
+          :excluded-label="$t('filterForm.excluded.label')"
+          :inclusive-label="$t('filterForm.inclusive.label')"
+          :exclusive-label="$t('filterForm.exclusive.label')"
+          @change="filterList"
+        />
+
+        <c-resource-list-status-filter
+          v-model="filter.archived"
+          :label="$t('filterForm.archived.label')"
+          :excluded-label="$t('filterForm.excluded.label')"
+          :inclusive-label="$t('filterForm.inclusive.label')"
+          :exclusive-label="$t('filterForm.exclusive.label')"
+          @change="filterList"
+        />
+      </template>
+
+      <template #actions="{ item }">
+        <b-button
+          v-if="item.roleID !== '1'"
+          size="sm"
+          variant="link"
+          :to="{ name: editRoute, params: { [primaryKey]: item[primaryKey] } }"
         >
-          <b-input-group>
-            <b-form-input
-              v-model.trim="filter.query"
-              data-test-id="input-search"
-              :placeholder="$t('filterForm.query.placeholder')"
-              @keyup="filterList"
-            />
-          </b-input-group>
-        </b-form-group>
-        <b-row
-          no-gutters
-          class="mt-3"
-        >
-          <c-resource-list-status-filter
-            v-model="filter.deleted"
-            class="col-12 col-lg-6 mb-1 mb-lg-0"
-            :label="$t('filterForm.deleted.label')"
-            :excluded-label="$t('filterForm.excluded.label')"
-            :inclusive-label="$t('filterForm.inclusive.label')"
-            :exclusive-label="$t('filterForm.exclusive.label')"
-            @change="filterList"
+          <font-awesome-icon
+            :icon="['fas', 'pen']"
           />
-          <c-resource-list-status-filter
-            v-model="filter.archived"
-            class="col-12 col-lg-6"
-            :label="$t('filterForm.archived.label')"
-            :excluded-label="$t('filterForm.excluded.label')"
-            :inclusive-label="$t('filterForm.inclusive.label')"
-            :exclusive-label="$t('filterForm.exclusive.label')"
-            @change="filterList"
-          />
-        </b-row>
+        </b-button>
       </template>
     </c-resource-list>
   </b-container>
@@ -101,8 +108,14 @@
 import * as moment from 'moment'
 import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
 import { mapGetters } from 'vuex'
+import { components } from '@cortezaproject/corteza-vue'
+const { CResourceList } = components
 
 export default {
+  components: {
+    CResourceList,
+  },
+
   mixins: [
     listHelpers,
   ],
@@ -115,6 +128,9 @@ export default {
   data () {
     return {
       id: 'roles',
+
+      primaryKey: 'roleID',
+      editRoute: 'system.role.edit',
 
       filter: {
         query: '',
@@ -189,12 +205,8 @@ export default {
       return this.procListResults(this.$SystemAPI.roleList(this.encodeListParams()))
     },
 
-    rowClass (item = {}, type) {
-      if (item && !item.archivedAt) {
-        return this.genericRowClass(item, type)
-      } else {
-        return 'text-secondary'
-      }
+    rowClass (item) {
+      return { 'text-secondary': item && (!!item.deletedAt || !!item.archivedAt) }
     },
   },
 }

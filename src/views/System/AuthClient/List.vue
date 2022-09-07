@@ -27,29 +27,49 @@
       </span>
     </c-content-header>
     <c-resource-list
-      primary-key="authClientID"
-      edit-route="system.authClient.edit"
-      :loading-text="$t('loading')"
-      :paging="paging"
+      :primary-key="primaryKey"
+      :edit-route="editRoute"
+      :filter="filter"
       :sorting="sorting"
-      :items="items"
+      :pagination="pagination"
       :fields="fields"
+      :items="items"
       :row-class="genericRowClass"
+      :translations="{
+        searchPlaceholder: $t('filterForm.query.placeholder'),
+        notFound: $t('admin:general.notFound'),
+        noItems: $t('admin:general.resource-list.no-items'),
+        loading: $t('admin:general.loading'),
+        showingPagination: 'admin:general.pagination.showing',
+        singlePluralPagination: 'admin:general.pagination.single_plural',
+        prevPagination: $t('admin:general.pagination.prev'),
+        nextPagination: $t('admin:general.pagination.next'),
+      }"
+      hide-search
+      hide-total
+      @search="filterList"
     >
-      <template #filter>
-        <b-row
-          no-gutters
+      <template #header>
+        <c-resource-list-status-filter
+          v-model="filter.deleted"
+          :label="$t('filterForm.deleted.label')"
+          :excluded-label="$t('filterForm.excluded.label')"
+          :inclusive-label="$t('filterForm.inclusive.label')"
+          :exclusive-label="$t('filterForm.exclusive.label')"
+          @change="filterList"
+        />
+      </template>
+
+      <template #actions="{ item }">
+        <b-button
+          size="sm"
+          variant="link"
+          :to="{ name: editRoute, params: { [primaryKey]: item[primaryKey] } }"
         >
-          <c-resource-list-status-filter
-            v-model="filter.deleted"
-            class="mb-1 mb-lg-0"
-            :label="$t('filterForm.deleted.label')"
-            :excluded-label="$t('filterForm.excluded.label')"
-            :inclusive-label="$t('filterForm.inclusive.label')"
-            :exclusive-label="$t('filterForm.exclusive.label')"
-            @change="filterList"
+          <font-awesome-icon
+            :icon="['fas', 'pen']"
           />
-        </b-row>
+        </b-button>
       </template>
     </c-resource-list>
   </b-container>
@@ -59,8 +79,14 @@
 import * as moment from 'moment'
 import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
 import { mapGetters } from 'vuex'
+import { components } from '@cortezaproject/corteza-vue'
+const { CResourceList } = components
 
 export default {
+  components: {
+    CResourceList,
+  },
+
   mixins: [
     listHelpers,
   ],
@@ -73,6 +99,9 @@ export default {
   data () {
     return {
       id: 'authclient',
+
+      primaryKey: 'authClientID',
+      editRoute: 'system.authClientID.edit',
 
       filter: {
         query: '',

@@ -1,5 +1,5 @@
 <template>
-  <b-col class="d-flex">
+  <div class="my-1">
     <b-form-radio-group
       v-model="$attrs.value"
       v-bind="$attrs"
@@ -17,7 +17,7 @@
     <span class="mt-1 ml-2 text-nowrap">
       {{ $attrs.label }}
     </span>
-  </b-col>
+  </div>
 </template>
 
 <script>

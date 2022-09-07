@@ -4,7 +4,6 @@ import sinon from 'sinon'
 import BootstrapVue from 'bootstrap-vue'
 import PortalVue from 'portal-vue'
 import CContentHeader from 'corteza-webapp-admin/src/components/CContentHeader'
-import CResourceList from 'corteza-webapp-admin/src/components/CResourceList'
 import CResourceListStatusFilter from 'corteza-webapp-admin/src/components/CResourceListStatusFilter'
 import store from 'corteza-webapp-admin/src/store'
 
@@ -28,7 +27,6 @@ Vue.use(PortalVue)
 Vue.component('c-corredor-manual-buttons', CCorredorManualButtons)
 Vue.component('c-permissions-button', CPermissionsButton)
 Vue.component('c-content-header', CContentHeader)
-Vue.component('c-resource-list', CResourceList)
 Vue.component('c-resource-list-status-filter', CResourceListStatusFilter)
 
 export const writeableWindowLocation = ({ path: value = '/' } = {}) => Object.defineProperty(window, 'location', { writable: true, value })
