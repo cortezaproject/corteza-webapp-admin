@@ -81,7 +81,10 @@
     <b-container
       v-else
     >
-      <b-alert variant="warning" show>
+      <b-alert
+        variant="warning"
+        show
+      >
         {{ $t('no-access-warning') }}
       </b-alert>
     </b-container>

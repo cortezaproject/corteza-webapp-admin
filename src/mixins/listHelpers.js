@@ -9,7 +9,7 @@ export default {
        */
       filter: {},
 
-      paging: {
+      pagination: {
         limit: 10,
         pageCursor: undefined,
         prevPage: '',
@@ -27,7 +27,7 @@ export default {
      * @todo make this.filter reactive
      */
     '$route.fullPath': {
-      handler: function () {
+      handler () {
         this.handleQueryParams()
       },
     },
@@ -48,25 +48,25 @@ export default {
      * @param initial {Boolean} - used to determine it this is the initial fetch
      */
     handleQueryParams (initial = false) {
-      // Paging
+      // Pagination
       const {
-        limit = this.paging.limit,
-        pageCursor = this.paging.pageCursor,
-        prevPage = this.paging.prevCursor,
-        nextPage = this.paging.nextCursor,
+        limit = this.pagination.limit,
+        pageCursor = this.pagination.pageCursor,
+        prevPage = this.pagination.prevCursor,
+        nextPage = this.pagination.nextCursor,
         ...r1
       } = this.$route.query
 
       /// To prevent extra list fetch, check if pageCursor is defined (not first page)
-      const refresh = this.$route.query.pageCursor !== this.paging.pageCursor
-      this.paging = { limit, pageCursor, prevPage, nextPage }
+      const refresh = this.$route.query.pageCursor !== this.pagination.pageCursor
+      this.pagination = { limit, pageCursor, prevPage, nextPage }
 
       // Sorting
       const { sortBy = this.sorting.sortBy, sortDesc = this.sorting.sortDesc, ...r2 } = r1
 
       // Reset pageCursor when sort changes, except on first fetch (so we use the pageCursor from url)
       if (!initial && (sortBy !== this.sorting.sortBy || sortDesc !== this.sorting.sortDesc)) {
-        this.paging.pageCursor = ''
+        this.pagination.pageCursor = ''
       }
       this.sorting = { sortBy, sortDesc: sortDesc === true || sortDesc === 'true' }
 
@@ -87,11 +87,11 @@ export default {
     },
 
     filterList: debounce(function () {
-      // reset paging when filtering changes
+      // reset pagination when filtering changes
       //
       // we want to prevent situations with page is preset to a number that
       // exceeds the number of pages of a filtered results
-      this.paging.pageCursor = ''
+      this.pagination.pageCursor = ''
 
       // notify b-table about the change
       //
@@ -110,16 +110,16 @@ export default {
 
       return {
         ...this.filter,
-        ...this.paging,
+        ...this.pagination,
         ...{ nextPage: undefined, prevPage: undefined },
-        sort: this.paging.pageCursor ? undefined : sort,
+        sort: this.pagination.pageCursor ? undefined : sort,
       }
     },
 
     encodeRouteParams () {
       return {
         query: {
-          ...this.paging,
+          ...this.pagination,
           ...this.sorting,
           ...this.filter,
         },
@@ -143,9 +143,9 @@ export default {
       }
 
       return p.then(async ({ set, filter } = {}) => {
-        this.paging.pageCursor = undefined
-        this.paging.nextPage = filter.nextPage
-        this.paging.prevPage = filter.prevPage
+        this.pagination.pageCursor = undefined
+        this.pagination.nextPage = filter.nextPage
+        this.pagination.prevPage = filter.prevPage
 
         return set
       }).catch(this.toastErrorHandler(this.$t('notification:list.load.error')))
@@ -158,10 +158,8 @@ export default {
         })
     },
 
-    genericRowClass (item = {}, type) {
-      if (item && item.deletedAt) {
-        return 'text-secondary'
-      }
+    genericRowClass (item) {
+      return { 'text-secondary': item && !!item.deletedAt }
     },
   },
 }

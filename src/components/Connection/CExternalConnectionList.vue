@@ -12,18 +12,29 @@
         {{ $t('title') }}
       </h3>
     </template>
-
     <c-resource-list
-      primary-key="connectionID"
-      edit-route="system.connection.edit"
-      :loading-text="$t('loading')"
-      :paging="paging"
+      :primary-key="primaryKey"
+      :edit-route="editRoute"
+      :filter="filter"
       :sorting="sorting"
-      :items="items"
+      :pagination="pagination"
       :fields="fields"
+      :items="items"
+      :row-class="genericRowClass"
+      :translations="{
+        searchPlaceholder: $t('filter-form.query.placeholder'),
+        notFound: $t('admin:general.notFound'),
+        noItems: $t('admin:general.resource-list.no-items'),
+        loading: $t('admin:general.loading'),
+        showingPagination: 'admin:general.pagination.showing',
+        singlePluralPagination: 'admin:general.pagination.single_plural',
+        prevPagination: $t('admin:general.pagination.prev'),
+        nextPagination: $t('admin:general.pagination.next'),
+      }"
       class="h-100"
+      @search="filterList"
     >
-      <template #actions>
+      <template #header>
         <b-button
           variant="primary"
           size="lg"
@@ -33,24 +44,16 @@
         </b-button>
       </template>
 
-      <template #filter>
-        <b-input-group
-          class="h-100"
+      <template #actions="{ item }">
+        <b-button
+          size="sm"
+          variant="link"
+          :to="{ name: editRoute, params: { [primaryKey]: item[primaryKey] } }"
         >
-          <b-form-input
-            v-model.trim="filter.query"
-            :placeholder="$t('filter-form.query.placeholder')"
-            class="text-truncate border-right-0 mb-0 h-100"
-            @keyup="filterList"
+          <font-awesome-icon
+            :icon="['fas', 'pen']"
           />
-          <b-input-group-append>
-            <b-input-group-text class="text-primary bg-white">
-              <font-awesome-icon
-                :icon="['fas', 'search']"
-              />
-            </b-input-group-text>
-          </b-input-group-append>
-        </b-input-group>
+        </b-button>
       </template>
     </c-resource-list>
   </b-card>
@@ -59,8 +62,14 @@
 <script>
 import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
 import moment from 'moment'
+import { components } from '@cortezaproject/corteza-vue'
+const { CResourceList } = components
 
 export default {
+  components: {
+    CResourceList,
+  },
+
   mixins: [
     listHelpers,
   ],
@@ -74,8 +83,12 @@ export default {
     return {
       id: 'connections',
 
+      primaryKey: 'connectionID',
+      editRoute: 'system.connection.edit',
+
       filter: {
         type: 'corteza::system:dal-connection',
+        query: '',
         deleted: 0,
       },
 
