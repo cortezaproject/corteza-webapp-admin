@@ -16,7 +16,7 @@
     <c-resource-list
       primary-key="federationID"
       :loading-text="$t('loading')"
-      :paging="paging"
+      :pagination="pagination"
       :sorting="sorting"
       :items="items"
       :fields="fields"
@@ -39,7 +39,7 @@
             v-model.trim="filter.query"
             :placeholder="$t('filterForm.query.placeholder')"
             class="text-truncate border-right-0 h-100"
-            @keyup="filterList"
+            @search="filterList"
           />
           <b-input-group-append>
             <b-input-group-text class="text-primary bg-white">

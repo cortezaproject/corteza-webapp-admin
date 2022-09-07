@@ -221,7 +221,7 @@ export default {
       const oldBeforeID = this.filter.before
       this.filter.before = append ? this.filter.before : ''
       this.filter.routeID = this.$route.params.routeID
-      this.paging.limit = append ? 10 : this.totalItems
+      this.pagination.limit = append ? 10 : this.totalItems
 
       this.$SystemAPI.apigwProfilerAggregation(this.encodeListParams())
         .then(({ filter = {}, set = [] }) => {
