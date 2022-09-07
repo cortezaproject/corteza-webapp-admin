@@ -297,7 +297,7 @@ export default {
         action: undefined,
       },
 
-      paging: {
+      pagination: {
         limit: 10,
       },
 
@@ -370,15 +370,15 @@ export default {
     load (reset = false) {
       if (reset) {
         this.items.length = 0
-        this.paging.beforeActionID = undefined
+        this.pagination.beforeActionID = undefined
       } else {
         const len = this.items.length
         if (len > 0) {
-          this.paging.beforeActionID = (this.items[len - 1] || {}).actionID
+          this.pagination.beforeActionID = (this.items[len - 1] || {}).actionID
         }
       }
 
-      this.procListResults(this.$SystemAPI.actionlogList({ ...this.filter, ...this.paging }), false)
+      this.procListResults(this.$SystemAPI.actionlogList({ ...this.filter, ...this.pagination }), false)
         .then(rr => {
           this.items.push(...rr)
         })
@@ -391,7 +391,7 @@ export default {
       }
     },
 
-    // Resets paging & sorting and adds filtering params for drill-down
+    // Resets pagination & sorting and adds filtering params for drill-down
     drillDownLink (query = {}) {
       return {
         name: 'system.actionlog',

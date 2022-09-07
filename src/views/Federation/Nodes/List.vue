@@ -23,27 +23,49 @@
     </c-content-header>
 
     <c-resource-list
-      primary-key="nodeID"
-      edit-route="federation.nodes.edit"
-      :loading-text="$t('loading')"
-      :paging="paging"
+      :primary-key="primaryKey"
+      :edit-route="editRoute"
+      :fields="fields"
+      :filter="filter"
+      :pagination="pagination"
       :sorting="sorting"
       :items="items"
-      :fields="fields"
-      @confirm-pending="openConfirmPending($event)"
+      :translations="{
+        searchPlaceholder: $t('filterForm.query.placeholder'),
+        notFound: $t('admin:general.notFound'),
+        noItems: $t('admin:general.resource-list.no-items'),
+        loading: $t('admin:general.loading'),
+        showingPagination: 'admin:general.pagination.showing',
+        singlePluralPagination: 'admin:general.pagination.single_plural',
+        prevPagination: $t('admin:general.pagination.prev'),
+        nextPagination: $t('admin:general.pagination.next'),
+      }"
+      hide-total
+      @search="filterList"
     >
-      <template #filter>
-        <b-form-group
-          class="p-0 m-0"
+      <template #actions="{ item }">
+        <b-button
+          v-if="item.nodeID === item.sharedNodeID && (item.status || '').toLowerCase() === 'pair_requested'"
+          size="sm"
+          variant="link"
+          class="p-0 pr-1"
+          @click="openConfirmPending(item)"
         >
-          <b-input-group>
-            <b-form-input
-              v-model.trim="filter.query"
-              :placeholder="$t('filterForm.query.placeholder')"
-              @keyup="filterList"
-            />
-          </b-input-group>
-        </b-form-group>
+          <font-awesome-icon
+            :icon="['fas', 'exclamation-triangle']"
+            class="text-danger"
+          />
+        </b-button>
+
+        <b-button
+          size="sm"
+          variant="link"
+          :to="{ name: editRoute, params: { [primaryKey]: item[primaryKey] } }"
+        >
+          <font-awesome-icon
+            :icon="['fas', 'pen']"
+          />
+        </b-button>
       </template>
     </c-resource-list>
 
@@ -152,9 +174,11 @@
 
 <script>
 import moment from 'moment'
+import { mapGetters } from 'vuex'
 import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
-import { mapGetters } from 'vuex'
+import { components } from '@cortezaproject/corteza-vue'
+const { CResourceList } = components
 
 export default {
   name: 'FederationList',
@@ -166,6 +190,7 @@ export default {
 
   components: {
     CSubmitButton,
+    CResourceList,
   },
 
   mixins: [
@@ -175,6 +200,9 @@ export default {
   data () {
     return {
       id: 'federation',
+
+      primaryKey: 'nodeID',
+      editRoute: 'federation.nodes.edit',
 
       pair: {
         modal: false,
