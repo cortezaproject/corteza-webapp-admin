@@ -35,7 +35,7 @@
             :label="$t('name')"
             class="mb-3 text-primary"
           >
-            {{ connection.name || '-' }}
+            {{ connection.meta.name || '-' }}
           </b-form-group>
         </b-col>
         <b-col
