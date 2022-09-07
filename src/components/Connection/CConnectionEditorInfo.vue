@@ -62,24 +62,33 @@
         lg="6"
       >
         <b-form-group
-          :label="$t('form.location-geometry.label')"
           :description="$t('form.location-geometry.description')"
         >
-          <div
-            class="mt-2 d-flex align-items-center"
+          <label
+            class="d-flex align-items-center text-primary"
           >
+            {{ $t('form.location-geometry.label') }}
             <c-location
               v-if="!disabled"
               v-model="connection.meta.location.geometry.coordinates"
               :placeholder="$t('form.location-geometry.placeholder')"
-              class="mr-2"
+              class="ml-1"
               editable
             />
+          </label>
+
+          <div
+            class="mt-2 d-flex align-items-center"
+          >
             <code
-              v-if="coords"
+              v-if="locationCoordinates"
             >
-              {{ coords[0] }}, {{ coords[1] }}
+              {{ locationCoordinates }}
             </code>
+
+            <span v-else>
+              -
+            </span>
           </div>
         </b-form-group>
       </b-col>
@@ -156,10 +165,14 @@ export default {
       return handle ? handleState(handle) : false
     },
 
-    coords () {
+    locationCoordinates () {
       const { coordinates: cc } = this.connection.meta.location.geometry
 
-      return cc && Array.isArray(cc) && cc.length === 2 ? cc : null
+      if (cc && Array.isArray(cc) && cc.length === 2) {
+        return cc.join(', ')
+      }
+
+      return ''
     },
   },
 }

@@ -118,9 +118,9 @@ export default {
           class: 'text-right',
         },
       ].map(c => ({
-        ...c,
         // Generate column label translation key
         label: c.label || this.$t(`columns.${c.key}`),
+        ...c,
       })),
     }
   },
