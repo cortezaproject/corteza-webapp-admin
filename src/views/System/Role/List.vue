@@ -137,6 +137,11 @@ export default {
         deleted: 0,
       },
 
+      sorting: {
+        sortBy: 'createdAt',
+        sortDesc: true,
+      },
+
       fields: [
         {
           key: 'name',
