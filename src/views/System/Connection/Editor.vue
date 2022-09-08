@@ -23,6 +23,7 @@
       />
 
       <c-connection-editor-dal
+        v-if="connection.config.dal"
         :dal="connection.config.dal"
         :issues="connection.issues || []"
         :disabled="disabled"
@@ -153,7 +154,7 @@ export default {
   data () {
     return {
       processing: false,
-      connection: { ...base },
+      connection: undefined,
     }
   },
 
