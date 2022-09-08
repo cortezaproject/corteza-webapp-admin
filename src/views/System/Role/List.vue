@@ -48,7 +48,6 @@
     </c-content-header>
     <c-resource-list
       :primary-key="primaryKey"
-      :edit-route="editRoute"
       :filter="filter"
       :sorting="sorting"
       :pagination="pagination"
