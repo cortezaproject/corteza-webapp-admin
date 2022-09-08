@@ -24,7 +24,6 @@
 
     <c-resource-list
       :primary-key="primaryKey"
-      :edit-route="editRoute"
       :fields="fields"
       :filter="filter"
       :pagination="pagination"
