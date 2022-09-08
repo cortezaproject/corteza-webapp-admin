@@ -72,6 +72,11 @@ export default {
     return {
       id: 'federation',
 
+      sorting: {
+        sortBy: 'createdAt',
+        sortDesc: true,
+      },
+
       fields: [
         {
           key: 'name',

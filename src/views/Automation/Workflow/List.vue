@@ -118,6 +118,11 @@ export default {
         disabled: 1,
       },
 
+      sorting: {
+        sortBy: 'createdAt',
+        sortDesc: true,
+      },
+
       fields: [
         {
           key: 'handle',

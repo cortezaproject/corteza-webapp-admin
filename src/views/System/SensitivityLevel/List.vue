@@ -97,6 +97,11 @@ export default {
         deleted: 0,
       },
 
+      sorting: {
+        sortBy: 'level',
+        sortDesc: true,
+      },
+
       fields: [
         {
           key: 'meta.name',
