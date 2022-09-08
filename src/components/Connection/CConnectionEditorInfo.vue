@@ -105,7 +105,7 @@
           class="mb-3 text-primary"
         >
           <b-form-input
-            v-model="connection.ownership"
+            v-model="connection.meta.ownership"
             :disabled="disabled"
             :placeholder="$t('form.ownership.placeholder')"
           />
