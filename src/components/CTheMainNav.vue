@@ -114,12 +114,6 @@ export default {
               can: ['system/', 'apigw-routes.search'],
             },
             {
-              label: 'system.items.permissions',
-              route: 'system.permissions',
-              icon: 'lock',
-              can: ['system/', 'grant'],
-            },
-            {
               label: 'system.items.connections',
               route: 'system.connection',
               icon: 'cloud',
@@ -130,6 +124,12 @@ export default {
               route: 'system.sensitivityLevel',
               icon: 'stamp',
               can: ['system/', 'dal-sensitivity-level.manage'],
+            },
+            {
+              label: 'system.items.permissions',
+              route: 'system.permissions',
+              icon: 'lock',
+              can: ['system/', 'grant'],
             },
           ],
         },
