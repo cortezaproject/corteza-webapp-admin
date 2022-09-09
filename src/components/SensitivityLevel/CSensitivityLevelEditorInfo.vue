@@ -7,24 +7,48 @@
     <b-form
       @submit.prevent="$emit('submit', sensitivityLevel)"
     >
-      <b-form-group
-        :label="$t('handle.label')"
-      >
-        <b-form-input
-          v-model="sensitivityLevel.handle"
-          :placeholder="$t('handle.placeholder')"
-          :state="handleState"
-        />
-        <b-form-invalid-feedback :state="handleState">
-          {{ $t('handle.invalid-characters') }}
-        </b-form-invalid-feedback>
-      </b-form-group>
+      <b-row>
+        <b-col
+          cols="12"
+          lg="6"
+        >
+          <b-form-group
+            :label="$t('name')"
+          >
+            <b-form-input
+              v-model="sensitivityLevel.meta.name"
+            />
+          </b-form-group>
+        </b-col>
+
+        <b-col
+          cols="12"
+          lg="6"
+        >
+          <b-form-group
+            :label="$t('handle.label')"
+          >
+            <b-form-input
+              v-model="sensitivityLevel.handle"
+              :placeholder="$t('handle.placeholder')"
+              :state="handleState"
+            />
+            <b-form-invalid-feedback :state="handleState">
+              {{ $t('handle.invalid-characters') }}
+            </b-form-invalid-feedback>
+          </b-form-group>
+        </b-col>
+      </b-row>
 
       <b-form-group
-        :label="$t('name')"
+        :label="$t('level', sensitivityLevel)"
       >
         <b-form-input
-          v-model="sensitivityLevel.meta.name"
+          v-model="sensitivityLevel.level"
+          number
+          type="range"
+          min="1"
+          max="10"
         />
       </b-form-group>
 
@@ -33,17 +57,6 @@
       >
         <b-form-textarea
           v-model="sensitivityLevel.meta.description"
-        />
-      </b-form-group>
-
-      <b-form-group
-        :label="$t('level')"
-      >
-        <b-form-input
-          v-model="sensitivityLevel.level"
-          number
-          type="number"
-          min="1"
         />
       </b-form-group>
 
