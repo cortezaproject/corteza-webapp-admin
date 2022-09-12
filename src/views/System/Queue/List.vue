@@ -22,7 +22,7 @@
         variant="link"
         right
         menu-class="shadow-sm"
-        text="Export"
+        :text="$t('export')"
       >
         <b-dropdown-item-button variant="link">
           {{ $t('yaml') }}

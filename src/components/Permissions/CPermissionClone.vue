@@ -7,7 +7,7 @@
       class="mr-2"
       @click="showModal = true"
     >
-      {{ $t('permissions:ui.clone.label') }}
+      {{ $t('ui.clone.label') }}
     </b-button>
 
     <b-modal
@@ -15,13 +15,13 @@
       ok-variant="primary"
       cancel-variant="link"
       centered
-      :title="$t('permissions:ui.clone.title')"
-      :ok-title="$t('permissions:ui.clone.clone')"
+      :title="$t('ui.clone.title')"
+      :ok-title="$t('ui.clone.clone')"
       :ok-disabled="!selectedRoles.length || processingRoles || processingSubmit"
       @ok="clonePermissions()"
     >
       <b-form-group
-        :description="$t('permissions:ui.clone.description')"
+        :description="$t('ui.clone.description')"
         class="mb-0"
       >
         <vue-select
@@ -31,7 +31,7 @@
           :reduce="role => role.roleID"
           :loading="processingRoles"
           multiple
-          placeholder="Pick a role"
+          :placeholder="$t('ui.clone.pick-role')"
           class="bg-white"
         />
       </b-form-group>
@@ -43,6 +43,10 @@
 import VueSelect from 'vue-select'
 
 export default {
+  i18nOptions: {
+    namespaces: 'permissions',
+  },
+
   components: {
     VueSelect,
   },
