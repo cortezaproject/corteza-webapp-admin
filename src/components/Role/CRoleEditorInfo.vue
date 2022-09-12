@@ -69,6 +69,7 @@
           >
             <b-form-input
               v-model="role.meta.context.expr"
+              data-test-id="input-expression"
               :disabled="!editable"
             />
           </b-form-group>
@@ -78,6 +79,7 @@
           >
             <b-checkbox-group
               v-model="role.meta.context.resourceTypes"
+              data-test-id="checkbox-resource-types-list"
               :disabled="!editable"
               :options="resourceTypeOptions"
             />
@@ -104,6 +106,7 @@
         label-cols="2"
       >
         <b-form-input
+          data-test-id="input-archived-at"
           :value="role.archivedAt | locFullDateTime"
           plaintext
           disabled
@@ -116,6 +119,7 @@
         label-cols="2"
       >
         <b-form-input
+          data-test-id="input-deleted-at"
           :value="role.deletedAt | locFullDateTime"
           plaintext
           disabled
@@ -164,7 +168,7 @@
 
       <confirmation-toggle
         v-if="!fresh && editable && role.canDeleteRole"
-        data-test-id="button-delete"
+        :data-test-id="deletedButtonStatusCypressId"
         @confirmed="$emit('delete')"
       >
         {{ getDeleteStatus }}
@@ -172,7 +176,7 @@
 
       <confirmation-toggle
         v-if="!fresh && editable"
-        data-test-id="button-status"
+        :data-test-id="archivedButtonStatusCypressId"
         class="ml-2"
         cta-class="secondary"
         @confirmed="$emit('status')"
@@ -304,6 +308,14 @@ export default {
         // 'corteza::federation:node',
         // 'corteza::federation:shared-module',
       ]
+    },
+
+    deletedButtonStatusCypressId () {
+      return `button-${this.getDeleteStatus.toLowerCase()}`
+    },
+
+    archivedButtonStatusCypressId () {
+      return `button-${this.getArchiveStatus.toLowerCase()}`
     },
   },
 
