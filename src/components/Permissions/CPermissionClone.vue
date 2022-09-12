@@ -3,6 +3,7 @@
     class="d-inline-block"
   >
     <b-button
+      data-test-id="button-clone"
       variant="secondary"
       class="mr-2"
       @click="showModal = true"
@@ -12,6 +13,7 @@
 
     <b-modal
       v-model="showModal"
+      data-test-id="modal-clone-permission"
       ok-variant="primary"
       cancel-variant="link"
       centered
@@ -26,6 +28,7 @@
       >
         <vue-select
           v-model="selectedRoles"
+          data-test-id="select-role-list"
           label="name"
           :options="roles"
           :reduce="role => role.roleID"
