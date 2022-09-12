@@ -1,5 +1,6 @@
 <template>
   <b-card
+    data-test-id="card-role-edit-members"
     class="shadow-sm"
     header-bg-variant="white"
     footer-bg-variant="white"
@@ -23,6 +24,7 @@
               <td>{{ u.name || u.handle || u.username || u.email || $t('unnamed') }}</td>
               <td class="text-right">
                 <b-button
+                  data-test-id="button-remove-member"
                   variant="link"
                   class="text-danger pr-0"
                   @click="removeMember(u)"
@@ -37,7 +39,10 @@
           <b-input-group-prepend>
             <b-input-group-text>{{ $t('searchUsers') }}</b-input-group-text>
           </b-input-group-prepend>
-          <b-form-input v-model.trim="filter" />
+          <b-form-input
+            v-model.trim="filter"
+            data-test-id="input-search"
+          />
         </b-input-group>
         <table
           v-if="filter && users"
@@ -60,6 +65,7 @@
                 </b-button>
                 <b-button
                   v-else
+                  data-test-id="button-add-member"
                   variant="light"
                   @click="addMember(u)"
                 >
