@@ -184,7 +184,7 @@
 
     <b-modal
       id="add"
-      title="Edit or evaluate permissions"
+      :title="$t('ui.edit-or-eval')"
       centered
       ok-only
       :ok-title="$t('ui.add.save')"
