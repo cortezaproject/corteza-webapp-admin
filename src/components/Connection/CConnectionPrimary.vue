@@ -22,9 +22,8 @@
       </h3>
     </template>
 
-    <b-overlay
+    <div
       v-if="connection"
-      :show="loading"
     >
       <b-row>
         <b-col
@@ -95,12 +94,13 @@
           </b-form-group>
         </b-col>
       </b-row>
-    </b-overlay>
+    </div>
   </b-card>
 </template>
 
 <script>
 import CLocation from 'corteza-webapp-admin/src/components/CLocation'
+import { NoID } from '@cortezaproject/corteza-js'
 
 export default {
   components: {
@@ -146,9 +146,9 @@ export default {
 
       return this.$SystemAPI.dalConnectionList({ type: 'corteza::system:primary-dal-connection' }).then(({ set = [] }) => {
         this.connection = set.find(({ type }) => type === 'corteza::system:primary-dal-connection')
-        const { sensitivityLevel: sensitivityLevelID } = this.connection || {}
+        const { sensitivityLevelID } = this.connection.config.privacy || {}
 
-        if (sensitivityLevelID) {
+        if (sensitivityLevelID && sensitivityLevelID !== NoID) {
           return this.$SystemAPI.dalSensitivityLevelRead({ sensitivityLevelID })
             .then(sensitivityLevel => {
               this.sensitivityLevel = sensitivityLevel

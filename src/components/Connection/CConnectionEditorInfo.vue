@@ -122,6 +122,7 @@
         >
           <c-sensitivity-level-picker
             v-model="connection.config.privacy.sensitivityLevelID"
+            :options="sensitivityLevels"
             :disabled="disabled"
             :placeholder="$t('form.sensitivity-level.placeholder')"
           />
@@ -154,6 +155,11 @@ export default {
 
     connection: {
       type: Object,
+      required: true,
+    },
+
+    sensitivityLevels: {
+      type: Array,
       required: true,
     },
   },
