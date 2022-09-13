@@ -1,5 +1,6 @@
 <template>
   <ace-editor
+    data-test-id="template-plain-text-editor"
     :font-size="14"
     :show-print-margin="true"
     :show-gutter="true"

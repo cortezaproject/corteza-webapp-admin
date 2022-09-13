@@ -89,6 +89,7 @@
 
       <b-form-group
         v-if="template.deletedAt"
+        data-test-id="input-deleted-at"
         :label="$t('deletedAt')"
         label-cols="2"
       >
@@ -131,7 +132,7 @@
 
       <confirmation-toggle
         v-if="!fresh && template.canDeleteTemplate"
-        data-test-id="button-delete"
+        :data-test-id="getDeletedButtonStatusCypressId"
         @confirmed="$emit('delete')"
       >
         {{ getDeleteStatus }}
@@ -224,6 +225,10 @@ export default {
 
     getArchiveStatus () {
       return this.template.archivedAt ? this.$t('unarchive') : this.$t('archive')
+    },
+
+    getDeletedButtonStatusCypressId () {
+      return `button-${this.getDeleteStatus.toLowerCase()}`
     },
   },
 }

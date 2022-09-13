@@ -1,5 +1,6 @@
 <template>
   <b-card
+    data-test-id="card-template-toolbox"
     class="shadow-sm h-100"
     header-bg-variant="white"
     footer-bg-variant="white"
@@ -17,6 +18,7 @@
         :key="sec.key"
       >
         <b-btn
+          :data-test-id="`button-${$t(sec.key)}`"
           variant="light"
           class="mb-2"
           block
@@ -33,11 +35,13 @@
             <b-list-group-item
               v-for="(opt, i) in sec.options"
               :key="opt.label + i"
+              data-test-id="section-item"
               class="px-0 text-wrap"
               @click="opt.onClick || (() => {})"
             >
               {{ opt.label }}
               <b-btn
+                data-test-id="button-copy"
                 variant="link"
                 class="pr-0 float-right"
                 @click="copyToCb(opt.copyValue())"
