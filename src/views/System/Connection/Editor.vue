@@ -12,6 +12,7 @@
     >
       <c-connection-editor-info
         :connection="connection"
+        :sensitivity-levels="sensitivityLevels"
         :disabled="disabled"
         :is-primary="isPrimary"
       />
@@ -155,6 +156,8 @@ export default {
     return {
       processing: false,
       connection: undefined,
+
+      sensitivityLevels: [],
     }
   },
 
@@ -189,14 +192,31 @@ export default {
     },
   },
 
+  mounted () {
+    this.fetchSensitivityLevels()
+  },
+
   methods: {
     fetchConnection (connectionID) {
       this.incLoader()
       return this.$SystemAPI.dalConnectionRead({ connectionID }).then(connection => {
         this.connection = this.merge(connection)
-      }).catch(this.toastErrorHandler(this.$t('notification:fetch.error')))
+      }).catch(this.toastErrorHandler(this.$t('notification:connection.fetch.error')))
         .finally(async () => {
           this.decLoader()
+        })
+    },
+
+    async fetchSensitivityLevels () {
+      this.processing = true
+
+      return this.$SystemAPI.dalSensitivityLevelList()
+        .then(({ set = [] }) => {
+          this.sensitivityLevels = set
+        })
+        .catch(this.toastErrorHandler(this.$t('notification:sensitivity-level.fetch.error')))
+        .finally(() => {
+          this.processing = false
         })
     },
 
