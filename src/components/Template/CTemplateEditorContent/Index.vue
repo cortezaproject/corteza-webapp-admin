@@ -34,6 +34,7 @@
           </h3>
           <b-badge
             v-if="template.partial"
+            data-test-id="badge-partial-template"
             variant="primary"
             class="ml-2"
           >
@@ -61,6 +62,7 @@
       >
         <!-- Partial templates can't be previewed -->
         <ace-editor
+          data-test-id="template-preview-output"
           :font-size="14"
           :show-print-margin="true"
           :show-gutter="true"
@@ -90,6 +92,7 @@
           >
             <b-btn
               v-if="canPreviewHTML"
+              data-test-id="button-preview-html-template"
               variant="light"
               class="mr-2"
               @click="openPreview('html')"
@@ -99,6 +102,7 @@
 
             <b-btn
               v-if="canPreviewPDF"
+              data-test-id="button-preview-pdf-template"
               variant="light"
               @click="openPreview('pdf')"
             >

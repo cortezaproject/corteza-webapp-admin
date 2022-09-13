@@ -70,6 +70,7 @@
       <template #header>
         <c-resource-list-status-filter
           v-model="filter.deleted"
+          data-test-id="filter-deleted-template"
           :label="$t('filterForm.deleted.label')"
           :excluded-label="$t('filterForm.excluded.label')"
           :inclusive-label="$t('filterForm.inclusive.label')"
