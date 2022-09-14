@@ -222,7 +222,7 @@ export default {
 
     onSubmit () {
       const updating = !!this.connection.connectionID
-      const op = updating ? 'update' : 'delete'
+      const op = updating ? 'update' : 'create'
       const fn = updating ? 'dalConnectionUpdate' : 'dalConnectionCreate'
 
       this.processing = true
