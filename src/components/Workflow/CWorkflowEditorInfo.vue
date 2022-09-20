@@ -73,7 +73,7 @@
         label-cols="2"
       >
         <b-form-input
-          v-model="workflow.updatedAt"
+          :value="workflow.updatedAt | locFullDateTime"
           plaintext
           disabled
         />
@@ -85,7 +85,7 @@
         label-cols="2"
       >
         <b-form-input
-          v-model="workflow.deletedAt"
+          :value="workflow.deletedAt | locFullDateTime"
           plaintext
           disabled
         />
@@ -98,7 +98,7 @@
         class="mb-0"
       >
         <b-form-input
-          v-model="workflow.createdAt"
+          :value="workflow.createdAt | locFullDateTime"
           plaintext
           disabled
         />

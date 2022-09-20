@@ -51,8 +51,8 @@
         label-cols="2"
       >
         <b-form-input
-          v-model="application.updatedAt"
           data-test-id="input-updated-at"
+          :value="application.updatedAt | locFullDateTime"
           plaintext
           disabled
         />
@@ -64,8 +64,8 @@
         label-cols="2"
       >
         <b-form-input
-          v-model="application.deletedAt"
           data-test-id="input-deleted-at"
+          :value="application.deletedAt | locFullDateTime"
           plaintext
           disabled
         />
@@ -78,8 +78,8 @@
         class="mb-0"
       >
         <b-form-input
-          v-model="application.createdAt"
           data-test-id="input-created-at"
+          :value="application.createdAt | locFullDateTime"
           plaintext
           disabled
         />

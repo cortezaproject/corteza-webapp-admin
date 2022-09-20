@@ -59,7 +59,7 @@
         :label="$t('createdAt')"
         label-cols="2"
       >
-        {{ queue.createdAt }}
+        {{ queue.createdAt | locFullDateTime }}
       </b-form-group>
 
       <b-form-group
@@ -67,7 +67,7 @@
         :label="$t('updatedAt')"
         label-cols="2"
       >
-        {{ queue.updatedAt }}
+        {{ queue.updatedAt | locFullDateTime }}
       </b-form-group>
 
       <b-form-group
@@ -75,7 +75,7 @@
         :label="$t('deletedAt')"
         label-cols="2"
       >
-        {{ queue.deletedAt }}
+        {{ queue.deletedAt | locFullDateTime }}
       </b-form-group>
     </b-form>
 
