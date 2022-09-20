@@ -81,7 +81,7 @@
         label-cols="2"
       >
         <b-form-input
-          v-model="route.updatedAt"
+          :value="route.updatedAt | locFullDateTime"
           plaintext
           disabled
         />
@@ -93,7 +93,7 @@
         label-cols="2"
       >
         <b-form-input
-          v-model="route.deletedAt"
+          :value="route.deletedAt | locFullDateTime"
           plaintext
           disabled
         />
@@ -106,7 +106,7 @@
         class="mb-0"
       >
         <b-form-input
-          v-model="route.createdAt"
+          :value="route.createdAt | locFullDateTime"
           plaintext
           disabled
         />

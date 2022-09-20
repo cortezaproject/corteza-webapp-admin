@@ -75,7 +75,7 @@
         :label="$t('createdAt')"
         label-cols="2"
       >
-        {{ template.createdAt }}
+        {{ template.createdAt | locFullDateTime }}
       </b-form-group>
 
       <b-form-group
@@ -84,7 +84,7 @@
         :label="$t('updatedAt')"
         label-cols="2"
       >
-        {{ template.updatedAt }}
+        {{ template.updatedAt | locFullDateTime }}
       </b-form-group>
 
       <b-form-group
@@ -93,7 +93,7 @@
         :label="$t('deletedAt')"
         label-cols="2"
       >
-        {{ template.deletedAt }}
+        {{ template.deletedAt | locFullDateTime }}
       </b-form-group>
 
       <b-form-group
@@ -101,7 +101,7 @@
         :label="$t('lastUsedAt')"
         label-cols="2"
       >
-        {{ template.lastUsedAt }}
+        {{ template.lastUsedAt | locFullDateTime }}
       </b-form-group>
 
       <!--
