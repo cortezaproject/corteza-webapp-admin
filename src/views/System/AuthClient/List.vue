@@ -10,6 +10,7 @@
       >
         <b-button
           v-if="canCreate"
+          data-test-id="button-new-auth-client"
           variant="primary"
           class="mr-2"
           :to="{ name: 'system.authClient.new' }"
@@ -51,6 +52,7 @@
       <template #header>
         <c-resource-list-status-filter
           v-model="filter.deleted"
+          data-test-id="filter-deleted-auth-clients"
           :label="$t('filterForm.deleted.label')"
           :excluded-label="$t('filterForm.excluded.label')"
           :inclusive-label="$t('filterForm.inclusive.label')"

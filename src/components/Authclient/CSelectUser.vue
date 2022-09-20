@@ -1,5 +1,6 @@
 <template>
   <vue-select
+    data-test-id="select-user"
     :options="user.options"
     :get-option-label="getOptionLabel"
     :get-option-key="getOptionKey"

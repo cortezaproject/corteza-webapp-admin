@@ -1,6 +1,7 @@
 <template>
   <b-card
     v-if="authClient"
+    data-test-id="card-auth-client-info"
     class="shadow-sm auth-clients"
     header-bg-variant="white"
     footer-bg-variant="white"
@@ -14,6 +15,7 @@
       >
         <b-form-input
           v-model="authClient.meta.name"
+          data-test-id="input-name"
           required
         />
       </b-form-group>
@@ -24,15 +26,20 @@
       >
         <b-form-input
           v-model="authClient.handle"
+          data-test-id="input-handle"
           :disabled="authClient.isDefault"
           :placeholder="$t('handle.placeholder-handle')"
           :state="handleState"
         />
-        <b-form-invalid-feedback :state="handleState">
+        <b-form-invalid-feedback
+          data-test-id="feedback-invalid-handle"
+          :state="handleState"
+        >
           {{ $t('handle.invalid-handle-characters') }}
         </b-form-invalid-feedback>
         <template
           v-if="authClient.isDefault"
+          data-test-id="cannot-change-handle"
           #description
         >
           {{ $t('handle.disabledFootnote') }}
@@ -44,6 +51,7 @@
         label-cols="3"
       >
         <b-button
+          data-test-id="button-add-redirect-uris"
           variant="light"
           class="align-top"
           @click="redirectURI.push('')"
@@ -61,10 +69,12 @@
           >
             <b-form-input
               v-model="redirectURI[index]"
+              data-test-id="input-uri"
               :placeholder="$t('uri')"
             />
 
             <b-button
+              data-test-id="button-remove-uri"
               class="ml-1 text-danger"
               variant="link"
               @click="redirectURI.splice(index, 1)"
@@ -86,12 +96,14 @@
         <b-input-group>
           <b-form-input
             v-model="secret"
+            data-test-id="input-client-secret"
             disabled
             placeholder="****************************************************************"
           />
 
           <b-button
             v-if="!secretVisible"
+            data-test-id="button-show-client-secret"
             class="ml-1 text-primary"
             variant="link"
             @click="$emit('request-secret')"
@@ -103,6 +115,7 @@
 
           <b-button
             v-else
+            data-test-id="button-regenerate-client-secret"
             class="ml-1 text-primary"
             variant="link"
             :title="$t('tooltip.regenerate-secret')"
@@ -129,6 +142,7 @@
       </b-form-group>
 
       <b-form-group
+        data-test-id="valid-from"
         :label="$t('validFrom.label')"
         label-cols="3"
         :description="$t('validFrom.description')"
@@ -136,17 +150,20 @@
         <b-input-group>
           <b-form-datepicker
             v-model="validFrom.date"
+            data-test-id="datepicker-choose-date"
             :placeholder="$t('choose-date')"
             locale="en"
           />
 
           <b-form-timepicker
             v-model="validFrom.time"
+            data-test-id="timepicker-choose-time"
             :placeholder="$t('no-time')"
             locale="en"
           />
 
           <b-button
+            data-test-id="button-reset-value"
             class="ml-1 text-secondary"
             variant="link"
             :title="$t('tooltip.reset-value')"
@@ -160,6 +177,7 @@
       </b-form-group>
 
       <b-form-group
+        data-test-id="expires-at"
         :label="$t('expiresAt.label')"
         label-cols="3"
         :description="$t('expiresAt.description')"
@@ -167,17 +185,20 @@
         <b-input-group>
           <b-form-datepicker
             v-model="expiresAt.date"
+            data-test-id="datepicker-choose-date"
             :placeholder="$t('choose-date')"
             locale="en"
           />
 
           <b-form-timepicker
             v-model="expiresAt.time"
+            data-test-id="timepicker-choose-time"
             :placeholder="$t('no-time')"
             locale="en"
           />
 
           <b-button
+            data-test-id="button-reset-value"
             class="ml-1 text-secondary"
             variant="link"
             :title="$t('tooltip.reset-value')"
@@ -194,18 +215,21 @@
         label-cols="3"
       >
         <b-form-checkbox
+          data-test-id="checkbox-allow-access-to-user-profile"
           :checked="(authClient.scope || []).includes('profile')"
           @change="setScope($event, 'profile')"
         >
           {{ $t('profile') }}
         </b-form-checkbox>
         <b-form-checkbox
+          data-test-id="checkbox-allow-access-to-corteza-api"
           :checked="(authClient.scope || []).includes('api')"
           @change="setScope($event, 'api')"
         >
           {{ $t('api') }}
         </b-form-checkbox>
         <b-form-checkbox
+          data-test-id="checkbox-allow-client-to-use-oidc"
           :checked="(authClient.scope || []).includes('openid')"
           @change="setScope($event, 'openid')"
         >
@@ -213,6 +237,7 @@
         </b-form-checkbox>
         <b-form-checkbox
           v-if="discoveryEnabled"
+          data-test-id="checkbox-allow-client-access-to-discovery"
           :checked="(authClient.scope || []).includes('discovery')"
           @change="setScope($event, 'discovery')"
         >
@@ -225,6 +250,7 @@
       >
         <b-form-checkbox
           v-model="authClient.trusted"
+          data-test-id="checkbox-is-client-trusted"
         >
           {{ $t('trusted.label') }}
         </b-form-checkbox>
@@ -236,6 +262,7 @@
       >
         <b-form-checkbox
           v-model="authClient.enabled"
+          data-test-id="checkbox-is-client-enabled"
           :disabled="authClient.isDefault"
         >
           {{ $t('enabled.label') }}
@@ -251,6 +278,7 @@
 
       <div v-if="isClientCredentialsGrant">
         <b-form-group
+          data-test-id="impersonate-user"
           label-cols="3"
           :label="$t('security.impersonateUser.label')"
           :description="$t('security.impersonateUser.description')"
@@ -285,6 +313,7 @@
               <div class="d-flex">
                 <pre
                   ref="cUrl"
+                  data-test-id="cURL"
                 >
 curl -X POST {{ curlURL }} \
 -d grant_type=client_credentials \
@@ -292,6 +321,7 @@ curl -X POST {{ curlURL }} \
 -u {{ authClient.authClientID }}:{{ secret || 'PLACE-YOUR-CLIENT-SECRET-HERE' }}
                 </pre>
                 <b-button
+                  data-test-id="copy-cURL"
                   variant="link"
                   class="align-top ml-auto fit-content text-secondary"
                   @click="copyToClipboard('cUrl')"
@@ -310,6 +340,7 @@ curl -X POST {{ curlURL }} \
                 </div>
                 <b-button
                   v-if="tokenRequest.token"
+                  data-test-id="copy-token-from-request"
                   variant="link"
                   class="align-top ml-auto fit-content text-secondary"
                   @click="copyToClipboard('token')"
@@ -325,6 +356,7 @@ curl -X POST {{ curlURL }} \
               class="d-flex mb-3"
             >
               <b-button
+                data-test-id="button-test-cURL"
                 variant="light"
                 class="align-top fit-content"
                 @click="getAccessTokenAPI()"
@@ -337,6 +369,7 @@ curl -X POST {{ curlURL }} \
       </div>
 
       <b-form-group
+        data-test-id="permitted-roles"
         :label="$t('security.permittedRoles.label')"
         label-cols="3"
         class="mb-0"
@@ -353,6 +386,7 @@ curl -X POST {{ curlURL }} \
 
       <b-form-group
         :label="$t('security.prohibitedRoles.label')"
+        data-test-id="prohibited-roles"
         label-cols="3"
         class="mb-0"
       >
@@ -367,6 +401,7 @@ curl -X POST {{ curlURL }} \
       </b-form-group>
 
       <b-form-group
+        data-test-id="forced-roles"
         :label="$t('security.forcedRoles.label')"
         label-cols="3"
         class="mb-0"
@@ -388,6 +423,7 @@ curl -X POST {{ curlURL }} \
         class="mb-0"
       >
         <b-form-input
+          data-test-id="created-at"
           :value="authClient.createdAt | locFullDateTime"
           plaintext
           disabled
@@ -400,6 +436,7 @@ curl -X POST {{ curlURL }} \
         label-cols="3"
       >
         <b-form-input
+          data-test-id="updated-at"
           :value="resource.updatedAt | locFullDateTime"
           plaintext
           disabled
@@ -412,6 +449,7 @@ curl -X POST {{ curlURL }} \
         label-cols="3"
       >
         <b-form-input
+          data-test-id="deleted-at"
           :value="resource.deletedAt | locFullDateTime"
           plaintext
           disabled
@@ -423,6 +461,7 @@ curl -X POST {{ curlURL }} \
         trigger submit event w/ ENTER
       -->
       <input
+        data-test-id="button-submit"
         type="submit"
         class="d-none"
         :disabled="saveDisabled"
@@ -449,6 +488,7 @@ curl -X POST {{ curlURL }} \
       >
         <confirmation-toggle
           v-if="isDeleted"
+          data-test-id="button-undelete"
           :disabled="processing"
           @confirmed="$emit('undelete', authClient.authClientID)"
         >
@@ -456,6 +496,7 @@ curl -X POST {{ curlURL }} \
         </confirmation-toggle>
         <confirmation-toggle
           v-else
+          data-test-id="button-delete"
           :disabled="processing"
           @confirmed="$emit('delete', authClient.authClientID)"
         >
