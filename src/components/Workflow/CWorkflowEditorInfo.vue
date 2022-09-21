@@ -145,6 +145,7 @@
 import { handleState } from 'corteza-webapp-admin/src/lib/handle'
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
+import { NoID } from '@cortezaproject/corteza-js'
 
 export default {
   name: 'CWorkflowEditorInfo',
@@ -183,7 +184,7 @@ export default {
 
   computed: {
     editable () {
-      return this.workflow.canUpdateWorkflow
+      return (!this.workflow.workflowID || this.workflow.workflowID === NoID) || this.workflow.canUpdateWorkflow
     },
 
     handleState () {
