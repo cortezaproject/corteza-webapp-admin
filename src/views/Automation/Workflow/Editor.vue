@@ -93,11 +93,11 @@ export default {
     }),
 
     canCreate () {
-      return this.can('system/', 'workflow.create')
+      return this.can('automation/', 'workflow.create')
     },
 
     canGrant () {
-      return this.can('system/', 'grant')
+      return this.can('automation/', 'grant')
     },
 
     userID () {
