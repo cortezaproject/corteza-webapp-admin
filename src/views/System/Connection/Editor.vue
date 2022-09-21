@@ -40,28 +40,23 @@
         class="d-none"
       >
 
-      <b-container>
-        <b-row>
-          <b-col
-            cols="12"
-            class="mt-3 mb-5 text-right"
-          >
-            <confirmation-toggle
-              v-if="connection && connection.connectionID && !isPrimary && !disabled"
-              cta-class="link"
-              @confirmed="toggleDelete"
-            >
-              {{ connection.deletedAt ? $t('general:label.undelete') : $t('general:label.delete') }}
-            </confirmation-toggle>
+      <div
+        class="d-flex mt-2"
+      >
+        <confirmation-toggle
+          v-if="connection && connection.connectionID && !isPrimary && !disabled"
+          @confirmed="toggleDelete"
+        >
+          {{ connection.deletedAt ? $t('general:label.undelete') : $t('general:label.delete') }}
+        </confirmation-toggle>
 
-            <c-submit-button
-              :processing="processing"
-              :disabled="disabled"
-              @submit="onSubmit"
-            />
-          </b-col>
-        </b-row>
-      </b-container>
+        <c-submit-button
+          :processing="processing"
+          :disabled="disabled"
+          class="ml-auto"
+          @submit="onSubmit"
+        />
+      </div>
     </b-form>
   </b-container>
 </template>
@@ -247,7 +242,7 @@ export default {
 
     toggleDelete () {
       const { deletedAt } = this.connection
-      const deleting = !!deletedAt
+      const deleting = !deletedAt
       const op = deleting ? 'delete' : 'undelete'
       const fn = deleting ? 'dalConnectionDelete' : 'dalConnectionUndelete'
 
