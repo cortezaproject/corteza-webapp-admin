@@ -7,7 +7,7 @@
     />
 
     <b-form
-      v-if="connection"
+      v-if="connection && sensitivityLevels"
       @submit.prevent="onSubmit"
     >
       <c-connection-editor-info
@@ -152,7 +152,7 @@ export default {
       processing: false,
       connection: undefined,
 
-      sensitivityLevels: [],
+      sensitivityLevels: undefined,
     }
   },
 
