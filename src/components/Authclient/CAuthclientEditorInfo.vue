@@ -395,12 +395,12 @@ curl -X POST {{ curlURL }} \
       </b-form-group>
 
       <b-form-group
-        v-if="authClient.updatedAt"
+        v-if="resource.updatedAt"
         :label="$t('updatedAt')"
         label-cols="3"
       >
         <b-form-input
-          :value="authClient.updatedAt | locFullDateTime"
+          :value="resource.updatedAt | locFullDateTime"
           plaintext
           disabled
         />
