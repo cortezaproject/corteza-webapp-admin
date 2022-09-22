@@ -158,7 +158,7 @@ export default {
         .then(({ set = [] }) => {
           this.sensitivityLevels = set
         })
-        .catch(this.toastErrorHandler(this.$t('notification:sensitivity-level.fetch.error')))
+        .catch(this.toastErrorHandler(this.$t('notification:sensitivityLevel.fetch.error')))
         .finally(() => {
           this.processing = false
         })

@@ -162,7 +162,7 @@ export default {
           this.toastSuccess(this.$t('notification:sensitivityLevel.delete.success'))
           this.$router.push({ name: 'system.sensitivityLevel' })
         })
-        .catch(this.toastErrorHandler(this.$t('notification:sensitivityLevel.sensitivityLevel.error')))
+        .catch(this.toastErrorHandler(this.$t('notification:sensitivityLevel.delete.error')))
         .finally(() => this.decLoader())
     },
 
@@ -172,9 +172,9 @@ export default {
         .then(() => {
           this.fetchSensitivityLevel()
 
-          this.toastSuccess(this.$t('notification:sensitivityLevel.delete.success'))
+          this.toastSuccess(this.$t('notification:sensitivityLevel.undelete.success'))
         })
-        .catch(this.toastErrorHandler(this.$t('notification:sensitivityLevel.sensitivityLevel.error')))
+        .catch(this.toastErrorHandler(this.$t('notification:sensitivityLevel.undelete.error')))
         .finally(() => this.decLoader())
     },
   },
