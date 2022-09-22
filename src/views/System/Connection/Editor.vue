@@ -44,7 +44,7 @@
         class="d-flex mt-2"
       >
         <confirmation-toggle
-          v-if="connection && connection.connectionID && !isPrimary && !disabled"
+          v-if="connection && connectionID && !isPrimary && !disabled"
           @confirmed="toggleDelete"
         >
           {{ connection.deletedAt ? $t('general:label.undelete') : $t('general:label.delete') }}
@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { NoID } from '@cortezaproject/corteza-js'
+import { system } from '@cortezaproject/corteza-js'
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CConnectionEditorInfo from 'corteza-webapp-admin/src/components/Connection/CConnectionEditorInfo'
 import CConnectionEditorProperties from 'corteza-webapp-admin/src/components/Connection/CConnectionEditorProperties'
@@ -70,57 +70,6 @@ import CConnectionEditorDal from 'corteza-webapp-admin/src/components/Connection
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 import { mapGetters } from 'vuex'
-import { merge } from 'lodash'
-
-const base = Object.freeze({
-  handle: '',
-  type: 'corteza::system:dal-connection',
-
-  meta: {
-    name: '',
-    ownership: '',
-    location: {
-      properties: { name: '' },
-      geometry: {
-        coordinates: [],
-        type: '',
-      },
-
-    },
-
-    properties: {
-      dataAtRestEncryption: {
-        enabled: false,
-        notes: '',
-      },
-      dataAtRestProtection: {
-        enabled: false,
-        notes: '',
-      },
-      dataAtTransitEncryption: {
-        enabled: false,
-        notes: '',
-      },
-      dataRestoration: {
-        enabled: false,
-        notes: '',
-      },
-    },
-  },
-
-  config: {
-    privacy: {
-      sensitivityLevelID: NoID,
-    },
-  },
-})
-
-const baseConfigDAL = Object.freeze({
-  type: 'corteza::dal:connection:dsn',
-  params: { dsn: '' },
-  modelIdent: '',
-  modelIdentCheck: [],
-})
 
 export default {
   components: {
@@ -181,7 +130,7 @@ export default {
         if (connectionID) {
           this.fetchConnection(connectionID)
         } else {
-          this.connection = Object.assign({}, { ...base })
+          this.connection = new system.DalConnection()
         }
       },
     },
@@ -195,7 +144,7 @@ export default {
     fetchConnection (connectionID) {
       this.incLoader()
       return this.$SystemAPI.dalConnectionRead({ connectionID }).then(connection => {
-        this.connection = this.merge(connection)
+        this.connection = new system.DalConnection(connection)
       }).catch(this.toastErrorHandler(this.$t('notification:connection.fetch.error')))
         .finally(async () => {
           this.decLoader()
@@ -216,7 +165,7 @@ export default {
     },
 
     onSubmit () {
-      const updating = !!this.connection.connectionID
+      const updating = !!this.connectionID
       const op = updating ? 'update' : 'create'
       const fn = updating ? 'dalConnectionUpdate' : 'dalConnectionCreate'
 
@@ -225,13 +174,13 @@ export default {
 
       return this.$SystemAPI[fn](this.connection)
         .then(connection => {
-          const { connectionID } = this.connection
+          const { connectionID } = connection
 
           this.toastSuccess(this.$t(`notification:connection.${op}.success`))
           if (!updating) {
             this.$router.push({ name: `system.connection.edit`, params: { connectionID } })
           } else {
-            this.connection = this.merge(connection)
+            this.connection = new system.DalConnection(connection)
           }
         })
         .catch(this.toastErrorHandler(this.$t(`notification:connection.${op}.error`)))
@@ -266,15 +215,6 @@ export default {
         .finally(() => {
           this.processing = false
         })
-    },
-
-    merge (conn) {
-      conn = merge({}, { ...base }, conn)
-      if (conn.canManageDalConfig) {
-        conn.config.dal = merge({}, { ...baseConfigDAL }, conn.config.dal)
-      }
-
-      return conn
     },
   },
 }
