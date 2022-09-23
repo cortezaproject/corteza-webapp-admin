@@ -38,6 +38,7 @@
       <input
         type="submit"
         class="d-none"
+        :disabled="saveDisabled"
       >
 
       <div
@@ -52,7 +53,7 @@
 
         <c-submit-button
           :processing="processing"
-          :disabled="disabled"
+          :disabled="disabled || saveDisabled"
           class="ml-auto"
           @submit="onSubmit"
         />
@@ -62,7 +63,8 @@
 </template>
 
 <script>
-import { system } from '@cortezaproject/corteza-js'
+import { system, NoID } from '@cortezaproject/corteza-js'
+import { handleState } from 'corteza-webapp-admin/src/lib/handle'
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CConnectionEditorInfo from 'corteza-webapp-admin/src/components/Connection/CConnectionEditorInfo'
 import CConnectionEditorProperties from 'corteza-webapp-admin/src/components/Connection/CConnectionEditorProperties'
@@ -121,6 +123,25 @@ export default {
     disabled () {
       return this.processing
     },
+
+    fresh () {
+      return !this.connection.connectionID || this.connection.connectionID === NoID
+    },
+
+    editable () {
+      return this.fresh ? this.canCreate : true // this.user.canUpdateUser
+    },
+
+    handleState () {
+      const { handle } = this.connection
+
+      return handle ? handleState(handle) : false
+    },
+
+    saveDisabled () {
+      return !this.editable || [this.handleState].includes(false)
+    },
+
   },
 
   watch: {
