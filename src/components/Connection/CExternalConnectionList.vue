@@ -31,6 +31,7 @@
         nextPagination: $t('admin:general.pagination.next'),
       }"
       hide-total
+      hide-search
       class="h-100"
       @search="filterList"
     >
@@ -100,21 +101,21 @@ export default {
       fields: [
         {
           key: 'name',
-          sortable: true,
+          sortable: false,
           formatter: (value, col, conn) => conn.meta.name || conn.handle,
         },
         {
           key: 'location',
-          sortable: true,
+          sortable: false,
           formatter: (value, col, conn) => conn.meta.location.properties.name,
         },
         {
           key: 'ownership',
-          sortable: true,
+          sortable: false,
         },
         {
           key: 'createdAt',
-          sortable: true,
+          sortable: false,
           formatter: (v) => moment(v).fromNow(),
         },
         {
