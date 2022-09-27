@@ -167,7 +167,7 @@
       />
 
       <confirmation-toggle
-        v-if="!fresh && editable && role.canDeleteRole"
+        v-if="!fresh && editable && role.canDeleteRole && !isDataPrivacyOfficer"
         :data-test-id="deletedButtonStatusCypressId"
         @confirmed="$emit('delete')"
       >
@@ -175,7 +175,7 @@
       </confirmation-toggle>
 
       <confirmation-toggle
-        v-if="!fresh && editable"
+        v-if="!fresh && editable && !isDataPrivacyOfficer"
         :data-test-id="archivedButtonStatusCypressId"
         class="ml-2"
         cta-class="secondary"
@@ -316,6 +316,10 @@ export default {
 
     archivedButtonStatusCypressId () {
       return `button-${this.getArchiveStatus.toLowerCase()}`
+    },
+
+    isDataPrivacyOfficer () {
+      return this.role.handle === 'data-privacy-officer'
     },
   },
 
