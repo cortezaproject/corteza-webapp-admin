@@ -208,7 +208,7 @@ export default {
 
   methods: {
     openWorkflowBuilder () {
-      window.open(`${window.location.origin}/workflow/${this.workflow.workflowID}/edit`, '_blank')
+      window.open(`/workflow/${this.workflow.workflowID}/edit`, '_blank')
     },
   },
 }
