@@ -41,7 +41,7 @@
         searchPlaceholder: $t('filterForm.handle.placeholder'),
         notFound: $t('admin:general.notFound'),
         noItems: $t('admin:general.resource-list.no-items'),
-        loading: $t('admin:general.loading'),
+        loading: $t('loading'),
         showingPagination: 'admin:general.pagination.showing',
         singlePluralPagination: 'admin:general.pagination.single_plural',
         prevPagination: $t('admin:general.pagination.prev'),
