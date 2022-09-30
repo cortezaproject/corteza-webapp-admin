@@ -160,19 +160,6 @@ export default {
           formatter: (v) => moment(v).fromNow(),
         },
         {
-          key: 'state',
-          label: 'State',
-          formatter: (v, key, item) => {
-            let state = []
-            if (item.deletedAt) {
-              state.push(this.$t('rows.filters.deleted'))
-            } if (item.archivedAt) {
-              state.push(this.$t('rows.filters.archived'))
-            }
-            return state.join(' ')
-          },
-        },
-        {
           key: 'actions',
           label: '',
           tdClass: 'text-right',
