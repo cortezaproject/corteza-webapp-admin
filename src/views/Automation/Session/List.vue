@@ -122,15 +122,6 @@ export default {
           formatter: (v) => new Date(v).toLocaleString('en-EN'),
         },
         {
-          key: 'state',
-          label: 'State',
-          formatter: (v, key, item) => {
-            if (item.completedAt) {
-              return this.$t('filterForm.completed.label')
-            }
-          },
-        },
-        {
           key: 'actions',
           tdClass: 'text-right',
         },

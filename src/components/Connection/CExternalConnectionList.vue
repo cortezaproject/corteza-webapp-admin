@@ -38,11 +38,21 @@
       <template #header>
         <b-button
           variant="primary"
-          size="lg"
           :to="{ name: 'system.connection.new' }"
         >
           {{ $t('add-button') }}
         </b-button>
+
+        <c-resource-list-status-filter
+          v-model="filter.deleted"
+          data-test-id="filter-deleted-connections"
+          :label="$t('filterForm.deleted.label')"
+          :excluded-label="$t('filterForm.excluded.label')"
+          :inclusive-label="$t('filterForm.inclusive.label')"
+          :exclusive-label="$t('filterForm.exclusive.label')"
+          class="mt-2"
+          @change="filterList"
+        />
       </template>
 
       <template #actions="{ item }">
