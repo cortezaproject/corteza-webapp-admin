@@ -73,7 +73,7 @@
                   class="text-decoration-none"
                   @click="topbarSettings.helpLinks.push({ handle: '', url: '', newTab: true })"
                 >
-                  + Add
+                  {{ $t('general:label.plus-add') }}
                 </b-button>
               </template>
               <b-table
@@ -81,7 +81,6 @@
                 :items="topbarSettings.helpLinks"
                 table-variant="light"
                 responsive="sm"
-                striped
                 small
                 class="mb-0"
               >
@@ -153,7 +152,7 @@
                   class="text-decoration-none"
                   @click="topbarSettings.profileLinks.push({ handle: '', url: '', newTab: true })"
                 >
-                  + Add
+                  {{ $t('general:label.plus-add') }}
                 </b-button>
               </template>
               <b-table
@@ -161,7 +160,6 @@
                 :items="topbarSettings.profileLinks"
                 table-variant="light"
                 responsive="sm"
-                striped
                 small
                 class="mb-0"
               >
@@ -291,11 +289,11 @@ export default {
         this.topbarSettings = settings['ui.topbar'] || {}
 
         if (!this.topbarSettings.helpLinks) {
-          this.topbarSettings.helpLinks = []
+          this.$set(this.topbarSettings, 'helpLinks', [])
         }
 
         if (!this.topbarSettings.profileLinks) {
-          this.topbarSettings.profileLinks = []
+          this.$set(this.topbarSettings, 'profileLinks', [])
         }
       },
     },
