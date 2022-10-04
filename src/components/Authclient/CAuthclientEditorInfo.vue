@@ -407,12 +407,12 @@ curl -X POST {{ curlURL }} \
       </b-form-group>
 
       <b-form-group
-        v-if="authClient.deletedAt"
+        v-if="resource.deletedAt"
         :label="$t('deletedAt')"
         label-cols="3"
       >
         <b-form-input
-          :value="authClient.deletedAt | locFullDateTime"
+          :value="resource.deletedAt | locFullDateTime"
           plaintext
           disabled
         />
@@ -589,7 +589,7 @@ export default {
     },
 
     isDeleted () {
-      return this.authClient.deletedAt && this.authClient.canDeleteAuthClient
+      return this.resource.deletedAt && this.resource.canDeleteAuthClient
     },
 
     secretVisible () {

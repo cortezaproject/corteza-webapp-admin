@@ -199,7 +199,7 @@ export default {
         .then(() => {
           this.fetchAuthclient()
 
-          this.toastSuccess(this.$t('notification:authclient.delete.success'))
+          this.toastSuccess(this.$t('notification:authclient.undelete.success'))
         })
         .catch(this.toastErrorHandler(this.$t('notification:authclient.authclient.error')))
         .finally(() => this.decLoader())
