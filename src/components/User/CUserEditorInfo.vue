@@ -239,7 +239,7 @@ export default {
     },
 
     editable () {
-      return this.fresh ? this.canCreate : true // this.user.canUpdateUser
+      return this.fresh ? this.canCreate : this.user.canUpdateUser
     },
 
     emailState () {

@@ -192,10 +192,6 @@ export default {
   },
 
   computed: {
-    disabled () {
-      return !this.checkHandle
-    },
-
     fresh () {
       return !this.template.templateID || this.template.templateID === NoID
     },
@@ -212,11 +208,6 @@ export default {
 
     saveDisabled () {
       return !this.editable || [this.handleState].includes(false)
-    },
-
-    // 2+ alpha-numeric + _
-    checkHandle () {
-      return this.template.handle ? /^[A-Za-z][0-9A-Za-z_\-.]*[A-Za-z0-9]$/.test(this.template.handle) : null
     },
 
     getDeleteStatus () {
