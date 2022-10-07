@@ -20,7 +20,7 @@
           {{ $t('new') }}
         </b-button>
         <c-permissions-button
-          v-if="userID && canGrant"
+          v-if="canGrant"
           :title="user.name || user.handle || user.email"
           :target="user.name || user.handle || user.email"
           :resource="'corteza::system:user/'+userID"
@@ -53,7 +53,7 @@
     />
 
     <c-user-editor-roles
-      v-if="user && user.userID"
+      v-if="user && userID"
       v-model="membership.active"
       class="mt-3"
       :processing="roles.processing"
@@ -62,7 +62,7 @@
     />
 
     <c-user-editor-mfa
-      v-if="user && user.userID"
+      v-if="user && userID"
       class="mt-3"
       :mfa="user.meta.securityPolicy.mfa"
       :processing="mfa.processing"
@@ -71,7 +71,7 @@
     />
 
     <c-user-editor-password
-      v-if="user && user.userID"
+      v-if="user && userID"
       class="mt-3"
       :processing="password.processing"
       :success="password.success"
@@ -80,7 +80,7 @@
     />
 
     <c-user-editor-external-auth-providers
-      v-if="user && user.userID && user.meta.externalAuthProviders"
+      v-if="user && userID && user.meta.externalAuthProviders"
       class="mt-3"
       :value="user.meta.externalAuthProviders"
       @delete="onExternalAuthProviderDelete"
@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import { system } from '@cortezaproject/corteza-js'
+import { NoID, system } from '@cortezaproject/corteza-js'
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CUserEditorInfo from 'corteza-webapp-admin/src/components/User/CUserEditorInfo'
 import CUserEditorPassword from 'corteza-webapp-admin/src/components/User/CUserEditorPassword'
@@ -173,13 +173,13 @@ export default {
   watch: {
     userID: {
       immediate: true,
-      handler () {
-        if (this.userID) {
+      handler (userID) {
+        if (userID) {
           this.fetchUser()
           this.fetchMembership()
           this.fetchExternalAuthProviders()
         } else {
-          this.user = {}
+          this.user = new system.User()
         }
       },
     },
@@ -243,7 +243,7 @@ export default {
 
       const payload = { ...user }
 
-      if (payload.userID) {
+      if (payload.userID !== NoID) {
         // On update, reset the user obj
         this.$SystemAPI.userUpdate(payload)
           .then(user => {
