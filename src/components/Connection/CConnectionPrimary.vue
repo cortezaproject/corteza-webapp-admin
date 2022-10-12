@@ -127,7 +127,7 @@ export default {
     },
 
     locationName () {
-      return this.connection.meta.location.name || 'Unnamed location'
+      return this.connection.meta.location.properties.name || 'Unnamed location'
     },
 
     sensitivityLevelName () {

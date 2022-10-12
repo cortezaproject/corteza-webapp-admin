@@ -175,7 +175,7 @@ export default {
       const { coordinates: cc } = this.connection.meta.location.geometry
 
       if (cc && Array.isArray(cc) && cc.length === 2) {
-        return cc.join(', ')
+        return cc.map(c => c.toFixed(7)).join(', ')
       }
 
       return ''
