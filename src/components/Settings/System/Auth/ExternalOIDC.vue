@@ -113,7 +113,7 @@ export default {
       scope,
 
       permittedRoles: [],
-      forbiddenRoles: [],
+      prohibitedRoles: [],
       forcedRoles: [],
     }
   },

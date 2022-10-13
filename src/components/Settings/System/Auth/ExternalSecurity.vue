@@ -22,7 +22,7 @@
       class="mb-0"
     >
       <c-role-picker
-        v-model="value.forbiddenRoles"
+        v-model="value.prohibitedRoles"
         class="mb-3"
       >
         <template #description>

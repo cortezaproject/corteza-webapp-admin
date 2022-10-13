@@ -352,16 +352,16 @@ curl -X POST {{ curlURL }} \
       </b-form-group>
 
       <b-form-group
-        :label="$t('security.forbiddenRoles.label')"
+        :label="$t('security.prohibitedRoles.label')"
         label-cols="3"
         class="mb-0"
       >
         <c-role-picker
-          v-model="authClient.security.forbiddenRoles"
+          v-model="authClient.security.prohibitedRoles"
           class="mb-3"
         >
           <template #description>
-            {{ $t('security.forbiddenRoles.description') }}
+            {{ $t('security.prohibitedRoles.description') }}
           </template>
         </c-role-picker>
       </b-form-group>
@@ -480,7 +480,7 @@ import axios from 'axios'
 const defSecurity = Object.freeze({
   impersonateUser: '0',
   permittedRoles: [],
-  forbiddenRoles: [],
+  prohibitedRoles: [],
   forcedRoles: [],
 })
 
