@@ -112,7 +112,7 @@ const idpStandard = [
 
 const idpSecurity = {
   permittedRoles: [],
-  forbiddenRoles: [],
+  prohibitedRoles: [],
   forcedRoles: [],
 }
 
