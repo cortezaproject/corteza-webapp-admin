@@ -23,6 +23,7 @@
           >
             <c-input-date-time
               v-model="filter.from"
+              data-test-id="filter-starting-from"
               :labels="{
                 clear: $t('general:label.clear'),
                 none: $t('general:label.none'),
@@ -37,6 +38,7 @@
           >
             <c-input-date-time
               v-model="filter.to"
+              data-test-id="filter-ending-at"
               only-past
               :labels="{
                 clear: $t('general:label.clear'),
@@ -52,6 +54,7 @@
           >
             <b-form-input
               v-model="filter.resource"
+              data-test-id="input-resource"
               size="sm"
             />
           </b-form-group>
@@ -61,6 +64,7 @@
           >
             <b-form-input
               v-model="filter.action"
+              data-test-id="input-action"
               size="sm"
             />
           </b-form-group>
@@ -70,6 +74,7 @@
           >
             <b-form-input
               v-model="filter.actorID"
+              data-test-id="input-user-id"
               size="sm"
             />
           </b-form-group>
@@ -77,7 +82,10 @@
           <b-form-group
             label-cols-lg="2"
           >
-            <b-button type="submit">
+            <b-button
+              data-test-id="button-submit"
+              type="submit"
+            >
               {{ $t('filter.search') }}
             </b-button>
           </b-form-group>
@@ -114,6 +122,7 @@
         <template #cell(actor)="{ item: a }">
           <router-link
             v-if="a.actorID && a.actorID !== '0'"
+            data-test-id="item-user-id"
             :to="drillDownLink({ actorID: a.actorID })"
           >
             {{ a.actor || a.actorID }}
@@ -121,6 +130,7 @@
         </template>
         <template #cell(resource)="{ item: a }">
           <router-link
+            data-test-id="item-resource"
             :to="drillDownLink({ resource: a.resource })"
           >
             {{ a.resource }}
@@ -128,6 +138,7 @@
         </template>
         <template #cell(action)="{ item: a }">
           <router-link
+            data-test-id="item-action"
             :to="drillDownLink({ action: a.action })"
           >
             {{ a.action }}
@@ -148,7 +159,10 @@
                 <b-col cols="4">
                   {{ $t('details.timestamp') }}
                 </b-col>
-                <b-col cols="8">
+                <b-col
+                  data-test-id="details-timestamp"
+                  cols="8"
+                >
                   {{ a.timestamp | locFullDateTime }}
                 </b-col>
               </b-row>
@@ -156,7 +170,10 @@
                 <b-col cols="4">
                   {{ $t('details.requestOrigin') }}
                 </b-col>
-                <b-col cols="8">
+                <b-col
+                  data-test-id="details-request-origin"
+                  cols="8"
+                >
                   {{ a.requestOrigin }}
                 </b-col>
               </b-row>
@@ -180,7 +197,10 @@
                 <b-col cols="4">
                   {{ $t('details.actor') }}
                 </b-col>
-                <b-col cols="8">
+                <b-col
+                  data-test-id="details-user"
+                  cols="8"
+                >
                   {{ a.actor }}
                 </b-col>
               </b-row>
@@ -188,7 +208,10 @@
                 <b-col cols="4">
                   {{ $t('details.actorID') }}
                 </b-col>
-                <b-col cols="8">
+                <b-col
+                  data-test-id="details-user-id"
+                  cols="8"
+                >
                   {{ a.actorID }}
                 </b-col>
               </b-row>
@@ -196,7 +219,10 @@
                 <b-col cols="4">
                   {{ $t('details.severity') }}
                 </b-col>
-                <b-col cols="8">
+                <b-col
+                  data-test-id="details-severity"
+                  cols="8"
+                >
                   {{ getSeverityLabel(a.severity) }}
                 </b-col>
               </b-row>
@@ -204,7 +230,10 @@
                 <b-col cols="4">
                   {{ $t('details.resource') }}
                 </b-col>
-                <b-col cols="8">
+                <b-col
+                  data-test-id="details-resource"
+                  cols="8"
+                >
                   {{ a.resource }}
                 </b-col>
               </b-row>
@@ -212,7 +241,10 @@
                 <b-col cols="4">
                   {{ $t('details.action') }}
                 </b-col>
-                <b-col cols="8">
+                <b-col
+                  data-test-id="details-action"
+                  cols="8"
+                >
                   {{ a.action }}
                 </b-col>
               </b-row>
@@ -254,6 +286,7 @@
       <template #footer>
         <b-button
           v-if="items.length"
+          data-test-id="button-load-older-actions"
           variant="light"
           @click.stop="load()"
         >
