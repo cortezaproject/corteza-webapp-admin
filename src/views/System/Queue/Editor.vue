@@ -11,6 +11,7 @@
       >
         <b-button
           v-if="queueID && canCreate"
+          data-test-id="button-add"
           variant="primary"
           class="mr-2"
           :to="{ name: 'system.queue.new' }"

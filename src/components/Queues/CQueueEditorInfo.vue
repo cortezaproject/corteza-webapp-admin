@@ -1,5 +1,6 @@
 <template>
   <b-card
+    data-test-id="card-queue-edit"
     class="shadow-sm"
     header-bg-variant="white"
     footer-bg-variant="white"
@@ -11,9 +12,13 @@
       >
         <b-form-input
           v-model="queue.queue"
+          data-test-id="input-name"
           :state="handleState"
         />
-        <b-form-invalid-feedback :state="handleState">
+        <b-form-invalid-feedback
+          :state="handleState"
+          data-test-id="feedback-invalid-name"
+        >
           {{ $t('invalid-handle-characters') }}
         </b-form-invalid-feedback>
       </b-form-group>
@@ -24,6 +29,7 @@
       >
         <b-form-select
           v-model="queue.consumer"
+          data-test-id="input-consumer"
           :options="consumers"
         />
       </b-form-group>
@@ -35,6 +41,7 @@
       >
         <b-form-input
           v-model="(queue.meta || {}).poll_delay"
+          data-test-id="input-polling"
           class="col-xs-2 col-lg-2"
           :state="durationState"
         />
@@ -56,6 +63,7 @@
 
       <b-form-group
         v-if="queue.createdAt"
+        data-test-id="input-created-at"
         :label="$t('createdAt')"
         label-cols="2"
       >
@@ -64,6 +72,7 @@
 
       <b-form-group
         v-if="queue.updatedAt"
+        data-test-id="input-updated-at"
         :label="$t('updatedAt')"
         label-cols="2"
       >
@@ -72,6 +81,7 @@
 
       <b-form-group
         v-if="queue.deletedAt"
+        data-test-id="input-deleted-at"
         :label="$t('deletedAt')"
         label-cols="2"
       >
@@ -96,6 +106,7 @@
 
       <confirmation-toggle
         v-if="queue && queue.queueID && queue.canDeleteQueue"
+        :data-test-id="deleteButtonStatusCypressId"
         @confirmed="$emit('delete')"
       >
         {{ getDeleteStatus }}
@@ -193,6 +204,10 @@ export default {
 
     getDeleteStatus () {
       return this.queue.deletedAt ? this.$t('undelete') : this.$t('delete')
+    },
+
+    deleteButtonStatusCypressId () {
+      return `button-${this.getDeleteStatus.toLowerCase()}`
     },
   },
 
