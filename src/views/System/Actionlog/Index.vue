@@ -91,7 +91,7 @@
         head-variant="light"
         :items="items"
         :fields="fields"
-        :tbody-tr-class="`${trClass} pointer`"
+        tbody-tr-class="pointer"
         :empty-text="$t('admin:general.notFound')"
         show-empty
         @row-clicked="item=>$set(item, '_showDetails', !item._showDetails)"
@@ -148,7 +148,7 @@
                   {{ $t('details.timestamp') }}
                 </b-col>
                 <b-col cols="8">
-                  {{ a.timestamp }}
+                  {{ a.timestamp | locFullDateTime }}
                 </b-col>
               </b-row>
               <b-row>
@@ -268,8 +268,6 @@ import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
 import { components } from '@cortezaproject/corteza-vue'
 const { CInputDateTime } = components
 
-const defSeverity = 6
-
 export default {
   components: {
     CInputDateTime,
@@ -382,13 +380,6 @@ export default {
         .then(rr => {
           this.items.push(...rr)
         })
-    },
-
-    trClass (item, type) {
-      if (type === 'row') {
-        const { severity: s = defSeverity } = item
-        return this.severity[s].tdClass
-      }
     },
 
     // Resets pagination & sorting and adds filtering params for drill-down
