@@ -1,5 +1,6 @@
 <template>
   <b-card
+    data-test-id="card-route-edit"
     class="shadow-sm"
     header-bg-variant="white"
     footer-bg-variant="white"
@@ -14,6 +15,7 @@
       >
         <b-form-input
           v-model="route.routeID"
+          data-test-id="input-route-id"
           plaintext
           disabled
         />
@@ -48,6 +50,7 @@
         <b-form-input
           id="endpoint"
           v-model="route.endpoint"
+          data-test-id="input-endpoint"
           :state="isValidEndpoint"
           required
         />
@@ -59,6 +62,7 @@
       >
         <b-form-select
           v-model="route.method"
+          data-test-id="select-method"
           :options="methods"
           required
         />
@@ -70,6 +74,7 @@
       >
         <b-form-checkbox
           v-model="route.enabled"
+          data-test-id="checkbox-enabled"
         >
           {{ $t('enabled') }}
         </b-form-checkbox>
@@ -82,6 +87,7 @@
       >
         <b-form-input
           :value="route.updatedAt | locFullDateTime"
+          data-test-id="input-updated-at"
           plaintext
           disabled
         />
@@ -94,6 +100,7 @@
       >
         <b-form-input
           :value="route.deletedAt | locFullDateTime"
+          data-test-id="input-delete-at"
           plaintext
           disabled
         />
@@ -107,6 +114,7 @@
       >
         <b-form-input
           :value="route.createdAt | locFullDateTime"
+          data-test-id="input-create-at"
           plaintext
           disabled
         />
@@ -130,6 +138,7 @@
 
       <confirmation-toggle
         v-if="route && route.routeID && route.canDeleteApigwRoute"
+        :data-test-id="deletedButtonStatusCypressId"
         @confirmed="$emit('delete')"
       >
         {{ getDeleteStatus }}
@@ -222,6 +231,10 @@ export default {
         }
       }
       return ''
+    },
+
+    deletedButtonStatusCypressId () {
+      return `button-${this.getDeleteStatus.toLowerCase()}`
     },
   },
 }
