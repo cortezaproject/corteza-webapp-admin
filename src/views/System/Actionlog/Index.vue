@@ -376,6 +376,9 @@ export default {
         }
       }
 
+      if (!this.filter.actorID) {
+        this.$delete(this.filter, 'actorID')
+      }
       this.procListResults(this.$SystemAPI.actionlogList({ ...this.filter, ...this.pagination }), false)
         .then(rr => {
           this.items.push(...rr)
