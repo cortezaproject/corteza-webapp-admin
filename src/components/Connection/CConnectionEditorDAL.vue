@@ -120,11 +120,21 @@ export default {
        * JSON string version of the connection params object
        * used to display nicely formatted JSON in the textarea
        */
-      paramsJson: JSON.stringify(this.dal.params || { dsn: '' }, null, 2),
+      paramsJson: '',
 
       // holds JSON validation errors
       paramsJsonEditorClass: '',
     }
+  },
+
+  watch: {
+    'dal': {
+      handler: function (dal) {
+        this.paramsJson = JSON.stringify(dal.params || { dsn: '' }, null, 2)
+      },
+      deep: true,
+      immediate: true,
+    },
   },
 
   methods: {
