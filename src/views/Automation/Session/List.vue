@@ -24,7 +24,6 @@
         nextPagination: $t('admin:general.pagination.next'),
       }"
       hide-search
-      hide-total
     >
       <template #header>
         <c-resource-list-status-filter

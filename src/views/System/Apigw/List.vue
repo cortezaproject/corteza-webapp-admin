@@ -63,7 +63,6 @@
         prevPagination: $t('admin:general.pagination.prev'),
         nextPagination: $t('admin:general.pagination.next'),
       }"
-      hide-total
       @search="filterList"
     >
       <template #header>

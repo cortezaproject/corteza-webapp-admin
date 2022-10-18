@@ -46,7 +46,6 @@
         nextPagination: $t('admin:general.pagination.next'),
       }"
       hide-search
-      hide-total
       @search="filterList"
     >
       <template #header>

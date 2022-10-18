@@ -14,7 +14,12 @@ export default {
         pageCursor: undefined,
         prevPage: '',
         nextPage: '',
+        total: 0,
+        page: 1,
       },
+
+      // Used to save query when fetching for total if we came to the page with a pageCursor in URL
+      tempQuery: undefined,
 
       sorting: {},
     }
@@ -49,26 +54,43 @@ export default {
      */
     handleQueryParams (initial = false) {
       // Pagination
-      const {
+      let {
         limit = this.pagination.limit,
         pageCursor = this.pagination.pageCursor,
         prevPage = this.pagination.prevCursor,
         nextPage = this.pagination.nextCursor,
+        total = this.pagination.total,
+        page = this.pagination.page,
         ...r1
       } = this.$route.query
 
+      limit = parseInt(limit)
+      total = parseInt(total)
+      page = parseInt(page)
+
+      // If we came to the page with a pageCursor in the URL
+      if (initial && pageCursor) {
+        this.tempQuery = this.$route.query
+        // Fetch replace query to trigger fetch of total number of items
+        this.$router.replace({ query: { ...this.$route.query, limit: 1, pageCursor: undefined } })
+        return
+      }
+
       /// To prevent extra list fetch, check if pageCursor is defined (not first page)
       const refresh = this.$route.query.pageCursor !== this.pagination.pageCursor
-      this.pagination = { limit, pageCursor, prevPage, nextPage }
+      this.pagination = { limit, pageCursor, prevPage, nextPage, total, page }
 
       // Sorting
-      const { sortBy = this.sorting.sortBy, sortDesc = this.sorting.sortDesc, ...r2 } = r1
+      let { sortBy = this.sorting.sortBy, sortDesc = this.sorting.sortDesc, ...r2 } = r1
+
+      sortDesc = sortDesc === true || sortDesc === 'true'
 
       // Reset pageCursor when sort changes, except on first fetch (so we use the pageCursor from url)
       if (!initial && (sortBy !== this.sorting.sortBy || sortDesc !== this.sorting.sortDesc)) {
         this.pagination.pageCursor = ''
+        this.pagination.page = 1
       }
-      this.sorting = { sortBy, sortDesc: sortDesc === true || sortDesc === 'true' }
+      this.sorting = { sortBy, sortDesc }
 
       // Filtering
       // make sure filter fields are of the right type
@@ -92,6 +114,7 @@ export default {
       // we want to prevent situations with page is preset to a number that
       // exceeds the number of pages of a filtered results
       this.pagination.pageCursor = ''
+      this.pagination.page = 1
 
       // notify b-table about the change
       //
@@ -99,29 +122,31 @@ export default {
       this.$root.$emit('bv::refresh::table', 'resource-list')
     }, 300),
 
-    /**
-     * Encode list params
-     * @returns {{perPage: *, page: *, sort: (string|*)}}
-     */
     encodeListParams () {
       const { sortBy, sortDesc } = this.sorting
+      const { limit, pageCursor } = this.pagination
 
       const sort = sortBy ? `${sortBy} ${sortDesc ? 'DESC' : 'ASC'}` : undefined
 
       return {
+        limit,
+        sort: pageCursor ? undefined : sort,
         ...this.filter,
-        ...this.pagination,
-        ...{ nextPage: undefined, prevPage: undefined },
-        sort: this.pagination.pageCursor ? undefined : sort,
+        pageCursor,
+        incTotal: !pageCursor || this.tempQuery,
       }
     },
 
     encodeRouteParams () {
+      const { limit, pageCursor, page } = this.pagination
+
       return {
         query: {
-          ...this.pagination,
+          limit,
           ...this.sorting,
           ...this.filter,
+          page,
+          pageCursor,
         },
       }
     },
@@ -138,11 +163,24 @@ export default {
       //
       // We want this because in case when user refreshes or shares URL
       // he needs to land on the same page with the same parameters
-      if (updateQuery) {
-        this.$router.push(this.encodeRouteParams())
+      if (updateQuery && !this.tempQuery) {
+        this.$router.replace(this.encodeRouteParams())
       }
 
       return p.then(async ({ set, filter } = {}) => {
+        if (filter.incTotal) {
+          this.pagination.total = filter.total
+        }
+
+        // This was a fetch of total number of items
+        if (this.tempQuery) {
+          const query = this.tempQuery
+          this.tempQuery = undefined
+
+          this.$router.replace({ query })
+          return []
+        }
+
         this.pagination.pageCursor = undefined
         this.pagination.nextPage = filter.nextPage
         this.pagination.prevPage = filter.prevPage
@@ -150,9 +188,7 @@ export default {
         return set
       }).catch(this.toastErrorHandler(this.$t('notification:list.load.error')))
         .finally(async () => {
-          await new Promise(
-            resolve => setTimeout(resolve, 300)
-          )
+          await new Promise(resolve => setTimeout(resolve, 300))
 
           this.decLoader()
         })

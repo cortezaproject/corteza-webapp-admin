@@ -26,14 +26,13 @@
         noItems: $t('admin:general.resource-list.no-items'),
         loading: $t('loading'),
         showingPagination: 'admin:general.pagination.showing',
-        singlePluralPagination: 'admin:general.pagination.single_plural',
+        singlePluralPagination: 'admin:general.pagination.plural',
         prevPagination: $t('admin:general.pagination.prev'),
         nextPagination: $t('admin:general.pagination.next'),
       }"
-      hide-total
       hide-search
+      hide-total
       class="h-100"
-      @search="filterList"
     >
       <template #header>
         <b-button
