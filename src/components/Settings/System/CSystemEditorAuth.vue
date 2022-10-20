@@ -75,7 +75,8 @@
         label-cols="2"
       >
         <b-form-input
-          v-model="settings['auth.internal.password-constraints.min-upper-case']"
+          v-model.number="settings['auth.internal.password-constraints.min-upper-case']"
+          type="number"
           :placeholder="`${defaultMinUppCaseChrs}`"
           :min="defaultMinUppCaseChrs"
         />
@@ -87,7 +88,8 @@
         label-cols="2"
       >
         <b-form-input
-          v-model="settings['auth.internal.password-constraints.min-lower-case']"
+          v-model.number="settings['auth.internal.password-constraints.min-lower-case']"
+          type="number"
           :placeholder="`${defaultMinLowCaseChrs}`"
           :min="defaultMinLowCaseChrs"
         />
@@ -99,7 +101,7 @@
         label-cols="2"
       >
         <b-form-input
-          v-model="settings['auth.internal.password-constraints.min-length']"
+          v-model.number="settings['auth.internal.password-constraints.min-length']"
           :placeholder="`${defaultMinPwd}`"
           :min="defaultMinPwd"
           type="number"
@@ -112,7 +114,7 @@
         label-cols="2"
       >
         <b-form-input
-          v-model="settings['auth.internal.password-constraints.min-num-count']"
+          v-model.number="settings['auth.internal.password-constraints.min-num-count']"
           placeholder="0"
           min="0"
           type="number"
@@ -125,7 +127,7 @@
         label-cols="2"
       >
         <b-form-input
-          v-model="settings['auth.internal.password-constraints.min-special-count']"
+          v-model.number="settings['auth.internal.password-constraints.min-special-count']"
           placeholder="0"
           min="0"
           type="number"
