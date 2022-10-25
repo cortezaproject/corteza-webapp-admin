@@ -73,6 +73,7 @@
               size="sm"
             />
           </b-form-group>
+
           <b-form-group
             label-cols-lg="2"
           >
@@ -264,6 +265,7 @@
 </template>
 
 <script>
+import { debounce } from 'lodash'
 import listHelpers from 'corteza-webapp-admin/src/mixins/listHelpers'
 import { components } from '@cortezaproject/corteza-vue'
 const { CInputDateTime } = components
@@ -365,7 +367,17 @@ export default {
       this.load(true)
     },
 
-    load (reset = false) {
+    // Overwrites mixin method
+    encodeRouteParams () {
+      return {
+        query: {
+          ...this.pagination,
+          ...this.filter,
+        },
+      }
+    },
+
+    load: debounce(function (reset = false) {
       if (reset) {
         this.items.length = 0
         this.pagination.beforeActionID = undefined
@@ -379,11 +391,20 @@ export default {
       if (!this.filter.actorID) {
         this.$delete(this.filter, 'actorID')
       }
-      this.procListResults(this.$SystemAPI.actionlogList({ ...this.filter, ...this.pagination }), false)
+
+      if (!this.filter.action) {
+        this.$delete(this.filter, 'action')
+      }
+
+      if (!this.filter.resource) {
+        this.$delete(this.filter, 'resource')
+      }
+
+      this.procListResults(this.$SystemAPI.actionlogList({ ...this.filter, ...this.pagination }))
         .then(rr => {
           this.items.push(...rr)
         })
-    },
+    }, 300),
 
     // Resets pagination & sorting and adds filtering params for drill-down
     drillDownLink (query = {}) {
