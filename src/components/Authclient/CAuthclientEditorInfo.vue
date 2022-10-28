@@ -598,13 +598,13 @@ export default {
 
       // @todo should be handled via computed props
       validFrom: this.resource.validFrom ? {
-        date: new Date(this.resource.validFrom).toISOString(),
+        date: new Date(this.resource.validFrom).toISOString().split('T')[0],
         time: new Date(this.resource.validFrom).toTimeString().split(' ')[0],
       } : { date: null, time: null },
 
       // @todo should be handled via computed props
       expiresAt: this.resource.expiresAt ? {
-        date: new Date(this.resource.expiresAt).toISOString(),
+        date: new Date(this.resource.expiresAt).toISOString().split('T')[0],
         time: new Date(this.resource.expiresAt).toTimeString().split(' ')[0],
       } : { date: null, time: null },
 
