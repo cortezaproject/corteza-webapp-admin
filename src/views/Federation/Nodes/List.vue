@@ -15,6 +15,7 @@
       </b-button>
 
       <b-button
+        v-if="canCreate"
         variant="light"
         @click="openPairModal()"
       >
