@@ -201,7 +201,7 @@ export default {
     },
 
     saveDisabled () {
-      return !this.editable && [this.nameState, this.urlState].includes(false)
+      return !this.editable || [this.nameState, this.urlState].includes(false)
     },
 
     nameState () {
