@@ -80,9 +80,9 @@
     />
 
     <c-user-editor-external-auth-providers
-      v-if="user && userID && user.meta.externalAuthProviders"
+      v-if="user && userID"
       class="mt-3"
-      :value="user.meta.externalAuthProviders"
+      :value="externalAuthProviders"
       @delete="onExternalAuthProviderDelete"
     />
   </b-container>
@@ -127,10 +127,13 @@ export default {
   data () {
     return {
       user: undefined,
+
       membership: {
         active: [],
         original: [],
       },
+
+      externalAuthProviders: [],
 
       // Processing and success flags for each form
       info: {
@@ -217,14 +220,10 @@ export default {
 
     fetchExternalAuthProviders () {
       this.incLoader()
+
       return this.$SystemAPI.userListCredentials({ userID: this.userID })
         .then((providers = []) => {
-          this.user.meta = {
-            ...this.user.meta,
-            externalAuthProviders: [
-              ...providers.map(({ credentialsID = '', label = '', kind = '' }) => ({ credentialsID, label, type: kind })),
-            ],
-          }
+          this.externalAuthProviders = providers.map(({ credentialsID = '', label = '', kind = '' }) => ({ credentialsID, label, type: kind }))
         })
         .catch(this.toastErrorHandler(this.$t('notification:user.external-auth-providers.error')))
         .finally(() => {
@@ -331,6 +330,7 @@ export default {
 
       this.$SystemAPI.userSetPassword({ userID: this.userID, password })
         .then(() => {
+          this.fetchExternalAuthProviders()
           this.animateSuccess('password')
 
           this.toastSuccess(this.$t('notification:user.passwordChange.success'))
@@ -360,6 +360,7 @@ export default {
         }
       }).then(user => {
         this.user = new system.User(user)
+        this.fetchExternalAuthProviders()
       })
     },
 

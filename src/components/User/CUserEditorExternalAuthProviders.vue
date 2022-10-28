@@ -6,8 +6,8 @@
     footer-bg-variant="white"
   >
     <b-table
-      :items="providers.items"
-      :fields="providers.fields"
+      :items="value"
+      :fields="fields"
     >
       <template #cell(editor)="{ item }">
         <b-button
@@ -45,17 +45,12 @@ export default {
   },
 
   computed: {
-    providers () {
-      return {
-        fields: [
-          { key: 'label', label: this.$t('label'), thStyle: { width: '350px' } },
-          { key: 'type', label: this.$t('type'), thStyle: { width: '250px' } },
-          { key: 'editor', label: '', tdClass: 'text-right' },
-        ],
-        items: [
-          ...this.value,
-        ],
-      }
+    fields () {
+      return [
+        { key: 'label', label: this.$t('label'), thStyle: { width: '350px' } },
+        { key: 'type', label: this.$t('type'), thStyle: { width: '250px' } },
+        { key: 'editor', label: '', tdClass: 'text-right' },
+      ]
     },
   },
 }
