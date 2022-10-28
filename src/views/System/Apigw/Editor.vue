@@ -262,8 +262,8 @@ export default {
     fetchFilters () {
       this.incLoader()
       this.$SystemAPI.apigwFilterList({ routeID: this.routeID })
-        .then((api) => {
-          this.setRouteFilters(api.set)
+        .then(({ set = [] }) => {
+          this.setRouteFilters(set)
         })
         .catch(this.toastErrorHandler(this.$t('notification:gateway.filter.fetch.error')))
         .finally(() => {
@@ -272,11 +272,12 @@ export default {
     },
 
     setRouteFilters (routeFilters = []) {
-      this.filters = (routeFilters || []).map((filter) => {
+      this.filters = (routeFilters || []).map(filter => {
         const f = { ...this.availableFilters.find((af) => af.ref === filter.ref) }
         f.params = this.decodeParams(f, { ...filter.params })
         f.weight = parseInt(filter.weight)
         f.filterID = filter.filterID
+        f.enabled = !!filter.enabled
         return { ...f }
       })
     },
