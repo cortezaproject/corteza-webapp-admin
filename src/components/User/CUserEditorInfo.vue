@@ -254,7 +254,7 @@ export default {
     },
 
     saveDisabled () {
-      return !this.editable || [this.nameState, this.handleState].includes(false)
+      return !this.editable || [this.emailState, this.handleState].includes(false)
     },
 
     deletedButtonStatusCypressId () {
