@@ -76,7 +76,7 @@
             label-class="text-primary"
             class="mb-0"
           >
-            {{ connection.ownership || '-' }}
+            {{ connection.meta.ownership || '-' }}
           </b-form-group>
         </b-col>
       </b-row>

@@ -122,6 +122,7 @@ export default {
         {
           key: 'ownership',
           sortable: false,
+          formatter: (value, col, conn) => conn.meta.ownership,
         },
         {
           key: 'createdAt',
