@@ -128,7 +128,7 @@
       />
 
       <confirmation-toggle
-        v-if="user && user.userID && user.canDeleteUser"
+        v-if="!fresh && user.canDeleteUser"
         :data-test-id="deletedButtonStatusCypressId"
         @confirmed="$emit('delete')"
       >
@@ -136,7 +136,7 @@
       </confirmation-toggle>
 
       <confirmation-toggle
-        v-if="user && user.userID"
+        v-if="!fresh"
         :data-test-id="suspendButtonStatusCypressId"
         class="ml-1"
         cta-class="light"
@@ -146,7 +146,7 @@
       </confirmation-toggle>
 
       <confirmation-toggle
-        v-if="user && user.userID"
+        v-if="!fresh"
         data-test-id="button-sessions-revoke"
         :disabled="user.userID === userID"
         class="ml-1"
