@@ -163,15 +163,17 @@ export default {
 
     onDelete () {
       this.incLoader()
-      let method = this.queue.deletedAt ? 'queuesUndelete' : 'queuesDelete'
+      const { deletedAt = '' } = this.queue
+      const method = deletedAt ? 'queuesUndelete' : 'queuesDelete'
+      const event = deletedAt ? 'undelete' : 'delete'
 
       this.$SystemAPI[method]({ queueID: this.queueID })
         .then(() => {
           this.fetchQueue()
-          this.toastSuccess(this.$t('notification:queue.delete.success'))
+          this.toastSuccess(this.$t(`notification:queue.${event}.success`))
           this.$router.push({ name: 'system.queue' })
         })
-        .catch(this.toastErrorHandler(this.$t('notification:queue.delete.error')))
+        .catch(this.toastErrorHandler(this.$t(`notification:queue.${event}.error`)))
         .finally(() => {
           this.decLoader()
         })
