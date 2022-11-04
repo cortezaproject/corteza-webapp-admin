@@ -153,9 +153,12 @@ export default {
         }
 
         // iterate through all properties and assign them to connection object
+        if (!this.dal.params) {
+          this.$set(this.dal, 'params', {})
+        }
         for (const key in json) {
           if (json.hasOwnProperty(key)) {
-            this.dal.params[key] = json[key]
+            this.$set(this.dal.params, key, json[key])
           }
         }
       } catch (e) {
