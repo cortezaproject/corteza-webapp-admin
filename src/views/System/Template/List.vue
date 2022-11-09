@@ -60,7 +60,7 @@
         noItems: $t('admin:general.resource-list.no-items'),
         loading: $t('loading'),
         showingPagination: 'admin:general.pagination.showing',
-        singlePluralPagination: 'admin:general.pagination.single_plural',
+        singlePluralPagination: 'admin:general.pagination.single',
         prevPagination: $t('admin:general.pagination.prev'),
         nextPagination: $t('admin:general.pagination.next'),
       }"
