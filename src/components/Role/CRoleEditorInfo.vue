@@ -189,7 +189,7 @@
 
 <script>
 import { system, NoID } from '@cortezaproject/corteza-js'
-import { handleState } from 'corteza-webapp-admin/src/lib/handle'
+import { handle } from '@cortezaproject/corteza-vue'
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 
@@ -268,9 +268,7 @@ export default {
 
     // 2+ alpha-numeric + _
     handleState () {
-      const { handle } = this.role
-
-      return handle ? handleState(handle) : false
+      return handle.handleState(this.role.handle)
     },
 
     getDeleteStatus () {

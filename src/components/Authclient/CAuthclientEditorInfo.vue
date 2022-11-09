@@ -509,7 +509,7 @@ curl -X POST {{ curlURL }} \
 
 <script>
 import { NoID } from '@cortezaproject/corteza-js'
-import { handleState } from 'corteza-webapp-admin/src/lib/handle'
+import { handle } from '@cortezaproject/corteza-vue'
 import Vue from 'vue'
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
@@ -635,9 +635,7 @@ export default {
     },
 
     handleState () {
-      const { handle } = this.authClient
-
-      return handle ? handleState(handle) : false
+      return handle.handleState(this.authClient.handle)
     },
 
     isClientCredentialsGrant () {

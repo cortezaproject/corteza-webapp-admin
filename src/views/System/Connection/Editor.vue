@@ -64,7 +64,7 @@
 
 <script>
 import { system, NoID } from '@cortezaproject/corteza-js'
-import { handleState } from 'corteza-webapp-admin/src/lib/handle'
+import { handle } from '@cortezaproject/corteza-vue'
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CConnectionEditorInfo from 'corteza-webapp-admin/src/components/Connection/CConnectionEditorInfo'
 import CConnectionEditorProperties from 'corteza-webapp-admin/src/components/Connection/CConnectionEditorProperties'
@@ -133,9 +133,7 @@ export default {
     },
 
     handleState () {
-      const { handle } = this.connection
-
-      return handle ? handleState(handle) : false
+      return this.connection.handle ? handle.handleState(this.connection.handle) : false
     },
 
     saveDisabled () {

@@ -117,7 +117,7 @@
 
 <script>
 import { NoID } from '@cortezaproject/corteza-js'
-import { handleState } from 'corteza-webapp-admin/src/lib/handle'
+import { handle } from '@cortezaproject/corteza-vue'
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 
@@ -187,7 +187,7 @@ export default {
 
     handleState () {
       const { queue = '' } = this.queue
-      return queue ? handleState(queue) : false
+      return queue ? handle.handleState(queue) : false
     },
 
     isMetaPollDelay () {

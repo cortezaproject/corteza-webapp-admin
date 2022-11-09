@@ -133,8 +133,7 @@
 </template>
 
 <script>
-import { components } from '@cortezaproject/corteza-vue'
-import { handleState } from 'corteza-webapp-admin/src/lib/handle'
+import { components, handle } from '@cortezaproject/corteza-vue'
 import CLocation from 'corteza-webapp-admin/src/components/CLocation'
 const { CSensitivityLevelPicker } = components
 
@@ -166,9 +165,7 @@ export default {
 
   computed: {
     handleState () {
-      const { handle } = this.connection
-
-      return handle ? handleState(handle) : false
+      return handle.handleState(this.connection.handle)
     },
 
     locationCoordinates () {
