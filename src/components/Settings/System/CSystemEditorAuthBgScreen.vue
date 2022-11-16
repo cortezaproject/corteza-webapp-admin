@@ -1,10 +1,16 @@
 <template>
   <b-card
     data-test-id="card-edit-authentication"
-    class="shadow-sm"
     header-bg-variant="white"
     footer-bg-variant="white"
+    class="shadow-sm"
   >
+    <template #header>
+      <h3 class="m-0">
+        {{ $t("title") }}
+      </h3>
+    </template>
+
     <b-row cols="12">
       <b-col cols="6">
         <div class="shadow-sm">
@@ -12,6 +18,7 @@
             <h5>
               {{ $t("image.uploader.title") }}
             </h5>
+
             <b-button
               v-if="uploadedFile('auth.ui.background-image-src')"
               variant="link"
@@ -32,11 +39,13 @@
           />
         </div>
       </b-col>
+
       <b-col cols="6">
         <div class="shadow-sm">
           <h5>
             {{ $t("image.editor.title") }}
           </h5>
+
           <ace-editor
             data-test-id="auth-bg-image-styling-editor"
             :font-size="14"
@@ -54,22 +63,17 @@
               $blockScrolling: false
             }"
           />
+
           <c-submit-button
-            class="float-right mt-2"
             :disabled="!canManage"
             :processing="processing"
             :success="success"
+            class="float-right mt-2"
             @submit="$emit('submit', settings['auth.ui.styles'])"
           />
         </div>
       </b-col>
     </b-row>
-
-    <template #header>
-      <h3 class="m-0">
-        {{ $t("title") }}
-      </h3>
-    </template>
   </b-card>
 </template>
 
